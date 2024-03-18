@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FoodOrderingApp</string>
+    <string name="btn_apply">Áp dụng</string>
 </resources>

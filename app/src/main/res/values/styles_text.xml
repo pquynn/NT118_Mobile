@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Start: style heading 1. Modified ... by ...   -->
+    <style name="Heading1" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <!--  End: style heading 1-->
+
+    <!--  Start: style heading 2. Modified ... by ...   -->
+    <style name="Heading2" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <!--  End: style heading 2-->
+
+    <!-- Start: style body -->
+    <style name="Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <!-- End: style body -->
+
+    <!-- Start: style caption -->
+    <style name="Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/roboto_light</item>
+        <item name="android:textColor">@color/lightgray</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <!-- Start: style caption -->
+
+
+</resources>

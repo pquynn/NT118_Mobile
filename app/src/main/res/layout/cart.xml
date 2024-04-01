@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/bottom_navigation"/>
+<!--    <include-->
+<!--        layout="@layout/bottom_navigation"/>-->
 
-    <include
-        layout="@layout/top_navigation"
-        app:screen_name="aaa"/>
+<!--    <include-->
+<!--        layout="@layout/top_navigation"-->
+<!--        app:screen_name="aaa"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

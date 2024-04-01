@@ -10,4 +10,6 @@
     <color name="dark_background">#1D4D4F</color>
     <color name="lightgray">#A5A7B9</color>
     <color name="placeholder">#6B6E82</color>
+
+    <color name="am_littleFrame">#E1E2F1</color>
 </resources>

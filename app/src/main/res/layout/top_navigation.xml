@@ -2,33 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/screen_name"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgray">
+    >
+<!-- HOW TO REUSE CODE:
+        PASTE THIS BELOW CODE IN YOUR ACTIVITY:
+        <include layout="@layout/top_navigation"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!--    start: top navigation-->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        CHANGE THE SCREEN NAME (TEXT VIEW) BY JAVA
+-->
             <!--    start: back button. modified by Quyen 31/3/2024-->
             <FrameLayout
-                android:id="@+id/frameLayout"
+                android:id="@+id/btn_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="32dp"
@@ -39,7 +24,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/btn_back"
+                    android:id="@+id/img_lessthan"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
@@ -50,19 +35,16 @@
 
             <!--    start: top navigation heading-->
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/screen_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:text="Giỏ hàng"
                 style="@style/LightHeading2"
 
-                app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-                app:layout_constraintStart_toEndOf="@+id/frameLayout"
-                app:layout_constraintTop_toTopOf="@+id/frameLayout" />
+                app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+                app:layout_constraintStart_toEndOf="@+id/btn_back"
+                app:layout_constraintTop_toTopOf="@+id/btn_back" />
             <!--    end: top navigation heading-->
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--    end: top navigation-->
-    </LinearLayout>
+    <!--    end: top navigation-->
 </androidx.constraintlayout.widget.ConstraintLayout>

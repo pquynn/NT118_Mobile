@@ -29,6 +29,22 @@
             android:name=".customer_module.checkout.buy_success"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".customer_module.checkout.checkout"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".customer_module.checkout.checkout_address"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".customer_module.checkout.checkout_coupon"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".customer_module.checkout.checkout_payment"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

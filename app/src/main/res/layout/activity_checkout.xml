@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_buysuccess"
-    tools:context=".customer_module.checkout.buy_success">
+    android:id="@+id/activity_checkout"
+    tools:context=".customer_module.checkout.checkout">
+
+    <!--    Header-->
+    <include layout="@layout/header_with_btnback"></include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

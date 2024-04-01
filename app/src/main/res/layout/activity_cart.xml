@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/activity_cart"
+    tools:context=".customer_module.cart.cart">
 
     <include
         layout="@layout/bottom_navigation"/>
 
     <include
-        layout="@layout/top_navigation"
-        app:screen_name="aaa"/>
+        layout="@layout/header"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

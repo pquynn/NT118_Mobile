@@ -1,12 +1,13 @@
 package com.example.foodorderingapp.customer_module.checkout;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.foodorderingapp.R;
 import android.widget.TextView;
 
-public class buy_success extends AppCompatActivity {
-    @Override
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foodorderingapp.R;
+
+public class checkout_address extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_success);

@@ -5,7 +5,13 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="buy_success">
+        <State />
+      </entry>
       <entry key="cart">
+        <State />
+      </entry>
+      <entry key="checkout">
         <State />
       </entry>
     </value>

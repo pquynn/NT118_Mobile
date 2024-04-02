@@ -3,42 +3,42 @@
     <!--  style heading 1.  -->
     <style name="Heading1" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/dark_text</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <!--  style heading 2.  -->
     <style name="Heading2" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/dark_text</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <!--  stSyle heading 3.  -->
     <style name="Heading3" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/dark_text</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <!--  style text_24sp.  -->
     <style name="text_24sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/regular_text</item>
         <item name="android:textSize">24sp</item>
     </style>
     
     <!--  style text_20sp.  -->
     <style name="text_20sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/regular_text</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <!--  style top navigation text.  -->
     <style name="top_nav" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/dark_text</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -47,7 +47,7 @@
     <!-- style body -->
     <style name="Body" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textColor">@color/regular_text</item>
         <item name="android:textSize">16sp</item>
     </style>
 

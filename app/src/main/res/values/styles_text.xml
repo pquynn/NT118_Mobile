@@ -14,7 +14,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <!--  stSyle heading 3.  -->
+    <!--  style heading 3.  -->
     <style name="Heading3" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/light_text</item>

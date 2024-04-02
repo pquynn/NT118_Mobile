@@ -1,0 +1,59 @@
+package com.example.foodorderingapp.adapter;
+
+import android.view.LayoutInflater;
+import android.view.TextureView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.domain.AddressDomain;
+
+import java.util.ArrayList;
+import java.util.zip.Inflater;
+
+public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
+    ArrayList<AddressDomain> addresslist;
+
+    public AddressAdapter(ArrayList<AddressDomain> addresslist){
+        this.addresslist = addresslist;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_address, parent, false);
+        return new ViewHolder(inflate);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.address.setText(addresslist.get(position).getAddress());
+
+//      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
+        holder.btn_delete.setVisibility(View.GONE);
+        holder.btn_edit.setVisibility(View.GONE);
+    }
+
+    @Override
+    public int getItemCount() {
+        return addresslist.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView address;
+        ImageView btn_edit;
+        ImageView btn_delete;
+        ConstraintLayout mainlayout;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            address = itemView.findViewById(R.id.txt_address);
+            btn_edit = itemView.findViewById(R.id.btn_edit);
+            btn_delete = itemView.findViewById(R.id.btn_delete);
+        }
+    }
+}

@@ -8,19 +8,17 @@
     android:padding="16dp">
 
     <Button
-        android:layout_width="match_parent"
+        android:id="@+id/btn_login"
+        style="@style/ButtonStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:padding="16dp"
-        android:text="Login"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_bold"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:background="@drawable/rounder_component_button"
+        android:text="ĐĂNG NHẬP"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText,MissingConstraints"
-        tools:layout_editor_absoluteY="29dp" />
+        tools:layout_editor_absoluteY="603dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

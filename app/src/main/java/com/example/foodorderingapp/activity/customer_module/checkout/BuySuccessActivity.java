@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodorderingapp.R;
 import android.widget.TextView;
 
-public class buy_success extends AppCompatActivity {
+public class BuySuccessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

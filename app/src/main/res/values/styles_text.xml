@@ -21,6 +21,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+
     <!--  style text_24sp.  -->
     <style name="text_24sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
@@ -35,6 +36,27 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <!--  style regular text_14sp.  -->
+    <style name="text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--  style light text_14sp.  -->
+    <style name="light_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--  style bold text_14sp.  -->
+    <style name="bold_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <!--  style top navigation text.  -->
     <style name="top_nav" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
@@ -44,18 +66,11 @@
 
     <!--    style button text-->
 
-    <!-- style body -->
-    <style name="Body" parent="TextAppearance.MaterialComponents.Body1">
+    <!-- style text_16sp -->
+    <style name="text_16sp" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/regular_text</item>
         <item name="android:textSize">16sp</item>
-    </style>
-
-    <!-- style caption -->
-    <style name="Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/roboto_light</item>
-        <item name="android:textColor">@color/lightgray</item>
-        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- Start: style text -->

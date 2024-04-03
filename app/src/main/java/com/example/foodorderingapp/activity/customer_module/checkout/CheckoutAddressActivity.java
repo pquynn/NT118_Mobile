@@ -33,9 +33,9 @@ public class CheckoutAddressActivity extends AppCompatActivity {
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         ArrayList<AddressDomain> addresses = new ArrayList<AddressDomain>();
-        addresses.add(new AddressDomain("25 đường Nguyễn Văn Quỳ phường PT quận 7"));
-        addresses.add(new AddressDomain("26 đường Nguyễn Văn Quỳ phường PT quận 7"));
-        addresses.add(new AddressDomain("27 đường Nguyễn Văn Quỳ phường PT quận 7"));
+        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
+        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
+        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
 
         adapter = new CheckoutAddressRefactor(addresses);
         recyclerViewList.setAdapter(adapter);

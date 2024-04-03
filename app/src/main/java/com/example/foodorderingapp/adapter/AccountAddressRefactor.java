@@ -31,6 +31,8 @@ public class AccountAddressRefactor extends RecyclerView.Adapter<AccountAddressR
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.address.setText(addresslist.get(position).getAddress());
+        holder.recipientName.setText(addresslist.get(position).getRecipientName());
+        holder.phone.setText(addresslist.get(position).getPhone());
     }
 
     @Override
@@ -40,14 +42,16 @@ public class AccountAddressRefactor extends RecyclerView.Adapter<AccountAddressR
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView address;
-        //Button btn_add;
+        TextView recipientName;
+        TextView phone;
         ImageView btn_edit;
         ImageView btn_delete;
         ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             address = itemView.findViewById(R.id.txt_address);
-            //btn_add = itemView.findViewById(R.id.btn_add);
+            recipientName = itemView.findViewById(R.id.txt_recipient_name);
+            phone = itemView.findViewById(R.id.txt_phone);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
         }

@@ -15,4 +15,5 @@
     <color name="box">#F0F5FA</color>
     <color name="text1">#676767</color>
     <color name="search">#F6F6F6</color>
+    <color name="light_text">#32343E</color>
 </resources>

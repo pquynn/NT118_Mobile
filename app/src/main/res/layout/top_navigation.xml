@@ -3,48 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-<!-- HOW TO REUSE CODE:
+    android:layout_height="wrap_content">
+    <!-- HOW TO REUSE CODE:
         PASTE THIS BELOW CODE IN YOUR ACTIVITY:
         <include layout="@layout/top_navigation"/>
 
         CHANGE THE SCREEN NAME (TEXT VIEW) BY JAVA
 -->
-            <!--    start: back button. modified by Quyen 31/3/2024-->
-            <FrameLayout
-                android:id="@+id/btn_back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/circle_background"
-                android:padding="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    <!--    start: back button. modified by Quyen 31/3/2024-->
+    <FrameLayout
+        android:id="@+id/btn_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/circle_background"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/img_lessthan"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/less_than" />
+        <ImageView
+            android:id="@+id/img_lessthan"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/less_than" />
 
-            </FrameLayout>
-            <!--    end: back button-->
+    </FrameLayout>
+    <!--    end: back button-->
 
-            <!--    start: top navigation heading-->
-            <TextView
-                android:id="@+id/screen_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="Giỏ hàng"
-                style="@style/LightHeading2"
+    <!--    start: top navigation heading-->
+    <TextView
+        android:id="@+id/screen_name"
+        style="@style/LightHeading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Giỏ hàng"
 
-                app:layout_constraintBottom_toBottomOf="@+id/btn_back"
-                app:layout_constraintStart_toEndOf="@+id/btn_back"
-                app:layout_constraintTop_toTopOf="@+id/btn_back" />
-            <!--    end: top navigation heading-->
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+    <!--    end: top navigation heading-->
     <!--    end: top navigation-->
 </androidx.constraintlayout.widget.ConstraintLayout>

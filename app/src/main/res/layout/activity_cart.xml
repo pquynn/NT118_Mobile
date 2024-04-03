@@ -7,12 +7,12 @@
     android:id="@+id/activity_cart"
     tools:context=".activity.customer_module.cart.CartActivity">
 
-    <include
-        android:id="@+id/include2"
-        layout="@layout/header" />
+<!--    <include-->
+<!--        android:id="@+id/include2"-->
+<!--        layout="@layout/header" />-->
 
-    <include
-        layout="@layout/bottom_navigation"
-        app:layout_constraintBottom_toBottomOf="parent" />
+<!--    <include-->
+<!--        layout="@layout/bottom_navigation"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

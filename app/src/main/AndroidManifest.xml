@@ -21,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--   START: CART - CHECKOUT - PAYMENT-->
         <activity
             android:name=".activity.customer_module.cart.CartActivity"
             android:exported="true">
@@ -45,6 +47,14 @@
             android:name=".activity.customer_module.checkout.checkout_payment"
             android:exported="true">
         </activity>
+        <!--   END: CART - CHECKOUT - PAYMENT-->
+
+        <!--   START: ACCOUNT-->
+        <activity
+            android:name=".activity.customer_module.AccountAddressActivity"
+            android:exported="true">
+        </activity>
+        <!--   START: ACCOUNT-->
     </application>
 
 </manifest>

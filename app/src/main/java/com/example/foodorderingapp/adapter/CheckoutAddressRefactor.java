@@ -1,7 +1,6 @@
 package com.example.foodorderingapp.adapter;
 
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,12 +14,11 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.domain.AddressDomain;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
+public class CheckoutAddressRefactor extends RecyclerView.Adapter<CheckoutAddressRefactor.ViewHolder> {
     ArrayList<AddressDomain> addresslist;
 
-    public AddressAdapter(ArrayList<AddressDomain> addresslist){
+    public CheckoutAddressRefactor(ArrayList<AddressDomain> addresslist){
         this.addresslist = addresslist;
     }
 
@@ -34,9 +32,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.address.setText(addresslist.get(position).getAddress());
 
-//      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
-        holder.btn_delete.setVisibility(View.GONE);
-        holder.btn_edit.setVisibility(View.GONE);
+////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER IF SCREEN NAME = ...
+        //if(holder.btn_add.getText().toString().equals("Áp dụng")){
+            holder.btn_delete.setVisibility(View.GONE);
+            holder.btn_edit.setVisibility(View.GONE);
+        //}
+
     }
 
     @Override
@@ -46,12 +47,14 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView address;
+        //Button btn_add;
         ImageView btn_edit;
         ImageView btn_delete;
         ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             address = itemView.findViewById(R.id.txt_address);
+            //btn_add = itemView.findViewById(R.id.btn_add);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
         }

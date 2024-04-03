@@ -15,10 +15,10 @@ import com.example.foodorderingapp.domain.AddressDomain;
 
 import java.util.ArrayList;
 
-public class AccountAddressRefactor extends RecyclerView.Adapter<AccountAddressRefactor.ViewHolder> {
+public class AccountAddressAdapter extends RecyclerView.Adapter<AccountAddressAdapter.ViewHolder> {
     ArrayList<AddressDomain> addresslist;
 
-    public AccountAddressRefactor(ArrayList<AddressDomain> addresslist){
+    public AccountAddressAdapter(ArrayList<AddressDomain> addresslist){
         this.addresslist = addresslist;
     }
 
@@ -49,9 +49,9 @@ public class AccountAddressRefactor extends RecyclerView.Adapter<AccountAddressR
         ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            address = itemView.findViewById(R.id.txt_address);
-            recipientName = itemView.findViewById(R.id.txt_recipient_name);
-            phone = itemView.findViewById(R.id.txt_phone);
+            address = itemView.findViewById(R.id.txt_description);
+            recipientName = itemView.findViewById(R.id.txt_coupon_name);
+            phone = itemView.findViewById(R.id.txt_valid_date);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
         }

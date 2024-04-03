@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodorderingapp.R;
 
-public class checkout_payment extends AppCompatActivity {
+public class PaymentMethodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buy_success);
+        setContentView(R.layout.activity_payment_method);
 
         // set top navigation text
         TextView screenName = findViewById(R.id.screen_name);
-        screenName.setText("Đặt hàng thành công");
+        screenName.setText("Chọn phương thức thanh toán");
     }
 }

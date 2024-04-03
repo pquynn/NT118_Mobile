@@ -58,5 +58,21 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- Start: style text -->
+    <style name="TextLabel" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- End: style text -->
+
+    <!-- Start: style placeholder -->
+    <style name="TextPlaceholder" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/placeholder</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- End: style placeholder -->
+
 
 </resources>

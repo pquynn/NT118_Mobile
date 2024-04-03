@@ -65,6 +65,11 @@
     </style>
 
     <!--    style button text-->
+    <style name="btn_count" parent="TextAppearance.AppCompat.Button">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
     <!-- style text_16sp -->
     <style name="text_16sp" parent="TextAppearance.MaterialComponents.Body1">

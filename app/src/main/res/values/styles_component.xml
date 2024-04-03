@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <!--button submit-->
+    <!-- sử dụng trong button submit
+         style:@style/ButtonStyle
+    -->
+    <style name="ButtonStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/rounder_component_button</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

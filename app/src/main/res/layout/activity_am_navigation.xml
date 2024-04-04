@@ -7,64 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".UI.am_navigation">
 
-    <!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="29dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:fontFamily="@font/roboto_regular"-->
-<!--        android:text="Tài khoản"-->
-<!--        android:textAlignment="viewStart"-->
-<!--        android:textSize="20sp"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/am_btn_back"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:ignore="MissingConstraints" />-->
-<!--    <FrameLayout-->
-<!--        android:id="@+id/am_btn_back"-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginStart="32dp"-->
-<!--        android:layout_marginTop="28dp"-->
-<!--        android:background="@drawable/circle_background"-->
-<!--        android:padding="8dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/img_lessthan"-->
-<!--            android:layout_width="20dp"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:src="@drawable/less_than" />-->
-
-<!--    </FrameLayout>-->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="35dp"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-        app:layout_constraintStart_toEndOf="@+id/am_lbl_Info"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout"
-        app:srcCompat="@drawable/am_btn_go" />
 
     <include
-        android:id="@+id/include"
-        layout="@layout/top_navigation" />
+        layout="@layout/bottom_navigation"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="65dp"
         android:fontFamily="@font/roboto_bold"
         android:text="Nguyễn Văn A"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
 
@@ -73,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="85dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/allrounded_bg"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,10 +69,10 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/am_btn_per_info"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
 
@@ -166,7 +125,7 @@
 
         android:id="@+id/framelayout2"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="140dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -202,35 +161,13 @@
 
 
     <ImageView
-        android:id="@+id/am_btn_notification"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="@+id/framelayout2"
-        app:layout_constraintTop_toBottomOf="@+id/am_btn_orders"
-        app:srcCompat="@drawable/am_btn_notification" />
-
-    <TextView
-        android:id="@+id/am_lbl_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/roboto_regular"
-        android:text="Thông báo"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/am_btn_notification"
-        app:layout_constraintTop_toBottomOf="@+id/am_lbl_orders" />
-
-    <ImageView
         android:id="@+id/am_btn_faqs"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="@+id/framelayout2"
-        app:layout_constraintTop_toBottomOf="@+id/am_btn_notification"
+        app:layout_constraintTop_toBottomOf="@+id/am_btn_orders"
         app:srcCompat="@drawable/am_btn_faqs" />
 
     <TextView
@@ -243,33 +180,35 @@
         android:text="FAQs"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/am_btn_faqs"
-        app:layout_constraintTop_toBottomOf="@+id/am_lbl_notification" />
+        app:layout_constraintTop_toBottomOf="@+id/am_lbl_orders" />
 
-    <ImageView
-        android:id="@+id/am_btn_log_out"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/am_btn_faqs"
-        app:srcCompat="@drawable/am_btn_log_out"
-        tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/am_lbl_log_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/frame_log_out"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:fontFamily="@font/roboto_regular"
-        android:text="Đăng xuất"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/am_btn_log_out"
-        app:layout_constraintTop_toBottomOf="@+id/am_lbl_faqs" />
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/frame_log_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/framelayout2">
+
+        <TextView
+            android:id="@+id/am_lbl_log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Đăng xuất"
+            android:textSize="20sp" />
+    </FrameLayout>
+
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/am_btn_goto1"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginStart="60dp"
@@ -277,6 +216,61 @@
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
         app:layout_constraintStart_toEndOf="@+id/am_lbl_Info"
         app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        app:srcCompat="@drawable/am_btn_go" />
+
+    <ImageView
+        android:id="@+id/am_btn_goto2"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:layout_constraintStart_toEndOf="@+id/am_lbl_score"
+        app:layout_constraintTop_toBottomOf="@+id/am_btn_goto1"
+        app:srcCompat="@drawable/am_btn_go" />
+
+    <ImageView
+        android:id="@+id/am_btn_goto3"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="33dp"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:layout_constraintStart_toEndOf="@+id/am_lbl_address"
+        app:layout_constraintTop_toBottomOf="@+id/am_btn_goto2"
+        app:srcCompat="@drawable/am_btn_go" />
+
+    <ImageView
+        android:id="@+id/am_btn_goto4"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/framelayout2"
+        app:layout_constraintStart_toEndOf="@+id/am_lbl_orders"
+        app:layout_constraintTop_toTopOf="@+id/framelayout2"
+        app:srcCompat="@drawable/am_btn_go" />
+
+    <ImageView
+        android:id="@+id/am_btn_goto5"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/framelayout2"
+        app:layout_constraintStart_toEndOf="@+id/am_lbl_orders"
+        app:layout_constraintTop_toTopOf="@+id/framelayout2"
+        app:srcCompat="@drawable/am_btn_go" />
+
+    <ImageView
+        android:id="@+id/am_btn_goto6"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="43dp"
+        app:layout_constraintEnd_toEndOf="@+id/framelayout2"
+        app:layout_constraintStart_toEndOf="@+id/am_lbl_faqs"
+        app:layout_constraintTop_toBottomOf="@+id/am_btn_goto4"
         app:srcCompat="@drawable/am_btn_go" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

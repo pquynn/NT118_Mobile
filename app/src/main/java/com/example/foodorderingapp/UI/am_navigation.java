@@ -18,8 +18,5 @@ public class am_navigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_navigation);
 
-        TextView headerName = findViewById(R.id.screen_name);
-        headerName.setText("Tài khoản");
-
     }
 }

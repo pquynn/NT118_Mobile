@@ -2,22 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AccountAddressActivity">
-        <State />
-      </entry>
-      <entry key="BuySuccessActivity">
-        <State />
-      </entry>
-      <entry key="CheckoutAddressActivity">
-        <State />
-      </entry>
-      <entry key="CouponActivity">
-        <State />
-      </entry>
-      <entry key="PaymentMethodActivity">
-        <State />
-      </entry>
-      <entry key="app">
+      <entry key="am_navigation">
         <State />
       </entry>
     </value>

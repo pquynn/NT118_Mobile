@@ -54,6 +54,10 @@
             android:name=".activity.customer_module.AccountAddressActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activity.customer_module.AddAddressActivity"
+            android:exported="true">
+        </activity>
         <!--   START: ACCOUNT-->
     </application>
 

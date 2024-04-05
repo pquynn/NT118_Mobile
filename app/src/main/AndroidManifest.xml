@@ -45,6 +45,11 @@
             android:name=".customer_module.checkout.checkout_payment"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".customer_module.home.home"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

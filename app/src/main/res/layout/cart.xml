@@ -9,7 +9,6 @@
         layout="@layout/bottom_navigation"/>
 
     <include
-        layout="@layout/top_navigation"
-        app:screen_name="aaa"/>
+        layout="@layout/header_with_btnback"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

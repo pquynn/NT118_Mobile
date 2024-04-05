@@ -10,4 +10,13 @@
     <color name="dark_background">#1D4D4F</color>
     <color name="lightgray">#A5A7B9</color>
     <color name="placeholder">#6B6E82</color>
+    <color name="regular_text">#32343E</color>
+    <color name="dark_text">#181C2E</color>
+    <color name="label">#32343E</color>
+    <color name="text">#A0A5BA</color>
+    <color name="box">#F0F5FA</color> 
+    <color name="text1">#676767</color>
+    <color name="search">#F6F6F6</color>
+    <color name="light_text">#32343E</color>
+
 </resources>

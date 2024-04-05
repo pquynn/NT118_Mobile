@@ -2,10 +2,13 @@ package com.example.foodorderingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -18,16 +21,18 @@ import androidx.core.view.WindowInsetsCompat;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class activity_login extends AppCompatActivity {
+public class activity_signup extends AppCompatActivity {
 
-    private EditText inputPhone, inputPassword;
-    private Button btnLogin, btnForgetPass, btnSignUp;
-    private ImageButton imgBtnVisibility;
+    EditText inputName, inputPhone, inputPassword, inputConfirmPassword;
+    Button btnSignUp;
+    ImageButton btnViewPassword, btnViewConfirmPassword;
+    FrameLayout btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -35,14 +40,15 @@ public class activity_login extends AppCompatActivity {
         });
         init();
     }
-
     private void init(){
+        inputName = findViewById(R.id.editTextName); // Tên người dùng
         inputPhone = findViewById(R.id.editTextPhone); // Số điện thoại
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
-        btnLogin = findViewById(R.id.btnLogin); // Nút đăng nhập
-        btnForgetPass = findViewById(R.id.btnForgetPassword); // Nút quên mật khẩu
+        inputConfirmPassword = findViewById(R.id.editTextConfirmPassword); // Xác nhận mật khẩu
+        btnBack = findViewById(R.id.btn_back); // Nút quay lại
         btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
-        imgBtnVisibility = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
+        btnViewPassword = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
+        btnViewConfirmPassword = findViewById(R.id.imgBtnVisibilityConfirm); // Nút xem xác nhận mật khẩu
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
         inputPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -62,48 +68,44 @@ public class activity_login extends AppCompatActivity {
             }
         });
 
-        // Xử lý nút đăng nhập
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        // Xử lý khi ấn nút quay lại
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // Xử lý tài khoản mới
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = inputName.getText().toString().trim();
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                String confirmPassword = inputConfirmPassword.getText().toString().trim();
 
-                if (!phone.isEmpty() && !password.isEmpty()) {
+                if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
                     // Xử lý khi người dùng đã nhập tất cả các thông tin
                     if (phone.length()!=10) {
                         // Thông báp khi nhập thiếu số điện thoại
-                        Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra thông tin số điện thoại!", Toast.LENGTH_SHORT).show();
+                    } else if (!password.equals(confirmPassword)) {
+                        // Thông báo khi xác nhận mật khẩu sai
+                        inputConfirmPassword.setText("");
+                        Toast.makeText(getApplicationContext(), "Vui lòng xác nhận lại mật khẩu!", Toast.LENGTH_SHORT).show();
                     } else {
                         // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
 
-                        // Xử lý đăng nhập
-                        Toast.makeText(getApplicationContext(), "Đang xử lý đăng nhập!", Toast.LENGTH_SHORT).show();
+                        // Xử lý đăng ký
+                        Toast.makeText(getApplicationContext(), "Đang xử lý đăng ký!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Hiển thị thông báo khi có một hoặc cả hai EditText bị bỏ trống
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ số điện thoại và mật khẩu!", Toast.LENGTH_SHORT).show();
+                    // Hiển thị thông báo khi có thiếu thông tin
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin và mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        // Xử lý nút quên mật khẩu
-        btnForgetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        // Xử lý nút tạo tài khoản mới
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Xử lý khi nút được nhấn
-                Intent intent = new Intent(activity_login.this, activity_signup.class);
-                startActivity(intent);
             }
         });
 
@@ -111,7 +113,7 @@ public class activity_login extends AppCompatActivity {
         final boolean[] passwordVisible = {false};
 
         // Xử lý nút xem mật khẩu
-        imgBtnVisibility.setOnClickListener(new View.OnClickListener() {
+        btnViewPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Thay đổi kiểu hiển thị của EditText
@@ -121,18 +123,46 @@ public class activity_login extends AppCompatActivity {
                             InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     passwordVisible[0] = false;
                     // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
-                    imgBtnVisibility.setImageResource(R.drawable.visibility);
+                    btnViewPassword.setImageResource(R.drawable.visibility);
                     // Di chuyển con trỏ về cuối chuỗi
                     inputPassword.setSelection(inputPassword.getText().length());
-
                 } else {
                     // Nếu mật khẩu đang ẩn, hiển thị nó
                     inputPassword.setInputType(InputType.TYPE_CLASS_TEXT);
                     passwordVisible[0] = true;
                     // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
-                    imgBtnVisibility.setImageResource(R.drawable.visibility_off);
+                    btnViewPassword.setImageResource(R.drawable.visibility_off);
                     // Di chuyển con trỏ về cuối chuỗi
                     inputPassword.setSelection(inputPassword.getText().length());
+                }
+            }
+        });
+
+        // Biến kiểm tra trạng thái xem mật khẩu
+        final boolean[] confirmPasswordVisible = {false};
+
+        // Xử lý nút xem mật khẩu
+        btnViewConfirmPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Thay đổi kiểu hiển thị của EditText
+                if (confirmPasswordVisible[0]) {
+                    // Nếu mật khẩu đang hiển thị, ẩn nó
+                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    confirmPasswordVisible[0] = false;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
+                    btnViewConfirmPassword.setImageResource(R.drawable.visibility);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    inputConfirmPassword.setSelection(inputConfirmPassword.getText().length());
+                } else {
+                    // Nếu mật khẩu đang ẩn, hiển thị nó
+                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                    confirmPasswordVisible[0] = true;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
+                    btnViewConfirmPassword.setImageResource(R.drawable.visibility_off);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    inputConfirmPassword.setSelection(inputConfirmPassword.getText().length());
                 }
             }
         });

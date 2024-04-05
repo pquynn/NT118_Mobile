@@ -1,4 +1,4 @@
-package com.example.foodorderingapp;
+package com.example.foodorderingapp.activity.customer_module.AccountManagement;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,13 +9,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class am_change_userinfo extends AppCompatActivity {
+import com.example.foodorderingapp.R;
+
+public class am_navigation extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_am_change_userinfo);
-        TextView headerName = findViewById(R.id.screen_name);
-        headerName.setText("Chỉnh sửa thông tin");
+        setContentView(R.layout.activity_am_navigation);
+
     }
 }

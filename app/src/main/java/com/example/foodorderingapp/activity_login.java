@@ -69,22 +69,19 @@ public class activity_login extends AppCompatActivity {
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
-                if (!phone.isEmpty() && !password.isEmpty()) {
-                    // Xử lý khi người dùng đã nhập tất cả các thông tin
-                    if (phone.length()!=10) {
-                        // Thông báp khi nhập thiếu số điện thoại
-                        Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
-                    } else {
+                if (phone.length()!=10 || !phone.startsWith("0")) {
+                    // Thông báp khi nhập thiếu số điện thoại
+                    Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
+                } else if (!password.isEmpty()) {
+                    // Thông báp khi chưa nhập mật khẩu
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
+                } else {
                         // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
 
                         // Xử lý đăng nhập
                         Toast.makeText(getApplicationContext(), "Đang xử lý đăng nhập!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Hiển thị thông báo khi có một hoặc cả hai EditText bị bỏ trống
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ số điện thoại và mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -93,7 +90,9 @@ public class activity_login extends AppCompatActivity {
         btnForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Xử lý khi nút được nhấn
+                Intent intent = new Intent(activity_login.this, activity_forgetpassword.class);
+                startActivity(intent);
             }
         });
 
@@ -137,6 +136,7 @@ public class activity_login extends AppCompatActivity {
             }
         });
     }
+
 
     // Hàm để mã hóa chuỗi thành MD5
     private String md5(String input) {

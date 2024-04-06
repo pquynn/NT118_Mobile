@@ -13,6 +13,18 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity_userphone"
+            android:exported="false" />
+        <activity
+            android:name=".activity_verifyOTP"
+            android:exported="true" />
+        <activity
+            android:name=".activity_setpassword"
+            android:exported="true" />
+        <activity
+            android:name=".activity_forgetpassword"
+            android:exported="true" />
+        <activity
             android:name=".activity_signup"
             android:exported="true" />
         <activity
@@ -29,26 +41,26 @@
         </activity> <!-- START: CART - CHECKOUT - PAYMENT -->
         <activity
             android:name=".activity.customer_module.cart.CartActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.BuySuccessActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CheckoutActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CheckoutAddressActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CouponActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.PaymentMethodActivity"
-            android:exported="true"></activity> <!-- END: CART - CHECKOUT - PAYMENT -->
+            android:exported="true" /> <!-- END: CART - CHECKOUT - PAYMENT -->
         <!-- START: ACCOUNT -->
         <activity
             android:name=".activity.customer_module.AccountAddressActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D4D4F"
-    tools:context=".activity_login">
+    tools:context=".Login_SignUp_SetPassword.activity_login">
 
     <TextView
         android:id="@+id/txtActivityLogin"

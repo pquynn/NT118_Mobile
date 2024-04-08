@@ -5,6 +5,9 @@
       <entry key="activity_adminOrder">
         <State />
       </entry>
+      <entry key="am_my_orders">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D4D4F"
-    tools:context=".activity_verifyOTP">
+    tools:context=".Login_SignUp_SetPassword.activity_verifyOTP">
 
     <FrameLayout
         android:id="@+id/btn_back"

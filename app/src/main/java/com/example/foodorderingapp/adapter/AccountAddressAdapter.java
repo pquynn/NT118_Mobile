@@ -11,14 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.AddressDomain;
+import com.example.foodorderingapp.domain.Address;
 
 import java.util.ArrayList;
 
 public class AccountAddressAdapter extends RecyclerView.Adapter<AccountAddressAdapter.ViewHolder> {
-    ArrayList<AddressDomain> addresslist;
+    ArrayList<Address> addresslist;
 
-    public AccountAddressAdapter(ArrayList<AddressDomain> addresslist){
+    public AccountAddressAdapter(ArrayList<Address> addresslist){
         this.addresslist = addresslist;
     }
 

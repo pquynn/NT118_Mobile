@@ -3,7 +3,6 @@ package com.example.foodorderingapp.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,14 +10,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.CouponDomain;
+import com.example.foodorderingapp.domain.Coupon;
 
 import java.util.ArrayList;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder> {
-    ArrayList<CouponDomain> couponlist;
+    ArrayList<Coupon> couponlist;
 
-    public CouponAdapter(ArrayList<CouponDomain> couponlist){
+    public CouponAdapter(ArrayList<Coupon> couponlist){
         this.couponlist = couponlist;
     }
 

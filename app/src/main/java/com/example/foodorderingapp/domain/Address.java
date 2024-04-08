@@ -1,12 +1,12 @@
 package com.example.foodorderingapp.domain;
 
-public class AddressDomain {
+public class Address {
     private String recipientName;
     private String phone;
     private String address;
 //    add database attributes later
 
-    public AddressDomain(String address, String recipientName, String phone){
+    public Address(String address, String recipientName, String phone){
 
         this.address = address;
         this.recipientName = recipientName;

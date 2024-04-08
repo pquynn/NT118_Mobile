@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.CheckoutAddressAdapter;
-import com.example.foodorderingapp.domain.AddressDomain;
+import com.example.foodorderingapp.domain.Address;
 
 import java.util.ArrayList;
 
@@ -32,10 +32,10 @@ public class CheckoutAddressActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewCoupon);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        ArrayList<AddressDomain> addresses = new ArrayList<AddressDomain>();
-        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
-        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
-        addresses.add(new AddressDomain("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
+        ArrayList<Address> addresses = new ArrayList<Address>();
+        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
+        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
+        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
 
         adapter = new CheckoutAddressAdapter(addresses);
         recyclerViewList.setAdapter(adapter);

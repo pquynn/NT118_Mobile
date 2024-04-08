@@ -2,13 +2,21 @@ package com.example.foodorderingapp.activity.customer_module.AccountManagement.M
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.adapter.OrderItemAdapter;
+import com.example.foodorderingapp.domain.OrderItemDomain;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +33,9 @@ public class MyOrderDelivering extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView recyclerViewList;
+    private OrderItemAdapter Adapter;
+    private ArrayList<OrderItemDomain> listOrderItem;
 
     public MyOrderDelivering() {
         // Required empty public constructor
@@ -62,5 +73,29 @@ public class MyOrderDelivering extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_order_delivering, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        dataInitialize();
+        recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
+        recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewList.setHasFixedSize(true);
+
+        Adapter = new OrderItemAdapter(listOrderItem);
+        recyclerViewList.setAdapter(Adapter);
+
+    }
+
+    private void dataInitialize() {
+        listOrderItem = new ArrayList<>();
+        listOrderItem.add(new OrderItemDomain("#order001", 200000, 5));
+        listOrderItem.add(new OrderItemDomain("#order002", 300000, 6));
+        listOrderItem.add(new OrderItemDomain("#order003", 400000, 7));
+        listOrderItem.add(new OrderItemDomain("#order004", 500000, 8));
+        listOrderItem.add(new OrderItemDomain("#order005", 600000, 9));
+        listOrderItem.add(new OrderItemDomain("#order006", 700000, 10));
     }
 }

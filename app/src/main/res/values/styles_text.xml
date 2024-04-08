@@ -36,6 +36,14 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <!--  style bold_text_20sp.  -->
+    <style name="bold_text_20sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
     <!--  style regular text_14sp.  -->
     <style name="text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>

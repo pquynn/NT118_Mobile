@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/txt_product_name"
         style="@style/text_20sp"
-        android:layout_width="194dp"
+        android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"

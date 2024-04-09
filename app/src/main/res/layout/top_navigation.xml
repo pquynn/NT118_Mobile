@@ -34,17 +34,17 @@
             <!--    end: back button-->
 
             <!--    start: top navigation heading-->
-            <TextView
-                android:id="@+id/screen_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="Giỏ hàng"
-                style="@style/LightHeading2"
+    <TextView
+        android:id="@+id/screen_name"
+        style="@style/top_nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Giỏ hàng"
 
-                app:layout_constraintBottom_toBottomOf="@+id/btn_back"
-                app:layout_constraintStart_toEndOf="@+id/btn_back"
-                app:layout_constraintTop_toTopOf="@+id/btn_back" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
             <!--    end: top navigation heading-->
     <!--    end: top navigation-->
 </androidx.constraintlayout.widget.ConstraintLayout>

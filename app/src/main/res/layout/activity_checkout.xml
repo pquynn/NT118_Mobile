@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_checkout"
-    tools:context=".customer_module.checkout.checkout">
+    tools:context=".activity.customer_module.checkout.CheckoutActivity">
 
     <!--    Header-->
     <include layout="@layout/header_with_btnback"></include>

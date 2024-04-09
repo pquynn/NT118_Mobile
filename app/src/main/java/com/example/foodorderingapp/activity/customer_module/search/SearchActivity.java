@@ -1,10 +1,13 @@
 package com.example.foodorderingapp.activity.customer_module.search;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
 
         searchView = findViewById(R.id.searchView_product);
         searchView.clearFocus();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -48,6 +52,9 @@ public class SearchActivity extends AppCompatActivity {
         nlist = getListProduct();
         searchAdapter = new SearchAdapter(nlist);
         rcv_productSearch.setAdapter(searchAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        rcv_productSearch.addItemDecoration(itemDecoration);
 
     }
 

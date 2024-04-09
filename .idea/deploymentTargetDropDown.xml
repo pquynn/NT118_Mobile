@@ -8,13 +8,13 @@
       <entry key="CheckoutActivity">
         <State />
       </entry>
-      <entry key="CheckoutAddressActivity">
-        <State />
-      </entry>
       <entry key="NotificationActivity">
         <State />
       </entry>
       <entry key="NotificationActivity (1)">
+        <State />
+      </entry>
+      <entry key="RefundRequestActivity">
         <State />
       </entry>
       <entry key="app">

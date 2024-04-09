@@ -66,6 +66,11 @@
             android:name=".activity.customer_module.refund.AddRefundProductActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".activity.customer_module.refund.RefundRequestActivity"
+            android:exported="true">
+        </activity>
         <!--    END: REFUND   -->
 
         <!--   START: ACCOUNT-->

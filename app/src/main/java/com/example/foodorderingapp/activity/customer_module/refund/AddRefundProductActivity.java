@@ -30,10 +30,10 @@ public class AddRefundProductActivity extends AppCompatActivity {
         screenName.setText("Chọn sản phẩm hoàn tiền");
 
         // set recyler list
-        recyclerViewCoupon();
+        recyclerViewRefundProd();
     }
 
-    private void recyclerViewCoupon() {
+    private void recyclerViewRefundProd() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewList = findViewById(R.id.recyclerViewRefundProd);
         recyclerViewList.setLayoutManager(linearLayoutManager);

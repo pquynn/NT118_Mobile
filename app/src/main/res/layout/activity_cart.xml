@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -93,7 +93,7 @@
 
     <!--    start: bottom navigation-->
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="vertical"

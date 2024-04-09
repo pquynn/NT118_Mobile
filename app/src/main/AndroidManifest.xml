@@ -49,6 +49,13 @@
         </activity>
         <!--   END: CART - CHECKOUT - PAYMENT-->
 
+        <!--    START: NOTIFICATION    -->
+        <activity
+            android:name=".activity.customer_module.notification.NotificationActivity"
+            android:exported="true">
+        </activity>
+        <!--    END: NOTIFICATION    -->
+
         <!--   START: ACCOUNT-->
         <activity
             android:name=".activity.customer_module.AccountAddressActivity"

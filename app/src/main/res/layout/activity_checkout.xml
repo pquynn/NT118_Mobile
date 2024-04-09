@@ -179,9 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
-                    android:paddingBottom="5dp"
-                    android:weightSum="6">
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:id="@+id/icon2"
@@ -209,14 +207,16 @@
 <!--                        android:layout_weight="1"-->
 <!--                        app:srcCompat="@drawable/circle" />-->
 
-                    <RadioButton
-                        android:checked="false"
-                        android:id="@+id/radioButton"
+                    <Switch
+                        android:id="@+id/btn_choose_point"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:buttonTint="@color/lightgray" />
+                        android:checked="false"
+                        android:scaleType="centerInside" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -224,9 +224,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
-                    android:paddingBottom="5dp"
-                    android:weightSum="6">
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:id="@+id/icon3"

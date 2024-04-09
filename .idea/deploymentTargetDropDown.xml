@@ -2,10 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AccountAddressActivity">
+      <entry key="AddRefundProductActivity">
         <State />
       </entry>
-      <entry key="CheckoutActivity (1)">
+      <entry key="CheckoutActivity">
         <State />
       </entry>
       <entry key="CheckoutAddressActivity">

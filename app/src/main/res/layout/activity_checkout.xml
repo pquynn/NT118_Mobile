@@ -43,31 +43,34 @@
                     app:layout_constraintTop_toTopOf="parent"></TextView>
 
                 <TextView
+                    style="@style/regular_text_16sp"
                     android:id="@+id/txt_recipient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:text="Nguyễn Văn A"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/order_info_heading" />
 
                 <TextView
+                    style="@style/regular_text_16sp"
                     android:id="@+id/txt_recipient_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:text="0123456789"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
 
                 <TextView
+                    style="@style/regular_text_16sp"
                     android:id="@+id/txt_full_address"
                     android:layout_width="wrap_content"
                     android:layout_height="19dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:text="189 đường, phường Linh Trung, Thủ Đức"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="15dp"
                     android:text="Sản phẩm"></TextView>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -115,7 +118,7 @@
                 android:id="@+id/payment_coupon_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -123,9 +126,8 @@
                     style="@style/Heading2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
                     android:text="Phương thức thanh toán"></TextView>
 
                 <LinearLayout
@@ -186,6 +188,7 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="1"
+                        android:layout_gravity="center"
                         app:srcCompat="@drawable/award" />
 
                     <TextView
@@ -198,13 +201,22 @@
                         android:paddingLeft="15dp"
                         android:text="100 điểm" />
 
-                    <ImageView
-                        android:id="@+id/btn_see_detail2"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
+<!--                    <ImageView-->
+<!--                        android:id="@+id/btn_see_detail2"-->
+<!--                        android:layout_width="17dp"-->
+<!--                        android:layout_height="17dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_weight="1"-->
+<!--                        app:srcCompat="@drawable/circle" />-->
+
+                    <RadioButton
+                        android:checked="false"
+                        android:id="@+id/radioButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/circle" />
+                        android:buttonTint="@color/lightgray" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -250,13 +262,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
+                android:paddingHorizontal="32dp"
                 android:paddingTop="20dp">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
-                    android:background="@drawable/solid_line" />
+                    android:background="@drawable/solid_line"
+                    android:layout_marginVertical="10dp"/>
 
                 <!--    start:  first row-->
                 <LinearLayout
@@ -267,7 +280,7 @@
 
                     <TextView
                         android:id="@+id/total"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -275,7 +288,7 @@
 
                     <TextView
                         android:id="@+id/total_quantity"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -283,7 +296,7 @@
 
                     <TextView
                         android:id="@+id/total_price"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -301,7 +314,7 @@
 
                     <TextView
                         android:id="@+id/choosen_point"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -309,7 +322,7 @@
 
                     <TextView
                         android:id="@+id/txt_point_to_price"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -327,7 +340,7 @@
 
                     <TextView
                         android:id="@+id/choosen_coupon"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -335,7 +348,7 @@
 
                     <TextView
                         android:id="@+id/txt_coupon_to_price"
-                        style="@style/text_20sp"
+                        style="@style/regular_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -353,7 +366,7 @@
 
                     <TextView
                         android:id="@+id/final_price"
-                        style="@style/bold_text_20sp"
+                        style="@style/bold_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -361,7 +374,7 @@
 
                     <TextView
                         android:id="@+id/txt_final_price"
-                        style="@style/bold_text_20sp"
+                        style="@style/bold_text_18sp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -381,8 +394,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginVertical="25dp"
                 android:text="Mua hàng">
 
             </Button>

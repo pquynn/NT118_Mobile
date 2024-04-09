@@ -43,7 +43,8 @@
 
     <TextView
         android:id="@+id/txt_product_size"
-        style="@style/TextPlaceholder"
+        style="@style/regular_text_16sp"
+        android:textColor="@color/placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

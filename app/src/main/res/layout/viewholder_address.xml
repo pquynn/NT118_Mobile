@@ -47,7 +47,7 @@
         use the last 3 rows to wrap text. Modified by Quyen, 3/4/2024-->
     <TextView
         android:id="@+id/txt_description"
-        style="@style/light_text_14sp"
+        style="@style/text_14sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -87,7 +87,7 @@
     <TextView
         android:id="@+id/txt_coupon_name"
 
-        style="@style/bold_text_14sp"
+        style="@style/bold_text_16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -98,7 +98,7 @@
 
     <TextView
         android:id="@+id/txt_valid_date"
-        style="@style/bold_text_14sp"
+        style="@style/bold_text_16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

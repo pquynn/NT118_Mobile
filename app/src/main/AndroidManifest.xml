@@ -54,6 +54,11 @@
             android:name=".activity.customer_module.notification.NotificationActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".activity.admin_module.notification.NotificationActivity"
+            android:exported="true">
+        </activity>
         <!--    END: NOTIFICATION    -->
 
         <!--   START: ACCOUNT-->

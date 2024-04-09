@@ -16,8 +16,7 @@ import com.example.foodorderingapp.domain.Address;
 import java.util.ArrayList;
 
 public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddressAdapter.ViewHolder> {
-    ArrayList<Address> addresslist;
-
+    private ArrayList<Address> addresslist;
     public CheckoutAddressAdapter(ArrayList<Address> addresslist){
         this.addresslist = addresslist;
     }
@@ -34,12 +33,9 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         holder.recipientName.setText(addresslist.get(position).getRecipientName());
         holder.phone.setText(addresslist.get(position).getPhone());
 
-////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER IF SCREEN NAME = ...
-        //if(holder.btn_add.getText().toString().equals("Áp dụng")){
+////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
             holder.btn_delete.setVisibility(View.GONE);
             holder.btn_edit.setVisibility(View.GONE);
-        //}
-
     }
 
     @Override
@@ -53,7 +49,6 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         TextView phone;
         ImageView btn_edit;
         ImageView btn_delete;
-        ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             address = itemView.findViewById(R.id.txt_description);

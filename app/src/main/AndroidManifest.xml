@@ -55,6 +55,13 @@
             android:exported="true">
         </activity>
         <!--   START: ACCOUNT-->
+
+        <!--   START: SEARCH-->
+        <activity
+            android:name=".activity.customer_module.search.SearchActivity"
+            android:exported="true">
+        </activity>
+        <!--   START: SEARCH-->
     </application>
 
 </manifest>

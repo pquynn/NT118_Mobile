@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.activity.customer_module.refund;
+package com.example.foodorderingapp.activity.admin_module.refund;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.CouponAdapter;
 import com.example.foodorderingapp.adapter.RefundProductAdapter;
+import com.example.foodorderingapp.adapter.RefundProgressAdapter;
 import com.example.foodorderingapp.adapter.RefundRequestAdapter;
 import com.example.foodorderingapp.domain.Coupon;
 import com.example.foodorderingapp.domain.OrderDetail;
@@ -27,12 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RefundRequestActivity extends AppCompatActivity {
+public class RefundProgressActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_refund_request);
+        setContentView(R.layout.activity_refund_progress);
 
         // set top navigation text
         TextView screenName = findViewById(R.id.screen_name);
@@ -40,13 +41,11 @@ public class RefundRequestActivity extends AppCompatActivity {
 
         // set recyler list
         recyclerViewRefundRequest();
-
-
     }
 
     private void recyclerViewRefundRequest() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerViewRefundRequest);
+        recyclerViewList = findViewById(R.id.recyclerViewRefundProgress);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
@@ -54,7 +53,7 @@ public class RefundRequestActivity extends AppCompatActivity {
         productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "50% đường", 3));
         productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "50% đường", 3));
 
-        adapter = new RefundRequestAdapter(productList);
+        adapter = new RefundProgressAdapter(productList);
         recyclerViewList.setAdapter(adapter);
     }
 

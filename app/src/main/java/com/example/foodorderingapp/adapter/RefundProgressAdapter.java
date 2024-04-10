@@ -22,17 +22,16 @@ import com.example.foodorderingapp.domain.OrderDetail;
 
 import java.util.ArrayList;
 
-public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdapter.ViewHolder> {
+public class RefundProgressAdapter extends RecyclerView.Adapter<RefundProgressAdapter.ViewHolder> {
     private ArrayList<OrderDetail> productList;
-    private View.OnClickListener onClickListener;
 
-    public RefundRequestAdapter(ArrayList<OrderDetail> productList){
+    public RefundProgressAdapter(ArrayList<OrderDetail> productList){
         this.productList = productList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_refund_request, parent, false);
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_refund_progress, parent, false);
         return new ViewHolder(inflate);
     }
 
@@ -43,28 +42,9 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
 //        holder.quantity.setText(productList.get(position).getQuantity());
-
-        holder.btnSelectReason.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog(view.getContext());
-            }
-        });
     }
 
-//    function to show bottom dialog when button is clicked
-    public void showDialog(Context context) {
-        Dialog dialog = new Dialog(context); // Corrected line
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottomsheet_refund_reason);
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-
+    //    function to show bottom dialog when button is clicked
 
     @Override
     public int getItemCount() {
@@ -77,7 +57,6 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         TextView productSize;
         TextView note;
         TextView quantity;
-        ImageView btnSelectReason;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.txt_product_name);
@@ -85,7 +64,6 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
             productSize = itemView.findViewById(R.id.txt_product_size);
             note = itemView.findViewById(R.id.txt_note);
             quantity = itemView.findViewById(R.id.quantity);
-            btnSelectReason = itemView.findViewById(R.id.btn_select_reason);
         }
     }
 }

@@ -13,8 +13,8 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity_adminOrderDetail"
-            android:exported="false" />
+            android:name=".Admin.activity_adminOrderDetail"
+            android:exported="true" />
         <activity
             android:name=".Admin.activity_adminOrder"
             android:exported="true" />

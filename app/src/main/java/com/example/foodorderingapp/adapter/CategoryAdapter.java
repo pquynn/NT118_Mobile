@@ -20,6 +20,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private List<CategoryDomain> mCategory;
+    private Context context;
+
+    public CategoryAdapter(Context context, List<CategoryDomain> list){
+        this.context = context;
+        this.mCategory = list;
+    }
 
     public void setData(List<CategoryDomain> list){
         this.mCategory = list;
@@ -40,9 +46,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         holder.imgCategory.setImageResource(categoryDomain.getResourceid());
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-//        holder.rcvCategory.setLayoutManager(linearLayoutManager);
-
+//        holder.imgCategory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @Override

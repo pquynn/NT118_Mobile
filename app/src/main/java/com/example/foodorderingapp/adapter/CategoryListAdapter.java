@@ -21,10 +21,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private Context mContext;
     private List<CategoryListDomain> mlistCategory;
 
-    public CategoryListAdapter(Context context){
+    public CategoryListAdapter(Context context, List<CategoryListDomain> list){
         this.mContext = context;
+        this.mlistCategory = list;
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     public void setData(List<CategoryListDomain> list){
         this.mlistCategory = list;
         notifyDataSetChanged();

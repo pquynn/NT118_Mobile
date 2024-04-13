@@ -1,26 +1,34 @@
 package com.example.foodorderingapp.activity.customer_module.category;
 
+import static androidx.core.app.NotificationCompat.getCategory;
+
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.adapter.CategoryAdapter;
 import com.example.foodorderingapp.adapter.CategoryListAdapter;
+import com.example.foodorderingapp.domain.CategoryDomain;
 import com.example.foodorderingapp.domain.CategoryListDomain;
 import com.example.foodorderingapp.domain.ProductSearchDomain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.PrimitiveIterator;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    private RecyclerView rcvCategory;
+    private RecyclerView rcvCategory, rcvListCategory;
     private TextView screenName;
     private CategoryListAdapter categoryListAdapter;
+    private CategoryAdapter categoryAdapter;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -30,10 +38,23 @@ public class CategoryActivity extends AppCompatActivity {
         screenName.setText("Danh mục");
 
         rcvCategory = findViewById(R.id.rcv_category);
-        categoryListAdapter = new CategoryListAdapter(this);
+        rcvCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        categoryAdapter = new CategoryAdapter(this, getCategory());
+        rcvCategory.setAdapter(categoryAdapter);
 
-        categoryListAdapter.setData(getListCategory());
-        rcvCategory.setAdapter(categoryListAdapter);
+        rcvListCategory = findViewById(R.id.rcv_categoryList);
+        rcvListCategory.setLayoutManager(new LinearLayoutManager(this));
+        categoryListAdapter = new CategoryListAdapter(this, getListCategory());
+        rcvListCategory.setAdapter(categoryListAdapter);
+    }
+
+    private List<CategoryDomain> getCategory() {
+        List<CategoryDomain> list = new ArrayList<>();
+        list.add(new CategoryDomain(R.drawable.img_cafe));
+        list.add(new CategoryDomain(R.drawable.img_milktea));
+        list.add(new CategoryDomain(R.drawable.img_tea));
+        list.add(new CategoryDomain(R.drawable.img_cake));
+        return list;
     }
 
     private List<CategoryListDomain> getListCategory() {

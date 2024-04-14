@@ -43,6 +43,13 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!--  style regular text_16sp.  -->
+    <style name="text_16sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <!--  style light text_14sp.  -->
     <style name="light_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>
@@ -137,4 +144,11 @@
     </style>
     <!--  End: style text product search -->
 
+    <!--  Start: style text product detail -->
+    <style name="text_text_14sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!--  End: style text product detail-->
 </resources>

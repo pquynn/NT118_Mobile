@@ -76,6 +76,13 @@
         </activity>
         <!--   END: CATEGORY-->
 
+        <!--   START: PRODUCT DETAIL-->
+        <activity
+            android:name=".activity.customer_module.productdetailcake.ProductDetailActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: PRODUCT DETAIL-->
+
     </application>
 
 </manifest>

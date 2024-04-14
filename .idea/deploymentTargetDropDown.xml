@@ -5,24 +5,11 @@
       <entry key="am_feedback_list">
         <State />
       </entry>
-      <entry key="am_my_orders">
+      <entry key="am_feedback_product">
         <State />
       </entry>
-      <entry key="am_navigation">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\ANH\.android\avd\Pixel_8_Pro_API_30.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-07T06:31:33.614112500Z" />
-        </State>
+      <entry key="am_my_orders">
+        <State />
       </entry>
       <entry key="am_order_detail">
         <State />

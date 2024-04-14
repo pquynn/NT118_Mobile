@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FoodOrderingApp</string>
     <string name="btn_apply">Áp dụng</string>
+    <string name="extend">Xem thêm</string>
 </resources>

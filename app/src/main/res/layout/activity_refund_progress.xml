@@ -54,7 +54,7 @@
                     android:text="Từ chối hoàn tiền"
                     android:textAllCaps="false"
                     android:textColor="@color/primary"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     app:cornerRadius="10dp"
                     app:strokeColor="@color/primary"
                     app:strokeWidth="1.5dp" />

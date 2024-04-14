@@ -3,10 +3,12 @@ package com.example.foodorderingapp.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
@@ -16,8 +18,7 @@ import com.example.foodorderingapp.domain.Notification;
 import java.util.ArrayList;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder>{
-    ArrayList<Notification> notiList;
-
+    private ArrayList<Notification> notiList;
     public NotificationAdapter(ArrayList<Notification> notiList){
         this.notiList = notiList;
     }
@@ -44,7 +45,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView notiName;
         TextView content;
         TextView date;
-        ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             notiName = itemView.findViewById(R.id.txt_noti_name);

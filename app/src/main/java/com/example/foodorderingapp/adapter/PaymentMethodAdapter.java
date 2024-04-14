@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,33 +12,34 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.Address;
+import com.example.foodorderingapp.domain.Coupon;
+import com.example.foodorderingapp.domain.PaymentMethod;
 
 import java.util.ArrayList;
 
-public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddressAdapter.ViewHolder> {
-    private ArrayList<Address> addresslist;
+public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder> {
+    ArrayList<PaymentMethod> methodList;
+    Context context;
     private int row_index = 0; // position of selected viewholder
-    public CheckoutAddressAdapter(ArrayList<Address> addresslist){
-        this.addresslist = addresslist;
+    public PaymentMethodAdapter(Context context, ArrayList<PaymentMethod> methodList){
+        this.context = context;
+        this.methodList = methodList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_address, parent, false);
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_payment_method, parent, false);
         return new ViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.address.setText(addresslist.get(position).getAddress());
-        holder.recipientName.setText(addresslist.get(position).getRecipientName());
-        holder.phone.setText(addresslist.get(position).getPhone());
-
-////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
-            holder.btn_delete.setVisibility(View.GONE);
-            holder.btn_edit.setVisibility(View.GONE);
+        holder.methodName.setText(methodList.get(position).getMethodName());
+        Glide.with(context)
+                .load(methodList.get(position).getMethodImg())
+                .into(holder.methodImg);
 
         // Click event for view holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -59,24 +61,18 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
 
     @Override
     public int getItemCount() {
-        return addresslist.size();
+        return methodList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView address;
-        TextView recipientName;
-        TextView phone;
-        ImageView btn_edit;
-        ImageView btn_delete;
+        TextView methodName;
+        ImageView methodImg;
         ConstraintLayout container;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            address = itemView.findViewById(R.id.txt_description);
-            recipientName = itemView.findViewById(R.id.txt_coupon_name);
-            phone = itemView.findViewById(R.id.txt_valid_date);
-            btn_edit = itemView.findViewById(R.id.btn_edit);
-            btn_delete = itemView.findViewById(R.id.btn_delete);
-            container = itemView.findViewById(R.id.viewholder_address);
+            methodName = itemView.findViewById(R.id.txt_payment);
+            methodImg = itemView.findViewById(R.id.img_payment);
+            container = itemView.findViewById(R.id.viewholder_payment_method);
         }
     }
 }

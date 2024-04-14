@@ -46,7 +46,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //chưa xét phân loại sản phẩm
+                //todo: chua xet phan loai san pham
                 showDialog(view.getContext());
             }
         });

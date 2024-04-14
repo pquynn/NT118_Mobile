@@ -12,37 +12,40 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.adapter.FeedbackItemAdapter;
 import com.example.foodorderingapp.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.domain.OrderDetailDomain;
 
 import java.util.ArrayList;
 
-public class am_order_detail extends AppCompatActivity {
+public class am_feedback_list extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_am_order_detail);
-
+        setContentView(R.layout.activity_am_feedback_list);
         TextView headerName = findViewById(R.id.screen_name);
-        headerName.setText("Chi tiết đơn hàng");
+        headerName.setText("Đánh giá đơn hàng");
 
-        recyclerViewOrderDetail();
+        recyclerViewOrderFeedBack();
     }
 
-    private void recyclerViewOrderDetail() {
+    private void recyclerViewOrderFeedBack() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerProductList);
+        recyclerViewList = findViewById(R.id.recyclerFeedbackList);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        ArrayList<OrderDetailDomain> productList = new ArrayList<OrderDetailDomain>();
+        ArrayList<OrderDetailDomain> productList = new ArrayList<>();
+
         productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
         productList.add(new OrderDetailDomain("Bánh", 60000, "Lớn", "a", 2));
         productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "a", 3));
-        adapter = new OrderDetailAdapter(productList);
-        recyclerViewList.setAdapter(adapter);
+        productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+        productList.add(new OrderDetailDomain("Bánh", 60000, "Lớn", "a", 2));
+        productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "a", 3));
 
+        adapter = new FeedbackItemAdapter(productList);
+        recyclerViewList.setAdapter(adapter);
     }
 }

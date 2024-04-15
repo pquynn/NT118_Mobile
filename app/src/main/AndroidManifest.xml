@@ -78,11 +78,17 @@
 
         <!--   START: PRODUCT DETAIL-->
         <activity
-            android:name=".activity.customer_module.productdetailcake.ProductDetailActivity"
+            android:name=".activity.customer_module.productdetail.ProductDetailCakeActivity"
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->
 
+        <!--   START: PRODUCT DETAIL-->
+        <activity
+            android:name=".activity.customer_module.productdetail.ProductDetailDrinkActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: PRODUCT DETAIL-->
     </application>
 
 </manifest>

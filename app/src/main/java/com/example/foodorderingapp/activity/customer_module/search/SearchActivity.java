@@ -57,7 +57,7 @@ public class SearchActivity extends AppCompatActivity {
         rcv_productSearch.addItemDecoration(itemDecoration);
 
     }
-
+//  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
     private void filterList(String newText) {
         List<ProductSearchDomain> filterList = new ArrayList<>();
         for (ProductSearchDomain itempro: nlist){

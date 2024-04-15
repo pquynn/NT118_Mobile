@@ -14,4 +14,9 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <!--    style đánh giá sao-->
+    <style name="CustomRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/customer_dialog_star</item>
+    </style>
 </resources>

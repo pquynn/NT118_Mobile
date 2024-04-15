@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.customer_module.home;
+package com.example.foodorderingapp.activity.customer_module.home;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

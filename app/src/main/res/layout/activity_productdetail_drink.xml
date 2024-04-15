@@ -448,12 +448,5 @@
                 </LinearLayout>
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        <!--        START DIALOG COMMENT  -->
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/commentDialogFragment"
-            android:name="com.example.foodorderingapp.adapter.CommentDialogFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

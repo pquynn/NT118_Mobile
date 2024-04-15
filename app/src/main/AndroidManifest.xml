@@ -50,7 +50,7 @@
 
 
         <activity
-            android:name=".customer_module.home.home"
+            android:name=".activity.customer_module.home.home"
             android:exported="true">
         </activity>
         <!--   END: CART - CHECKOUT - PAYMENT-->

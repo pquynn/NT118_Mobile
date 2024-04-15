@@ -2,11 +2,11 @@ package com.example.foodorderingapp.domain;
 
 import java.util.Date;
 
-public class CouponDomain {
+public class Coupon {
     private String couponName;
     private Date validFrom;
     private String description;
-    public CouponDomain(String couponName, Date validFrom, String description){
+    public Coupon(String couponName, Date validFrom, String description){
         this.couponName = couponName;
         this.validFrom = validFrom;
         this.description = description;

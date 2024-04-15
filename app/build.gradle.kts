@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    //jetpack navigation
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -40,5 +42,16 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // Glidle
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+    //jetpack navigation
+    val nav_version = "2.7.7"
+    
+    // Java language implementation
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
 
 }

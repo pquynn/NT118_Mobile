@@ -22,16 +22,16 @@ public class AdminHome extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_home, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = view.findViewById(R.id.recyclerAdminHomeView);
-        recyclerViewList.setLayoutManager(linearLayoutManager);
-
-        long revenue = 999999;
-        long order = 999;
-        long refund = 999999;
-
-        adapter = new AdminHomeAdapter(revenue, order, refund);
-        recyclerViewList.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        recyclerViewList = view.findViewById(R.id.recyclerAdminHomeView);
+//        recyclerViewList.setLayoutManager(linearLayoutManager);
+//
+//        long revenue = 999999;
+//        long order = 999;
+//        long refund = 999999;
+//
+//        adapter = new AdminHomeAdapter(revenue, order, refund);
+//        recyclerViewList.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
 
         return view;
     }

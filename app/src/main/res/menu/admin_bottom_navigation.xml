@@ -3,22 +3,22 @@
 
     <item
         android:title=""
-        android:id="@+id/fragment_dashboard"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/dashboard"
         />
 
     <item
         android:title=""
-        android:id="@+id/fragment_orders"
+        android:id="@+id/orderFragment"
         android:icon="@drawable/order_admin"/>
 
     <item
         android:title=""
-        android:id="@+id/fragment_notification"
+        android:id="@+id/notificationFragment"
         android:icon="@drawable/bell"/>
 
     <item
         android:title=""
-        android:id="@+id/fragment_account"
+        android:id="@+id/accoutFragment"
         android:icon="@drawable/account"/>
 </menu>

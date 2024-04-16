@@ -1,14 +1,19 @@
 package com.example.foodorderingapp.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.foodorderingapp.Admin.AdminFragment.AdminOrder;
+import com.example.foodorderingapp.Admin.AdminMainActivity;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ViewPagerAdmin.AdminOrderViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -19,9 +24,10 @@ import java.text.DecimalFormat;
 public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.ViewHolder> {
     private long totalRevenue, totalOrder, totalRefund;
 
-    public AdminOrderAdapter() {
+    FragmentActivity fragmentActivity;
+    public AdminOrderAdapter(FragmentActivity fragmentActivity) {
+        this.fragmentActivity = fragmentActivity;
     }
-
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_admin_home, parent, false);
@@ -51,7 +57,7 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
             tabLayout = itemView.findViewById(R.id.tabLayout);
             viewPager = itemView.findViewById(R.id.viewPager);
 
-            viewPagerAdapter = new AdminOrderViewPagerAdapter();
+            viewPagerAdapter = new AdminOrderViewPagerAdapter(fragmentActivity);
             viewPager.setAdapter(viewPagerAdapter);
 
             new TabLayoutMediator(tabLayout, viewPager, (tab, i) -> {

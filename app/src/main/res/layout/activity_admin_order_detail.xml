@@ -79,7 +79,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:text="THÔNG TIN NGƯỜI NHẬN"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -92,7 +93,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="NGUYỄN VĂN A" />
+                        android:text="NGUYỄN VĂN A"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/txtCustomerPhonne"
@@ -100,7 +102,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="09123456789" />
+                        android:text="09123456789"
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -113,7 +116,8 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/rounded_grey_container"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:textSize="16sp">
 
                     <TextView
                         android:id="@+id/txtViewAddress"
@@ -121,7 +125,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:text="ĐỊA CHỈ"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -134,7 +139,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="2464 Royal Ln. Mesa, New Jersey 45463" />
+                        android:text="2464 Royal Ln. Mesa, New Jersey 45463"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/txtViewPayment"
@@ -143,7 +149,8 @@
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/roboto_regular"
                         android:text="THANH TOÁN"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -156,7 +163,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="TIỀN MẶT" />
+                        android:text="TIỀN MẶT"
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -177,7 +185,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:text="MÓN ĂN"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -198,7 +207,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:text="ƯU ĐÃI ĐÃ ÁP DỤNG" />
+                    android:text="ƯU ĐÃI ĐÃ ÁP DỤNG"
+                    android:textSize="16sp"/>
 
                 <LinearLayout
                     android:id="@+id/layout_orderPrice"
@@ -228,7 +238,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="TỔNG CỘNG(4 MÓN)" />
+                                android:text="TỔNG CỘNG(4 MÓN)"
+                                android:textSize="16sp"/>
 
                             <TextView
                                 android:id="@+id/txtTotalProduct"
@@ -237,7 +248,8 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
                                 android:gravity="right"
-                                android:text="999.999 Đ" />
+                                android:text="999.999 Đ"
+                                android:textSize="16sp"/>
 
                         </TableRow>
 
@@ -254,7 +266,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="GIẢM GIÁ" />
+                                android:text="GIẢM GIÁ"
+                                android:textSize="16sp"/>
 
                             <TextView
                                 android:id="@+id/txtCoupon"
@@ -263,7 +276,8 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
                                 android:gravity="right"
-                                android:text="999.999 Đ" />
+                                android:text="999.999 Đ"
+                                android:textSize="16sp"/>
                         </TableRow>
 
                         <TableRow
@@ -279,7 +293,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
-                                android:text="THÀNH TIỀN" />
+                                android:text="THÀNH TIỀN"
+                                android:textSize="16sp"/>
 
                             <TextView
                                 android:id="@+id/txtIntoPrice"
@@ -289,8 +304,8 @@
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="right"
                                 android:text="999.999 Đ"
-                                android:textColor="@color/red"
-                                android:textSize="16sp" />
+                                android:textColor="@color/primary"
+                                android:textSize="20sp" />
                         </TableRow>
 
                     </TableLayout>
@@ -307,7 +322,7 @@
                     android:layout_marginRight="20dp"
                     android:text="Xác nhận đơn hàng"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:visibility="visible" />
 
                 <Button
@@ -321,7 +336,7 @@
                     android:layout_marginRight="20dp"
                     android:text="Giao hàng"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:visibility="gone" />
 
                 <Button
@@ -335,7 +350,7 @@
                     android:layout_marginRight="20dp"
                     android:text="Đã giao"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:visibility="gone" />
 
             </LinearLayout>

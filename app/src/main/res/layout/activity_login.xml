@@ -49,6 +49,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="SỐ ĐIỆN THOẠI"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +89,7 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="MẬT KHẨU"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +139,7 @@
             android:background="@android:color/transparent"
             android:text="Quên mật khẩu"
             android:textColor="#0F9565"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -150,7 +152,7 @@
             android:layout_marginRight="20dp"
             android:text="ĐĂNG NHẬP"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/layout_CreateNewAccount"
@@ -170,7 +172,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="right|center_vertical"
                 android:text="Bạn chưa có tài khoản?"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btnSignUp"
@@ -181,7 +183,7 @@
                 android:text="ĐĂNG KÝ"
                 android:textAlignment="center"
                 android:textColor="#0F9565"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

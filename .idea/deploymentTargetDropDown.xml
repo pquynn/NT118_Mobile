@@ -11,6 +11,9 @@
       <entry key="activity_adminOrderDetail">
         <State />
       </entry>
+      <entry key="activity_signup">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

@@ -59,11 +59,49 @@
             android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.PaymentMethodActivity"
-            android:exported="true" /> <!-- END: CART - CHECKOUT - PAYMENT -->
-        <!-- START: ACCOUNT -->
+            android:exported="true">
+        </activity>
+        <!--   END: CART - CHECKOUT - PAYMENT-->
+
+        <!--    START: NOTIFICATION    -->
+        <activity
+            android:name=".activity.customer_module.notification.NotificationActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activity.admin_module.notification.NotificationActivity"
+            android:exported="true">
+        </activity>
+        <!--    END: NOTIFICATION    -->
+
+        <!--    START: REFUND   -->
+        <activity
+            android:name=".activity.customer_module.refund.AddRefundProductActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activity.customer_module.refund.RefundRequestActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activity.admin_module.refund.RefundProgressActivity"
+            android:exported="true">
+        </activity>
+        <!--    END: REFUND   -->
+
+        <!--   START: ACCOUNT-->
         <activity
             android:name=".activity.customer_module.AccountAddressActivity"
-            android:exported="true" />
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activity.customer_module.AddAddressActivity"
+            android:exported="true">
+        </activity>
+        <!--   START: ACCOUNT-->
     </application>
 
 </manifest>

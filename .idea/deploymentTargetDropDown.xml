@@ -2,16 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="activity_adminHome">
+      <entry key="AccountAddressActivity">
         <State />
       </entry>
-      <entry key="activity_adminOrder">
+      <entry key="AddRefundProductActivity">
         <State />
       </entry>
-      <entry key="activity_adminOrderDetail">
+      <entry key="CheckoutAddressActivity">
         <State />
       </entry>
-      <entry key="activity_signup">
+      <entry key="RefundProgressActivity">
+        <State />
+      </entry>
+      <entry key="RefundRequestActivity">
+        <State />
+      </entry>
+      <entry key="app">
         <State />
       </entry>
     </value>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="70dp">
     <!-- HOW TO REUSE CODE:
             PASTE THIS BELOW CODE IN YOUR ACTIVITY:
             <include layout="@layout/header_with_btnback"/>
@@ -17,7 +17,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/circle_background"
+        android:background="@drawable/circle_grey"
         android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

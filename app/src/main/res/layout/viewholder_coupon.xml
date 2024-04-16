@@ -15,7 +15,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/rec_coupon_container"
+        android:background="@drawable/rectangle_primary"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -266,7 +266,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
-                    android:background="@drawable/solid_line"
+                    android:background="@drawable/straight_solid_line"
                     android:layout_marginVertical="10dp"/>
 
                 <!--    start:  first row-->

@@ -47,7 +47,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder
         // Set foreground based on position of viewholder
         if (row_index == position) {
             //add foreground: solid_line
-            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.solid_line_rounded_border));
+            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_border));
         } else {
             holder.container.setForeground(null);
         }

@@ -51,7 +51,7 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         // Set foreground based on position of viewholder
         if (row_index == position) {
             //add foreground: solid_line
-            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.solid_line_rounded_border));
+            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_border));
         } else {
             holder.container.setForeground(null);
         }
@@ -71,9 +71,9 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         ConstraintLayout container;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            address = itemView.findViewById(R.id.txt_description);
-            recipientName = itemView.findViewById(R.id.txt_coupon_name);
-            phone = itemView.findViewById(R.id.txt_valid_date);
+            address = itemView.findViewById(R.id.txt_full_address);
+            recipientName = itemView.findViewById(R.id.txt_recipient_name);
+            phone = itemView.findViewById(R.id.txt_recipient_phone);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
             container = itemView.findViewById(R.id.viewholder_address);

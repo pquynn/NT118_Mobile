@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/top_navigation" />
+                <include layout="@layout/header_with_btnback" />
 
             </LinearLayout>
 

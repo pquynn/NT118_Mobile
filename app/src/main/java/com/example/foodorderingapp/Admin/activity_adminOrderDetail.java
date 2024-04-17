@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.OrderDetailAdapter;
+import com.example.foodorderingapp.domain.OrderDetail;
 import com.example.foodorderingapp.domain.OrderDetailDomain;
 
 import java.util.ArrayList;
@@ -59,12 +60,12 @@ public class activity_adminOrderDetail extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerProductList);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        ArrayList<OrderDetailDomain> productList = new ArrayList<OrderDetailDomain>();
-        productList.add(new OrderDetailDomain("Trà sữa trân châu", "45.000 đ", "Lớn", "50% đường", 3));
-        productList.add(new OrderDetailDomain("Bánh", "60.000 đ", "Lớn", "a", 2));
-        productList.add(new OrderDetailDomain("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
-        productList.add(new OrderDetailDomain("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
-        productList.add(new OrderDetailDomain("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
+        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
+        productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "50% đường", 3));
+        productList.add(new OrderDetail("Bánh", "60.000 đ", "Lớn", "a", 2));
+        productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
+        productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
+        productList.add(new OrderDetail("Trà sữa trân châu", "45.000 đ", "Lớn", "a", 3));
         adapter = new OrderDetailAdapter(productList);
         recyclerViewList.setAdapter(adapter);
 

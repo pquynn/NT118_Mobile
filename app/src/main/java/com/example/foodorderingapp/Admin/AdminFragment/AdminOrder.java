@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AdminOrder extends Fragment {
-
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private AdminOrderViewPagerAdapter viewPagerAdapter;
@@ -53,4 +53,6 @@ public class AdminOrder extends Fragment {
 
         return view;
     }
+
+
 }

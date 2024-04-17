@@ -13,6 +13,27 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
+            android:name=".Admin.activity_adminOrderDetail"
+            android:exported="true" />
+        <activity
+            android:name=".Admin.activity_adminOrder"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_verifyOTP"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_setpassword"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_forgetpassword"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_signup"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_login"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -20,41 +41,29 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--   START: CART - CHECKOUT - PAYMENT-->
+        </activity> <!-- START: CART - CHECKOUT - PAYMENT -->
         <activity
             android:name=".activity.customer_module.cart.CartActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.BuySuccessActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CheckoutActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CheckoutAddressActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.CouponActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.PaymentMethodActivity"
-            android:exported="true">
-        </activity>
-        <!--   END: CART - CHECKOUT - PAYMENT-->
-
-        <!--   START: ACCOUNT-->
+            android:exported="true" /> <!-- END: CART - CHECKOUT - PAYMENT -->
+        <!-- START: ACCOUNT -->
         <activity
             android:name=".activity.customer_module.AccountAddressActivity"
-            android:exported="true">
-        </activity>
-        <!--   START: ACCOUNT-->
+            android:exported="true" />
     </application>
 
 </manifest>

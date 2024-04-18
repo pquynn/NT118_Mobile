@@ -2,7 +2,6 @@ package com.example.foodorderingapp.Admin;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,11 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ViewPagerAdmin.AdminOrderViewPagerAdapter;
+import com.example.foodorderingapp.ViewPagerAdapter.AdminOrderViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
 
 public class activity_adminOrder extends AppCompatActivity {
 

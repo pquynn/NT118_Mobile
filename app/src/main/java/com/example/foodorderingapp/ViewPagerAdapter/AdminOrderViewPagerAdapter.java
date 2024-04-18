@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ViewPagerAdmin;
+package com.example.foodorderingapp.ViewPagerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

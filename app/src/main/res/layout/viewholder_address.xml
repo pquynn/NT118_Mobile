@@ -15,7 +15,7 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:background="@drawable/circle_background"
+        android:background="@drawable/circle_white"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
     <!--    style textview: if the lenght of the string exceeds the textview width,
         use the last 3 rows to wrap text. Modified by Quyen, 3/4/2024-->
     <TextView
-        android:id="@+id/txt_description"
+        android:id="@+id/txt_full_address"
         style="@style/text_14sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/white_circle"
-        app:layout_constraintTop_toBottomOf="@+id/txt_valid_date" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_recipient_phone" />
 
     <ImageView
         android:id="@+id/btn_edit"
@@ -79,13 +79,13 @@
         android:layout_width="27dp"
         android:layout_height="27dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_description"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_full_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/trash" />
 
     <TextView
-        android:id="@+id/txt_coupon_name"
+        android:id="@+id/txt_recipient_name"
 
         style="@style/bold_text_16sp"
         android:layout_width="wrap_content"
@@ -97,13 +97,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txt_valid_date"
+        android:id="@+id/txt_recipient_phone"
         style="@style/bold_text_16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="0123456789"
         app:layout_constraintStart_toEndOf="@+id/white_circle"
-        app:layout_constraintTop_toBottomOf="@+id/txt_coupon_name" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

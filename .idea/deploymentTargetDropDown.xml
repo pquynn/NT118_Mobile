@@ -5,16 +5,16 @@
       <entry key="AccountAddressActivity">
         <State />
       </entry>
-      <entry key="CartActivity">
+      <entry key="AdminMainActivity">
         <State />
       </entry>
-      <entry key="CheckoutActivity">
+      <entry key="CheckoutAddressActivity">
         <State />
       </entry>
-      <entry key="CheckoutActivity (1)">
+      <entry key="RefundProgressActivity">
         <State />
       </entry>
-      <entry key="CouponActivity">
+      <entry key="RefundRequestActivity">
         <State />
       </entry>
       <entry key="app">

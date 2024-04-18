@@ -29,7 +29,7 @@ public class CheckoutAddressActivity extends AppCompatActivity {
 
     private void recyclerViewAddress(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerViewCoupon);
+        recyclerViewList = findViewById(R.id.recyclerViewAddress);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         ArrayList<Address> addresses = new ArrayList<Address>();

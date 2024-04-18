@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
@@ -16,8 +17,8 @@ import com.example.foodorderingapp.domain.Address;
 import java.util.ArrayList;
 
 public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddressAdapter.ViewHolder> {
-    ArrayList<Address> addresslist;
-
+    private ArrayList<Address> addresslist;
+    private int row_index = 0; // position of selected viewholder
     public CheckoutAddressAdapter(ArrayList<Address> addresslist){
         this.addresslist = addresslist;
     }
@@ -34,12 +35,26 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         holder.recipientName.setText(addresslist.get(position).getRecipientName());
         holder.phone.setText(addresslist.get(position).getPhone());
 
-////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER IF SCREEN NAME = ...
-        //if(holder.btn_add.getText().toString().equals("Áp dụng")){
+////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
             holder.btn_delete.setVisibility(View.GONE);
             holder.btn_edit.setVisibility(View.GONE);
-        //}
 
+        // Click event for view holder
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                row_index = holder.getAdapterPosition();
+                notifyDataSetChanged();
+            }
+        });
+
+        // Set foreground based on position of viewholder
+        if (row_index == position) {
+            //add foreground: solid_line
+            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_border));
+        } else {
+            holder.container.setForeground(null);
+        }
     }
 
     @Override
@@ -53,14 +68,15 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         TextView phone;
         ImageView btn_edit;
         ImageView btn_delete;
-        ConstraintLayout mainlayout;
+        ConstraintLayout container;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            address = itemView.findViewById(R.id.txt_description);
-            recipientName = itemView.findViewById(R.id.txt_coupon_name);
-            phone = itemView.findViewById(R.id.txt_valid_date);
+            address = itemView.findViewById(R.id.txt_full_address);
+            recipientName = itemView.findViewById(R.id.txt_recipient_name);
+            phone = itemView.findViewById(R.id.txt_recipient_phone);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
+            container = itemView.findViewById(R.id.viewholder_address);
         }
     }
 }

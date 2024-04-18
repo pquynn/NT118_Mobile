@@ -34,7 +34,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.productPrice.setText(productList.get(position).getProductPrice());
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
-//        holder.quantity.setText(productList.get(position).getQuantity());
+        holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+
     }
 
     @Override

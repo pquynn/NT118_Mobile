@@ -46,12 +46,11 @@ public class AccountAddressAdapter extends RecyclerView.Adapter<AccountAddressAd
         TextView phone;
         ImageView btn_edit;
         ImageView btn_delete;
-        ConstraintLayout mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            address = itemView.findViewById(R.id.txt_description);
-            recipientName = itemView.findViewById(R.id.txt_coupon_name);
-            phone = itemView.findViewById(R.id.txt_valid_date);
+            address = itemView.findViewById(R.id.txt_full_address);
+            recipientName = itemView.findViewById(R.id.txt_recipient_name);
+            phone = itemView.findViewById(R.id.txt_recipient_phone);
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
         }

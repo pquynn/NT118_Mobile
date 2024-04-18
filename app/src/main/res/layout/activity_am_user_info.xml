@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.customer_module.AccountManagement.am_user_info">
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/header_with_btnback" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/allrounded_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name_acc">
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/avatar_acc"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/am_btn_per_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include2"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView_name_acc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Nguyễn Văn A"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/avatar_acc"
+        app:layout_constraintTop_toBottomOf="@+id/include2"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="HỌ TÊN"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/icon_info"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout1"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/icon_info"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout1"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout1"
+        app:srcCompat="@drawable/am_icon_person" />
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Nguyễn Văn A"
+        app:layout_constraintStart_toEndOf="@+id/icon_info"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_name" />
+
+    <ImageView
+        android:id="@+id/icon_phone"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout1"
+        app:layout_constraintTop_toBottomOf="@+id/icon_info"
+        app:srcCompat="@drawable/am_icon_phone" />
+
+    <TextView
+        android:id="@+id/lbl_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="SỐ ĐIỆN THOẠI"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/icon_phone"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name" />
+
+    <TextView
+        android:id="@+id/textView_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="09123456789"
+        app:layout_constraintStart_toEndOf="@+id/icon_phone"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_phone" />
+
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/allrounded_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/icon_password"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout2"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout2"
+        app:srcCompat="@drawable/am_icon_key" />
+
+    <TextView
+        android:id="@+id/lbl_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="MẬT KHẨU"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/icon_password"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
+
+    <TextView
+        android:id="@+id/textView_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="**************"
+        app:layout_constraintStart_toEndOf="@+id/icon_password"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_password" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Chỉnh sửa"
+        android:textColor="#3EBF84"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout1"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout1" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Thay đổi"
+        android:textColor="#3EBF84"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

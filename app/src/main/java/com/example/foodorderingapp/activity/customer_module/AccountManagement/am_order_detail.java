@@ -1,6 +1,8 @@
 package com.example.foodorderingapp.activity.customer_module.AccountManagement;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +23,8 @@ public class am_order_detail extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
 
+    Button btnCancel, btnFeedback, btnRefund;
+    TextView txt_orderStatus; //txt_order_status
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,27 @@ public class am_order_detail extends AppCompatActivity {
         headerName.setText("Chi tiết đơn hàng");
 
         recyclerViewOrderDetail();
+
+        txt_orderStatus = findViewById(R.id.txt_order_status);
+        btnCancel = findViewById(R.id.btn_order_cancel);
+        btnFeedback = findViewById(R.id.btn_order_feedback);
+        btnRefund = findViewById(R.id.btn_order_refund);
+
+        String orderStatus = (String) txt_orderStatus.getText();
+
+        btnCancel.setVisibility(View.GONE);
+        btnFeedback.setVisibility(View.GONE);
+        btnRefund.setVisibility(View.GONE);
+
+        switch (orderStatus) {
+            case "Chờ xác nhận": //pending
+                btnCancel.setVisibility(View.VISIBLE);
+                break;
+            case "Hoàn tất": //completed
+                btnFeedback.setVisibility(View.VISIBLE);
+                btnRefund.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void recyclerViewOrderDetail() {

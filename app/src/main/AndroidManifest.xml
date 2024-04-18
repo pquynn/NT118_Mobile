@@ -36,9 +36,9 @@
         <activity
             android:name=".activity.customer_module.AccountManagement.am_user_info"
             android:exported="true" />
-        <activity
-            android:name=".activity.customer_module.AccountManagement.am_navigation"
-            android:exported="true" />
+<!--        <activity-->
+<!--            android:name=".activity.customer_module.AccountManagement.am_navigation"-->
+<!--            android:exported="true" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

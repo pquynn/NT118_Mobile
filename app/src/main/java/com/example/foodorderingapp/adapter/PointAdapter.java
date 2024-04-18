@@ -29,7 +29,17 @@ public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.point.setText(String.valueOf(pointList.get(position).getPoint())); //int->string
+        int point = pointList.get(position).getPoint();
+
+        if (point >= 0) {
+            holder.point_mark.setText("+");
+            holder.point.setText(String.valueOf(point)); //int->string
+        } else {
+            holder.point_mark.setText("-");
+            point*=-1;
+            holder.point.setText(String.valueOf(point));
+        }
+
         holder.point_date.setText(pointList.get(position).getPoint_date());
     }
 
@@ -40,12 +50,13 @@ public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView point, point_date;
+        TextView point, point_date, point_mark;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             point = itemView.findViewById(R.id.txt_point);
             point_date = itemView.findViewById((R.id.txt_point_date));
+            point_mark = itemView.findViewById(R.id.txt_point_mark);
         }
     }
 }

@@ -6,36 +6,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.Coupon;
-import com.example.foodorderingapp.domain.OrderDetail;
+import com.example.foodorderingapp.domain.OrderDetailDomain;
 
 import java.util.ArrayList;
 
-public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.ViewHolder> {
-    ArrayList<OrderDetail> productList;
+public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapter.ViewHolder>{
+    ArrayList<OrderDetailDomain> productList;
 
-    public OrderDetailAdapter(ArrayList<OrderDetail> productList){
+    public FeedbackItemAdapter(ArrayList<OrderDetailDomain> productList){
         this.productList = productList;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_order_detail, parent, false);
-        return new ViewHolder(inflate);
+    public FeedbackItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_feedback_item, parent, false);
+        return new FeedbackItemAdapter.ViewHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeedbackItemAdapter.ViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
         holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
-
     }
 
     @Override

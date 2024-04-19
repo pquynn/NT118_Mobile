@@ -2,19 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/order_detail_container"
+    android:id="@+id/feedback_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/white">
+    android:layout_height="200dp"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/allrounded_bg">
+
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/frameLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="200dp"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--    </FrameLayout>-->
 
     <ImageView
         android:id="@+id/img_product"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/drink" />
@@ -36,6 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="45.000"
         app:layout_constraintStart_toEndOf="@+id/img_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
@@ -65,7 +80,7 @@
         style="@style/text_20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:text="2"
         android:textColor="@color/dark_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,16 +99,26 @@
         app:layout_constraintEnd_toStartOf="@+id/txt_quantity"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_product"
+        style="@style/ButtonStyle"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="10dp"
+        android:text="Đánh giá"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/lbl_product_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:fontFamily="@font/roboto_regular"
+        android:layout_marginTop="8dp"
         android:text="đ"
         app:layout_constraintStart_toEndOf="@+id/txt_product_cost"
-        app:layout_constraintTop_toBottomOf="@+id/txt_product_name"
-        tools:ignore="MissingConstraints" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

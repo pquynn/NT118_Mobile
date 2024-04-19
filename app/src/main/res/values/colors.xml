@@ -19,4 +19,7 @@
     <color name="text1">#676767</color>
     <color name="search">#F6F6F6</color>
     <color name="light_text">#32343E</color>
+    <color name="orange">#DD5746</color>
+    <color name="light_blue">#1679AB</color>
+
 </resources>

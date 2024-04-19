@@ -15,7 +15,7 @@
     <!-- Cart Fragment -->
     <item
         android:title=""
-        android:id="@+id/scartFragment"
+        android:id="@+id/cartFragment"
         android:icon="@drawable/shopping_cart"/>
 
     <!-- Notification Fragment -->

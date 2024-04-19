@@ -11,13 +11,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.DialogInterface;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.Coupon;
 import com.example.foodorderingapp.domain.OrderDetail;
 
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdapter.ViewHolder> {
     private ArrayList<OrderDetail> productList;
     private View.OnClickListener onClickListener;
+    private boolean isDialogOpen = false;
 
     public RefundRequestAdapter(ArrayList<OrderDetail> productList){
         this.productList = productList;
@@ -47,16 +47,26 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         holder.btnSelectReason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(view.getContext());
+                if (!isDialogOpen) {
+                    showDialog(view.getContext());
+                }
             }
         });
     }
 
 //    function to show bottom dialog when button is clicked
     public void showDialog(Context context) {
+        isDialogOpen = true; // Update dialog state
         Dialog dialog = new Dialog(context); // Corrected line
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheet_refund_reason);
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                isDialogOpen = false; // Update dialog state when dismissed
+            }
+        });
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

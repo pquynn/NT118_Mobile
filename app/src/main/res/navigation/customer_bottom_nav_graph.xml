@@ -20,13 +20,13 @@
         android:label="fragment_products"
         tools:layout="@layout/fragment_products" />
     <fragment
-        android:id="@+id/scartFragment"
-        android:name="com.example.foodorderingapp.CartFragment"
-        android:label="fragment_scart"
+        android:id="@+id/cartFragment"
+        android:name="com.example.foodorderingapp.UI.Fragment.Customer.Cart.CartFragment"
+        android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.foodorderingapp.NotificationFragment"
+        android:name="com.example.foodorderingapp.UI.Fragment.Customer.Notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
 </navigation>

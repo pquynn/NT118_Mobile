@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.CheckoutAddressAdapter;
 import com.example.foodorderingapp.adapter.CouponAdapter;
-import com.example.foodorderingapp.domain.AddressDomain;
-import com.example.foodorderingapp.domain.CouponDomain;
+import com.example.foodorderingapp.domain.Coupon;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +36,7 @@ public class CouponActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewCoupon);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        ArrayList<CouponDomain> coupons = new ArrayList<CouponDomain>();
+        ArrayList<Coupon> coupons = new ArrayList<Coupon>();
 
         // Original date string
         String dateString = "06-03-2025";
@@ -54,9 +52,9 @@ public class CouponActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-        coupons.add(new CouponDomain("Giảm 15.000đ", date, "Giảm 10.000đ cho đơn hàng từ 100.000đ"));
-        coupons.add(new CouponDomain("Giảm 20.000đ", date, "Giảm 20.000đ cho đơn hàng từ 100.000đ"));
-        coupons.add(new CouponDomain("Giảm 15.000đ", date, "Giảm 10.000đ cho đơn hàng từ 100.000đ"));
+        coupons.add(new Coupon("Giảm 15.000đ", date, "Giảm 10.000đ cho đơn hàng từ 100.000đ"));
+        coupons.add(new Coupon("Giảm 20.000đ", date, "Giảm 20.000đ cho đơn hàng từ 100.000đ"));
+        coupons.add(new Coupon("Giảm 15.000đ", date, "Giảm 10.000đ cho đơn hàng từ 100.000đ"));
         adapter = new CouponAdapter(coupons);
         recyclerViewList.setAdapter(adapter);
     }

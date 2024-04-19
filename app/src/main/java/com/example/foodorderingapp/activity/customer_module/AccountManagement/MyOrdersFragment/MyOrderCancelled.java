@@ -95,7 +95,5 @@ public class MyOrderCancelled extends Fragment {
         listOrderItem.add(new OrderItemDomain("#order002", 300000, 6));
         listOrderItem.add(new OrderItemDomain("#order003", 400000, 7));
         listOrderItem.add(new OrderItemDomain("#order004", 500000, 8));
-        listOrderItem.add(new OrderItemDomain("#order005", 600000, 9));
-        listOrderItem.add(new OrderItemDomain("#order006", 700000, 10));
     }
 }

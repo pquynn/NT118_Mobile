@@ -13,6 +13,7 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
+
             android:name=".activity.customer_module.AccountManagement.am_feedback_product"
             android:exported="true" />
         <activity
@@ -21,24 +22,34 @@
         <activity
             android:name=".activity.customer_module.AccountManagement.am_order_detail"
             android:exported="true" />
+      
         <activity
-            android:name=".activity.customer_module.AccountManagement.am_my_orders"
+            android:name=".Admin.activity_adminOrderDetail"
             android:exported="true" />
         <activity
-            android:name=".activity.customer_module.AccountManagement.am_point_history"
+            android:name=".Admin.activity_adminOrder"
             android:exported="true" />
         <activity
-            android:name=".activity.customer_module.AccountManagement.am_change_userinfo"
+            android:name=".Login_SignUp_SetPassword.activity_verifyOTP"
             android:exported="true" />
         <activity
-            android:name=".activity.customer_module.AccountManagement.am_change_password"
+            android:name=".Login_SignUp_SetPassword.activity_setpassword"
             android:exported="true" />
         <activity
-            android:name=".activity.customer_module.AccountManagement.am_user_info"
+            android:name=".Login_SignUp_SetPassword.activity_forgetpassword"
             android:exported="true" />
+
 <!--        <activity-->
 <!--            android:name=".activity.customer_module.AccountManagement.am_navigation"-->
 <!--            android:exported="true" />-->
+
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_signup"
+            android:exported="true" />
+        <activity
+            android:name=".Login_SignUp_SetPassword.activity_login"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -48,9 +59,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- START: CART - CHECKOUT - PAYMENT -->
-        <activity
-            android:name=".activity.customer_module.cart.CartActivity"
-            android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.BuySuccessActivity"
             android:exported="true" />
@@ -65,11 +73,37 @@
             android:exported="true" />
         <activity
             android:name=".activity.customer_module.checkout.PaymentMethodActivity"
-            android:exported="true" /> <!-- END: CART - CHECKOUT - PAYMENT -->
-        <!-- START: ACCOUNT -->
+            android:exported="true">
+        </activity>
+        <!--   END: CART - CHECKOUT - PAYMENT-->
+
+        <!--    START: REFUND   -->
+        <activity
+            android:name=".activity.customer_module.refund.AddRefundProductActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activity.customer_module.refund.RefundRequestActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activity.admin_module.refund.RefundProgressActivity"
+            android:exported="true">
+        </activity>
+        <!--    END: REFUND   -->
+
+        <!--   START: ACCOUNT-->
         <activity
             android:name=".activity.customer_module.AccountAddressActivity"
-            android:exported="true" />
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activity.customer_module.AddAddressActivity"
+            android:exported="true">
+        </activity>
+        <!--   START: ACCOUNT-->
     </application>
 
 </manifest>

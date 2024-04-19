@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.OrderDetailAdapter;
+import com.example.foodorderingapp.domain.OrderDetail;
 import com.example.foodorderingapp.domain.OrderDetailDomain;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class am_order_detail extends AppCompatActivity {
         productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
         productList.add(new OrderDetailDomain("Bánh", 60000, "Lớn", "a", 2));
         productList.add(new OrderDetailDomain("Trà sữa trân châu", 45000, "Lớn", "a", 3));
+
         adapter = new OrderDetailAdapter(productList);
         recyclerViewList.setAdapter(adapter);
 

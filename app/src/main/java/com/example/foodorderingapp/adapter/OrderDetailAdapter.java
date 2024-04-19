@@ -6,17 +6,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.OrderDetailDomain;
+import com.example.foodorderingapp.domain.Coupon;
+import com.example.foodorderingapp.domain.OrderDetail;
 
 import java.util.ArrayList;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.ViewHolder> {
-    ArrayList<OrderDetailDomain> productList;
+    ArrayList<OrderDetail> productList;
 
-    public OrderDetailAdapter(ArrayList<OrderDetailDomain> productList){
+    public OrderDetailAdapter(ArrayList<OrderDetail> productList){
         this.productList = productList;
     }
 
@@ -33,6 +35,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
         holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+
     }
 
     @Override
@@ -56,4 +59,3 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         }
     }
 }
-

@@ -25,7 +25,7 @@ import java.util.PrimitiveIterator;
 public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView rcvCategory, rcvListCategory;
-    private TextView screenName;
+//    private TextView screenName;
     private CategoryListAdapter categoryListAdapter;
     private CategoryAdapter categoryAdapter;
 
@@ -34,8 +34,8 @@ public class CategoryActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_category);
 
-        TextView screenName = findViewById(R.id.screen_name);
-        screenName.setText("Danh mục");
+//        TextView screenName = findViewById(R.id.screen_name);
+//        screenName.setText("Danh mục");
 
         rcvCategory = findViewById(R.id.rcv_category);
         rcvCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -50,10 +50,10 @@ public class CategoryActivity extends AppCompatActivity {
 
     private List<CategoryDomain> getCategory() {
         List<CategoryDomain> list = new ArrayList<>();
-        list.add(new CategoryDomain(R.drawable.img_cafe));
-        list.add(new CategoryDomain(R.drawable.img_milktea));
-        list.add(new CategoryDomain(R.drawable.img_tea));
-        list.add(new CategoryDomain(R.drawable.img_cake));
+        list.add(new CategoryDomain(R.drawable.img_cafe, "Cà phê"));
+        list.add(new CategoryDomain(R.drawable.img_milktea, "Trà sữa"));
+        list.add(new CategoryDomain(R.drawable.img_tea, "Trà"));
+        list.add(new CategoryDomain(R.drawable.img_cake, "Bánh"));
         return list;
     }
 

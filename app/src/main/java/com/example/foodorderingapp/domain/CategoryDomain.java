@@ -2,8 +2,18 @@ package com.example.foodorderingapp.domain;
 
 public class CategoryDomain {
     private int resourceid;
+    private String name;
 
-    public CategoryDomain(int resourceid) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public CategoryDomain(int resourceid, String name) {
+        this.name = name;
         this.resourceid = resourceid;
     }
 

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp;
+package com.example.foodorderingapp.UI.Fragment.Customer.Notification;
 
         import android.os.Bundle;
 

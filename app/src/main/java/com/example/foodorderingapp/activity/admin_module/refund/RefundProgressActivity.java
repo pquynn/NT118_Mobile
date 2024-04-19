@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,13 +32,25 @@ import java.util.Date;
 public class RefundProgressActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
+    private FrameLayout btnBack;
+    private TextView screenName;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refund_progress);
 
         // set top navigation text
-        TextView screenName = findViewById(R.id.screen_name);
+        screenName = findViewById(R.id.screen_name);
         screenName.setText("Yêu cầu hoàn tiền");
+
+        // set button back click event
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         // set recyler list
         recyclerViewRefundRequest();

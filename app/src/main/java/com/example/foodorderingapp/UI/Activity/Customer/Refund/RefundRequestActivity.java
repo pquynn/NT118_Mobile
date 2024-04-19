@@ -1,14 +1,8 @@
-package com.example.foodorderingapp.activity.customer_module.refund;
+package com.example.foodorderingapp.UI.Activity.Customer.Refund;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,27 +10,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.CouponAdapter;
-import com.example.foodorderingapp.adapter.RefundProductAdapter;
 import com.example.foodorderingapp.adapter.RefundRequestAdapter;
-import com.example.foodorderingapp.domain.Coupon;
 import com.example.foodorderingapp.domain.OrderDetail;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RefundRequestActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
+    private FrameLayout btnBack;
+    private TextView screenName;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refund_request);
 
         // set top navigation text
-        TextView screenName = findViewById(R.id.screen_name);
+        screenName = findViewById(R.id.screen_name);
         screenName.setText("Yêu cầu hoàn tiền");
+
+        // set button back click event
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         // set recyler list
         recyclerViewRefundRequest();

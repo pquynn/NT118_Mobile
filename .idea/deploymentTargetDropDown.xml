@@ -11,10 +11,10 @@
       <entry key="CheckoutAddressActivity">
         <State />
       </entry>
-      <entry key="RefundProgressActivity">
+      <entry key="MainActivity">
         <State />
       </entry>
-      <entry key="RefundRequestActivity">
+      <entry key="activity_login">
         <State />
       </entry>
       <entry key="app">

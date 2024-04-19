@@ -1,14 +1,15 @@
-package com.example.foodorderingapp.activity.customer_module.checkout;
+package com.example.foodorderingapp.UI.Activity.Customer.Checkout;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderingapp.MainActivity;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.PaymentMethodAdapter;
 import com.example.foodorderingapp.domain.PaymentMethod;
@@ -21,6 +22,7 @@ public class PaymentMethodActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
     private Button btnConfirm;
+    private FrameLayout btnBack;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_method);
@@ -28,6 +30,16 @@ public class PaymentMethodActivity extends AppCompatActivity {
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Chọn phương thức thanh toán");
+
+        // set button back click event
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         recyclerViewList = findViewById(R.id.recyclerViewPayment);
         btnConfirm = findViewById(R.id.btn_confirm);

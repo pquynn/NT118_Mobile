@@ -11,7 +11,7 @@
         android:label="AdminHome" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.foodorderingapp.NotificationFragment"
+        android:name="com.example.foodorderingapp.UI.Fragment.Customer.Notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment

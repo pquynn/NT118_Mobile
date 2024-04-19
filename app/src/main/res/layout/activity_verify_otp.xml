@@ -8,6 +8,7 @@
     android:background="#1D4D4F"
     tools:context=".Login_SignUp_SetPassword.activity_verifyOTP">
 
+    <include layout="@layout/dark_green_bg"/>
     <FrameLayout
         android:id="@+id/btn_back"
         android:layout_width="40dp"

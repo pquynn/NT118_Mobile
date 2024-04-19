@@ -38,6 +38,34 @@
             android:exported="true" />
         <activity
             android:name=".UI.Activity.Customer.MainActivity"
+            android:name=".activity.customer_module.AccountManagement.am_feedback_product"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_feedback_list"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_order_detail"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_my_orders"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_point_history"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_change_userinfo"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_change_password"
+            android:exported="true" />
+        <activity
+            android:name=".activity.customer_module.AccountManagement.am_user_info"
+            android:exported="true" />
+<!--        <activity-->
+<!--            android:name=".activity.customer_module.AccountManagement.am_navigation"-->
+<!--            android:exported="true" />-->
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,11 +2,11 @@ package com.example.foodorderingapp.domain;
 
 public class OrderDetailDomain {
     private String productName;
-    private String productPrice;
+    private int productPrice;
     private String productSize;
     private String note;
     private int quantity;
-    public OrderDetailDomain(String productName, String productPrice, String productSize, String note, int quantity){
+    public OrderDetailDomain(String productName, int productPrice, String productSize, String note, int quantity){
         this.productName = productName;
         this.productPrice = productPrice;
         this.productSize = productSize;
@@ -22,11 +22,11 @@ public class OrderDetailDomain {
         this.productName = productName;
     }
 
-    public String getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(String productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
     }
 

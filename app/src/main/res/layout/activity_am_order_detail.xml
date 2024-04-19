@@ -301,7 +301,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_order_discount_point" />
 
         <Button
-            android:id="@+id/btn_feedback"
+            android:id="@+id/btn_order_cancel"
             style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -315,19 +315,32 @@
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
         <Button
-            android:id="@+id/btn_order_cancel"
+            android:id="@+id/btn_order_feedback"
             style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:padding="5dp"
             android:text="Đánh giá đơn hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_feedback" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_order_cancel" />
 
+        <Button
+            android:id="@+id/btn_order_refund"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:text="Yêu cầu hoàn tiền"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_order_feedback" />
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"

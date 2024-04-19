@@ -44,17 +44,17 @@ public class am_point_history extends AppCompatActivity {
 
     }
     private void createPointList(){
-        listPoint.add(new PointDomain(100, "2024-04-07"));
+        listPoint.add(new PointDomain(-100, "2024-04-07"));
         listPoint.add(new PointDomain(200, "2024-04-01"));
-        listPoint.add(new PointDomain(300, "2024-04-03"));
-        listPoint.add(new PointDomain(400, "2024-04-02"));
+        listPoint.add(new PointDomain(0, "2024-04-03"));
+        listPoint.add(new PointDomain(-400, "2024-04-02"));
         listPoint.add(new PointDomain(500, "2024-03-07"));
-        listPoint.add(new PointDomain(600, "2024-02-07"));
+        listPoint.add(new PointDomain(-600, "2024-02-07"));
         listPoint.add(new PointDomain(700, "2024-01-07"));
-        listPoint.add(new PointDomain(800, "2024-03-08"));
+        listPoint.add(new PointDomain(-800, "2024-03-08"));
         listPoint.add(new PointDomain(100, "2024-04-07"));
         listPoint.add(new PointDomain(200, "2024-04-01"));
-        listPoint.add(new PointDomain(300, "2024-04-03"));
+        listPoint.add(new PointDomain(-300, "2024-04-03"));
         listPoint.add(new PointDomain(400, "2024-04-02"));
         listPoint.add(new PointDomain(500, "2024-03-07"));
         listPoint.add(new PointDomain(600, "2024-02-07"));

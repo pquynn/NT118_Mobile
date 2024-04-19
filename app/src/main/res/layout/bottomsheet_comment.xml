@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
 
     <!-- Tên người bình luận -->
     <TextView
@@ -52,9 +53,4 @@
         android:text="10-3-2024 10:16"
         android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/box"/>
 </LinearLayout>

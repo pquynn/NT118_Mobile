@@ -58,6 +58,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!--  style regular text_18sp.  -->
+    <style name="text_18sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     <!--  style light text_14sp.  -->
     <style name="light_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_regular</item>

@@ -56,6 +56,8 @@ public class CommentDialogFragment extends BottomSheetDialogFragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         rcvComment.addItemDecoration(itemDecoration);
 
+        bottomSheetDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
         return bottomSheetDialog;
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,9 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
     private RecyclerView rcvTopping;
     private ToppingAdapter toppingAdapter;
     private ImageView imgComment;
+    private TextView contentTextView, showMoreTextView, showLessTextView;
+    private CharSequence originalText;
+    private int originalMaxLines;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_drink);
@@ -44,13 +48,40 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
             }
         });
 
+        contentTextView = findViewById(R.id.contentTextView);
+        showMoreTextView = findViewById(R.id.showMoreTextView);
+        showLessTextView = findViewById(R.id.showLessTextView);
+        // Lưu trạng thái ban đầu của nội dung
+        originalMaxLines = contentTextView.getMaxLines();
+        originalText = contentTextView.getText();
+
+        showMoreTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hiển thị toàn bộ nội dung khi nhấn vào "Xem thêm"
+                contentTextView.setMaxLines(Integer.MAX_VALUE);
+                showMoreTextView.setVisibility(View.GONE);
+                showLessTextView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        showLessTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Rút gọn nội dung lại khi nhấn vào "Rút gọn"
+                contentTextView.setMaxLines(originalMaxLines);
+                contentTextView.setText(originalText);
+                showMoreTextView.setVisibility(View.VISIBLE);
+                showLessTextView.setVisibility(View.GONE);
+            }
+        });
+
+
         rcvTopping = findViewById(R.id.rcv_topping);
         rcvTopping.setLayoutManager(new LinearLayoutManager(this));
 
         toppingAdapter = new ToppingAdapter(this, getListTopping());
         rcvTopping.setAdapter(toppingAdapter);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
-        rcvTopping.addItemDecoration(itemDecoration);
     }
 
     private void clickOpenBottemFragmment() {

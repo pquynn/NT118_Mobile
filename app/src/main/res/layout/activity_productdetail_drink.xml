@@ -40,26 +40,6 @@
                 android:src="@drawable/less_than" />
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/btn_heart"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/circle_background"
-            android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
-
-            <ImageView
-                android:id="@+id/img_heart"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_heart" />
-        </FrameLayout>
-
         <TextView
             android:id="@+id/txt_NameDrink"
             style="@style/Heading2"
@@ -75,7 +55,7 @@
 
         <TextView
             android:id="@+id/txt_priceDrink"
-            style="@style/text_14sp"
+            style="@style/text_18sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="30.000đ"
@@ -126,20 +106,83 @@
             app:layout_constraintTop_toTopOf="@+id/ic_comment"
             tools:ignore="MissingConstraints" />
 
-        <TextView
+<!--        <TextView-->
+<!--            android:id="@+id/txt_descriptionProduct"-->
+<!--            style="@style/text_text_14sp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:text="@string/description"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/ic_star_green"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/ic_star_green"-->
+<!--            tools:ignore="MissingConstraints" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/expendContent"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="104dp"-->
+<!--            android:layout_marginBottom="12dp"-->
+<!--            android:text="Xem thêm"-->
+<!--            android:textColor="@color/primary"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/txt_descriptionProduct"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            tools:ignore="MissingConstraints" />-->
+
+        <!--   START Content Description     -->
+        <LinearLayout
             android:id="@+id/txt_descriptionProduct"
-            style="@style/text_text_14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/ic_star_green"
             app:layout_constraintTop_toBottomOf="@+id/ic_star_green"
-            tools:ignore="MissingConstraints" />
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/contentTextView"
+                style="@style/text_text_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                android:maxLines="2" /> <!-- Giới hạn số dòng hiển thị ban đầu -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/showMoreTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:textColor="@color/primary" />
+
+                <TextView
+                    android:id="@+id/showLessTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rút gọn"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:textColor="@color/primary"
+                    android:visibility="gone" /> <!-- Ẩn ban đầu, chỉ hiển thị khi cần rút gọn lại -->
+
+            </LinearLayout>
+        </LinearLayout>
+        <!--   END Content Description     -->
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -199,8 +242,8 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true" />
-
+                android:checked="true"
+                android:buttonTint="@color/primary"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -213,18 +256,6 @@
                 android:text="40,000₫" />
 
         </LinearLayout>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@color/box"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"
-            tools:ignore="MissingConstraints" />
 
         <!-- RadioButton Vừa -->
         <LinearLayout
@@ -256,19 +287,6 @@
                 android:text="35,000₫" />
 
         </LinearLayout>
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@color/box"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnMedium"
-            tools:ignore="MissingConstraints" />
-
 
         <!-- RadioButton Nhỏ -->
         <LinearLayout
@@ -383,6 +401,7 @@
 
         <EditText
             android:id="@+id/editTextDifferent"
+            style="@style/TextPlaceholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -390,9 +409,8 @@
             android:ems="10"
             android:inputType="text"
             android:hint="Thêm ghi chú"
-            android:textSize="10sp"
-            android:background="@drawable/rounder_color_productdetail"
-            android:padding="14dp"
+            android:padding="20dp"
+            android:background="@drawable/rounder_component_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_depDifferent"
             app:layout_constraintTop_toBottomOf="@+id/txt_depDifferent" />
@@ -444,9 +462,10 @@
                         style="@style/ButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="ADD TO CART"/>
+                        android:text="THÊM VÀO GIỎ HÀNG"/>
                 </LinearLayout>
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

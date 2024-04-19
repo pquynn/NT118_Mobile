@@ -3,6 +3,7 @@ package com.example.foodorderingapp.activity.customer_module.productdetail;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,9 @@ import java.util.List;
 
 public class ProductDetailCakeActivity extends AppCompatActivity {
     private ImageView imgComment;
+    private TextView contentTextView, showMoreTextView, showLessTextView;
+    private CharSequence originalText;
+    private int originalMaxLines;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_cake);
@@ -29,7 +33,36 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
                 clickOpenBottemFragmment();
             }
         });
+
+        contentTextView = findViewById(R.id.contentTextView);
+        showMoreTextView = findViewById(R.id.showMoreTextView);
+        showLessTextView = findViewById(R.id.showLessTextView);
+        // Lưu trạng thái ban đầu của nội dung
+        originalMaxLines = contentTextView.getMaxLines();
+        originalText = contentTextView.getText();
+
+        showMoreTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hiển thị toàn bộ nội dung khi nhấn vào "Xem thêm"
+                contentTextView.setMaxLines(Integer.MAX_VALUE);
+                showMoreTextView.setVisibility(View.GONE);
+                showLessTextView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        showLessTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Rút gọn nội dung lại khi nhấn vào "Rút gọn"
+                contentTextView.setMaxLines(originalMaxLines);
+                contentTextView.setText(originalText);
+                showMoreTextView.setVisibility(View.VISIBLE);
+                showLessTextView.setVisibility(View.GONE);
+            }
+        });
     }
+
     private void clickOpenBottemFragmment() {
         String dateString = "06-03-2025";
         // Define the date format of your input string

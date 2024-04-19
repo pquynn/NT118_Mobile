@@ -106,34 +106,6 @@
             app:layout_constraintTop_toTopOf="@+id/ic_comment"
             tools:ignore="MissingConstraints" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/txt_descriptionProduct"-->
-<!--            style="@style/text_text_14sp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="24dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="24dp"-->
-<!--            android:text="@string/description"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/ic_star_green"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ic_star_green"-->
-<!--            tools:ignore="MissingConstraints" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/expendContent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="104dp"-->
-<!--            android:layout_marginBottom="12dp"-->
-<!--            android:text="Xem thêm"-->
-<!--            android:textColor="@color/primary"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/txt_descriptionProduct"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            tools:ignore="MissingConstraints" />-->
-
         <!--   START Content Description     -->
         <LinearLayout
             android:id="@+id/txt_descriptionProduct"
@@ -466,6 +438,5 @@
                 </LinearLayout>
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

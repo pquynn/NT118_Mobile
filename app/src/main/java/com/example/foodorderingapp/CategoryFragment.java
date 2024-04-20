@@ -1,5 +1,6 @@
 package com.example.foodorderingapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.foodorderingapp.adapter.CategoryAdapter;
 import com.example.foodorderingapp.adapter.CategoryListAdapter;
@@ -31,16 +33,21 @@ public class CategoryFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private List<CategoryDomain> listCategory;
     private List<CategoryListDomain> getListCategory;
+    TextView screenName;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
+
+        screenName = view.findViewById(R.id.screen_name);
+        screenName.setText("Danh mục");
 
         rcvCategory = view.findViewById(R.id.rcv_category);
         rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -51,6 +58,8 @@ public class CategoryFragment extends Fragment {
         rcvListCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoryListAdapter = new CategoryListAdapter(getActivity(), getListCategory);
         rcvListCategory.setAdapter(categoryListAdapter);
+
+
 
         listCategory.add(new CategoryDomain(R.drawable.img_cafe, "Cà phê"));
         listCategory.add(new CategoryDomain(R.drawable.img_milktea, "Trà sữa"));

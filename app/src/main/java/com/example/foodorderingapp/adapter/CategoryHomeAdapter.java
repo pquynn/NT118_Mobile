@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.activity.customer_module.home.home;
-import com.example.foodorderingapp.domain.CategoryDomain;
 import com.example.foodorderingapp.domain.HomeCategory;
 
 import java.util.List;
@@ -38,6 +37,11 @@ public class CategoryHomeAdapter extends RecyclerView.Adapter<CategoryHomeAdapte
         HomeCategory homeCategory = list.get(position);
 
         holder.txtname.setText(homeCategory.getNameCategory());
+        if (position == 0) {
+            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.lightgreen, mcontext.getTheme()))); // Set green color for the first item
+        } else {
+            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.white, mcontext.getTheme()))); // Set white color for other items
+        }
     }
 
     @Override
@@ -53,7 +57,6 @@ public class CategoryHomeAdapter extends RecyclerView.Adapter<CategoryHomeAdapte
 
             frameLayout = itemView.findViewById(R.id.frameLayoutCategory);
             txtname = itemView.findViewById(R.id.textName);
-
         }
     }
 }

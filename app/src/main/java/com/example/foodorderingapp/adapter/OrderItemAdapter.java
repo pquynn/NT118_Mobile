@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.OrderItemDomain;
+import com.example.foodorderingapp.domain.OrderItem;
 
 
 import java.util.ArrayList;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.ViewHolder>{
-    ArrayList<OrderItemDomain> OrderItemList;
+    ArrayList<OrderItem> OrderItemList;
 
-    public OrderItemAdapter (ArrayList<OrderItemDomain> orderItemList){
+    public OrderItemAdapter (ArrayList<OrderItem> orderItemList){
         this.OrderItemList = orderItemList;
     }
     @NonNull

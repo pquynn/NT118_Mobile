@@ -39,9 +39,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(productList.get(position).getProductPrice());
+        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
         holder.productSize.setText(productList.get(position).getProductSize());
-//        holder.quantity.setText(productList.get(position).getQuantity());
+        holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.txt_product_name);
-            productPrice = itemView.findViewById(R.id.txt_product_price);
+            productPrice = itemView.findViewById(R.id.txt_product_cost);
             productSize = itemView.findViewById(R.id.txt_product_size);
             quantity = itemView.findViewById(R.id.quantity);
             btnEdit = itemView.findViewById(R.id.btn_edit);

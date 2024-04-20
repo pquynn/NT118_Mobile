@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D4D4F"
-    tools:context=".Login_SignUp_SetPassword.activity_signup">
+    tools:context=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_signup">
 
     <include layout="@layout/dark_green_bg"/>
 

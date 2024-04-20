@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.PointDomain;
+import com.example.foodorderingapp.domain.Point;
 
 import java.util.ArrayList;
 
 public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> {
-    ArrayList<PointDomain> pointList;
+    ArrayList<Point> pointList;
 
-    public PointAdapter (ArrayList<PointDomain> pointList){
+    public PointAdapter (ArrayList<Point> pointList){
         this.pointList = pointList;
     }
 

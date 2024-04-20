@@ -130,7 +130,7 @@
         android:paddingVertical="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:context=".UI.Activity.Customer.MainActivity">
+        tools:context=".UI.Activity_Fragment.MainActivity">
 
         <ImageView
             android:id="@+id/image_view"

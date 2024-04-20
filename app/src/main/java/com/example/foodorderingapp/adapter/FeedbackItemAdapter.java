@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.domain.OrderDetailDomain;
+import com.example.foodorderingapp.domain.OrderDetail;
 
 import java.util.ArrayList;
 
 public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapter.ViewHolder>{
-    ArrayList<OrderDetailDomain> productList;
+    ArrayList<OrderDetail> productList;
 
-    public FeedbackItemAdapter(ArrayList<OrderDetailDomain> productList){
+    public FeedbackItemAdapter(ArrayList<OrderDetail> productList){
         this.productList = productList;
     }
 
@@ -29,7 +29,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
     @Override
     public void onBindViewHolder(@NonNull FeedbackItemAdapter.ViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
+        holder.productPrice.setText(productList.get(position).getProductPrice());
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
         holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));

@@ -39,7 +39,7 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(productList.get(position).getProductPrice());
+        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
 //        holder.quantity.setText(productList.get(position).getQuantity());
@@ -91,7 +91,7 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.txt_product_name);
-            productPrice = itemView.findViewById(R.id.txt_product_price);
+            productPrice = itemView.findViewById(R.id.txt_product_cost);
             productSize = itemView.findViewById(R.id.txt_product_size);
             note = itemView.findViewById(R.id.txt_note);
             quantity = itemView.findViewById(R.id.quantity);

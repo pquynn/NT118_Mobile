@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Admin.activity_adminOrder">
+    tools:context=".UI.Activity_Fragment.Admin.activity_adminOrder">
 
     <LinearLayout
         android:id="@+id/layout_topNavigation"
@@ -18,10 +18,16 @@
 
         <include layout="@layout/header" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/straight_solid_line"
+            android:layout_marginVertical="10dp"/>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="24dp"
-        tools:context=".activity.customer_module.AccountManagement.am_order_detail">
+        tools:context=".UI.Activity_Fragment.Customer.AccountManagement.am_order_detail">
 
         <include
             android:id="@+id/include2"
@@ -308,7 +308,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:padding="5dp"
             android:text="Hủy đơn hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +321,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:padding="5dp"
             android:text="Đánh giá đơn hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -336,7 +334,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:padding="5dp"
             android:text="Yêu cầu hoàn tiền"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

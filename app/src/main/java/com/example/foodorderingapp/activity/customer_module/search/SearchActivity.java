@@ -3,6 +3,8 @@ package com.example.foodorderingapp.activity.customer_module.search;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +51,7 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         nlist = getListProduct();
         searchAdapter = new SearchAdapter(nlist);
         rcv_productSearch.setAdapter(searchAdapter);
@@ -57,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         rcv_productSearch.addItemDecoration(itemDecoration);
 
     }
+
 //  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
     private void filterList(String newText) {
         List<ProductSearchDomain> filterList = new ArrayList<>();
@@ -71,7 +75,6 @@ public class SearchActivity extends AppCompatActivity {
         }else {
             searchAdapter.setFilterList(filterList);
         }
-
     }
 
     private List<ProductSearchDomain> getListProduct() {

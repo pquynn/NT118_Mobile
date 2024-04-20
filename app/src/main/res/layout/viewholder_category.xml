@@ -20,5 +20,13 @@
             android:scaleType="centerCrop"
             android:src="@drawable/img_tea"
             tools:ignore="MissingClass" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cà phê"
+            android:textSize="16sp"
+            android:gravity="center"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

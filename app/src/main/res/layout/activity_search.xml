@@ -7,13 +7,38 @@
     android:orientation="vertical"
     tools:context=".activity.customer_module.search.SearchActivity">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView_product"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/rounder_search_product"
-        app:queryHint="Tìm kiếm"
-        android:layout_margin="10dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView_product"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="@drawable/rounder_search_product"
+            app:iconifiedByDefault="false"
+            app:queryHint="Tìm kiếm"
+            app:queryBackground="@android:color/transparent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/buttonsearch"
+            android:layout_width="70dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/white"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Hủy"
+            android:textColor="@color/primary" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/img8"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +30,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            style="@style/black_text_14sp"
+            style="@style/black_text_18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Trà sữa matcha kem cheese"
@@ -37,7 +38,7 @@
 
         <TextView
             android:id="@+id/tv_price"
-            style="@style/black_text_12sp"
+            style="@style/black_text_16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="30.000đ"

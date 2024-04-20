@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.mCategory = list;
     }
 
+    public CategoryAdapter(List<CategoryDomain> list){
+        this.mCategory = list;
+    }
+
     public void setData(List<CategoryDomain> list){
         this.mCategory = list;
         notifyDataSetChanged();
@@ -45,6 +50,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             return;
 
         holder.imgCategory.setImageResource(categoryDomain.getResourceid());
+        holder.txtname.setText(categoryDomain.getName());
 
 //        holder.imgCategory.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -65,10 +71,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
 
         private CircleImageView imgCategory;
+        private TextView txtname;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCategory = itemView.findViewById(R.id.img_category);
+            txtname = itemView.findViewById(R.id.txt_name);
         }
     }
 }

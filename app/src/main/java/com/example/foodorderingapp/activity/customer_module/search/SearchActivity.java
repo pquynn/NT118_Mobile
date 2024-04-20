@@ -1,8 +1,13 @@
 package com.example.foodorderingapp.activity.customer_module.search;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.HomeFragment;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.adapter.SearchAdapter;
 import com.example.foodorderingapp.domain.ProductSearchDomain;
@@ -29,6 +35,18 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Button btnCancel = findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Tạo một Intent để gửi dữ liệu về Fragment HomeFragment
+                Intent intent = new Intent();
+                intent.putExtra("cancel_pressed", true);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         rcv_productSearch = findViewById(R.id.recyclerViewProduct);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -49,6 +67,7 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         nlist = getListProduct();
         searchAdapter = new SearchAdapter(nlist);
         rcv_productSearch.setAdapter(searchAdapter);
@@ -57,6 +76,7 @@ public class SearchActivity extends AppCompatActivity {
         rcv_productSearch.addItemDecoration(itemDecoration);
 
     }
+
 //  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
     private void filterList(String newText) {
         List<ProductSearchDomain> filterList = new ArrayList<>();
@@ -71,7 +91,6 @@ public class SearchActivity extends AppCompatActivity {
         }else {
             searchAdapter.setFilterList(filterList);
         }
-
     }
 
     private List<ProductSearchDomain> getListProduct() {

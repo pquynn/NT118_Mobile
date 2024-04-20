@@ -149,6 +149,14 @@
     <!-- End: style placeholder -->
 
     <!--  Start: style text product search -->
+    <style name="black_text_18sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <!--  End: style text product search -->
+
+    <!--  Start: style text product search -->
     <style name="black_text_16sp" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
@@ -179,4 +187,5 @@
         <item name="android:textSize">14sp</item>
     </style>
     <!--  End: style text product detail-->
+
 </resources>

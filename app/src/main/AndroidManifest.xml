@@ -114,6 +114,21 @@
             android:exported="true">
         </activity>
         <!--   START: ACCOUNT-->
+
+        <!--   START: SEARCH-->
+        <activity
+            android:name=".activity.customer_module.search.SearchActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: SEARCH-->
+
+        <!--   START: CATEGORY-->
+        <activity
+            android:name=".activity.customer_module.category.CategoryActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: CATEGORY-->
+
     </application>
 
 </manifest>

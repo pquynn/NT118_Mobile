@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            style="@style/black_text_16sp"
+            style="@style/black_text_18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Trà sữa matcha kem cheese"
@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/tv_price"
-            style="@style/black_text_14sp"
+            style="@style/black_text_16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="30.000đ"

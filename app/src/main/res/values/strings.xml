@@ -6,5 +6,4 @@
     <string name="size">Size <font color="#FF0000">*</font></string>
     <string name="topping">Topping <font color="#FF0000">*</font></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

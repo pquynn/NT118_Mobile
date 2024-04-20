@@ -2,14 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-<<<<<<< Updated upstream
-      <entry key="ProductDetailDrinkActivity">
-=======
-      <entry key="ProductDetailActivity">
-        <State />
-      </entry>
-      <entry key="app">
->>>>>>> Stashed changes
+      <entry key="SearchActivity">
         <State />
       </entry>
     </value>

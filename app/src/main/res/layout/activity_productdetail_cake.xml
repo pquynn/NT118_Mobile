@@ -190,6 +190,7 @@
             style="@style/text_text_14sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text="Những yêu cầu khác"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txt_NameCake"
@@ -201,12 +202,12 @@
             style="@style/TextPlaceholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="24dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="Thêm ghi chú"
             android:background="@drawable/rounder_component_label"
+            android:ems="10"
+            android:hint="Thêm ghi chú"
+            android:inputType="text"
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView3"
@@ -259,7 +260,7 @@
                         style="@style/ButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="ADD TO CART"/>
+                        android:text="THÊM VÀO GIỎ HÀNG"/>
                 </LinearLayout>
             </com.google.android.material.bottomnavigation.BottomNavigationView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

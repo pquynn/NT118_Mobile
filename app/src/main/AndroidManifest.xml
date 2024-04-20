@@ -85,6 +85,12 @@
             android:name=".UI.Activity_Fragment.Customer.Checkout.PaymentMethodActivity"
             android:exported="true">
         </activity>
+
+
+        <activity
+            android:name=".activity.customer_module.home.home"
+            android:exported="true">
+        </activity>
         <!--   END: CART - CHECKOUT - PAYMENT-->
 
         <!--    START: REFUND   -->
@@ -129,6 +135,19 @@
         </activity>
         <!--   END: CATEGORY-->
 
+        <!--   START: PRODUCT DETAIL-->
+        <activity
+            android:name=".activity.customer_module.productdetail.ProductDetailCakeActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: PRODUCT DETAIL-->
+
+        <!--   START: PRODUCT DETAIL-->
+        <activity
+            android:name=".activity.customer_module.productdetail.ProductDetailDrinkActivity"
+            android:exported="true">
+        </activity>
+        <!--   END: PRODUCT DETAIL-->
     </application>
 
 </manifest>

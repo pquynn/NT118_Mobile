@@ -3,8 +3,6 @@ package com.example.foodorderingapp.activity.customer_module.search;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +49,6 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         nlist = getListProduct();
         searchAdapter = new SearchAdapter(nlist);
         rcv_productSearch.setAdapter(searchAdapter);
@@ -60,12 +57,7 @@ public class SearchActivity extends AppCompatActivity {
         rcv_productSearch.addItemDecoration(itemDecoration);
 
     }
-
-    private void showSoftKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchView.findFocus(), InputMethodManager.SHOW_IMPLICIT);
-    }
-
+//  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
     private void filterList(String newText) {
         List<ProductSearchDomain> filterList = new ArrayList<>();
         for (ProductSearchDomain itempro: nlist){
@@ -79,6 +71,7 @@ public class SearchActivity extends AppCompatActivity {
         }else {
             searchAdapter.setFilterList(filterList);
         }
+
     }
 
     private List<ProductSearchDomain> getListProduct() {

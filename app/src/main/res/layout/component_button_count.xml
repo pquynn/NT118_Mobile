@@ -10,8 +10,6 @@
         <include layout="@layout/component_button_count"></include>
         -->
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="125dp"
         android:layout_height="48dp"

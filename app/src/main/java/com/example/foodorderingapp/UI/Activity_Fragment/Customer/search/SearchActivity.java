@@ -1,0 +1,88 @@
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.search;
+
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.UI.Adapter.SearchAdapter;
+import com.example.foodorderingapp.Data.Model.ProductSearch;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SearchActivity extends AppCompatActivity {
+
+    RecyclerView rcv_productSearch;
+
+    List<ProductSearch> nlist;
+    SearchAdapter searchAdapter;
+    SearchView searchView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
+
+        rcv_productSearch = findViewById(R.id.recyclerViewProduct);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rcv_productSearch.setLayoutManager(linearLayoutManager);
+
+        searchView = findViewById(R.id.searchView_product);
+        searchView.clearFocus();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+        nlist = getListProduct();
+        searchAdapter = new SearchAdapter(nlist);
+        rcv_productSearch.setAdapter(searchAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        rcv_productSearch.addItemDecoration(itemDecoration);
+
+    }
+//  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
+    private void filterList(String newText) {
+        List<ProductSearch> filterList = new ArrayList<>();
+        for (ProductSearch itempro: nlist){
+            if(itempro.getName().toLowerCase().contains(newText.toLowerCase())){
+                filterList.add(itempro);
+            }
+        }
+
+        if(filterList.isEmpty()){
+            Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
+        }else {
+            searchAdapter.setFilterList(filterList);
+        }
+
+    }
+
+    private List<ProductSearch> getListProduct() {
+        List<ProductSearch> list = new ArrayList<>();
+
+        list.add(new ProductSearch(R.drawable.img1, "Trà sữa chân châu đường đen", "35.000đ"));
+        list.add(new ProductSearch(R.drawable.img2, "Trà sữa truyền thống", "25.000đ"));
+        list.add(new ProductSearch(R.drawable.img3, "Bạc xỉu", "20.000đ"));
+        list.add(new ProductSearch(R.drawable.img4, "Trà chanh cam xả", "30.000đ"));
+        list.add(new ProductSearch(R.drawable.img5, "Bánh mochi socola ", "19.000đ"));
+        list.add(new ProductSearch(R.drawable.img6, "Bánh mochi phúc bồn tử", "19.000đ"));
+        list.add(new ProductSearch(R.drawable.img7, "Bánh Tirasumi Socola", "24.000đ"));
+        list.add(new ProductSearch(R.drawable.img8, "Trà xanh matcha kem cheese", "30.000đ"));
+
+        return list;
+    }
+}

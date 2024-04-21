@@ -43,9 +43,12 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.firestore)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Glidle
     implementation ("com.github.bumptech.glide:glide:4.12.0")
@@ -67,5 +70,6 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
 
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
 }

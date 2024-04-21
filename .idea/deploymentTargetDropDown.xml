@@ -2,23 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="am_feedback_list">
-        <State />
-      </entry>
-      <entry key="am_feedback_product">
-        <State />
-      </entry>
-      <entry key="am_my_orders">
       <entry key="AdminMainActivity">
         <State />
       </entry>
-      <entry key="CheckoutAddressActivity">
+      <entry key="CheckoutActivity">
         <State />
       </entry>
-      <entry key="RefundProgressActivity">
+      <entry key="ProductDetailDrinkActivity">
         <State />
       </entry>
       <entry key="RefundRequestActivity">
+        <State />
+      </entry>
+      <entry key="SearchActivity">
         <State />
       </entry>
       <entry key="app">

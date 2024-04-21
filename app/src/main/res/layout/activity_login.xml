@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D4D4F"
-    tools:context=".Login_SignUp_SetPassword.activity_login">
-
+    tools:context=".UI.Activity_Fragment.Authentication.activity_login">
+    <include layout="@layout/dark_green_bg"></include>
     <TextView
         android:id="@+id/txtActivityLogin"
         android:layout_width="wrap_content"
@@ -188,5 +188,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/javajoy_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,13 @@
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:background">@drawable/rounder_component_button</item>
         <item name="backgroundTint">@color/primary</item>
-        <item name="android:padding">14dp</item>
+        <item name="android:padding">12dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--    style đánh giá sao-->
+    <style name="CustomRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/customer_dialog_star</item>
     </style>
 </resources>

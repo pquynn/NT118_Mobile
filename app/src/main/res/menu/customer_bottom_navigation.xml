@@ -9,7 +9,7 @@
     <!-- Products Fragment -->
     <item
         android:title=""
-        android:id="@+id/productsFragment"
+        android:id="@+id/categoryFragment"
         android:icon="@drawable/list"/>
 
     <!-- Cart Fragment -->

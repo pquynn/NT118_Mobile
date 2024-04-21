@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.PaymentMethodAdapter;
-import com.example.foodorderingapp.domain.PaymentMethod;
+import com.example.foodorderingapp.UI.Adapter.PaymentMethodAdapter;
+import com.example.foodorderingapp.Data.Model.PaymentMethod;
 
 import java.util.ArrayList;
 

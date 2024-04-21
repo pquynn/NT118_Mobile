@@ -12,8 +12,8 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Notification;
         import android.widget.TextView;
 
         import com.example.foodorderingapp.R;
-        import com.example.foodorderingapp.adapter.NotificationAdapter;
-        import com.example.foodorderingapp.domain.Notification;
+        import com.example.foodorderingapp.UI.Adapter.NotificationAdapter;
+        import com.example.foodorderingapp.Data.Model.Entity.Notification;
 
         import java.text.ParseException;
         import java.text.SimpleDateFormat;

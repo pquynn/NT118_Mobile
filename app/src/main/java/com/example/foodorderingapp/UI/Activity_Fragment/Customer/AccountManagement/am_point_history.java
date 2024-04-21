@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.PointAdapter;
-import com.example.foodorderingapp.domain.Point;
+import com.example.foodorderingapp.UI.Adapter.PointAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.UserPoint;
 
 import java.util.ArrayList;
 
 public class am_point_history extends AppCompatActivity {
     private RecyclerView.Adapter PointAdapter;
     private RecyclerView recyclerViewList;
-    private ArrayList<Point> listPoint;
+    private ArrayList<UserPoint> listPoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,30 +40,30 @@ public class am_point_history extends AppCompatActivity {
 
     }
     private void createPointList(){
-        listPoint.add(new Point(-100, "2024-04-07"));
-        listPoint.add(new Point(200, "2024-04-01"));
-        listPoint.add(new Point(0, "2024-04-03"));
-        listPoint.add(new Point(-400, "2024-04-02"));
-        listPoint.add(new Point(500, "2024-03-07"));
-        listPoint.add(new Point(-600, "2024-02-07"));
-        listPoint.add(new Point(700, "2024-01-07"));
-        listPoint.add(new Point(-800, "2024-03-08"));
-        listPoint.add(new Point(100, "2024-04-07"));
-        listPoint.add(new Point(200, "2024-04-01"));
-        listPoint.add(new Point(-300, "2024-04-03"));
-        listPoint.add(new Point(400, "2024-04-02"));
-        listPoint.add(new Point(500, "2024-03-07"));
-        listPoint.add(new Point(600, "2024-02-07"));
-        listPoint.add(new Point(700, "2024-01-07"));
-        listPoint.add(new Point(800, "2024-03-08"));
-        listPoint.add(new Point(100, "2024-04-07"));
-        listPoint.add(new Point(200, "2024-04-01"));
-        listPoint.add(new Point(300, "2024-04-03"));
-        listPoint.add(new Point(400, "2024-04-02"));
-        listPoint.add(new Point(500, "2024-03-07"));
-        listPoint.add(new Point(600, "2024-02-07"));
-        listPoint.add(new Point(700, "2024-01-07"));
-        listPoint.add(new Point(800, "2024-03-08"));
+        listPoint.add(new UserPoint(-100, "2024-04-07"));
+        listPoint.add(new UserPoint(200, "2024-04-01"));
+        listPoint.add(new UserPoint(0, "2024-04-03"));
+        listPoint.add(new UserPoint(-400, "2024-04-02"));
+        listPoint.add(new UserPoint(500, "2024-03-07"));
+        listPoint.add(new UserPoint(-600, "2024-02-07"));
+        listPoint.add(new UserPoint(700, "2024-01-07"));
+        listPoint.add(new UserPoint(-800, "2024-03-08"));
+        listPoint.add(new UserPoint(100, "2024-04-07"));
+        listPoint.add(new UserPoint(200, "2024-04-01"));
+        listPoint.add(new UserPoint(-300, "2024-04-03"));
+        listPoint.add(new UserPoint(400, "2024-04-02"));
+        listPoint.add(new UserPoint(500, "2024-03-07"));
+        listPoint.add(new UserPoint(600, "2024-02-07"));
+        listPoint.add(new UserPoint(700, "2024-01-07"));
+        listPoint.add(new UserPoint(800, "2024-03-08"));
+        listPoint.add(new UserPoint(100, "2024-04-07"));
+        listPoint.add(new UserPoint(200, "2024-04-01"));
+        listPoint.add(new UserPoint(300, "2024-04-03"));
+        listPoint.add(new UserPoint(400, "2024-04-02"));
+        listPoint.add(new UserPoint(500, "2024-03-07"));
+        listPoint.add(new UserPoint(600, "2024-02-07"));
+        listPoint.add(new UserPoint(700, "2024-01-07"));
+        listPoint.add(new UserPoint(800, "2024-03-08"));
     }
 
 

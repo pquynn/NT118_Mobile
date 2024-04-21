@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.AccountAddressAdapter;
-import com.example.foodorderingapp.domain.Address;
+import com.example.foodorderingapp.UI.Adapter.AccountAddressAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.UserAddress;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class AM_AddressActivity extends AppCompatActivity {
     private FrameLayout btnBack;
     private TextView screenName;
     private ImageView btnEdit;
-    ArrayList<Address> addresses;
+    ArrayList<UserAddress> addresses;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_address);
@@ -58,10 +58,10 @@ public class AM_AddressActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewAddress);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        addresses = new ArrayList<Address>();
-        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
-        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
-        addresses.add(new Address("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
+        addresses = new ArrayList<UserAddress>();
+        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
+        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
+        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
 
         adapter = new AccountAddressAdapter(addresses);
         recyclerViewList.setAdapter(adapter);

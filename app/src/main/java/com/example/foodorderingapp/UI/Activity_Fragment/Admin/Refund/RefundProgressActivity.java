@@ -1,15 +1,8 @@
 package com.example.foodorderingapp.UI.Activity_Fragment.Admin.Refund;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,17 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.CouponAdapter;
-import com.example.foodorderingapp.adapter.RefundProductAdapter;
-import com.example.foodorderingapp.adapter.RefundProgressAdapter;
-import com.example.foodorderingapp.adapter.RefundRequestAdapter;
-import com.example.foodorderingapp.domain.Coupon;
-import com.example.foodorderingapp.domain.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.RefundProgressAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RefundProgressActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;

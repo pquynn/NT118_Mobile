@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.OrderDetailAdapter;
-import com.example.foodorderingapp.domain.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.OrderDetailAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 
@@ -89,9 +89,14 @@ public class CheckoutActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewOrderDetail);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        productList = new ArrayList<OrderDetail>();
+        //todo: check lại khi thêm sản phẩm vào list vì màn hình ko hiện lên (cả những cái order_detail)
+        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
+
         productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
-        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
+        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
 
 //        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 //        productList.add(new OrderDetail("Bánh", 45000, "Lớn", "a", 2));

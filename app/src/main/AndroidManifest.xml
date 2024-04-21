@@ -19,22 +19,19 @@
             android:name=".UI.Activity_Fragment.Admin.activity_adminOrderDetail"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Admin.activity_adminOrder"
+            android:name=".UI.Activity_Fragment.Authentication.activity_verifyOTP"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_verifyOTP"
+            android:name=".UI.Activity_Fragment.Authentication.activity_setpassword"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_setpassword"
+            android:name=".UI.Activity_Fragment.Authentication.activity_forgetpassword"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_forgetpassword"
+            android:name=".UI.Activity_Fragment.Authentication.activity_signup"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_signup"
-            android:exported="true" />
-        <activity
-            android:name=".UI.Activity_Fragment.Login_SignUp_SetPassword.activity_login"
+            android:name=".UI.Activity_Fragment.Authentication.activity_login"
             android:exported="true" />
         <activity
             android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_feedback_product"
@@ -61,7 +58,7 @@
             android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_user_info"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.MainActivity"
+            android:name=".UI.Activity_Fragment.Customer.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -88,7 +85,7 @@
 
 
         <activity
-            android:name=".activity.customer_module.home.home"
+            android:name=".UI.Activity_Fragment.Customer.Home.home"
             android:exported="true">
         </activity>
         <!--   END: CART - CHECKOUT - PAYMENT-->
@@ -123,7 +120,7 @@
 
         <!--   START: SEARCH-->
         <activity
-            android:name=".activity.customer_module.search.SearchActivity"
+            android:name=".UI.Activity_Fragment.Customer.search.SearchActivity"
             android:exported="true">
         </activity>
         <!--   END: SEARCH-->
@@ -137,14 +134,14 @@
 
         <!--   START: PRODUCT DETAIL-->
         <activity
-            android:name=".activity.customer_module.productdetail.ProductDetailCakeActivity"
+            android:name=".UI.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity"
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->
 
         <!--   START: PRODUCT DETAIL-->
         <activity
-            android:name=".activity.customer_module.productdetail.ProductDetailDrinkActivity"
+            android:name=".UI.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity"
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->

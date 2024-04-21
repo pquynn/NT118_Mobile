@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout.CheckoutActivity;
-import com.example.foodorderingapp.adapter.CartAdapter;
-import com.example.foodorderingapp.domain.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.CartAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

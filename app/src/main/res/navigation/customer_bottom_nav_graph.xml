@@ -15,10 +15,10 @@
         android:label="fragment_account"
         tools:layout="@layout/fragment_am_navigation" />
     <fragment
-        android:id="@+id/productsFragment"
-        android:name="com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductList.ProductsFragment"
-        android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        android:id="@+id/categoryFragment"
+        android:name="com.example.foodorderingapp.UI.Activity_Fragment.Customer.Category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.foodorderingapp.UI.Activity_Fragment.Customer.Cart.CartFragment"

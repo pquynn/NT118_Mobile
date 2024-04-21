@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.CouponAdapter;
-import com.example.foodorderingapp.domain.Coupon;
+import com.example.foodorderingapp.UI.Adapter.CouponAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.Coupon;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

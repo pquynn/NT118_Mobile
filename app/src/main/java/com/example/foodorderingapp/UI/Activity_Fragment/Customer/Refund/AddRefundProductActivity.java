@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.RefundProductAdapter;
-import com.example.foodorderingapp.domain.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.RefundProductAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

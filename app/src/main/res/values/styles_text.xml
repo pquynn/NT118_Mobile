@@ -4,7 +4,7 @@
     <style name="Heading1" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/dark_text</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">28sp</item>
     </style>
 
     <!--  style heading 2.  -->

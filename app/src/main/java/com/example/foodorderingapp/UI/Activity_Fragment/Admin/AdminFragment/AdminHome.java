@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.adapter.AdminHomeAdapter;
+import com.example.foodorderingapp.UI.Adapter.AdminHomeAdapter;
 
 public class AdminHome extends Fragment {
     private RecyclerView recyclerViewList;

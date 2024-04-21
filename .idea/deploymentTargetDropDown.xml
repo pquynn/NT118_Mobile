@@ -8,13 +8,13 @@
       <entry key="CheckoutActivity">
         <State />
       </entry>
-      <entry key="ProductDetailDrinkActivity">
+      <entry key="MainActivity">
         <State />
       </entry>
-      <entry key="RefundRequestActivity">
+      <entry key="activity_adminOrderDetail">
         <State />
       </entry>
-      <entry key="SearchActivity">
+      <entry key="activity_login">
         <State />
       </entry>
       <entry key="app">

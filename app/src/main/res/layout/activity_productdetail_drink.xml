@@ -240,10 +240,11 @@
             tools:ignore="MissingConstraints">
 
             <RadioButton
+                android:id="@+id/radioButtonLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:buttonTint="@color/primary"/>
+                android:buttonTint="@color/primary"
+                android:onClick="onRadioButtonClicked"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -272,8 +273,10 @@
             tools:ignore="MissingConstraints">
 
             <RadioButton
+                android:id="@+id/radioButtonMedium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -303,8 +306,10 @@
             tools:ignore="MissingConstraints">
 
             <RadioButton
+                android:id="@+id/radioButtonSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"/>
 
             <TextView
                 android:layout_width="0dp"

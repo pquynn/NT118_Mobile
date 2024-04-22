@@ -20,4 +20,11 @@
     <style name="CustomRatingBarStyle" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/customer_dialog_star</item>
     </style>
+
+    <style name="buttonsearch">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
 </resources>

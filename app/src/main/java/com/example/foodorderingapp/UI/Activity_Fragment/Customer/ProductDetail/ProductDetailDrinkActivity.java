@@ -3,6 +3,7 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
     private TextView contentTextView, showMoreTextView, showLessTextView;
     private CharSequence originalText;
     private int originalMaxLines;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_drink);
@@ -99,6 +101,32 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
 
         CommentDialogFragment commentDialogFragment = new CommentDialogFragment(listComment);
         commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());
+    }
+
+    public void onRadioButtonClicked(@NonNull View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        RadioButton radioButtonLarge = findViewById(R.id.radioButtonLarge);
+        RadioButton radioButtonMedium = findViewById(R.id.radioButtonMedium);
+        RadioButton radioButtonSmall = findViewById(R.id.radioButtonSmall);
+
+        // Huỷ chọn tất cả các RadioButton ngoại trừ RadioButton được chọn
+        if (view.getId() == R.id.radioButtonLarge) {
+            if (checked) {
+                radioButtonMedium.setChecked(false);
+                radioButtonSmall.setChecked(false);
+            }
+        } else if (view.getId() == R.id.radioButtonMedium) {
+            if (checked) {
+                radioButtonLarge.setChecked(false);
+                radioButtonSmall.setChecked(false);
+            }
+        } else if (view.getId() == R.id.radioButtonSmall) {
+            if (checked) {
+                radioButtonLarge.setChecked(false);
+                radioButtonMedium.setChecked(false);
+            }
+        }
     }
 
     @NonNull

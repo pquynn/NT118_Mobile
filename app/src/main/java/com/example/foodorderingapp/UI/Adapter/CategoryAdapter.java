@@ -50,12 +50,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.imgCategory.setImageResource(category.getResourceid());
         holder.txtname.setText(category.getName());
 
-//        holder.imgCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.Admi
 import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminDeliveredOrder;
 import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminDeliveringOrder;
 import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminNewOrder;
+import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminRefundOrder;
 
 public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
     public AdminOrderViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -27,6 +28,8 @@ public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
                 return new AdminDeliveredOrder();
             case 3:
                 return new AdminCancelOrder();
+            case 4:
+                return new AdminRefundOrder();
             default:
                 return new AdminNewOrder();
         }
@@ -34,6 +37,6 @@ public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 }

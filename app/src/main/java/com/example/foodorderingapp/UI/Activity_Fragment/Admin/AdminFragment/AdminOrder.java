@@ -47,6 +47,9 @@ public class AdminOrder extends Fragment {
                 case 3:
                     tab.setText("Đã hủy");
                     break;
+                case 4:
+                    tab.setText("Hoàn tiền");
+                    break;
             }
         }).attach();
 

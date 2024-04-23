@@ -3,6 +3,7 @@
     <string name="btn_apply">Áp dụng</string>
     <string name="extend">Xem thêm</string>
     <string name="description">"Loại đồ uống phổ biến có nguồn gốc từ Đài Loan, nổi tiếng với hương vị độc đáo và hấp dẫn. Nó bao gồm trà đen hoặc trà oolong pha chế kết hợp với sữa và đá, tạo ra một hỗn hợp mát lạnh và thơm ngon. Chân châu, là những viên nhỏ màu trắng, đen hoặc đa sắc, được làm từ bột bắp và có đặc điểm như đàn hồi và ngậy. Khi thưởng thức, việc ngậm nhấm chân châu kết hợp với hương vị đặc trưng của trà sẽ tạo ra trải nghiệm thú vị cho người uống. "</string>
+    <string name="descriptioncake">"Bao bọc bởi lớp vỏ Mochi dẻo thơm, bên trong là lớp kem lạnh cùng nhân phúc bồn tử ngọt ngào. Gọi 1 chiếc Mochi cho ngày thật tươi mát. Sản phẩm phải bảo quán mát và dùng ngon nhất trong 2h sau khi nhận hàng. "</string>
     <string name="size">Size <font color="#FF0000">*</font></string>
     <string name="topping">Topping <font color="#FF0000">*</font></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

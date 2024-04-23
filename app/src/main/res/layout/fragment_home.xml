@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".UI.Activity_Fragment.Customer.Home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -242,7 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Java Joy"
+                android:text="Java Joy Coffee"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_posterStore"
                 tools:ignore="HardcodedText,MissingConstraints" />
@@ -287,39 +288,13 @@
                 tools:ignore="HardcodedText,MissingConstraints" />
 
             <ImageView
-                android:id="@+id/ic_delivery"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:importantForAccessibility="no"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_ic_star"
-                app:layout_constraintTop_toBottomOf="@+id/Category"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_delivery"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/text_ic_delivery"
-                style="@style/Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="Free"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ic_delivery"
-                app:layout_constraintTop_toBottomOf="@+id/Category"
-                app:layout_constraintVertical_bias="1.0"
-                tools:ignore="HardcodedText,MissingConstraints" />
-
-            <ImageView
                 android:id="@+id/ic_clock"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="40dp"
                 android:importantForAccessibility="no"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_ic_delivery"
+                app:layout_constraintStart_toEndOf="@+id/text_ic_star"
                 app:layout_constraintTop_toBottomOf="@+id/Category"
                 app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_clock"
@@ -337,9 +312,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/Category"
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="HardcodedText,MissingConstraints" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/txt_ProductPopular"
+            style="@style/text_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Sản phẩm bán chạy nhất"
+            app:layout_constraintStart_toStartOf="@+id/textCategory"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            tools:ignore="MissingConstraints" />
 
-</ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_ProductPopular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintStart_toStartOf="@+id/rcv_homeCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ProductPopular"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txt_NewProduct"
+            style="@style/text_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Sản phẩm mới ra mắt"
+            app:layout_constraintStart_toStartOf="@+id/txt_ProductPopular"
+            app:layout_constraintTop_toBottomOf="@+id/rcv_ProductPopular"
+            tools:ignore="MissingConstraints" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_NewPopular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintStart_toStartOf="@+id/rcv_homeCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txt_NewProduct"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

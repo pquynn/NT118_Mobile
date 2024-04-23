@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.Data.Model.CategoryList;
 
@@ -19,6 +20,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     private Context mContext;
     private List<CategoryList> mlistCategory;
+    private OnItemClickListener listener; // Thêm biến thành viên cho OnItemClickListener
+
+    // Định nghĩa interface OnItemClickListener
+    public interface OnItemClickListener {
+        void onItemClick(ProductSearch product);
+    }
+
+    // Phương thức để thiết lập OnItemClickListener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    //lấy mục sản phẩm ở một vị trí cụ thể
+    public ProductSearch getItemAtPosition(int position) {
+        return mlistCategory.get(position).getListProducts().get(position);
+    }
 
     public CategoryListAdapter(Context context, List<CategoryList> list){
         this.mContext = context;
@@ -29,6 +46,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         this.mlistCategory = list;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public CategoryListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,6 +70,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         categoryProductListAdapter.setData(category.getListProducts());
 
         holder.rcvListCategory.setAdapter(categoryProductListAdapter);
+
+        // Gọi phương thức onItemClick của OnItemClickListener khi một mục được nhấp vào
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(getItemAtPosition(position));
+                }
+            }
+        });
     }
 
     @Override

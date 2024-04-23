@@ -37,6 +37,6 @@ public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return 5;
     }
 }

@@ -51,8 +51,6 @@
                 style="?android:spinnerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="openDatePicker"
-
                 android:text="JAN 01 2020"
                 android:textColor="@color/black"
                 android:textSize="24sp" />

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,13 +15,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.MainActivity;
 
 public class activity_forgetpassword extends AppCompatActivity {
 
     private EditText inputPhone;
     private Button btnSendOTP;
     private FrameLayout btnBack;
+    private ProgressBar progressBar;
+    private AuthRepository authRepository = new AuthRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +40,11 @@ public class activity_forgetpassword extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         inputPhone = findViewById(R.id.editTextPhone);
         btnSendOTP = findViewById(R.id.btnSendOTP);
         btnBack = findViewById(R.id.btn_back);
+        progressBar = findViewById(R.id.progressBar);
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
         inputPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -62,9 +68,32 @@ public class activity_forgetpassword extends AppCompatActivity {
         btnSendOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Xử lý khi nút được nhấn
-                Intent intent = new Intent(activity_forgetpassword.this, activity_verifyOTP.class);
-                startActivity(intent);
+                progressBar.setVisibility(View.VISIBLE);
+                String phone = String.valueOf(inputPhone.getText());
+
+                if (phone.length() != 10 || !phone.startsWith("0")) {
+                    // Thông báp khi nhập thiếu số điện thoại
+                    Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
+                }  else {
+                    // Xử lý đăng nhập khi EditText được điền đầy đủ
+                    progressBar.setVisibility(View.VISIBLE);
+                    authRepository.checkPhoneNumber(String.valueOf(inputPhone.getText()), new AuthRepository.AuthCallback() {
+                        @Override
+                        public void onLoginSuccess(String data) {
+                            progressBar.setVisibility(View.GONE);
+
+                            Intent intent = new Intent(activity_forgetpassword.this, activity_verifyOTP.class);
+                            startActivity(intent);
+                            authRepository.sendOTP(phone, false, activity_forgetpassword.this);
+                        }
+
+                        @Override
+                        public void onLoginFailure(Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 

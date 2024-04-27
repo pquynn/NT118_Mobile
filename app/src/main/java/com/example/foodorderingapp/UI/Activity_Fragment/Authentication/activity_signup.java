@@ -2,6 +2,7 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.foodorderingapp.Data.Model.Entity.Login;
 import com.example.foodorderingapp.R;
 
 import java.security.MessageDigest;
@@ -22,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class activity_signup extends AppCompatActivity {
 
+    private Login model;
     EditText inputName, inputPhone, inputPassword, inputConfirmPassword;
     Button btnSignUp;
     ImageButton btnViewPassword, btnViewConfirmPassword;
@@ -39,6 +43,9 @@ public class activity_signup extends AppCompatActivity {
         });
         init();
     }
+
+
+
     private void init(){
         inputName = findViewById(R.id.editTextName); // Tên người dùng
         inputPhone = findViewById(R.id.editTextPhone); // Số điện thoại
@@ -84,11 +91,16 @@ public class activity_signup extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
                 String confirmPassword = inputConfirmPassword.getText().toString().trim();
 
+                Log.d("name", name);
+                Log.d("phone", phone);
+                Log.d("password", password);
+                Log.d("confirmPassword", confirmPassword);
+
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
                     if (phone.length() != 10 || !phone.startsWith("0")) {
                         // Thông báp khi nhập thiếu số điện thoại
                         Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
-                    } else if (!password.isEmpty() || !confirmPassword.isEmpty()) {
+                    } else if (password.isEmpty() || confirmPassword.isEmpty()) {
                         // Thông báp khi chưa nhập mật khẩu
                         Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
                     } else if (!password.equals(confirmPassword)) {
@@ -100,6 +112,7 @@ public class activity_signup extends AppCompatActivity {
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
 
+//                        model.signUp(phone, password);
                         // Xử lý đăng ký
                         Toast.makeText(getApplicationContext(), "Đang xử lý đăng ký!", Toast.LENGTH_SHORT).show();
                     }

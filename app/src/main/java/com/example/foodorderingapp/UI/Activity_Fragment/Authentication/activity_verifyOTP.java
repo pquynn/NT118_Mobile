@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +25,7 @@ public class activity_verifyOTP extends AppCompatActivity {
     private EditText firstInput, secondInput, thirdInput, fourthInput;
     private Button btnCofirm;
     private FrameLayout btnBack;
+    private TextView txtResendOTP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class activity_verifyOTP extends AppCompatActivity {
         fourthInput = findViewById(R.id.editTextPhone);
         btnCofirm = findViewById(R.id.btnSignUp); // Nút xác thực
         btnBack = findViewById(R.id.btn_back); // Nút quay lại
+        txtResendOTP = findViewById(R.id.txtResendOTP);
 
         firstInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,6 +92,13 @@ public class activity_verifyOTP extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        txtResendOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Repository.AccountManagement.MyOrders.OrdersListFeedbackRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.UI.Adapter.FeedbackItemAdapter;
 import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class am_feedback_list extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
@@ -24,6 +26,19 @@ public class am_feedback_list extends AppCompatActivity {
         headerName.setText("Đánh giá đơn hàng");
 
         recyclerViewOrderFeedBack();
+
+        OrdersListFeedbackRepository repository = new OrdersListFeedbackRepository();
+        repository.getlistFeedback("2", new OrdersListFeedbackRepository.orderItemCallback() {
+            @Override
+            public void loadOrderItemsSuccess(List<OrderDetail> orderItems) {
+
+            }
+
+            @Override
+            public void loadOrderItemsError(Exception e) {
+
+            }
+        });
     }
 
     private void recyclerViewOrderFeedBack() {

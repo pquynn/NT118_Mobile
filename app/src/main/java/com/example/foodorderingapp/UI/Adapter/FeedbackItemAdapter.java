@@ -29,7 +29,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
     @Override
     public void onBindViewHolder(@NonNull FeedbackItemAdapter.ViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(productList.get(position).getProductPrice());
+        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
         holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));

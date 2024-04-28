@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.Objects;
+
 public class activity_verifyOTP extends AppCompatActivity {
 
     private EditText firstInput, secondInput, thirdInput, fourthInput, fifthInput, sixthInput;
@@ -36,12 +38,10 @@ public class activity_verifyOTP extends AppCompatActivity {
     private FrameLayout btnBack;
     private TextView txtResendOTP;
     private ProgressBar progressBar;
-    private String phone;
+    private String phone, userName;
     private Intent intent;
     private String verificationCode;
-    private AuthRepository authRepository = new AuthRepository();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,10 @@ public class activity_verifyOTP extends AppCompatActivity {
 
         intent = getIntent();
         phone = intent.getStringExtra("phone");
+        userName = "";
+        if (intent.getStringExtra("userName")!=null){
+            userName = intent.getStringExtra("userName");
+        }
 
         firstInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -154,23 +158,6 @@ public class activity_verifyOTP extends AppCompatActivity {
             }
         });
 
-//        txtResendOTP.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                authRepository.sendOTP(phone, true, activity_verifyOTP.this, new AuthRepository.AuthCallbackOTP() {
-//                    @Override
-//                    public void onSuccess() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Exception e) {
-//
-//                    }
-//                });
-//            }
-//        });
-
         // Xử lý tài khoản mới
         btnCofirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,52 +174,8 @@ public class activity_verifyOTP extends AppCompatActivity {
                 if (!inputOTP.isEmpty()) {
 
                     verificationCode = intent.getStringExtra("verificationCode");
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            String verificationCode;
-//                            while (true) {
-//                                verificationCode = authRepository.getVerificationCode();
-//                                if (verificationCode != null) {
-//                                    break;
-//                                }
-//                                try {
-//                                    Thread.sleep(100); // Chờ 100 milliseconds trước khi kiểm tra lại
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                            Log.d("OTP", verificationCode);
-//                            Log.d("OTP input", inputOTP);
-//
-//                            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, inputOTP);
-//
-//                            firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    if (task.isSuccessful()) {
-//                                        progressBar.setVisibility(View.GONE);
-//
-//                                        // Chuyển qua màn hình đặt lại mật khẩu
-//                                        Intent intent = new Intent(activity_verifyOTP.this, activity_setpassword.class);
-//                                        intent.putExtra("phone", phone);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    } else {
-//                                        progressBar.setVisibility(View.GONE);
-//
-//                                        Toast.makeText(getApplicationContext(), "Vui lòng kiếm tra mã OTP!", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }).start();
 
-//                    if (verificationCode != null){
-                    Log.d("OTP", verificationCode);
-                    Log.d("OTP input", inputOTP);
-
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(authRepository.getVerificationCode(), inputOTP);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, inputOTP);
 
                     firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -240,9 +183,14 @@ public class activity_verifyOTP extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 progressBar.setVisibility(View.GONE);
 
-                                // Chuyển qua màn hình đặt lại mật khẩu
                                 Intent intent = new Intent(activity_verifyOTP.this, activity_setpassword.class);
+
                                 intent.putExtra("phone", phone);
+
+                                if (Objects.equals(userName, "")){
+                                    intent.putExtra("userName", userName);
+                                }
+
                                 startActivity(intent);
                                 finish();
                             } else {
@@ -252,9 +200,6 @@ public class activity_verifyOTP extends AppCompatActivity {
                             }
                         }
                     });
-//                    } else {
-//
-//                    }
                 } else {
                     // Hiển thị thông báo khi có thiếu thông tin
                     progressBar.setVisibility(View.GONE);

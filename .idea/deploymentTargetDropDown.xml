@@ -2,19 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="activity_forgetpassword">
-        <State />
-      </entry>
       <entry key="activity_login">
         <State />
       </entry>
       <entry key="activity_setpassword">
         <State />
       </entry>
-      <entry key="activity_signup">
+      <entry key="activity_verifyOTP">
         <State />
       </entry>
-      <entry key="activity_verifyOTP">
+      <entry key="am_feedback_list">
         <State />
       </entry>
       <entry key="app">

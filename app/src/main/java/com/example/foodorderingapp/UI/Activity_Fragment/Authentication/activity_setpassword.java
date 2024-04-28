@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,7 @@ import com.example.foodorderingapp.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 public class activity_setpassword extends AppCompatActivity {
 
@@ -30,9 +32,10 @@ public class activity_setpassword extends AppCompatActivity {
     private Button btnConfirm;
     private FrameLayout btnBack;
     private ImageButton btnViewOne, btnViewTwo;
+    private TextView txtActivitySetPassword;
     private ProgressBar progressBar;
     private Intent intent;
-    private String phone;
+    private String phone, userName;
     private AuthRepository authRepository = new AuthRepository();
 
     @Override
@@ -49,7 +52,7 @@ public class activity_setpassword extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
         inputConfirmPassword = findViewById(R.id.editTextConfirmPassword); // Xác nhận mật khẩu
         btnConfirm = findViewById(R.id.btnConfirm); // Nút xác nhận
@@ -57,9 +60,15 @@ public class activity_setpassword extends AppCompatActivity {
         btnViewOne = findViewById(R.id.imgBtnVisibility);
         btnViewTwo = findViewById(R.id.imgBtnVisibilityConfirm);
         progressBar = findViewById(R.id.progressBar);
+        txtActivitySetPassword = findViewById(R.id.txtActivitySetPassword);
 
         intent = getIntent();
         phone = intent.getStringExtra("phone");
+        userName = "";
+        if (intent.getStringExtra("userName") != null) {
+            userName = intent.getStringExtra("userName");
+            txtActivitySetPassword.setText("Nhập mật khẩu");
+        }
 
         // Xử lý khi ấn nút quay lại
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -87,15 +96,20 @@ public class activity_setpassword extends AppCompatActivity {
                         // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
-                        Log.d("Set Password", password);
+
+                        if (!Objects.equals(userName, "")) {
+                            authRepository.createUser(userName, phone, "", getApplicationContext());
+                        }
 
                         authRepository.changePassword(phone, password, new AuthRepository.AuthCallbackUpdatePassword() {
                             @Override
                             public void onUpdateSuccess() {
                                 progressBar.setVisibility(View.GONE);
-
-                                Toast.makeText(getApplicationContext(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-
+                                if (!Objects.equals(userName, "")) {
+                                    Toast.makeText(getApplicationContext(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                                }
                                 Intent intent = new Intent(activity_setpassword.this, activity_login.class);
                                 startActivity(intent);
                                 finish();
@@ -175,6 +189,7 @@ public class activity_setpassword extends AppCompatActivity {
             }
         });
     }
+
     // Hàm để mã hóa chuỗi thành MD5
     private String md5(String input) {
         try {

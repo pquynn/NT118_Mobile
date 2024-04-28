@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.Data.Repository.Authentication;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -33,7 +35,7 @@ public class AuthRepository {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference reference = firebaseFirestore.collection("LOGIN");
     private CollectionReference reference_user = firebaseFirestore.collection("USER");
-
+//    private boolean checkOTP = false;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String verificationCode;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
@@ -78,18 +80,22 @@ public class AuthRepository {
         });
     }
 
-    public void sendOTP(String phone, boolean isResend, Activity activity, AuthCallbackOTP callback) {
+    public void sendOTP(String phone, boolean isResend,Activity activity, AuthCallbackOTP callback) {
         // Xóa số 0 ở đầu
         phone = phone.replaceFirst("^0", "");
         // Thêm +84 vào đầu chuỗi
         phone = "+84" + phone;
 
-        PhoneAuthOptions.Builder options = PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(phone) // Phone number to verify
+        PhoneAuthOptions.Builder options = PhoneAuthOptions.newBuilder(firebaseAuth)
+                .setPhoneNumber(phone) // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(activity).setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                .setActivity(activity)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                         // Xử lý khi xác minh hoàn thành
+                        Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
+//                        checkOTP = true;
                     }
 
                     @Override
@@ -187,6 +193,11 @@ public class AuthRepository {
                     Log.e("AddUser", "Lỗi khi thêm thông tin đăng nhập vào bộ sưu tập LOGIN", e);
                 });
     }
+
+//    public boolean isCheckOTP() {
+//        return checkOTP;
+//    }
+
 
     public String getVerificationCode() {
         return verificationCode;

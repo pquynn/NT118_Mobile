@@ -2,13 +2,10 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,15 +19,10 @@ import com.example.foodorderingapp.Data.Model.Entity.Login;
 import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class activity_signup extends AppCompatActivity {
 
-    private Login model;
-    private EditText inputName, inputPhone, inputPassword, inputConfirmPassword;
+    private EditText inputName, inputPhone;
     private Button btnSignUp;
-    private ImageButton btnViewPassword, btnViewConfirmPassword;
     private FrameLayout btnBack;
     private ProgressBar progressBar;
     private AuthRepository authRepository = new AuthRepository();
@@ -52,12 +44,8 @@ public class activity_signup extends AppCompatActivity {
     private void init() {
         inputName = findViewById(R.id.editTextName); // Tên người dùng
         inputPhone = findViewById(R.id.editTextPhone); // Số điện thoại
-        inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
-        inputConfirmPassword = findViewById(R.id.editTextConfirmPassword); // Xác nhận mật khẩu
         btnBack = findViewById(R.id.btn_back); // Nút quay lại
         btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
-        btnViewPassword = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
-        btnViewConfirmPassword = findViewById(R.id.imgBtnVisibilityConfirm); // Nút xem xác nhận mật khẩu
         progressBar = findViewById(R.id.progressBar);
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
@@ -93,125 +81,54 @@ public class activity_signup extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 String name = inputName.getText().toString().trim();
                 String phone = inputPhone.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
-                String confirmPassword = inputConfirmPassword.getText().toString().trim();
 
-                Log.d("name", name);
-                Log.d("phone", phone);
-                Log.d("password", password);
-                Log.d("confirmPassword", confirmPassword);
-
-                if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
+                if (!name.isEmpty() && !phone.isEmpty()) {
                     if (phone.length() != 10 || !phone.startsWith("0")) {
                         // Thông báp khi nhập thiếu số điện thoại
                         Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
-                    } else if (password.isEmpty() || confirmPassword.isEmpty()) {
-                        // Thông báp khi chưa nhập mật khẩu
-                        Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
-                    } else if (!password.equals(confirmPassword)) {
-                        // Thông báo khi xác nhận mật khẩu sai
-                        inputConfirmPassword.setText("");
-                        Toast.makeText(getApplicationContext(), "Vui lòng xác nhận lại mật khẩu!", Toast.LENGTH_SHORT).show();
                     } else {
-                        // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
-                        // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
-                        password = md5(password);
+                        authRepository.checkPhoneNumber(phone, new AuthRepository.AuthCallback() {
+                            @Override
+                            public void onLoginSuccess(String data) {
+                                authRepository.sendOTP(phone, false, activity_signup.this, new AuthRepository.AuthCallbackOTP() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent intent = new Intent(activity_signup.this, activity_verifyOTP.class);
+                                        intent.putExtra("phone", phone);
+                                        intent.putExtra("verificationCode", authRepository.getVerificationCode());
+                                        intent.putExtra("userName", name);
 
-                        authRepository.createUser(name, phone, password, getApplicationContext());
-                        progressBar.setVisibility(View.GONE);
+                                        progressBar.setVisibility(View.GONE);
 
-                        Intent intent = new Intent(activity_signup.this, activity_login.class);
-                        startActivity(intent);
-                        finish();
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        progressBar.setVisibility(View.GONE);
+
+                                        Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onLoginFailure(Exception e) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Số điện thoại sai hoặc đã được sử dụng!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                 } else {
                     // Hiển thị thông báo khi có thiếu thông tin
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin và mật khẩu!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // Biến kiểm tra trạng thái xem mật khẩu
-        final boolean[] passwordVisible = {false};
-
-        // Xử lý nút xem mật khẩu
-        btnViewPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Thay đổi kiểu hiển thị của EditText
-                if (passwordVisible[0]) {
-                    // Nếu mật khẩu đang hiển thị, ẩn nó
-                    inputPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    passwordVisible[0] = false;
-                    // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
-                    btnViewPassword.setImageResource(R.drawable.visibility);
-                    // Di chuyển con trỏ về cuối chuỗi
-                    inputPassword.setSelection(inputPassword.getText().length());
-                } else {
-                    // Nếu mật khẩu đang ẩn, hiển thị nó
-                    inputPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                    passwordVisible[0] = true;
-                    // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
-                    btnViewPassword.setImageResource(R.drawable.visibility_off);
-                    // Di chuyển con trỏ về cuối chuỗi
-                    inputPassword.setSelection(inputPassword.getText().length());
-                }
-            }
-        });
-
-        // Biến kiểm tra trạng thái xem mật khẩu
-        final boolean[] confirmPasswordVisible = {false};
-
-        // Xử lý nút xem mật khẩu
-        btnViewConfirmPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Thay đổi kiểu hiển thị của EditText
-                if (confirmPasswordVisible[0]) {
-                    // Nếu mật khẩu đang hiển thị, ẩn nó
-                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    confirmPasswordVisible[0] = false;
-                    // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
-                    btnViewConfirmPassword.setImageResource(R.drawable.visibility);
-                    // Di chuyển con trỏ về cuối chuỗi
-                    inputConfirmPassword.setSelection(inputConfirmPassword.getText().length());
-                } else {
-                    // Nếu mật khẩu đang ẩn, hiển thị nó
-                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                    confirmPasswordVisible[0] = true;
-                    // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
-                    btnViewConfirmPassword.setImageResource(R.drawable.visibility_off);
-                    // Di chuyển con trỏ về cuối chuỗi
-                    inputConfirmPassword.setSelection(inputConfirmPassword.getText().length());
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    // Hàm để mã hóa chuỗi thành MD5
-    private String md5(String input) {
-        try {
-            // Tạo đối tượng MessageDigest với thuật toán MD5
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            // Cập nhật dữ liệu đầu vào
-            digest.update(input.getBytes());
-            // Lấy bản mã đã mã hóa
-            byte[] messageDigest = digest.digest();
-
-            // Chuyển bản mã thành dạng hex
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : messageDigest) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

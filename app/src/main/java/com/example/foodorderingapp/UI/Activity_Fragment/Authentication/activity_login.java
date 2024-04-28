@@ -93,7 +93,7 @@ public class activity_login extends AppCompatActivity {
                         @Override
                         public void onLoginSuccess(String loginId) {
                             // Trường hợp đăng nhập thành công
-                            Toast.makeText(getApplicationContext(), "Đăng nhập thành công! ID:" + authRepository.getLoginID(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
                             Intent intent = new Intent(activity_login.this, MainActivity.class);

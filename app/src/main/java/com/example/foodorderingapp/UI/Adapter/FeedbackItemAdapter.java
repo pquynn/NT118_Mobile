@@ -3,11 +3,13 @@ package com.example.foodorderingapp.UI.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.Data.Model.OrderDetail;
 
@@ -33,6 +35,13 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
         holder.productSize.setText(productList.get(position).getProductSize());
         holder.note.setText(productList.get(position).getNote());
         holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+        Glide.with(holder.itemView.getContext())
+                .load(productList.get(position).getProductImage())
+                .into(holder.productImage);
+
+        //Glide.with(holder.itemView.getContext())
+        //             .load(imageItem.getImageUrl()) // Đường link của hình ảnh
+        //             .into(holder.imageView);
     }
 
     @Override
@@ -46,6 +55,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
         TextView productSize;
         TextView note;
         TextView quantity;
+        ImageView productImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.txt_product_name);
@@ -53,6 +63,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
             productSize = itemView.findViewById(R.id.txt_product_size);
             note = itemView.findViewById(R.id.txt_note);
             quantity = itemView.findViewById(R.id.txt_quantity);
+            productImage = itemView.findViewById(R.id.img_fb_product);
         }
     }
 }

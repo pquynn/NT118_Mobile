@@ -6,19 +6,11 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.foodorderingapp.Data.Model.Entity.User;
-import com.example.foodorderingapp.Data.Model.OrderDetail;
-import com.example.foodorderingapp.Data.Repository.AccountManagement.MyOrders.OrdersListFeedbackRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.UI.ViewModel.Customer.AccountManagement.UserInfoVM;
-
-import java.util.List;
 
 public class am_user_info extends AppCompatActivity {
-    private UserInfoVM userInfoVM;
+//    private UserInfoVM userInfoVM;
     TextView tvNameAcc, tvName, tvPhone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

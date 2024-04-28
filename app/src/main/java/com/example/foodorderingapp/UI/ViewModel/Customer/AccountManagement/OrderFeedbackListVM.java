@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderFeedbackListVM extends ViewModel{
-    private String orderId;
+
     private MutableLiveData<ArrayList<OrderDetail>> orderDetailListLiveData = new MutableLiveData<>();
     private MutableLiveData<String> orderStatusLiveData = new MutableLiveData<>();
     private OrdersFeedbackRepository repository = new OrdersFeedbackRepository();
-    private OrdersFeedbackRepository repositoryStatus = new OrdersFeedbackRepository();
-    public OrderFeedbackListVM(String orderIdGet){
-        repository.listFeedback(orderIdGet, new OrdersFeedbackRepository.orderItemCallback() {
+//    private OrdersFeedbackRepository repositoryStatus = new OrdersFeedbackRepository();
+    public OrderFeedbackListVM(String orderId){
+        repository.listFeedback(orderId, new OrdersFeedbackRepository.orderItemCallback() {
             @Override
             public void loadOrderItemsSuccess(ArrayList<OrderDetail> orderItems) {
                 orderDetailListLiveData.setValue(orderItems);
@@ -29,11 +29,12 @@ public class OrderFeedbackListVM extends ViewModel{
 
             @Override
             public void loadOrderItemsError(Exception e) {
-                Log.d(TAG, "onErrorOrderList: " + e.getMessage());
+//                Log.d(TAG, "onErrorOrderList: " + e.getMessage());
+                Log.d(TAG, "onErrorOrderList: in listFeedback in VM");
             }
 
         });
-        repositoryStatus.getOrderStatus(orderIdGet, new OrdersFeedbackRepository.orderStatusCallback() {
+        repository.getOrderStatus(orderId, new OrdersFeedbackRepository.orderStatusCallback() {
             @Override
             public void loadOrderStatusSuccess(String status) {
                 orderStatusLiveData.setValue(status);
@@ -44,7 +45,6 @@ public class OrderFeedbackListVM extends ViewModel{
                 Log.d(TAG, "onErrorStatus: " + e.getMessage());
             }
         });
-        orderId = orderIdGet;
     }
 
     public MutableLiveData<ArrayList<OrderDetail>> getOrderDetailListLiveData() {

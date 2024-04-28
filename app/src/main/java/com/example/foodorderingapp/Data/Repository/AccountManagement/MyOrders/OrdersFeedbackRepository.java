@@ -139,7 +139,6 @@ public class OrdersFeedbackRepository {
 
     //Lấy dữ liệu và tạo đối tượng OrderDetail
     private OrderDetail parseOrderItem(Map<String, Object> itemData, nameAndImage nameImageProduct) {
-        String productId = (String) itemData.get("ID_PRODUCT");
         String productNameGet = nameImageProduct.getProductName();
         String productImage = nameImageProduct.getProductImage();
         String note = (String) itemData.get("NOTE");
@@ -153,31 +152,44 @@ public class OrdersFeedbackRepository {
     }
 
     //Lấy product name, product image
-    private void getProductNameImage(String productId, productNameImageCallback callback){
+    // Hàm callback để lấy tên và ảnh sản phẩm
+    private void getProductNameImage(String productId, productNameImageCallback callback) {
 
-        db.collection("PRODUCT").whereEqualTo("ID", productId).limit(1)
+        // Truy cập trực tiếp tài liệu với ID sản phẩm
+        db.collection("PRODUCT").document(productId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful() && !task.getResult().isEmpty()){
-                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
-                            if(document.exists()){
-                                String productNameGet = (String)document.getString("PRODUCT_NAME");
-                                String productPitureGet = (String)document.getString("PRODUCT_IMAGE");
-                                if(productNameGet!=null && productPitureGet!=null) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String productNameGet = document.getString("PRODUCT_NAME");
+                                String productPictureGet = document.getString("PRODUCT_IMAGE");
+
+                                // Kiểm tra dữ liệu
+                                if (productNameGet != null && productPictureGet != null) {
                                     nameImageProduct.setProductName(productNameGet);
-                                    nameImageProduct.setProductImage(productPitureGet);
+                                    nameImageProduct.setProductImage(productPictureGet);
+
+                                    // Gọi callback thành công
+                                    callback.loadProductNameImageSuccess(nameImageProduct);
+                                } else {
+                                    // Nếu dữ liệu thiếu, báo lỗi
+                                    callback.loadProductNameImageError(new Exception("Missing product name or image"));
                                 }
+                            } else {
+                                // Nếu tài liệu không tồn tại
+                                callback.loadProductNameImageError(new Exception("Product not found"));
                             }
-                            callback.loadProductNameImageSuccess(nameImageProduct);
-                        }else{
+                        } else {
+                            // Báo lỗi nếu truy vấn không thành công
                             callback.loadProductNameImageError(task.getException());
                         }
-
                     }
                 });
     }
+
 
     public void addComment(Comment comment) {
         CollectionReference reference = db.collection("COMMENT");

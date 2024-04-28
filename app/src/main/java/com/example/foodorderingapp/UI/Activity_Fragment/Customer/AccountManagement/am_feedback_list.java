@@ -36,8 +36,9 @@ public class am_feedback_list extends AppCompatActivity {
         setContentView(R.layout.activity_am_feedback_list);
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Đánh giá đơn hàng");
+
         //get intent gì đó để lấy orderid
-        orderId = "1";
+        orderId = "4";
         txt_orderId = findViewById(R.id.txt_orderID);
         txt_orderId.setText(orderId);
 
@@ -72,6 +73,7 @@ public class am_feedback_list extends AppCompatActivity {
             }
         });
         txt_orderStatus = findViewById(R.id.txt_order_status);
+        txt_orderStatus.setText("");
         viewModel.getOrderStatusLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {

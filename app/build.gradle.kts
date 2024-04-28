@@ -45,8 +45,14 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.recyclerview)
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    // Firebase Android testing
+    androidTestImplementation ("com.google.firebase:firebase-firestore-testing:latest_version_here")
+
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
@@ -60,7 +66,6 @@ dependencies {
     // Java language implementation
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
-
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))

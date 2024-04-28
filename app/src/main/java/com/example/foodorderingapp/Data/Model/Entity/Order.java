@@ -157,6 +157,21 @@ public class Order {
         this.orderItem = orderItem;
     }
 
+    // get order item in hashmap by orderItemId
+    public OrderItem getOrderItemElementById(String orderItemId){
+        return this.orderItem.get(orderItemId);
+    }
+
+    // set (insert and update) order item in hashmap by orderItemId and new order item
+    public void setOrderItemElementById(String orderItemId, OrderItem orderItemElement){
+        this.orderItem.put(orderItemId, orderItemElement);
+    }
+
+    // delete order item in hashmap by orderItemId
+    public void deleteOrderItemElementById(String orderItemId){
+        this.orderItem.remove(orderItemId);
+    }
+
     @Override
     public String toString() {
         return "Order{" +

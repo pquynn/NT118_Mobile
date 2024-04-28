@@ -19,34 +19,26 @@ public interface IOrderRepository {
     // Create new order document by user id and orderItem
     void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback);
 
-    // Update order by id
-//    void updateOrderById(String orderId, Order order, OrderCallback callback);
+    // Update order status by id
+    void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback);
 
+    // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
+    void checkout(Order order, OrderChangedCallback callback);
 
+    // Add or update product in shopping cart by order id
+    void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback);
 
+    // Delete product in shopping cart by order id
+    void deleteProductCart(String orderId,  String orderItemId, OrderItemRemovedCallback callback);
 
-
-//    // Get order item by id
-//    void getOrderItemById(String itemId, OrderItemCallback callback);
-//
-//    // Get order item list by order id
-//    void getOrderItemListByOrderId(String orderId, OrderItemListCallback callback);
-//
-//
-//
-//    // Delete order item by id
-//    void deleteOrderItemById(String itemId, OrderItemCallback callback);
-//
-//    // Update order item by id
-//    void updateOrderItemById(String itemId, OrderItem orderItem, OrderItemCallback callback);
 
     interface OrderCallback {
         void onOrderLoaded(Order order);
         void onError(String errorMessage);
     }
 
-    interface OrderListCallback {
-        void onOrderListLoaded(List<Order> orderList);
+    interface OrderChangedCallback {
+        void onOrderChanged();
         void onError(String errorMessage);
     }
 
@@ -55,8 +47,15 @@ public interface IOrderRepository {
         void onError(String errorMessage);
     }
 
-    interface OrderItemListCallback {
-        void onOrderItemListLoaded(List<OrderItem> orderItemList);
+    interface OrderItemRemovedCallback {
+        void onOrderItemRemoved(String id);
         void onError(String errorMessage);
     }
+
+    interface OrderListCallback {
+        void onOrderListLoaded(List<Order> orderList);
+        void onError(String errorMessage);
+    }
+
+
 }

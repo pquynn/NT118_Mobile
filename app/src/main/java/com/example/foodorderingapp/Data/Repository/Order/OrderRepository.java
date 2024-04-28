@@ -7,6 +7,7 @@ import com.example.foodorderingapp.Data.Model.Entity.OrderItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -116,16 +117,10 @@ public class OrderRepository implements IOrderRepository {
         });
     }
 
-    // Create order document
+    // Create order document (create cart)
     @Override
-//    public void createOrder(Order order, OrderCallback callback) {
-//        collectionRef.add(order)
-//                .addOnSuccessListener(documentReference -> callback.onOrderLoaded(order))
-//                .addOnFailureListener(e -> callback.onError(e.getMessage()));
-//    }
     public void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback){
-        String id = UUID.randomUUID().toString();
-//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    //  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date createOn = new Date();
 
         Order order = new Order(
@@ -148,16 +143,46 @@ public class OrderRepository implements IOrderRepository {
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
+    // Update order status by id
+    public void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback){
+        collectionRef.document(orderId).update("STATUS", status)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onOrderChanged();
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
 
-//    // Update order document by order id
-//    @Override
-//    public void updateOrderById(String orderId, Order order, OrderCallback callback) {
-//        collectionRef.document(orderId)
-//                .set(order)
-//                .addOnSuccessListener(aVoid -> callback.onOrderLoaded(order))
-//                .addOnFailureListener(e -> callback.onError(e.getMessage()));
-//
-//
-//    }
+    // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
+    public void checkout(Order order, OrderChangedCallback callback){
+        collectionRef.document(order.getId()).set(order)
+                .addOnSuccessListener(aVoid -> callback.onOrderChanged())
+                .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+
+    // Add or update product to shopping cart (create new order item by order id)
+    @Override
+    public void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback){
+        collectionRef.document(orderId).update("ORDER_ITEM." + orderItem.getIdOrderItem(), orderItem)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onOrderItemLoaded(orderItem);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
+
+    // Delete product in shopping cart by order id
+    public void deleteProductCart(String orderId, String orderItemId, OrderItemRemovedCallback callback){
+        collectionRef.document(orderId).update("ORDER_ITEM." + orderItemId, FieldValue.delete())
+                .addOnSuccessListener(aVoid -> {
+                    callback.onOrderItemRemoved(orderItemId);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
 
 }

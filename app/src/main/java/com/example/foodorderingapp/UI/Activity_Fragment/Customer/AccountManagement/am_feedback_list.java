@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.Entity.Comment;
 import com.example.foodorderingapp.Data.Repository.AccountManagement.MyOrders.OrdersFeedbackRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.UI.Adapter.FeedbackItemAdapter;

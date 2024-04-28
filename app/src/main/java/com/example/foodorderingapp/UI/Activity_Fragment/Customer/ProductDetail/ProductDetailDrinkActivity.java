@@ -93,11 +93,11 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
         }
 
         List<Comment> listComment = new ArrayList<>();
-        listComment.add(new Comment("Bảo Ngọc", 5, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("Ngọc Bảo", 5, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("Ngọc Bảo", 3, "Chất lượng, ngon tuyệt vời", date));
+        listComment.add(new Comment("1", "1", "Bảo Ngọc", 5, "Chất lượng, ngon tuyệt vời", date));
+        listComment.add(new Comment("1", "1", "Ngọc Bảo", 5, "Chất lượng, ngon tuyệt vời", date));
+        listComment.add(new Comment("1", "1", "Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
+        listComment.add(new Comment("1", "1", "Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
+        listComment.add(new Comment("1", "1", "Ngọc Bảo", 3, "Chất lượng, ngon tuyệt vời", date));
 
         CommentDialogFragment commentDialogFragment = new CommentDialogFragment(listComment);
         commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());

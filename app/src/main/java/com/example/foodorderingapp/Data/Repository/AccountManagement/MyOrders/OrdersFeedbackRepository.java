@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.foodorderingapp.Data.Model.Entity.Comment;
 import com.example.foodorderingapp.Data.Model.OrderDetail;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -177,6 +179,99 @@ public class OrdersFeedbackRepository {
                 });
     }
 
+    public void addComment(Comment comment) {
+        CollectionReference reference = db.collection("COMMENT");
+
+        Map<String, Object> commentData = new HashMap<>();
+        commentData.put("CONTENT", comment.getContent());
+        commentData.put("POINT", comment.getRatingBar());
+        commentData.put("CM_DATE", comment.getDate());
+        commentData.put("ID_PRODUCT", comment.getIdProduct());
+        commentData.put("ID_USER", comment.getIdUser());
+        commentData.put("USER_NAME", comment.getNameUser());
+
+        db.collection("COMMENT")
+                .add(commentData)
+                .addOnSuccessListener(documentReference -> {
+                    // Thêm bình luận thành công
+                    Log.d("AddComment", "Bình luận đã được thêm vào bộ sưu tập COMMENTS với ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    // Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS
+                    Log.e("AddComment", "Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS", e);
+                });
+    }
+
+    public void updateComment(String commentId, Comment comment) {
+        Map<String, Object> newCommentData = new HashMap<>();
+        newCommentData.put("CONTENT", comment.getContent()); // Cập nhật CONTENT
+        newCommentData.put("POINT", comment.getRatingBar()); // Cập nhật POINT
+        newCommentData.put("CM_DATE", comment.getDate()); // Cập nhật CM_DATE
+
+        db.collection("COMMENT")
+                .document(commentId)
+                .update(newCommentData)
+                .addOnSuccessListener(aVoid -> {
+                    // Sửa comment thành công
+                    Log.d("UpdateComment", "Bình luận đã được sửa thành công");
+                })
+                .addOnFailureListener(e -> {
+                    // Lỗi khi sửa comment
+                    Log.e("UpdateComment", "Lỗi khi sửa bình luận", e);
+                });
+    }
+
+    public void deleteComment(String commentID) {
+        db.collection("COMMENT")
+                .document(commentID)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Xóa comment thành công
+                    Log.d("DeleteComment", "Bình luận đã được xóa thành công");
+                })
+                .addOnFailureListener(e -> {
+                    // Lỗi khi xóa comment
+                    Log.e("DeleteComment", "Lỗi khi xóa bình luận", e);
+                });
+    }
+
+    public void getCommentsByProductID(String productID) {
+        db.collection("COMMENT")
+                .whereEqualTo("ID_PRODUCT", productID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult(); // Sử dụng QuerySnapshot thay vì QueryDocumentSnapshot
+
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                List<Comment> listComment = new ArrayList<>();
+                                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                                    listComment.add(new Comment(documentSnapshot.getString("ID_PRODUCT"),
+                                            documentSnapshot.getString("USER_ID"),
+                                            documentSnapshot.getString("USER_NAME"),
+                                            Float.parseFloat(String.valueOf(documentSnapshot.getDouble("POINT"))),
+                                            documentSnapshot.getString("CONTENT"),
+                                            documentSnapshot.getDate("CM_DATE")));
+                                }
+                                // Xử lý danh sách comment ở đây
+//                                for (Comment comment : listComment) {
+//                                    Log.d("CommentInfo", "ID_PRODUCT: " + comment.getIdProduct());
+//                                    Log.d("CommentInfo", "CONTENT: " + comment.getContent());
+//                                    Log.d("CommentInfo", "POINT: " + comment.getRatingBar());
+//                                    Log.d("CommentInfo", "CM_DATE: " + comment.getDate());
+//                                    Log.d("CommentInfo", "USER_NAME: " + comment.getNameUser());
+//                                    Log.d("CommentInfo", "USER_ID: " + comment.getIdUser());
+//                                }
+                            } else {
+                                Log.d("COMMENT", "Danh sách comment trống"); // Thông báo nếu danh sách comment rỗng
+                            }
+                        } else {
+                            Log.d("COMMENT", "Lỗi khi lấy danh sách"); // Thông báo khi có lỗi xảy ra trong quá trình lấy danh sách comment
+                        }
+                    }
+                });
+    }
 
 
     public ArrayList<OrderDetail> getOrderDetailList() {

@@ -2,6 +2,7 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,16 +76,33 @@ public class activity_forgetpassword extends AppCompatActivity {
                     // Thông báp khi nhập thiếu số điện thoại
                     Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
                 }  else {
+                    Log.d("Forgetpassword", phone);
                     // Xử lý đăng nhập khi EditText được điền đầy đủ
                     progressBar.setVisibility(View.VISIBLE);
-                    authRepository.checkPhoneNumber(String.valueOf(inputPhone.getText()), new AuthRepository.AuthCallback() {
+                    authRepository.checkPhoneNumber(phone, new AuthRepository.AuthCallback() {
                         @Override
                         public void onLoginSuccess(String data) {
-                            progressBar.setVisibility(View.GONE);
+                            authRepository.sendOTP(phone, false, activity_forgetpassword.this, new AuthRepository.AuthCallbackOTP() {
+                                @Override
+                                public void onSuccess() {
+                                    Intent intent = new Intent(activity_forgetpassword.this, activity_verifyOTP.class);
+                                    intent.putExtra("phone", phone);
+                                    intent.putExtra("verificationCode", authRepository.getVerificationCode());
 
-                            Intent intent = new Intent(activity_forgetpassword.this, activity_verifyOTP.class);
-                            startActivity(intent);
-                            authRepository.sendOTP(phone, false, activity_forgetpassword.this);
+                                    progressBar.setVisibility(View.GONE);
+
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+
+                                    Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         }
 
                         @Override

@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,9 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodorderingapp.Data.Model.Entity.Login;
+import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 
 import java.security.MessageDigest;
@@ -26,10 +28,12 @@ import java.security.NoSuchAlgorithmException;
 public class activity_signup extends AppCompatActivity {
 
     private Login model;
-    EditText inputName, inputPhone, inputPassword, inputConfirmPassword;
-    Button btnSignUp;
-    ImageButton btnViewPassword, btnViewConfirmPassword;
-    FrameLayout btnBack;
+    private EditText inputName, inputPhone, inputPassword, inputConfirmPassword;
+    private Button btnSignUp;
+    private ImageButton btnViewPassword, btnViewConfirmPassword;
+    private FrameLayout btnBack;
+    private ProgressBar progressBar;
+    private AuthRepository authRepository = new AuthRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +49,7 @@ public class activity_signup extends AppCompatActivity {
     }
 
 
-
-    private void init(){
+    private void init() {
         inputName = findViewById(R.id.editTextName); // Tên người dùng
         inputPhone = findViewById(R.id.editTextPhone); // Số điện thoại
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
@@ -55,6 +58,7 @@ public class activity_signup extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
         btnViewPassword = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
         btnViewConfirmPassword = findViewById(R.id.imgBtnVisibilityConfirm); // Nút xem xác nhận mật khẩu
+        progressBar = findViewById(R.id.progressBar);
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
         inputPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -86,6 +90,7 @@ public class activity_signup extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 String name = inputName.getText().toString().trim();
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
@@ -112,12 +117,16 @@ public class activity_signup extends AppCompatActivity {
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
 
-//                        model.signUp(phone, password);
-                        // Xử lý đăng ký
-                        Toast.makeText(getApplicationContext(), "Đang xử lý đăng ký!", Toast.LENGTH_SHORT).show();
+                        authRepository.createUser(name, phone, password, getApplicationContext());
+                        progressBar.setVisibility(View.GONE);
+
+                        Intent intent = new Intent(activity_signup.this, activity_login.class);
+                        startActivity(intent);
+                        finish();
                     }
                 } else {
                     // Hiển thị thông báo khi có thiếu thông tin
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin và mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
             }

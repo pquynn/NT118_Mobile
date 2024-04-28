@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 
 import java.security.MessageDigest;
@@ -27,6 +30,10 @@ public class activity_setpassword extends AppCompatActivity {
     private Button btnConfirm;
     private FrameLayout btnBack;
     private ImageButton btnViewOne, btnViewTwo;
+    private ProgressBar progressBar;
+    private Intent intent;
+    private String phone;
+    private AuthRepository authRepository = new AuthRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +45,21 @@ public class activity_setpassword extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        init();
     }
 
     private void init(){
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
         inputConfirmPassword = findViewById(R.id.editTextConfirmPassword); // Xác nhận mật khẩu
-        btnConfirm = findViewById(R.id.btnSignUp); // Nút xác nhận
+        btnConfirm = findViewById(R.id.btnConfirm); // Nút xác nhận
         btnBack = findViewById(R.id.btn_back); // Nút quay lại
         btnViewOne = findViewById(R.id.imgBtnVisibility);
         btnViewTwo = findViewById(R.id.imgBtnVisibilityConfirm);
+        progressBar = findViewById(R.id.progressBar);
+
+        intent = getIntent();
+        phone = intent.getStringExtra("phone");
 
         // Xử lý khi ấn nút quay lại
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +69,10 @@ public class activity_setpassword extends AppCompatActivity {
             }
         });
 
-        // Xử lý tài khoản mới
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 String password = inputPassword.getText().toString().trim();
                 String confirmPassword = inputConfirmPassword.getText().toString().trim();
 
@@ -67,20 +80,38 @@ public class activity_setpassword extends AppCompatActivity {
                     // Xử lý khi người dùng đã nhập tất cả các thông tin
                     if (!password.equals(confirmPassword)) {
                         // Thông báo khi xác nhận mật khẩu sai
+                        progressBar.setVisibility(View.GONE);
                         inputConfirmPassword.setText("");
                         Toast.makeText(getApplicationContext(), "Vui lòng xác nhận lại mật khẩu!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.d("Pass", password);
-
                         // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
                         // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                         password = md5(password);
+                        Log.d("Set Password", password);
 
-                        // Xử lý đăng ký
-                        Toast.makeText(getApplicationContext(), "Đang xử lý đăng ký!", Toast.LENGTH_SHORT).show();
+                        authRepository.changePassword(phone, password, new AuthRepository.AuthCallbackUpdatePassword() {
+                            @Override
+                            public void onUpdateSuccess() {
+                                progressBar.setVisibility(View.GONE);
+
+                                Toast.makeText(getApplicationContext(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(activity_setpassword.this, activity_login.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onUpdateFailure(Exception e) {
+                                progressBar.setVisibility(View.GONE);
+
+                                Toast.makeText(getApplicationContext(), "Đã gặp sự cố trong quá trình đổi mật khẩu!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 } else {
                     // Hiển thị thông báo khi có thiếu thông tin
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ mật khẩu và xác nhận mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
             }

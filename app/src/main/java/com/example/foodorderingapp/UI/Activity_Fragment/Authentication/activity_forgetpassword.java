@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.UI.Activity_Fragment.Customer.MainActivity;
 
 public class activity_forgetpassword extends AppCompatActivity {
 
@@ -108,7 +107,7 @@ public class activity_forgetpassword extends AppCompatActivity {
                         @Override
                         public void onLoginFailure(Exception e) {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Số điện thoại chưa được đăng ký hoặc sai!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

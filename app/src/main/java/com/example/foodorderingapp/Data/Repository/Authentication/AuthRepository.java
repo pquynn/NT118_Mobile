@@ -35,7 +35,6 @@ public class AuthRepository {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference reference = firebaseFirestore.collection("LOGIN");
     private CollectionReference reference_user = firebaseFirestore.collection("USER");
-//    private boolean checkOTP = false;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private String verificationCode;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
@@ -95,7 +94,6 @@ public class AuthRepository {
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                         // Xử lý khi xác minh hoàn thành
                         Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
-//                        checkOTP = true;
                     }
 
                     @Override
@@ -153,7 +151,7 @@ public class AuthRepository {
                                         }
                                     });
                         } else {
-                            // Không tìm thấy tài liệu với số điện thoại cụ thể
+                            // Không tìm số điện thoại
                         }
                     }
                 });
@@ -194,26 +192,22 @@ public class AuthRepository {
                 });
     }
 
-//    public boolean isCheckOTP() {
-//        return checkOTP;
-//    }
-
 
     public String getVerificationCode() {
         return verificationCode;
     }
 
-    public String getLoginID() {
-        return this.loginInfo.getId();
-    }
-
-    public String getLoginPhone() {
-        return this.loginInfo.getPhone();
-    }
-
-    public String getLoginPassword() {
-        return this.loginInfo.getPassword();
-    }
+//    public String getLoginID() {
+//        return this.loginInfo.getId();
+//    }
+//
+//    public String getLoginPhone() {
+//        return this.loginInfo.getPhone();
+//    }
+//
+//    public String getLoginPassword() {
+//        return this.loginInfo.getPassword();
+//    }
 
     public interface AuthCallback {
         void onLoginSuccess(String data);

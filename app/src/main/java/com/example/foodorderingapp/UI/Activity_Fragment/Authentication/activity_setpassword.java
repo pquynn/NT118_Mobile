@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +29,6 @@ public class activity_setpassword extends AppCompatActivity {
 
     private EditText inputPassword, inputConfirmPassword;
     private Button btnConfirm;
-    private FrameLayout btnBack;
     private ImageButton btnViewOne, btnViewTwo;
     private TextView txtActivitySetPassword;
     private ProgressBar progressBar;
@@ -56,7 +54,6 @@ public class activity_setpassword extends AppCompatActivity {
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
         inputConfirmPassword = findViewById(R.id.editTextConfirmPassword); // Xác nhận mật khẩu
         btnConfirm = findViewById(R.id.btnConfirm); // Nút xác nhận
-        btnBack = findViewById(R.id.btn_back); // Nút quay lại
         btnViewOne = findViewById(R.id.imgBtnVisibility);
         btnViewTwo = findViewById(R.id.imgBtnVisibilityConfirm);
         progressBar = findViewById(R.id.progressBar);
@@ -67,16 +64,8 @@ public class activity_setpassword extends AppCompatActivity {
         userName = "";
         if (intent.getStringExtra("userName") != null) {
             userName = intent.getStringExtra("userName");
-            txtActivitySetPassword.setText("Nhập mật khẩu");
+            txtActivitySetPassword.setText("Cài đặt mật khẩu");
         }
-
-        // Xử lý khi ấn nút quay lại
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +94,9 @@ public class activity_setpassword extends AppCompatActivity {
                             @Override
                             public void onUpdateSuccess() {
                                 progressBar.setVisibility(View.GONE);
-                                if (!Objects.equals(userName, "")) {
+                                if (Objects.equals(userName, "")) {
                                     Toast.makeText(getApplicationContext(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
                                 }
@@ -141,8 +131,7 @@ public class activity_setpassword extends AppCompatActivity {
                 // Thay đổi kiểu hiển thị của EditText
                 if (passwordVisible[0]) {
                     // Nếu mật khẩu đang hiển thị, ẩn nó
-                    inputPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     passwordVisible[0] = false;
                     // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
                     btnViewOne.setImageResource(R.drawable.visibility);
@@ -170,8 +159,7 @@ public class activity_setpassword extends AppCompatActivity {
                 // Thay đổi kiểu hiển thị của EditText
                 if (confirmPasswordVisible[0]) {
                     // Nếu mật khẩu đang hiển thị, ẩn nó
-                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     confirmPasswordVisible[0] = false;
                     // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
                     btnViewTwo.setImageResource(R.drawable.visibility);

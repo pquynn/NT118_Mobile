@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +18,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,8 +32,6 @@ public class activity_verifyOTP extends AppCompatActivity {
 
     private EditText firstInput, secondInput, thirdInput, fourthInput, fifthInput, sixthInput;
     private Button btnCofirm;
-    private FrameLayout btnBack;
-    private TextView txtResendOTP;
     private ProgressBar progressBar;
     private String phone, userName;
     private Intent intent;
@@ -64,14 +59,12 @@ public class activity_verifyOTP extends AppCompatActivity {
         fifthInput = findViewById(R.id.editTextFifthCode);
         sixthInput = findViewById(R.id.editTextSixthCode);
         btnCofirm = findViewById(R.id.btnConfirm); // Nút xác thực
-        btnBack = findViewById(R.id.btn_back); // Nút quay lại
-        txtResendOTP = findViewById(R.id.txtResendOTP);
         progressBar = findViewById(R.id.progressBar);
 
         intent = getIntent();
         phone = intent.getStringExtra("phone");
         userName = "";
-        if (intent.getStringExtra("userName")!=null){
+        if (intent.getStringExtra("userName") != null) {
             userName = intent.getStringExtra("userName");
         }
 
@@ -150,14 +143,6 @@ public class activity_verifyOTP extends AppCompatActivity {
             }
         });
 
-        // Xử lý khi ấn nút quay lại
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         // Xử lý tài khoản mới
         btnCofirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +172,7 @@ public class activity_verifyOTP extends AppCompatActivity {
 
                                 intent.putExtra("phone", phone);
 
-                                if (Objects.equals(userName, "")){
+                                if (!Objects.equals(userName, "")) {
                                     intent.putExtra("userName", userName);
                                 }
 

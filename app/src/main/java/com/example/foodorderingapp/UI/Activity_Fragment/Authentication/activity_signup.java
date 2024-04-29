@@ -2,6 +2,7 @@ package com.example.foodorderingapp.UI.Activity_Fragment.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.foodorderingapp.Data.Model.Entity.Login;
 import com.example.foodorderingapp.Data.Repository.Authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 
@@ -90,6 +90,12 @@ public class activity_signup extends AppCompatActivity {
                         authRepository.checkPhoneNumber(phone, new AuthRepository.AuthCallback() {
                             @Override
                             public void onLoginSuccess(String data) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Số điện thoại sai hoặc đã được sử dụng!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onLoginFailure(Exception e) {
                                 authRepository.sendOTP(phone, false, activity_signup.this, new AuthRepository.AuthCallbackOTP() {
                                     @Override
                                     public void onSuccess() {
@@ -111,13 +117,6 @@ public class activity_signup extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
-                            }
-
-                            @Override
-                            public void onLoginFailure(Exception e) {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Số điện thoại sai hoặc đã được sử dụng!", Toast.LENGTH_SHORT).show();
                             }
                         });
 

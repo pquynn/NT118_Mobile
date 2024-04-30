@@ -1,103 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UI.Activity_Fragment.Customer.Cart.CartFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="cartVM" type="com.example.foodorderingapp.UI.ViewModel.Customer.Cart.CartViewModel"/>
 
-    <!--    start: body -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </data>
+    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".UI.Activity_Fragment.Customer.Cart.CartFragment">
 
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+        <!--    start: body -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txt_total"
-                    style="@style/text_20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:text="Tổng cộng:"></TextView>
-
-                <TextView
-                    android:id="@+id/txt_price"
-                    style="@style/Heading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:text="45.000 đ"
-                    android:textAlignment="textEnd"></TextView>
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_checkout"
-                style="@style/ButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="5dp"
-                android:text="Đặt hàng">
-
-            </Button>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <!--    header-->
-            <include layout="@layout/header"></include>
-
-            <ScrollView
-                android:id="@+id/scrollview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="130dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
 
-                    <!--    start: list view-->
-                    <!--    end: list view-->
+                    <TextView
+                        android:id="@+id/txt_total"
+                        style="@style/text_20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:text="Tổng cộng:"></TextView>
+
+                    <TextView
+                        android:id="@+id/txt_price"
+                        style="@style/Heading1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:text="@{cartVM.totalPrice}"
+                        android:textAlignment="textEnd"></TextView>
                 </LinearLayout>
-            </ScrollView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCart"
-                android:layout_marginTop="10dp"
+                <Button
+                    android:id="@+id/btn_checkout"
+                    style="@style/ButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Đặt hàng">
+
+                </Button>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <!--    header-->
+                <include layout="@layout/header"></include>
 
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-    <!--    end: body -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-    <!--    start: container of cart total price, checkout button -->
-    <!--    end: container of cart total price, checkout button -->
+                        <!--    start: list view-->
+                        <!--    end: list view-->
+                    </LinearLayout>
+                </ScrollView>
 
-</FrameLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCart"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--    end: body -->
+
+        <!--    start: container of cart total price, checkout button -->
+        <!--    end: container of cart total price, checkout button -->
+
+    </FrameLayout>
+
+</layout>

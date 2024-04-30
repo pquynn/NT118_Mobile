@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/img_product"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="Trà sữa trân châu"
         app:layout_constraintStart_toEndOf="@+id/img_product"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +39,16 @@
         android:text="45.000"
         app:layout_constraintStart_toEndOf="@+id/img_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
+
+    <TextView
+        android:id="@+id/txt_topping"
+        style="@style/text_14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Trân châu trắng"
+        app:layout_constraintStart_toEndOf="@+id/img_product"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
 
     <TextView
         android:id="@+id/txt_product_size"
@@ -56,9 +66,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Ghi chú"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_product"
-        app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_topping" />
 
     <TextView
         android:id="@+id/txt_quantity"

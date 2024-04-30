@@ -22,10 +22,10 @@
 
 
         <activity
-            android:name=".UI.resultTestActivity"
+            android:name=".Data.Repository.Order.resultTestActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.uploadImageActivity"
+            android:name=".Data.Repository.Refund.uploadImageActivity"
             android:exported="true" />
 
         <activity

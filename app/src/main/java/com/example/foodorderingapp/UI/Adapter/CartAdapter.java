@@ -24,11 +24,14 @@ import java.util.ArrayList;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private ArrayList<OrderDetail> productList;
     private boolean isDialogOpen = false;
+
     private View.OnClickListener onClickListener;
 
     public CartAdapter(ArrayList<OrderDetail> productList){
         this.productList = productList;
     }
+
+    public void setData(ArrayList<Order>)
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -89,10 +92,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageView btnEdit;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.txt_product_name);
-            productPrice = itemView.findViewById(R.id.txt_product_cost);
-            productSize = itemView.findViewById(R.id.txt_product_size);
-            quantity = itemView.findViewById(R.id.quantity);
+            productName = itemView.findViewById(R.id.tv_product_name);
+            productPrice = itemView.findViewById(R.id.tv_product_cost);
+            productSize = itemView.findViewById(R.id.tv_product_size);
+            quantity = itemView.findViewById(R.id.tv_quantity);
             btnEdit = itemView.findViewById(R.id.btn_edit);
         }
     }

@@ -1,11 +1,14 @@
 package com.example.foodorderingapp.Data.Model;
 
+import java.util.ArrayList;
+
 public class OrderDetail {
     private String productName;
     private int productPrice;
     private String productSize;
     private String note;
     private int quantity;
+    private ArrayList<String> topping;
     public OrderDetail(String productName, int productPrice, String productSize, String note, int quantity){
         this.productName = productName;
         this.productPrice = productPrice;

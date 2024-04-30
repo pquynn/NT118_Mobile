@@ -35,9 +35,6 @@ public class OrderRepository implements IOrderRepository {
                 .get().addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Order order = documentSnapshot.toObject(Order.class);
-//                        // set Order Item Map into Model
-//                        order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
-
                         callback.onOrderLoaded(order);
 
                         // log ra
@@ -64,9 +61,6 @@ public class OrderRepository implements IOrderRepository {
             if (!queryDocumentSnapshots.isEmpty()) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                 Order order = documentSnapshot.toObject(Order.class);
-                // set Order Item Map into Model
-//                order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
-
                 callback.onOrderLoaded(order);
 
                 // log ra

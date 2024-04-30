@@ -43,9 +43,12 @@
     <TextView
         android:id="@+id/txt_topping"
         style="@style/text_14sp"
-        android:layout_width="wrap_content"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:singleLine="false"
         android:text="Trân châu trắng"
         app:layout_constraintStart_toEndOf="@+id/img_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
@@ -63,11 +66,14 @@
     <TextView
         android:id="@+id/txt_note"
         style="@style/text_14sp"
-        android:layout_width="wrap_content"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:text="Ghi chú"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:singleLine="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_topping" />

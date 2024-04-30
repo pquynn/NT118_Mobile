@@ -17,6 +17,9 @@
       <entry key="resultTestActivity">
         <State />
       </entry>
+      <entry key="uploadImageActivity">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

@@ -27,4 +27,14 @@
         <item name="backgroundTint">@color/white</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
+
+    <style name="MyCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
+
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
 </resources>

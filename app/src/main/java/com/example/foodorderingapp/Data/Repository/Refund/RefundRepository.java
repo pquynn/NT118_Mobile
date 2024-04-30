@@ -1,4 +1,77 @@
 package com.example.foodorderingapp.Data.Repository.Refund;
 
-public interface RefundRepository {
+import android.util.Log;
+
+import com.example.foodorderingapp.Data.Model.Entity.Order;
+import com.example.foodorderingapp.Data.Model.Entity.OrderItem;
+import com.example.foodorderingapp.Data.Model.Entity.Refund;
+import com.example.foodorderingapp.Data.Model.Entity.RefundItem;
+import com.example.foodorderingapp.Data.Repository.Order.IOrderRepository;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class RefundRepository implements IRefundRepository {
+    private FirebaseFirestore db;
+    private CollectionReference collectionRef;
+    public RefundRepository() {
+        db = FirebaseFirestore.getInstance();
+        collectionRef = db.collection("REFUND");
+    }
+
+    // Get refund document by order id
+    public void getRefundByOrderId(String orderId, RefundCallback callback){
+        Query query = collectionRef.whereEqualTo("ID_ORDER", orderId);
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                Refund refund = documentSnapshot.toObject(Refund.class);
+
+                callback.onRefundLoaded(refund);
+
+                // log ra
+                Log.d("FirestoreOrderRepository", "Refund loaded: " + refund.toString());
+            } else {
+                String errorMessage = "Refund not found";
+                Log.e("FirestoreRefundRepository", errorMessage);
+                callback.onError(errorMessage);
+            }
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get Refund: " + e.getMessage();
+            Log.e("FirestoreRefundRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
+    }
+
+
+    // Create new refund document by order id and refund item
+    public void createRefund(Refund refund, RefundCallback callback){
+        collectionRef.add(refund)
+                .addOnSuccessListener(documentReference -> callback.onRefundLoaded(refund))
+                .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+
+    // Update refund status by id
+    public void updateRefundStatusById(String refundId, String status, RefundChangedCallback callback){
+        Date dateProcessed;
+        if(status == "Hoàn tất"){
+            dateProcessed = new Date();
+        }
+        else dateProcessed = new Date(0);
+
+        collectionRef.document(refundId).update("STATUS", status, "DATE_PROCESSED", dateProcessed)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onRefundChanged();
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
 }

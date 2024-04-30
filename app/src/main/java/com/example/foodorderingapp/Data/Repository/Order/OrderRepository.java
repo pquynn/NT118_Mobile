@@ -35,8 +35,8 @@ public class OrderRepository implements IOrderRepository {
                 .get().addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Order order = documentSnapshot.toObject(Order.class);
-                        // set Order Item Map into Model
-                        order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
+//                        // set Order Item Map into Model
+//                        order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
 
                         callback.onOrderLoaded(order);
 
@@ -65,7 +65,7 @@ public class OrderRepository implements IOrderRepository {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                 Order order = documentSnapshot.toObject(Order.class);
                 // set Order Item Map into Model
-                order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
+//                order.setOrderItem((HashMap<String, OrderItem>) documentSnapshot.get("ORDER_ITEM"));
 
                 callback.onOrderLoaded(order);
 
@@ -121,7 +121,7 @@ public class OrderRepository implements IOrderRepository {
     @Override
     public void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback){
     //  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date createOn = new Date();
+        Date createOn = new Date(0);
 
         Order order = new Order(
                 userId,

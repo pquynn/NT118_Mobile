@@ -23,7 +23,7 @@ public class Order {
     @ServerTimestamp
     private Date createOn;
     private String idCoupon;
-    private Map<String, OrderItem> orderItem;
+    private Map<String, OrderItem> orderItemMap;
 
     public Order(){}
     public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, int orderPrice, Date createOn, String idCoupon, Map<String, OrderItem> orderItem) {
@@ -38,7 +38,7 @@ public class Order {
         this.orderPrice = orderPrice;
         this.createOn = createOn;
         this.idCoupon = idCoupon;
-        this.orderItem = orderItem;
+        this.orderItemMap = orderItem;
     }
 
     public String getId() {
@@ -149,27 +149,27 @@ public class Order {
 
     @PropertyName("ORDER_ITEM")
     public Map<String, OrderItem> getOrderItem() {
-        return orderItem;
+        return orderItemMap;
     }
 
     @PropertyName("ORDER_ITEM")
-    public void setOrderItem(Map<String, OrderItem> orderItem) {
-        this.orderItem = orderItem;
+    public void setOrderItem(Map<String, OrderItem> orderItemMap) {
+        this.orderItemMap = orderItemMap;
     }
 
     // get order item in hashmap by orderItemId
     public OrderItem getOrderItemElementById(String orderItemId){
-        return this.orderItem.get(orderItemId);
+        return this.orderItemMap.get(orderItemId);
     }
 
     // set (insert and update) order item in hashmap by orderItemId and new order item
     public void setOrderItemElementById(String orderItemId, OrderItem orderItemElement){
-        this.orderItem.put(orderItemId, orderItemElement);
+        this.orderItemMap.put(orderItemId, orderItemElement);
     }
 
     // delete order item in hashmap by orderItemId
     public void deleteOrderItemElementById(String orderItemId){
-        this.orderItem.remove(orderItemId);
+        this.orderItemMap.remove(orderItemId);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class Order {
                 ", orderPrice=" + orderPrice +
                 ", createOn=" + createOn +
                 ", idCoupon='" + idCoupon + '\'' +
-                ", orderItem=" + orderItem +
+                ", orderItem=" + orderItemMap +
                 '}';
     }
 }

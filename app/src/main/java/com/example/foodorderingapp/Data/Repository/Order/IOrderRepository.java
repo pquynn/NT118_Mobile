@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IOrderRepository {
-    /// Get order document by order id
+    // Get order document by order id
     void getOrderById(String orderId, OrderCallback callback);
 
     // Get shopping cart by user id (order document has status = 'Gio hang')

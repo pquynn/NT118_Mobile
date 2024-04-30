@@ -8,6 +8,6 @@
     <solid
         android:color="@color/white" />
     <stroke android:color="@color/box"
-        android:width="2.5dp"/>
+        android:width="1.5dp"/>
 
 </shape>

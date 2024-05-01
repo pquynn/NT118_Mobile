@@ -89,6 +89,9 @@ public class activity_login extends AppCompatActivity {
                     // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
                     password = md5(password);
                     progressBar.setVisibility(View.VISIBLE);
+
+//                    new PasswordEncryptionTask().execute(password);
+
                     authRepository.signIn(phone, password, new AuthRepository.AuthCallback() {
                         @Override
                         public void onLoginSuccess(String loginId) {
@@ -162,6 +165,37 @@ public class activity_login extends AppCompatActivity {
             }
         });
     }
+
+//    private class PasswordEncryptionTask extends AsyncTask<String, Void, String> {
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String encryptedPassword = md5(params[0]);
+//            return encryptedPassword;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String encryptedPassword) {
+//            String phone = inputPhone.getText().toString().trim();
+//            progressBar.setVisibility(View.GONE);
+//            authRepository.signIn(phone, encryptedPassword, new AuthRepository.AuthCallback() {
+//                @Override
+//                public void onLoginSuccess(String loginId) {
+//                    // Trường hợp đăng nhập thành công
+//                    Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(activity_login.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onLoginFailure(Exception e) {
+//                    // Trường hợp đăng nhập thất bại
+//                    Toast.makeText(getApplicationContext(), "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//    }
+
 
 
     // Hàm để mã hóa chuỗi thành MD5

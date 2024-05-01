@@ -3,13 +3,50 @@ package com.example.foodorderingapp.Data.Model.Entity;
 import java.util.Date;
 
 public class Coupon {
+    private String idCoupon;
     private String couponName;
     private Date validFrom;
+    private Date validTo;
+    private double discountValue;
+    private double minOrder;
+    private double quantity;
     private String description;
+
+    public Coupon(String idCoupon, String couponName, Date validFrom, Date validTo, double discountValue, double minOrder, double quantity, String description) {
+        this.idCoupon = idCoupon;
+        this.couponName = couponName;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
+        this.discountValue = discountValue;
+        this.minOrder = minOrder;
+        this.quantity = quantity;
+        this.description = description;
+    }
+
     public Coupon(String couponName, Date validFrom, String description){
         this.couponName = couponName;
         this.validFrom = validFrom;
         this.description = description;
+    }
+
+    public String getIdCoupon() {
+        return idCoupon;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public double getDiscountValue() {
+        return discountValue;
+    }
+
+    public double getMinOrder() {
+        return minOrder;
+    }
+
+    public double getQuantity() {
+        return quantity;
     }
 
     public Date getValidFrom() {

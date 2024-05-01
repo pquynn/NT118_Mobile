@@ -30,8 +30,8 @@ import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //    private Map<String, BuyingProduct> orderItemMap = new HashMap<>();
-    private Map<String, OrderItem> orderItemMap = new HashMap<>();
-    private Map<String, BuyingProduct> productMap = new HashMap<>();
+//    private Map<String, OrderItem> orderItemMap = new HashMap<>();
+    private Map<String, BuyingProduct> productMap;
     private boolean isDialogOpen = false;
     private View.OnClickListener onClickListener;
 
@@ -99,7 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return orderItemMap.size();
+        return productMap.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

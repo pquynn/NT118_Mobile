@@ -127,9 +127,9 @@ public class CartFragment extends Fragment {
         orderItemMap = new HashMap<>();
         buyingProducts = new HashMap<>();
 
-//        adapter = new CartAdapter(buyingProducts);
-//        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
-//        binding.recyclerViewCart.setAdapter(adapter);
+        adapter = new CartAdapter(buyingProducts);
+        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerViewCart.setAdapter(adapter);
 
         // Initialize ViewModel using ViewModelProvider
         viewModel = new CartViewModel(userId);
@@ -137,13 +137,13 @@ public class CartFragment extends Fragment {
             @Override
             public void onChanged(Map<String, BuyingProduct> buyingProductMap) {
                 binding.setCartVM(viewModel);
-                Log.d("firebase", "activity = " + buyingProductMap.toString());
-                adapter = new CartAdapter(buyingProducts);
-                binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
-                binding.recyclerViewCart.setAdapter(adapter);
-//                buyingProducts.clear();
-//                buyingProducts.putAll(buyingProductMap);
-//                adapter.notifyDataSetChanged();
+//                Log.d("firebase", "activity = " + buy/ingProductMap.toString());
+//                adapter = new CartAdapter(buyingProducts);
+//                binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
+//                binding.recyclerViewCart.setAdapter(adapter);
+                buyingProducts.clear();
+                buyingProducts.putAll(buyingProductMap);
+                adapter.notifyDataSetChanged();
 
             }
         });

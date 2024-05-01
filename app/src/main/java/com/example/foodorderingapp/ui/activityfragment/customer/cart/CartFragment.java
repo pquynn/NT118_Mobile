@@ -10,17 +10,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.ui.adapter.CartAdapter;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
-import com.example.foodorderingapp.viewmodel.cart.CartViewModel;
 import com.example.foodorderingapp.databinding.FragmentCartBinding;
+import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,16 +31,16 @@ import java.util.Map;
 public class CartFragment extends Fragment {
     private Button btnCheckout;
     private TextView screenName;
-    private RecyclerView recyclerView;
 //
 //    private ArrayList<OrderDetail> productList;
 
     private Map<String, OrderItem> orderItemMap;
+    private Map<String, BuyingProduct> buyingProducts;
     private String userId ="3";
     private FragmentCartBinding binding;
     private CartViewModel viewModel;
     private CartAdapter adapter;
-    private Order cart;
+
 
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,32 +125,30 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 //
         orderItemMap = new HashMap<>();
-//        OrderItem orderItem1 = new OrderItem();
-//        OrderItem orderItem2 = new OrderItem();
-//        orderItem1.setSize("Lớn");
-//        orderItem2.setSize("Nhỏ");
-//        orderItem1.setPrice(1000);
-//        orderItem2.setPrice(1000);
-//        orderItemMap.put("1", orderItem1);
-//        orderItemMap.put("2", orderItem2);
+        buyingProducts = new HashMap<>();
 
-        adapter = new CartAdapter(orderItemMap);
-        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerViewCart.setAdapter(adapter);
+//        adapter = new CartAdapter(buyingProducts);
+//        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
+//        binding.recyclerViewCart.setAdapter(adapter);
 
         // Initialize ViewModel using ViewModelProvider
-        viewModel = new CartViewModel("3");
-//        adapter.setData(viewModel.getOrderMutableLiveData().getValue().getOrderItem());
-        viewModel.getOrderMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Order>() {
+        viewModel = new CartViewModel(userId);
+        viewModel.getBuyingProducts().observe(getViewLifecycleOwner(), new Observer<Map<String, BuyingProduct>>() {
             @Override
-            public void onChanged(Order order) {
+            public void onChanged(Map<String, BuyingProduct> buyingProductMap) {
                 binding.setCartVM(viewModel);
-//                adapter.setData(order.getOrderItem());
-                orderItemMap.clear();
-                orderItemMap.putAll(order.getOrderItem());
-                adapter.notifyDataSetChanged();
+                Log.d("firebase", "activity = " + buyingProductMap.toString());
+                adapter = new CartAdapter(buyingProducts);
+                binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
+                binding.recyclerViewCart.setAdapter(adapter);
+//                buyingProducts.clear();
+//                buyingProducts.putAll(buyingProductMap);
+//                adapter.notifyDataSetChanged();
+
             }
         });
+
+
 
 
         // Set top navigation text
@@ -161,13 +161,6 @@ public class CartFragment extends Fragment {
 //                startActivity(new Intent(getActivity(), CheckoutActivity.class));
 //            }
 //        });
-
-        // Initialize RecyclerView and adapter
-        // Observe the LiveData from the ViewModel and update UI accordingly
-//        ArrayList<OrderItem> orderItems = new ArrayList<>();
-//        adapter = new CartAdapter(orderItems);
-//        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
-//        binding.recyclerViewCart.setAdapter(adapter);
 
 
 

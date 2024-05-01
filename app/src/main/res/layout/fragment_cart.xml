@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="cartVM" type="com.example.foodorderingapp.viewmodel.cart.CartViewModel"/>
+        <variable name="cartVM" type="com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel"/>
 
     </data>
     <FrameLayout
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:text="@{cartVM.totalPrice}"
+                        android:text="@{String.valueOf(cartVM.totalPrice)}"
                         android:textAlignment="textEnd"></TextView>
                 </LinearLayout>
 

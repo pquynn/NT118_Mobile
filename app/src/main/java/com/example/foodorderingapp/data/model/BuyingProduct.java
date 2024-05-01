@@ -3,6 +3,7 @@ package com.example.foodorderingapp.data.model;
 import java.util.ArrayList;
 
 public class BuyingProduct {
+    private String productId;
     private String productName;
     private int productPrice;
     private String productSize;
@@ -11,7 +12,12 @@ public class BuyingProduct {
     private String productImage;
     private ArrayList<String> topping;
 
-    public BuyingProduct(String productName, int productPrice, String productSize, String note, int quantity, String productImage, ArrayList<String> topping) {
+    public BuyingProduct(){
+
+    }
+
+    public BuyingProduct(String productId, String productName, int productPrice, String productSize, String note, int quantity, String productImage, ArrayList<String> topping) {
+        this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productSize = productSize;
@@ -19,6 +25,30 @@ public class BuyingProduct {
         this.quantity = quantity;
         this.productImage = productImage;
         this.topping = topping;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public ArrayList<String> getTopping() {
+        return topping;
+    }
+
+    public void setTopping(ArrayList<String> topping) {
+        this.topping = topping;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     public String getProductName() {
@@ -61,21 +91,17 @@ public class BuyingProduct {
         this.quantity = quantity;
     }
 
-    public String getProductImage() {
-        return productImage;
+    @Override
+    public String toString() {
+        return "BuyingProduct{" +
+                "productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productSize='" + productSize + '\'' +
+                ", note='" + note + '\'' +
+                ", quantity=" + quantity +
+                ", productImage='" + productImage + '\'' +
+                ", topping=" + topping +
+                '}';
     }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
-
-    public ArrayList<String> getTopping() {
-        return topping;
-    }
-
-    public void setTopping(ArrayList<String> topping) {
-        this.topping = topping;
-    }
-
-
 }

@@ -2,8 +2,10 @@ package com.example.foodorderingapp.data.repository.order;
 
 import android.util.Log;
 
+import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.ProductForOrder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -47,8 +49,9 @@ public class OrderRepository implements IOrderRepository {
         });
     }
 
+
     // Get shopping cart by user id (order document has status = 'Gio hang')
-    public void getCartByUserId(String userId, OrderCallback callback){
+    public void getCartByUserId(String userId, CartCallback callback){
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
                 .whereEqualTo("STATUS", "Giỏ hàng");
@@ -57,10 +60,46 @@ public class OrderRepository implements IOrderRepository {
             if (!queryDocumentSnapshots.isEmpty()) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                 Order order = documentSnapshot.toObject(Order.class);
-                callback.onOrderLoaded(order);
 
-                // log ra
-                Log.d("FirestoreOrderRepository", "Order loaded: " + order.toString());
+                Map<String, BuyingProduct> buyingProductMap = new HashMap<>();
+
+                for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                    String orderItemId = entry.getKey();
+                    OrderItem orderItem = entry.getValue();
+                    String productId = orderItem.getIdProduct();
+
+                    db.collection("PRODUCT").document(productId)
+                            .get().addOnSuccessListener(productSnapshot -> {
+                                if (productSnapshot.exists()) {
+                                    BuyingProduct buyingProduct = new BuyingProduct(
+                                            productSnapshot.getId(),
+                                            productSnapshot.getString("PRODUCT_NAME"),
+                                            orderItem.getPrice(),
+                                            orderItem.getSize(),
+                                            orderItem.getNote(),
+                                            orderItem.getQuantity(),
+                                            productSnapshot.getString("PRODUCT_IMAGE"),
+                                            orderItem.getTopping()
+                                    );
+                                    Log.d("firebase", buyingProduct.toString());
+
+                                    buyingProductMap.put(orderItemId, buyingProduct);
+                                    // Check if all OrderItems have been processed
+                                    if (buyingProductMap.size() == order.getOrderItem().size()) {
+                                        callback.onCartLoaded(order.getId(), buyingProductMap);
+                                    }
+                                } else {
+                                    String errorMessage = "Product not found for OrderItem: " + orderItemId;
+                                    Log.e("OrderRepository", errorMessage);
+                                    callback.onError(errorMessage);
+                                }
+                            }).addOnFailureListener(e -> {
+                                String errorMessage = "Failed to get product data for OrderItem: " + orderItemId + ", " + e.getMessage();
+                                Log.e("OrderRepository", errorMessage);
+                                callback.onError(errorMessage);
+                            });
+                }
+
             } else {
                 String errorMessage = "Order not found";
                 Log.e("FirestoreOrderRepository", errorMessage);
@@ -106,6 +145,8 @@ public class OrderRepository implements IOrderRepository {
             callback.onError(errorMessage);
         });
     }
+
+
 
     // Create order document (create cart)
     @Override

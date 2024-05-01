@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
@@ -28,20 +29,15 @@ import java.util.List;
 import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
-//    private Map<String, BuyingProduct> productList = new HashMap<>();
-    private Map<String, OrderItem> productList = new HashMap<>();
+//    private Map<String, BuyingProduct> orderItemMap = new HashMap<>();
+    private Map<String, OrderItem> orderItemMap = new HashMap<>();
+    private Map<String, BuyingProduct> productMap = new HashMap<>();
     private boolean isDialogOpen = false;
     private View.OnClickListener onClickListener;
 
-    public CartAdapter(Map<String, OrderItem> productList){
-        this.productList = productList;
+    public CartAdapter( Map<String, BuyingProduct> productMap){
+        this.productMap = productMap;
     }
-
-//    public void setData(Map<String, OrderItem> newproductList){
-//        productList.clear();
-//        productList.putAll(newproductList);
-//        notifyDataSetChanged();
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,19 +50,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<String> keys = new ArrayList<>(productList.keySet());
+        List<String> keys = new ArrayList<>(productMap.keySet());
         String key = keys.get(position);
-        OrderItem orderItem = productList.get(key);
-
+//        OrderItem orderItem = orderItemMap.get(key);
+        BuyingProduct product = productMap.get(key);
 //        holder.productPrice.setText(String.valueOf(orderItem.getPrice()));
 //        holder.productSize.setText(orderItem.getSize());
 //        holder.binding.setOrderItem(orderItem);
 //        holder.binding.executePendingBindings();
-        holder.bind(orderItem);
+        holder.bind(product);
 //                holder.productName.setText(orderItem.getIdProduct());
 //        holder.productPrice.setText(String.valueOf(orderItem.getPrice()));
 //        holder.productSize.setText(orderItem.getSize());
-//        holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+//        holder.quantity.setText(String.valueOf(orderItemMap.get(position).getQuantity()));
 
 //        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -103,7 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return orderItemMap.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -128,8 +124,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             this.binding = binding;
         }
 
-        void bind(OrderItem orderItem){
-            binding.setOrderItem(orderItem);
+        void bind(BuyingProduct buyingProduct){
+//            binding.setOrderItem(orderItem);
+            binding.setBuyingProduct(buyingProduct);
             binding.executePendingBindings();
         }
     }
@@ -159,12 +156,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //import java.util.ArrayList;
 //
 //public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
-//    private ArrayList<OrderItem> productList;
+//    private ArrayList<OrderItem> orderItemMap;
 //    private boolean isDialogOpen = false;
 //    private View.OnClickListener onClickListener;
 //
-//    public CartAdapter(ArrayList<OrderItem> productList){
-//        this.productList = productList;
+//    public CartAdapter(ArrayList<OrderItem> orderItemMap){
+//        this.orderItemMap = orderItemMap;
 //    }
 //
 //    @Override
@@ -175,10 +172,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //
 //    @Override
 //    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-////        holder.productName.setText(productList.get(position).getProductName());
-////        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
-////        holder.productSize.setText(productList.get(position).getProductSize());
-////        holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+////        holder.productName.setText(orderItemMap.get(position).getProductName());
+////        holder.productPrice.setText(String.valueOf(orderItemMap.get(position).getProductPrice()));
+////        holder.productSize.setText(orderItemMap.get(position).getProductSize());
+////        holder.quantity.setText(String.valueOf(orderItemMap.get(position).getQuantity()));
 //
 //        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -215,7 +212,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //
 //    @Override
 //    public int getItemCount() {
-//        return productList.size();
+//        return orderItemMap.size();
 //    }
 //
 //    public class ViewHolder extends RecyclerView.ViewHolder {

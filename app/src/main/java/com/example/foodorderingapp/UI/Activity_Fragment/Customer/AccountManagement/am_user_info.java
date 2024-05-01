@@ -6,12 +6,20 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.foodorderingapp.Data.Model.Entity.User;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.UI.ViewModel.Customer.AccountManagement.OrderFeedbackListVM;
+import com.example.foodorderingapp.UI.ViewModel.Customer.AccountManagement.UserInfoVM;
 
 public class am_user_info extends AppCompatActivity {
 //    private UserInfoVM userInfoVM;
-    TextView tvNameAcc, tvName, tvPhone;
+    TextView tvNameAcc, tvName, tvPhone, tvGoEditInfo;
+    String userId;
+    private UserInfoVM viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,28 +27,30 @@ public class am_user_info extends AppCompatActivity {
 
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Thông tin cá nhân");
+        userId = "2";
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+            @Override
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
+                    return (T) new UserInfoVM(userId);
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }
+        }).get(UserInfoVM.class);
 
         tvNameAcc = findViewById(R.id.textView_name_acc);
         tvName = findViewById(R.id.textView_name);
         tvPhone = findViewById(R.id.textView_phone);
+        tvGoEditInfo = findViewById(R.id.txt_goto_edit);
 
+        viewModel.getUserInfoLiveData().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                tvNameAcc.setText(user.getUserName());
+                tvName.setText(user.getUserName());
+                tvPhone.setText(user.getPhone());
+            }
+        });
 
-//        userInfoVM = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-//                .getInstance(getApplication())).get(UserInfoVM.class);
-//        userInfoVM.getUserLiveData().observe(this, new Observer<User>() {
-//            @Override
-//            public void onChanged(User user) {
-//                if (user != null) {
-//                    tvName.setText(user.getUserName());
-//                    tvPhone.setText(user.getPhone());
-//                    tvNameAcc.setText(user.getUserName());
-//                } else {
-//                    tvName.setText("Đang tải...");
-//                    tvPhone.setText("Đang tải...");
-//                    tvNameAcc.setText("Đang tải...");
-//                }
-//            }
-//        });
-//        userInfoVM.loadUser("1");
     }
 }

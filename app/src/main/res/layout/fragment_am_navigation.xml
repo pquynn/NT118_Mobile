@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/textView_name_acc"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="65dp"
         android:fontFamily="@font/roboto_bold"
-        android:text="Nguyễn Văn A"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatar_acc"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />

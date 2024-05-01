@@ -6,14 +6,15 @@ public class User {
 
     private String id;
 
-    private int idLogin;
+    private String idLogin;
 
-    public User(String userName, String phone, String id, int idLogin) {
+    public User(String userName, String phone, String id, String idLogin) {
         this.userName = userName;
         this.phone = phone;
         this.id = id;
         this.idLogin = idLogin;
     }
+
 
     public String getUserName() {
         return userName;
@@ -27,7 +28,7 @@ public class User {
         return id;
     }
 
-    public int getIdLogin() {
+    public String getIdLogin() {
         return idLogin;
     }
 
@@ -43,7 +44,7 @@ public class User {
         this.id = id;
     }
 
-    public void setIdLogin(int idLogin) {
+    public void setIdLogin(String idLogin) {
         this.idLogin = idLogin;
     }
 }

@@ -2,13 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="AM_AddressActivity">
+        <State />
+      </entry>
       <entry key="MainActivity">
         <State />
       </entry>
-      <entry key="activity_login">
+      <entry key="am_feedback_list">
         <State />
       </entry>
-      <entry key="am_feedback_list">
+      <entry key="am_user_info">
         <State />
       </entry>
     </value>

@@ -6,16 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.Entity.User;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.UI.Adapter.OrderItemAdapter;
 import com.example.foodorderingapp.Data.Model.OrderItem;
 import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.am_user_info;
+import com.example.foodorderingapp.UI.ViewModel.Customer.AccountManagement.UserInfoVM;
 
 import java.util.ArrayList;
 
@@ -45,6 +51,9 @@ public class AccountNavigationFragment extends Fragment {
 //        }
 //    }
     ImageView btn_goto1, btn_goto2, btn_goto3, btn_goto4, btn_goto5;
+    UserInfoVM viewModel;
+    String userId;
+    TextView tvNameAcc;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,5 +108,24 @@ public class AccountNavigationFragment extends Fragment {
 //                startActivity(myIntent);
 //            }
 //        });
+
+        userId = "2";
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+            @Override
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
+                    return (T) new UserInfoVM(userId);
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }
+        }).get(UserInfoVM.class);
+
+        tvNameAcc = view.findViewById(R.id.textView_name_acc);
+        viewModel.getUserInfoLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                tvNameAcc.setText(user.getUserName());
+            }
+        });
     }
 }

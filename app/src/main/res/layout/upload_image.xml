@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_refund_request"
     android:background="@color/white"
-    tools:context=".Data.Repository.Refund.uploadImageActivity">
+    tools:context=".data.repository.refund.uploadImageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

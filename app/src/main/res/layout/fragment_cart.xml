@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="cartVM" type="com.example.foodorderingapp.UI.ViewModel.Customer.Cart.CartViewModel"/>
+        <variable name="cartVM" type="com.example.foodorderingapp.viewmodel.cart.CartViewModel"/>
 
     </data>
     <FrameLayout
@@ -10,7 +9,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".UI.Activity_Fragment.Customer.Cart.CartFragment">
+        tools:context=".ui.activityfragment.customer.cart.CartFragment">
 
         <!--    start: body -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,7 +95,8 @@
                     android:id="@+id/recyclerViewCart"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

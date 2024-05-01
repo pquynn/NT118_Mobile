@@ -5,12 +5,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity_Fragment.Customer.AccountManagement.am_my_orders">
+    tools:context=".ui.activityfragment.customer.AccountManagement.am_my_orders">
     <include
         android:id="@+id/include2"
         layout="@layout/header_with_btnback" />
 
-    <com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.CustomMyOrderTabLayout
+    <com.example.foodorderingapp.ui.activityfragment.customer.AccountManagement.CustomMyOrderTabLayout
         android:id="@+id/my_orders_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

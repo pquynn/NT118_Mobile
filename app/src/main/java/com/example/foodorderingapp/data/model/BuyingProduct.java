@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.data.model;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class BuyingProduct {
     private String productId;
@@ -104,4 +105,10 @@ public class BuyingProduct {
                 ", topping=" + topping +
                 '}';
     }
+
+    public static String formatPrice(int price) {
+        double db_price = (double) price;
+        return String.format(Locale.getDefault(), "%,.0f đ", price);
+    }
+
 }

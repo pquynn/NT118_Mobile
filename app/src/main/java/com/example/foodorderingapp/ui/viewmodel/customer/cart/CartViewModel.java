@@ -16,12 +16,13 @@ import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.ui.adapter.CartAdapter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CartViewModel extends ViewModel {
     private String userId, orderIdVM;
     private MutableLiveData<Map<String, BuyingProduct>> buyingProducts = new MutableLiveData<>();
-    private MutableLiveData<String> totalPrice = new MutableLiveData<>();
+    private MutableLiveData<Double> totalPrice = new MutableLiveData<>();
 
     private OrderRepository orderRepository = new OrderRepository();
 
@@ -29,17 +30,15 @@ public class CartViewModel extends ViewModel {
         this.userId = userId;
     }
 
-    public MutableLiveData<String> getTotalPrice() {
-        totalPrice.setValue(String.valueOf(calculateTotalPrice(buyingProducts.getValue())));
+    public MutableLiveData<Double> getTotalPrice() {
+        loadTotalPrice();
         return totalPrice;
     }
-
 
     public MutableLiveData<Map<String, BuyingProduct>> getBuyingProducts() {
         loadCart(userId);
         return buyingProducts;
     }
-
 
     public void loadCart(String userId){
         orderRepository.getCartByUserId(userId, new IOrderRepository.CartCallback() {
@@ -47,7 +46,7 @@ public class CartViewModel extends ViewModel {
             public void onCartLoaded(String orderId, Map<String, BuyingProduct> buyingProductMap) {
                 orderIdVM = orderId;
                 buyingProducts.setValue(buyingProductMap);
-                Log.d("firebase", buyingProducts.getValue().toString());
+                totalPrice.setValue(calculateTotalPrice(buyingProductMap));
             }
 
             @Override
@@ -57,14 +56,25 @@ public class CartViewModel extends ViewModel {
         });
     }
 
-
+    public void loadTotalPrice(){
+        totalPrice.setValue(calculateTotalPrice(buyingProducts.getValue()));
+    }
 
     // calculate total price
-    public int calculateTotalPrice(Map<String, BuyingProduct> buyingProductHashMap){
-        int totalPrice = 0;
+    public double calculateTotalPrice(Map<String, BuyingProduct> buyingProductHashMap){
+        double totalPrice = 0.0;
         for(Map.Entry<String, BuyingProduct> entry : buyingProductHashMap.entrySet()){
             totalPrice += entry.getValue().getProductPrice();
         }
         return totalPrice;
     }
+
+    // Define click listeners for increase and decrease buttons
+    public void onChangeQuantityButtonClick(String orderItemId, int quantity) {
+//        BuyingProduct buyingProduct = buyingProducts.getValue().get(orderItemId);
+//        buyingProduct.setQuantity(quantity);
+        buyingProducts.getValue().get(orderItemId).setQuantity(quantity);
+    }
+
+
 }

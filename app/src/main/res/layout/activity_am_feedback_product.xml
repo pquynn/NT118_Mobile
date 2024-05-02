@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="24dp"
-        tools:context=".UI.Activity_Fragment.Customer.AccountManagement.am_feedback_product">
+        tools:context=".ui.activityfragment.customer.accountmanagement.am_feedback_product">
 
         <include
             android:id="@+id/include2"

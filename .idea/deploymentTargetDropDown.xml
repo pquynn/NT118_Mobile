@@ -2,21 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="MainActivity (1)">
-        <State />
-      </entry>
-      <entry key="SearchActivity">
-        <State />
-      </entry>
-      <entry key="activity_setpassword">
-        <State />
-      </entry>
-      <entry key="am_feedback_list">
-
-      <entry key="AM_AddressActivity">
-        <State />
-      </entry>
-      <entry key="am_user_info">
+      <entry key="MainActivity">
         <State />
       </entry>
     </value>

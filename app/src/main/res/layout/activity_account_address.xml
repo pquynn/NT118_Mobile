@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_account_address"
-    tools:context=".UI.Activity_Fragment.Customer.AccountManagement.AM_AddressActivity">
+    tools:context=".ui.activityfragment.customer.accountmanagement.AM_AddressActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

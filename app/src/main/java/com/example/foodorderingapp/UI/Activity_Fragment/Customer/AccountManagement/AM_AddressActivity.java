@@ -1,19 +1,26 @@
 package com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.UI.Adapter.AccountAddressAdapter;
 import com.example.foodorderingapp.Data.Model.Entity.UserAddress;
+import com.example.foodorderingapp.UI.ViewModel.Customer.AccountManagement.UserInfoVM;
 
 import java.util.ArrayList;
 
@@ -23,6 +30,8 @@ public class AM_AddressActivity extends AppCompatActivity {
     private FrameLayout btnBack;
     private TextView screenName;
     private ImageView btnEdit;
+    private UserInfoVM viewModel;
+    private String userId;
     ArrayList<UserAddress> addresses;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +52,26 @@ public class AM_AddressActivity extends AppCompatActivity {
 
         // set button Edit address click event
         btnEdit = findViewById(R.id.btn_edit);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
+        if (btnEdit == null) {
+            Log.e(TAG, "btnEdit is null. Check the layout and ID."); // Debug thông tin để xác định vấn đề
+        } else {
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), AM_AddAddressActivity.class));
+                }
+            });
+        }
+        userId = "2";
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), AM_AddAddressActivity.class));
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
+                    return (T) new UserInfoVM(userId);
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
             }
-        });
-
+        }).get(UserInfoVM.class);
         recyclerViewAddress();
     }
 
@@ -58,12 +80,20 @@ public class AM_AddressActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewAddress);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        addresses = new ArrayList<UserAddress>();
-        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
-        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
-        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
+        addresses = new ArrayList<>();
+//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
+//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
+//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
+        viewModel.getUserAddressesLiveData().observe(this, new Observer<ArrayList<UserAddress>>() {
+            @Override
+            public void onChanged(ArrayList<UserAddress> userAddresses) {
+                for (UserAddress i : userAddresses){
+                    addresses.add(i);
+                }
+                adapter = new AccountAddressAdapter(addresses);
+                recyclerViewList.setAdapter(adapter);
+            }
+        });
 
-        adapter = new AccountAddressAdapter(addresses);
-        recyclerViewList.setAdapter(adapter);
     }
 }

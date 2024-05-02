@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/feedback_item"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:layout_marginTop="16dp"
     android:background="@drawable/allrounded_bg">
 
@@ -23,7 +23,7 @@
     <!--    </FrameLayout>-->
 
     <ImageView
-        android:id="@+id/img_product"
+        android:id="@+id/img_fb_product"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -40,7 +40,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Trà sữa trân châu"
-        app:layout_constraintStart_toEndOf="@+id/img_product"
+        app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_regular"
         android:text="45.000"
-        app:layout_constraintStart_toEndOf="@+id/img_product"
+        app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
 
     <TextView
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Lớn"
-        app:layout_constraintStart_toEndOf="@+id/img_product"
+        app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
 
     <TextView
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Ghi chú"
-        app:layout_constraintStart_toEndOf="@+id/img_product"
+        app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
 
     <TextView
@@ -102,15 +102,17 @@
     <Button
         android:id="@+id/btn_product"
         style="@style/ButtonStyle"
-        android:layout_width="88dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:padding="10dp"
         android:text="Đánh giá"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_note" />
 
     <TextView
         android:id="@+id/lbl_product_cost"

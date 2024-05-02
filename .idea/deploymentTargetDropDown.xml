@@ -12,9 +12,11 @@
         <State />
       </entry>
       <entry key="am_feedback_list">
+
+      <entry key="AM_AddressActivity">
         <State />
       </entry>
-      <entry key="app">
+      <entry key="am_user_info">
         <State />
       </entry>
     </value>

@@ -49,8 +49,8 @@ public class RefundProgressActivity extends AppCompatActivity {
 
         ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
 
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 
         adapter = new RefundProgressAdapter(productList);
         recyclerViewList.setAdapter(adapter);

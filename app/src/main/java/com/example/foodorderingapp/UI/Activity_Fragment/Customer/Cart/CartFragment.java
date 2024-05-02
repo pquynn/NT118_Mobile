@@ -52,9 +52,9 @@ public class CartFragment extends Fragment {
         adapter = new CartAdapter(productList);
         recyclerViewList.setAdapter(adapter);
 
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "", 3));
-        productList.add(new OrderDetail("Bánh", 45000, "Lớn", "", 2));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "", 3));
+//        productList.add(new OrderDetail("Bánh", 45000, "Lớn", "", 2));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "", 3));
         adapter.notifyDataSetChanged();
 
         return view;

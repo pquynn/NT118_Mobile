@@ -6,12 +6,23 @@ public class OrderDetail {
     private String productSize;
     private String note;
     private int quantity;
-    public OrderDetail(String productName, int productPrice, String productSize, String note, int quantity){
+    private String productImage;
+
+    public OrderDetail(String productName, int productPrice, String productSize, String note, int quantity, String productImage) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productSize = productSize;
         this.note = note;
         this.quantity = quantity;
+        this.productImage = productImage;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     public String getProductName() {
@@ -52,5 +63,16 @@ public class OrderDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetail{" +
+                "productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productSize='" + productSize + '\'' +
+                ", note='" + note + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

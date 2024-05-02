@@ -92,8 +92,8 @@ public class CheckoutActivity extends AppCompatActivity {
         //todo: check lại khi thêm sản phẩm vào list vì màn hình ko hiện lên (cả những cái order_detail)
         ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
 
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 
 //        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 //        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));

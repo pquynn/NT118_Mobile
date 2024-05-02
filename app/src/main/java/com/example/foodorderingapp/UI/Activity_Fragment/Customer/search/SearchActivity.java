@@ -23,7 +23,6 @@ import com.example.foodorderingapp.Data.Model.ProductSearch;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements IProductRepository.ProductListCallback {
-
     RecyclerView rcv_productSearch;
     SearchAdapter searchAdapter;
     SearchView searchView;

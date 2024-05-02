@@ -15,7 +15,8 @@ public class Product {
     private Map<String, Map<String, Object>> productSize;
     private List<String> topping;
 
-    public Product(String id, String productImage, String idCategory, String productName, int productPrice) {
+    //constructor lấy id, idCategory, image, name, price
+    public Product(String id, String idCategory, String productImage, String productName, int productPrice) {
         this.id = id;
         this.productImage = productImage;
         this.idCategory = idCategory;
@@ -23,7 +24,7 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    //construct lấy id, ảnh, tên, giá, mô tả của sản phẩm là bánh
+    //construct lấy id, ảnh, tên, giá, mô tả
     public Product(String id, String productImage, String productName, int productPrice, String productInfo) {
         this.id = id;
         this.productImage = productImage;

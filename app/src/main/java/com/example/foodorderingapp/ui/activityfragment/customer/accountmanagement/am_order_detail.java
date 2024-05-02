@@ -60,9 +60,9 @@ public class am_order_detail extends AppCompatActivity {
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
-        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "a", 3));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
+//        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
+//        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "a", 3));
         adapter = new OrderDetailAdapter(productList);
         recyclerViewList.setAdapter(adapter);
 

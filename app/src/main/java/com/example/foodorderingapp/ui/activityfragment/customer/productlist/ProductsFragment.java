@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.ProductList;
+package com.example.foodorderingapp.ui.activityfragment.customer.productlist;
 
 import android.os.Bundle;
 

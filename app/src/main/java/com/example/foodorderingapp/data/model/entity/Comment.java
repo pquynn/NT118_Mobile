@@ -4,17 +4,51 @@ import java.util.Date;
 
 public class Comment {
 
-    private String name;
+    private String idProduct;
+    private String idUser;
+    private String nameUser;
     private float ratingBar;
     private String content;
     private Date date;
 
-    public String getName() {
-        return name;
+    public Comment() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Comment(String idProduct, String idUser, String nameUser, float ratingBar, String content, Date date) {
+        this.idProduct = idProduct;
+        this.idUser = idUser;
+        this.nameUser = nameUser;
+        this.ratingBar = ratingBar;
+        this.content = content;
+        this.date = date;
+    }
+
+    public String getName() {
+        return "";
+    }
+
+    public String getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(String idProduct) {
+        this.idProduct = idProduct;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
     public float getRatingBar() {
@@ -40,13 +74,4 @@ public class Comment {
     public void setDate(Date date) {
         this.date = date;
     }
-
-    public Comment(String name, float ratingBar, String content, Date date){
-        this.name = name;
-        this.ratingBar = ratingBar;
-        this.content = content;
-        this.date = date;
-    }
-
-
 }

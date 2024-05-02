@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +16,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +28,9 @@ public class activity_login extends AppCompatActivity {
     private EditText inputPhone, inputPassword;
     private Button btnLogin, btnForgetPass, btnSignUp;
     private ImageButton imgBtnVisibility;
+    private ProgressBar progressBar;
+    private AuthRepository authRepository = new AuthRepository();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +44,14 @@ public class activity_login extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         inputPhone = findViewById(R.id.editTextPhone); // Số điện thoại
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
         btnLogin = findViewById(R.id.btnLogin); // Nút đăng nhập
         btnForgetPass = findViewById(R.id.btnForgetPassword); // Nút quên mật khẩu
         btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
         imgBtnVisibility = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
+        progressBar = findViewById(R.id.progressBar);
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
         inputPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -71,19 +78,39 @@ public class activity_login extends AppCompatActivity {
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
-                if (phone.length()!=10 || !phone.startsWith("0")) {
+                if (phone.length() != 10 || !phone.startsWith("0")) {
                     // Thông báp khi nhập thiếu số điện thoại
                     Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
-                } else if (!password.isEmpty()) {
+                } else if (password.isEmpty()) {
                     // Thông báp khi chưa nhập mật khẩu
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
                 } else {
-                        // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
-                        // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
-                        password = md5(password);
+                    // Xử lý đăng nhập khi cả hai EditText được điền đầy đủ
+                    // Mã hóa MD5, giá trị trả về là chuỗi gồm 32 kí tự
+                    password = md5(password);
+                    progressBar.setVisibility(View.VISIBLE);
 
-                        // Xử lý đăng nhập
-                        Toast.makeText(getApplicationContext(), "Đang xử lý đăng nhập!", Toast.LENGTH_SHORT).show();
+//                    new PasswordEncryptionTask().execute(password);
+
+                    authRepository.signIn(phone, password, new AuthRepository.AuthCallback() {
+                        @Override
+                        public void onLoginSuccess(String loginId) {
+                            // Trường hợp đăng nhập thành công
+                            Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+
+                            Intent intent = new Intent(activity_login.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onLoginFailure(Exception e) {
+                            // Trường hợp đăng nhập thất bại
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -138,6 +165,37 @@ public class activity_login extends AppCompatActivity {
             }
         });
     }
+
+//    private class PasswordEncryptionTask extends AsyncTask<String, Void, String> {
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String encryptedPassword = md5(params[0]);
+//            return encryptedPassword;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String encryptedPassword) {
+//            String phone = inputPhone.getText().toString().trim();
+//            progressBar.setVisibility(View.GONE);
+//            authRepository.signIn(phone, encryptedPassword, new AuthRepository.AuthCallback() {
+//                @Override
+//                public void onLoginSuccess(String loginId) {
+//                    // Trường hợp đăng nhập thành công
+//                    Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(activity_login.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onLoginFailure(Exception e) {
+//                    // Trường hợp đăng nhập thất bại
+//                    Toast.makeText(getApplicationContext(), "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//    }
+
 
 
     // Hàm để mã hóa chuỗi thành MD5

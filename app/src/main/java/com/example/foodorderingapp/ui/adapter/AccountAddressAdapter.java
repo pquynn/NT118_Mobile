@@ -29,9 +29,9 @@ public class AccountAddressAdapter extends RecyclerView.Adapter<AccountAddressAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.address.setText(addresslist.get(position).getAddress());
+        holder.address.setText(addresslist.get(position).getAllAddress());
         holder.recipientName.setText(addresslist.get(position).getRecipientName());
-        holder.phone.setText(addresslist.get(position).getPhone());
+        holder.phone.setText(addresslist.get(position).getRecipientPhone());
     }
 
     @Override

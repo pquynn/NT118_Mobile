@@ -12,23 +12,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Button;
 
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.repository.product.IProductRepository;
+import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.SearchAdapter;
-import com.example.foodorderingapp.data.model.ProductSearch;
-import java.util.ArrayList;
+
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity {
-
+public class SearchActivity extends AppCompatActivity implements IProductRepository.ProductListCallback {
     RecyclerView rcv_productSearch;
-    List<ProductSearch> nlist;
     SearchAdapter searchAdapter;
     SearchView searchView;
+    private ProductRepository productRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //Xử lý khi chọn hủy thì chuyển về trang Home
         Button btnCancel = findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +52,16 @@ public class SearchActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView_product);
         searchView.clearFocus();
 
+        searchAdapter = new SearchAdapter(this);
+        rcv_productSearch.setAdapter(searchAdapter);
+        //set đường kẻ giữa các sản phẩm
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        rcv_productSearch.addItemDecoration(itemDecoration);
+        //Hiên thị danh sách sản phẩm từ FireStore
+        productRepository = new ProductRepository();
+        productRepository.getAllProducts(this);
+
+        // Xử lý sự kiện khi người dùng nhập vào SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -56,48 +70,43 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterList(newText);
+                // Thực hiện tìm kiếm khi người dùng thay đổi văn bản trong SearchView
+                searchAdapter.getFilter().filter(newText);
                 return true;
             }
         });
 
-        nlist = getListProduct();
-        searchAdapter = new SearchAdapter(nlist);
-        rcv_productSearch.setAdapter(searchAdapter);
-
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        rcv_productSearch.addItemDecoration(itemDecoration);
-
-    }
-
-    //  Hàm kiểm tra khi search không có dữ liệu --> báo không tìm thấy.
-    private void filterList(String newText) {
-        List<ProductSearch> filterList = new ArrayList<>();
-        for (ProductSearch itempro: nlist){
-            if(itempro.getName().toLowerCase().contains(newText.toLowerCase())){
-                filterList.add(itempro);
+        // Xử lý sự kiện: Chuyển sang chi tiết sản phẩm
+        searchAdapter.setOnProductClickListener(new SearchAdapter.OnProductClickListener() {
+            @Override
+            public void onProductClick(Product product) {
+                // Xử lý sự kiện click vào sản phẩm ở đây
+                // Ví dụ: Chuyển sang màn hình chi tiết sản phẩm
+                if (product.getIdCategory() != null) {
+                    if (product.getIdCategory().equals("2") || product.getIdCategory().equals("4")) {
+                        Intent intent = new Intent(SearchActivity.this, ProductDetailCakeActivity.class);
+                        intent.putExtra("productId", product.getId());
+                        startActivity(intent);
+                    } else if (product.getIdCategory().equals("1") || product.getIdCategory().equals("3")) {
+                        Intent intent = new Intent(SearchActivity.this, ProductDetailDrinkActivity.class);
+                        intent.putExtra("productId", product.getId());
+                        startActivity(intent);
+                    }
+                }
             }
-        }
+        });
 
-        if(filterList.isEmpty()){
-            Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
-        }else {
-            searchAdapter.setFilterList(filterList);
-        }
     }
 
-    private List<ProductSearch> getListProduct() {
-        List<ProductSearch> list = new ArrayList<>();
+    //Load danh sách sản phẩm từ FireStore
+    @Override
+    public void onProductListLoaded(List<Product> productList) {
+        searchAdapter.setFilterList(productList); // Cập nhật dữ liệu cho Adapter
+        searchAdapter.notifyDataSetChanged();
+    }
 
-        list.add(new ProductSearch(R.drawable.img1, "Trà sữa chân châu đường đen", "35.000đ"));
-        list.add(new ProductSearch(R.drawable.img2, "Trà sữa truyền thống", "25.000đ"));
-        list.add(new ProductSearch(R.drawable.img3, "Bạc xỉu", "20.000đ"));
-        list.add(new ProductSearch(R.drawable.img4, "Trà chanh cam xả", "30.000đ"));
-        list.add(new ProductSearch(R.drawable.img5, "Bánh mochi socola ", "19.000đ"));
-        list.add(new ProductSearch(R.drawable.img6, "Bánh mochi phúc bồn tử", "19.000đ"));
-        list.add(new ProductSearch(R.drawable.img7, "Bánh Tirasumi Socola", "24.000đ"));
-        list.add(new ProductSearch(R.drawable.img8, "Trà xanh matcha kem cheese", "30.000đ"));
-
-        return list;
+    @Override
+    public void onProductListLoadFailed(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

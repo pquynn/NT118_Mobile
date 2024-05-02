@@ -40,7 +40,7 @@ public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> 
             holder.point.setText(String.valueOf(point));
         }
 
-        holder.point_date.setText(pointList.get(position).getPoint_date());
+        holder.point_date.setText(pointList.get(position).getPointDate());
     }
 
     @Override

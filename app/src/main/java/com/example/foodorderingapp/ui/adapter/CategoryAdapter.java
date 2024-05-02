@@ -1,3 +1,4 @@
+
 package com.example.foodorderingapp.ui.adapter;
 
 import android.content.Context;
@@ -9,25 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-
     private List<Category> mCategory;
     private Context context;
 
-    public CategoryAdapter(Context context, List<Category> list){
+    public CategoryAdapter(Context context) {
         this.context = context;
-        this.mCategory = list;
-    }
-
-    public CategoryAdapter(List<Category> list){
-        this.mCategory = list;
+        this.mCategory = new ArrayList<>();
     }
 
     public void setData(List<Category> list){
@@ -47,24 +45,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         if (category == null)
             return;
 
-        holder.imgCategory.setImageResource(category.getResourceid());
-        holder.txtname.setText(category.getName());
-
+        Glide.with(context).load(category.getImgCategory()).into(holder.imgCategory);
+        holder.txtname.setText(category.getNameCategory());
     }
 
     @Override
     public int getItemCount() {
-        if (mCategory != null){
-            return mCategory.size();
-        }
-        return 0;
+        return mCategory.size();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
-
         private CircleImageView imgCategory;
         private TextView txtname;
-
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCategory = itemView.findViewById(R.id.img_category);

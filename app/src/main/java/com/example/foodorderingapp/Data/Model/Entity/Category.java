@@ -1,27 +1,38 @@
+
 package com.example.foodorderingapp.Data.Model.Entity;
 
 public class Category {
-    private int resourceid;
-    private String name;
+    private String id;
 
-    public String getName() {
-        return name;
+    private String imgCategory;
+    private String nameCategory;
+
+    public Category(String imgCategory, String nameCategory) {
+        this.imgCategory = imgCategory;
+        this.nameCategory = nameCategory;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getId() {
+        return id;
     }
 
-    public Category(int resourceid, String name) {
-        this.name = name;
-        this.resourceid = resourceid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getResourceid() {
-        return resourceid;
+    public String getImgCategory() {
+        return imgCategory;
     }
 
-    public void setResourceid(int resourceid) {
-        this.resourceid = resourceid;
+    public void setImgCategory(String imgCategory) {
+        this.imgCategory = imgCategory;
+    }
+
+    public String getNameCategory() {
+        return nameCategory;
+    }
+
+    public void setNameCategory(String nameCategory) {
+        this.nameCategory = nameCategory;
     }
 }

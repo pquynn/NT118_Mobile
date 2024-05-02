@@ -2,10 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AdminMainActivity">
+      <entry key="MainActivity (1)">
         <State />
       </entry>
-      <entry key="activity_login">
+      <entry key="SearchActivity">
         <State />
       </entry>
       <entry key="activity_setpassword">

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.AccountManagement;
+package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
 import android.content.Context;
 import android.util.AttributeSet;

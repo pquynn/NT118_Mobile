@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.Home;
+package com.example.foodorderingapp.ui.activityfragment.customer.home;
 
 import android.content.Intent;
 import android.os.Bundle;

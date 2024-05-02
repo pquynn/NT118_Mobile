@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.Admin.AdminFragment;
+package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.MyOrdersFragment;
 
 import android.os.Bundle;
 
@@ -20,24 +20,24 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AdminCancelOrder#newInstance} factory method to
+ * Use the {@link MyOrderRefunded#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdminCancelOrder extends Fragment {
+public class MyOrderRefunded extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private RecyclerView recyclerViewList;
-    private OrderItemAdapter Adapter;
-    private ArrayList<OrderItem> listOrderItem;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView recyclerViewList;
+    private OrderItemAdapter Adapter;
+    private ArrayList<OrderItem> listOrderItem;
 
-    public AdminCancelOrder() {
+    public MyOrderRefunded() {
         // Required empty public constructor
     }
 
@@ -47,11 +47,11 @@ public class AdminCancelOrder extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminCancelOrder.
+     * @return A new instance of fragment MyOrderRefunded.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdminCancelOrder newInstance(String param1, String param2) {
-        AdminCancelOrder fragment = new AdminCancelOrder();
+    public static MyOrderRefunded newInstance(String param1, String param2) {
+        MyOrderRefunded fragment = new MyOrderRefunded();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,7 +72,7 @@ public class AdminCancelOrder extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_cancel_order, container, false);
+        return inflater.inflate(R.layout.fragment_my_order_refunded, container, false);
     }
 
     @Override
@@ -86,6 +86,7 @@ public class AdminCancelOrder extends Fragment {
 
         Adapter = new OrderItemAdapter(listOrderItem);
         recyclerViewList.setAdapter(Adapter);
+
     }
 
     private void dataInitialize() {
@@ -94,5 +95,7 @@ public class AdminCancelOrder extends Fragment {
         listOrderItem.add(new OrderItem("#order002", 300000, 6));
         listOrderItem.add(new OrderItem("#order003", 400000, 7));
         listOrderItem.add(new OrderItem("#order004", 500000, 8));
+        listOrderItem.add(new OrderItem("#order005", 600000, 9));
+        listOrderItem.add(new OrderItem("#order006", 700000, 10));
     }
 }

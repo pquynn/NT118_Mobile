@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.AccountManagement;
+package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

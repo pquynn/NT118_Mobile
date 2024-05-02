@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.Category;
+package com.example.foodorderingapp.ui.activityfragment.customer.category;
 
 import android.content.Intent;
 import android.os.Bundle;

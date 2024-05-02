@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.Authentication;
+package com.example.foodorderingapp.ui.activityfragment.authentication;
 
 import android.os.Bundle;
 import android.text.InputType;

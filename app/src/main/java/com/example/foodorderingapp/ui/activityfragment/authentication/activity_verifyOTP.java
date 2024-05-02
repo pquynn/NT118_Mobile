@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.Authentication;
+package com.example.foodorderingapp.ui.activityfragment.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;

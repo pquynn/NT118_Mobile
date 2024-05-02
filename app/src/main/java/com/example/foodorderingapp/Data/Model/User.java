@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.Data.Model.Entity;
+package com.example.foodorderingapp.Data.Model;
 
 public class User {
     private String ID;

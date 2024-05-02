@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1D4D4F"
-    tools:context=".ui.activityfragment.Authentication.activity_login">
+    tools:context=".ui.activityfragment.authentication.activity_login">
     <include layout="@layout/dark_green_bg"></include>
     <TextView
         android:id="@+id/txtActivityLogin"

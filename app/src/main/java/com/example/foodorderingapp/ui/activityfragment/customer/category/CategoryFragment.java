@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.activityfragment.customer.ProductDetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.ProductDetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
 import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
 import com.example.foodorderingapp.data.model.entity.Category;

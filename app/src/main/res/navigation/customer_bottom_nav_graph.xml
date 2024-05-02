@@ -6,17 +6,17 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodorderingapp.ui.activityfragment.customer.Home.HomeFragment"
+        android:name="com.example.foodorderingapp.ui.activityfragment.customer.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.foodorderingapp.ui.activityfragment.customer.AccountManagement.AccountNavigationFragment"
+        android:name="com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.AccountNavigationFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_am_navigation" />
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.example.foodorderingapp.ui.activityfragment.customer.Category.CategoryFragment"
+        android:name="com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
     <fragment

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="24dp"
-        tools:context=".ui.activityfragment.customer.AccountManagement.am_order_detail">
+        tools:context=".ui.activityfragment.customer.accountmanagement.am_order_detail">
 
         <include
             android:id="@+id/include2"

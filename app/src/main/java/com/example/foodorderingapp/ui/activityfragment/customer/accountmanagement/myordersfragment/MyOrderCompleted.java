@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.MyOrdersFragment;
+package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment;
 
 import android.os.Bundle;
 
@@ -18,12 +18,12 @@ import com.example.foodorderingapp.data.model.OrderItem;
 
 import java.util.ArrayList;
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Use the {@link MyOrderInProgress#newInstance} factory method to
-// * create an instance of this fragment.
-// */
-public class MyOrderInProgress extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link MyOrderCompleted#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class MyOrderCompleted extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,11 +33,11 @@ public class MyOrderInProgress extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ArrayList<OrderItem> listOrderItem;
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
+    private ArrayList<OrderItem> listOrderItem;
 
-    public MyOrderInProgress() {
+    public MyOrderCompleted() {
         // Required empty public constructor
     }
 
@@ -47,47 +47,33 @@ public class MyOrderInProgress extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MyOrderInProgress.
+     * @return A new instance of fragment MyOrderCompleted.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyOrderInProgress newInstance(String param1, String param2) {
-        MyOrderInProgress fragment = new MyOrderInProgress();
+    public static MyOrderCompleted newInstance(String param1, String param2) {
+        MyOrderCompleted fragment = new MyOrderCompleted();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-//    private RecyclerView.Adapter OrderItemAdapter;
-//    private RecyclerView recyclerViewList;
-//    private ArrayList<OrderItemDomain> listOrderItem;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        recyclerViewOrderItem();
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_order_in_progress, container, false);
+        return inflater.inflate(R.layout.fragment_my_order_completed, container, false);
     }
-
-//    private void recyclerViewOrderItem(){
-//        recyclerViewList =
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        recyclerViewList.setLayoutManager(linearLayoutManager);
-//
-//        listPoint = new ArrayList<>();
-//        createPointList();
-//
-//        PointAdapter = new PointAdapter(listPoint);
-//        recyclerViewList.setAdapter(PointAdapter);
-//
-//    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -112,8 +98,4 @@ public class MyOrderInProgress extends Fragment {
         listOrderItem.add(new OrderItem("#order005", 600000, 9));
         listOrderItem.add(new OrderItem("#order006", 700000, 10));
     }
-
-
-
-
 }

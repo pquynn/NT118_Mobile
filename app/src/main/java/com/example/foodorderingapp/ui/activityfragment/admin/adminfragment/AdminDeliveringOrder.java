@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.MyOrdersFragment;
+package com.example.foodorderingapp.ui.activityfragment.admin.adminfragment;
 
 import android.os.Bundle;
 
@@ -20,24 +20,24 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyOrderDelivering#newInstance} factory method to
+ * Use the {@link AdminDeliveringOrder#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyOrderDelivering extends Fragment {
+public class AdminDeliveringOrder extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
 
-    public MyOrderDelivering() {
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public AdminDeliveringOrder() {
         // Required empty public constructor
     }
 
@@ -47,11 +47,11 @@ public class MyOrderDelivering extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MyOrderDelivering.
+     * @return A new instance of fragment AdminDeliveringOrder.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyOrderDelivering newInstance(String param1, String param2) {
-        MyOrderDelivering fragment = new MyOrderDelivering();
+    public static AdminDeliveringOrder newInstance(String param1, String param2) {
+        AdminDeliveringOrder fragment = new AdminDeliveringOrder();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,7 +72,7 @@ public class MyOrderDelivering extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_order_delivering, container, false);
+        return inflater.inflate(R.layout.fragment_admin_delivering_order, container, false);
     }
 
     @Override
@@ -86,7 +86,6 @@ public class MyOrderDelivering extends Fragment {
 
         Adapter = new OrderItemAdapter(listOrderItem);
         recyclerViewList.setAdapter(Adapter);
-
     }
 
     private void dataInitialize() {
@@ -97,5 +96,7 @@ public class MyOrderDelivering extends Fragment {
         listOrderItem.add(new OrderItem("#order004", 500000, 8));
         listOrderItem.add(new OrderItem("#order005", 600000, 9));
         listOrderItem.add(new OrderItem("#order006", 700000, 10));
+        listOrderItem.add(new OrderItem("#order007", 700000, 10));
+        listOrderItem.add(new OrderItem("#order008", 700000, 10));
     }
 }

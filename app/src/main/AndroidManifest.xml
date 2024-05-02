@@ -113,7 +113,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activityfragment.admin.Refund.RefundProgressActivity"
+            android:name=".ui.activityfragment.admin.refund.RefundProgressActivity"
             android:exported="true">
         </activity>
         <!--    END: REFUND   -->

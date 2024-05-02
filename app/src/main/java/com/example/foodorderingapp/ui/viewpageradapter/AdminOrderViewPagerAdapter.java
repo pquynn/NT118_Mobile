@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment.AdminCancelOrder;
-import com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment.AdminDeliveredOrder;
-import com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment.AdminDeliveringOrder;
-import com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment.AdminNewOrder;
-import com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment.AdminRefundOrder;
+import com.example.foodorderingapp.ui.activityfragment.admin.adminfragment.AdminCancelOrder;
+import com.example.foodorderingapp.ui.activityfragment.admin.adminfragment.AdminDeliveredOrder;
+import com.example.foodorderingapp.ui.activityfragment.admin.adminfragment.AdminDeliveringOrder;
+import com.example.foodorderingapp.ui.activityfragment.admin.adminfragment.AdminNewOrder;
+import com.example.foodorderingapp.ui.activityfragment.admin.adminfragment.AdminRefundOrder;
 
 public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
     public AdminOrderViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

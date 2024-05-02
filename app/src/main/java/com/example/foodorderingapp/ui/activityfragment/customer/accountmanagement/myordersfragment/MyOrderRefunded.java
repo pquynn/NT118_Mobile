@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.MyOrdersFragment;
+package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment;
 
 import android.os.Bundle;
 
@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyOrderCancelled#newInstance} factory method to
+ * Use the {@link MyOrderRefunded#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyOrderCancelled extends Fragment {
+public class MyOrderRefunded extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +37,7 @@ public class MyOrderCancelled extends Fragment {
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
 
-    public MyOrderCancelled() {
+    public MyOrderRefunded() {
         // Required empty public constructor
     }
 
@@ -47,11 +47,11 @@ public class MyOrderCancelled extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MyOrderCancelled.
+     * @return A new instance of fragment MyOrderRefunded.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyOrderCancelled newInstance(String param1, String param2) {
-        MyOrderCancelled fragment = new MyOrderCancelled();
+    public static MyOrderRefunded newInstance(String param1, String param2) {
+        MyOrderRefunded fragment = new MyOrderRefunded();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,7 +72,7 @@ public class MyOrderCancelled extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_order_cancelled, container, false);
+        return inflater.inflate(R.layout.fragment_my_order_refunded, container, false);
     }
 
     @Override

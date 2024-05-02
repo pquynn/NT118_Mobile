@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.activityfragment.admin.AdminFragment;
+package com.example.foodorderingapp.ui.activityfragment.admin.adminfragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

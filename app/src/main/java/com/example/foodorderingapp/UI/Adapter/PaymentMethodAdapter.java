@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.UI.Adapter;
+package com.example.foodorderingapp.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.Data.Model.PaymentMethod;
+import com.example.foodorderingapp.data.model.PaymentMethod;
 
 import java.util.ArrayList;
 

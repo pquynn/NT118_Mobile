@@ -1,15 +1,15 @@
-package com.example.foodorderingapp.UI.ViewPagerAdapter;
+package com.example.foodorderingapp.ui.ViewPagerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminCancelOrder;
-import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminDeliveredOrder;
-import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminDeliveringOrder;
-import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminNewOrder;
-import com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment.AdminRefundOrder;
+import com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment.AdminCancelOrder;
+import com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment.AdminDeliveredOrder;
+import com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment.AdminDeliveringOrder;
+import com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment.AdminNewOrder;
+import com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment.AdminRefundOrder;
 
 public class AdminOrderViewPagerAdapter extends FragmentStateAdapter {
     public AdminOrderViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

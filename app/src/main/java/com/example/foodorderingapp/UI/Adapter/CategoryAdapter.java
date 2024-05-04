@@ -1,5 +1,4 @@
-
-package com.example.foodorderingapp.UI.Adapter;
+package com.example.foodorderingapp.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.Data.Model.Entity.Category;
+import com.example.foodorderingapp.data.model.entity.Category;
+
 
 import java.util.ArrayList;
 import java.util.List;

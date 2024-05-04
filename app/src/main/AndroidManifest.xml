@@ -15,52 +15,52 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
-            android:name=".UI.Activity_Fragment.Admin.AdminMainActivity"
+            android:name=".ui.Activity_Fragment.Admin.AdminMainActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Admin.activity_adminOrderDetail"
+            android:name=".ui.Activity_Fragment.Admin.activity_adminOrderDetail"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Authentication.activity_verifyOTP"
+            android:name=".ui.Activity_Fragment.Authentication.activity_verifyOTP"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Authentication.activity_setpassword"
+            android:name=".ui.Activity_Fragment.Authentication.activity_setpassword"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Authentication.activity_forgetpassword"
+            android:name=".ui.Activity_Fragment.Authentication.activity_forgetpassword"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Authentication.activity_signup"
+            android:name=".ui.Activity_Fragment.Authentication.activity_signup"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Authentication.activity_login"
+            android:name=".ui.Activity_Fragment.Authentication.activity_login"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_feedback_product"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_feedback_product"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_feedback_list"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_feedback_list"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_order_detail"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_order_detail"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_my_orders"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_my_orders"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_point_history"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_point_history"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_change_userinfo"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_change_userinfo"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_change_password"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_change_password"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.am_user_info"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.am_user_info"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.MainActivity"
+            android:name=".ui.Activity_Fragment.Customer.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,60 +69,60 @@
             </intent-filter>
         </activity> <!-- START: CART - CHECKOUT - PAYMENT -->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Checkout.BuySuccessActivity"
+            android:name=".ui.Activity_Fragment.Customer.Checkout.BuySuccessActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Checkout.CheckoutActivity"
+            android:name=".ui.Activity_Fragment.Customer.Checkout.CheckoutActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Checkout.CheckoutAddressActivity"
+            android:name=".ui.Activity_Fragment.Customer.Checkout.CheckoutAddressActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Checkout.CouponActivity"
+            android:name=".ui.Activity_Fragment.Customer.Checkout.CouponActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Checkout.PaymentMethodActivity"
+            android:name=".ui.Activity_Fragment.Customer.Checkout.PaymentMethodActivity"
             android:exported="true">
         </activity>
 
 
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Home.home"
+            android:name=".ui.Activity_Fragment.Customer.Home.home"
             android:exported="true">
         </activity>
         <!--   END: CART - CHECKOUT - PAYMENT-->
 
         <!--    START: REFUND   -->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Refund.AddRefundProductActivity"
+            android:name=".ui.Activity_Fragment.Customer.Refund.AddRefundProductActivity"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".UI.Activity_Fragment.Customer.Refund.RefundRequestActivity"
+            android:name=".ui.Activity_Fragment.Customer.Refund.RefundRequestActivity"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".UI.Activity_Fragment.Admin.Refund.RefundProgressActivity"
+            android:name=".ui.Activity_Fragment.Admin.Refund.RefundProgressActivity"
             android:exported="true">
         </activity>
         <!--    END: REFUND   -->
 
         <!--   START: ACCOUNT-->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.AM_AddressActivity"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.AM_AddressActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".UI.Activity_Fragment.Customer.AccountManagement.AM_AddAddressActivity"
+            android:name=".ui.Activity_Fragment.Customer.AccountManagement.AM_AddAddressActivity"
             android:exported="true">
         </activity>
         <!--   START: ACCOUNT-->
 
         <!--   START: SEARCH-->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.search.SearchActivity"
+            android:name=".ui.Activity_Fragment.Customer.search.SearchActivity"
             android:exported="true">
         </activity>
         <!--   END: SEARCH-->
@@ -136,14 +136,14 @@
 
         <!--   START: PRODUCT DETAIL-->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity"
+            android:name=".ui.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity"
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->
 
         <!--   START: PRODUCT DETAIL-->
         <activity
-            android:name=".UI.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity"
+            android:name=".ui.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity"
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->

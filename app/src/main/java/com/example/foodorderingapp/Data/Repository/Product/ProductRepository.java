@@ -1,10 +1,10 @@
-package com.example.foodorderingapp.Data.Repository.Product;
+package com.example.foodorderingapp.data.repository.product;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.foodorderingapp.Data.Model.Entity.Product;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.UI.Adapter;
+package com.example.foodorderingapp.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.Data.Model.Entity.Coupon;
-
+import com.example.foodorderingapp.data.model.entity.Coupon;
 import java.util.ArrayList;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder> {

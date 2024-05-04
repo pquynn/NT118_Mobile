@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.Data.Model;
+package com.example.foodorderingapp.data.model;
 
 public class PaymentMethod {
     private String methodName;

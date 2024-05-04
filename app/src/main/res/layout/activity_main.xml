@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".UI.Activity_Fragment.Customer.MainActivity">
+    tools:context=".ui.Activity_Fragment.Customer.MainActivity">
 
     <!--    start: fragment area. Modified by Quyen 13/4/24-->
 <!--    <FrameLayout-->

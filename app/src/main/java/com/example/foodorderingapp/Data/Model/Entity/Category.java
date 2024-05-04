@@ -1,5 +1,4 @@
-
-package com.example.foodorderingapp.Data.Model.Entity;
+package com.example.foodorderingapp.data.model.entity;
 
 public class Category {
     private String id;

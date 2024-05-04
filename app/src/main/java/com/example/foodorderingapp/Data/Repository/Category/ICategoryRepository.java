@@ -1,6 +1,6 @@
-package com.example.foodorderingapp.Data.Repository.Category;
+package com.example.foodorderingapp.data.repository.category;
 
-import com.example.foodorderingapp.Data.Model.Entity.Category;
+import com.example.foodorderingapp.data.model.entity.Category;
 
 import java.util.List;
 

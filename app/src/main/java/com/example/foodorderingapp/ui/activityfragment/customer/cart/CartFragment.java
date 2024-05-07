@@ -7,19 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutActivity;
 import com.example.foodorderingapp.ui.adapter.CartAdapter;
 import com.example.foodorderingapp.data.model.entity.Order;
@@ -27,14 +23,13 @@ import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.databinding.FragmentCartBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CartFragment extends Fragment {
     TextView screenname;
     private Map<String, OrderItem> orderItemMap;
-    private Map<String, BuyingProduct> buyingProducts;
+//    private Map<String, BuyingProduct> buyingProducts;
     private String userId ="3";
     private FragmentCartBinding binding;
     private CartViewModel viewModel;
@@ -66,22 +61,25 @@ public class CartFragment extends Fragment {
         // View model
         viewModel = new CartViewModel(userId);
         //Adapter
-        buyingProducts = new HashMap<>();
-        adapter = new CartAdapter(buyingProducts, viewModel);
+//        buyingProducts = new HashMap<>();
+        orderItemMap = new HashMap<>();
+
+        adapter = new CartAdapter(orderItemMap, viewModel);
         binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewCart.setAdapter(adapter);
 
-
-        viewModel.getBuyingProducts().observe(getViewLifecycleOwner(), new Observer<Map<String, BuyingProduct>>() {
+        viewModel.getOrderMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Order>() {
             @Override
-            public void onChanged(Map<String, BuyingProduct> buyingProductMap) {
+            public void onChanged(Order order) {
+                Log.d("firestore", "fragment cart: " + order.toString());
                 binding.setCartVM(viewModel);
-                buyingProducts.clear();
-                buyingProducts.putAll(buyingProductMap);
+                orderItemMap.clear();
+                orderItemMap.putAll(order.getOrderItem());
                 adapter.notifyDataSetChanged();
 
             }
         });
+
 
     }
 

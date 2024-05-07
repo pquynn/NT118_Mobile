@@ -6,9 +6,10 @@ import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 
 public class OrderItem {
-    @DocumentId
-    private String idOrderItem;
     private String idProduct;
+
+    private String productName;
+    private String productImage;
     private int quantity;
     private int price;
     private String note;
@@ -18,29 +19,11 @@ public class OrderItem {
     //empty constructor
     public OrderItem(){}
 
-    //constructor doesn't have size and topping
-    public OrderItem(String idOrderItem, String idProduct, int quantity, int price, String note) {
-        this.idOrderItem = idOrderItem;
-        this.idProduct = idProduct;
-        this.quantity = quantity;
-        this.price = price;
-        this.note = note;
-    }
-
-    //constructor doesn't have size
-    public OrderItem(String idOrderItem, String idProduct, int quantity, int price, String note, ArrayList<String> topping) {
-        this.idOrderItem = idOrderItem;
-        this.idProduct = idProduct;
-        this.quantity = quantity;
-        this.price = price;
-        this.note = note;
-        this.topping = topping;
-    }
-
     //constructor
-    public OrderItem(String idOrderItem, String idProduct, int quantity, int price, String note, String size, ArrayList<String> topping) {
-        this.idOrderItem = idOrderItem;
+    public OrderItem(String idProduct, String productName, String productImage, int quantity, int price, String note, String size, ArrayList<String> topping) {
         this.idProduct = idProduct;
+        this.productName = productName;
+        this.productImage = productImage;
         this.quantity = quantity;
         this.price = price;
         this.note = note;
@@ -48,18 +31,8 @@ public class OrderItem {
         this.topping = topping;
     }
 
+
     //getter and setter
-
-    @PropertyName("ID_ORDERITEM")
-    public String getIdOrderItem() {
-        return idOrderItem;
-    }
-
-    @PropertyName("ID_ORDERITEM")
-    public void setIdOrderItem(String idOrderItem) {
-        this.idOrderItem = idOrderItem;
-    }
-
     @PropertyName("ID_PRODUCT")
     public String getIdProduct() {
         return idProduct;
@@ -67,6 +40,22 @@ public class OrderItem {
     @PropertyName("ID_PRODUCT")
     public void setIdProduct(String idProduct) {
         this.idProduct = idProduct;
+    }
+    @PropertyName("PRODUCT_NAME")
+    public String getProductName() {
+        return productName;
+    }
+    @PropertyName("PRODUCT_NAME")
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    @PropertyName("PRODUCT_IMAGE")
+    public String getProductImage() {
+        return productImage;
+    }
+    @PropertyName("PRODUCT_IMAGE")
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     @PropertyName("QUANTITY")
@@ -117,8 +106,9 @@ public class OrderItem {
     @Override
     public String toString() {
         return "OrderItem{" +
-                "idOrderItem='" + idOrderItem + '\'' +
-                ", idProduct='" + idProduct + '\'' +
+                "idProduct='" + idProduct + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productImage='" + productImage + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", note='" + note + '\'' +

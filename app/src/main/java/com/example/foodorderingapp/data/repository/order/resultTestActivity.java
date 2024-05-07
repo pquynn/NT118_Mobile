@@ -16,21 +16,10 @@ public class resultTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buy_success);
 
         orderRepository = new OrderRepository();
-        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
-            @Override
-            public void onOrderLoaded(Order order) {
-                Order a = order;
-
-            }
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
-
-//        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
+//        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
 //            @Override
 //            public void onOrderLoaded(Order order) {
+//                Order a = order;
 //
 //            }
 //            @Override
@@ -38,6 +27,17 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
+        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
+            @Override
+            public void onOrderLoaded(Order order) {
+
+            }
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
 
 
 

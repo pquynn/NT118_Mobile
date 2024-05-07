@@ -5,8 +5,8 @@
             name="cartVM"
             type="com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel" />
         <variable
-            name="buyingProduct"
-            type="com.example.foodorderingapp.data.model.BuyingProduct" />
+            name="orderItem"
+            type="com.example.foodorderingapp.data.model.entity.OrderItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:imageUrl="@{buyingProduct.productImage}" />
+            app:imageUrl="@{orderItem.productImage}" />
 
         <TextView
             android:id="@+id/txt_product_name"
@@ -36,7 +36,7 @@
             android:layout_height="23dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="@{buyingProduct.productName}"
+            android:text="@{orderItem.productName}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(buyingProduct.productPrice)}"
+            android:text="@{String.valueOf(orderItem.price)}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
 
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{buyingProduct.productSize}"
+            android:text="@{orderItem.size}"
             android:textColor="@color/placeholder"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
@@ -110,7 +110,7 @@
                 style="@style/btn_count"
                 android:layout_width="10dp"
                 android:layout_height="24dp"
-                android:text="@{String.valueOf(buyingProduct.quantity)}"
+                android:text="@{String.valueOf(orderItem.quantity)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_increase"
                 app:layout_constraintStart_toEndOf="@+id/btn_decrease"

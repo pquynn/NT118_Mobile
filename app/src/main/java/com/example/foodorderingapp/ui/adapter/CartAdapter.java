@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
@@ -31,11 +30,11 @@ import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private CartViewModel cartViewModel;
-    private Map<String, BuyingProduct> productMap;
+    private Map<String, OrderItem> orderItemMap;
     private boolean isDialogOpen = false;
 
-    public CartAdapter( Map<String, BuyingProduct> productMap, CartViewModel cartViewModel){
-        this.productMap = productMap;
+    public CartAdapter(Map<String, OrderItem> orderItemMap, CartViewModel cartViewModel){
+        this.orderItemMap = orderItemMap;
         this.cartViewModel = cartViewModel;
     }
 
@@ -48,10 +47,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<String> keys = new ArrayList<>(productMap.keySet());
+//        Map<String, OrderItem> orderItemMap = cartViewModel.getOrderMutableLiveData().getValue().getOrderItem();
+        List<String> keys = new ArrayList<>(orderItemMap.keySet());
         String key = keys.get(position);
-        BuyingProduct product = productMap.get(key);
-        holder.bind(product);
+        OrderItem orderItem = orderItemMap.get(key);
+        holder.bind(orderItem);
 
         //button edit
         holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return productMap.size();
+        return orderItemMap.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -124,8 +124,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             this.binding = binding;
         }
 
-        void bind(BuyingProduct buyingProduct){
-            binding.setBuyingProduct(buyingProduct);
+        void bind(OrderItem orderItem){
+            binding.setOrderItem(orderItem);
             binding.executePendingBindings();
         }
     }

@@ -1,9 +1,7 @@
 package com.example.foodorderingapp.data.repository.order;
 
-import com.example.foodorderingapp.data.model.BuyingProduct;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
-import com.example.foodorderingapp.data.model.entity.ProductForOrder;
 
 import java.util.List;
 import java.util.Map;
@@ -12,8 +10,7 @@ public interface IOrderRepository {
     // Get order document by order id
     void getOrderById(String orderId, OrderCallback callback);
 
-    // Get shopping cart by user id (order document has status = 'Gio hang')
-    void getCartByUserId(String userId, CartCallback callback);
+    void getCartByUserId(String userId, OrderCallback callback);
 
     // Get order document list by user id and status
     void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback);
@@ -28,10 +25,12 @@ public interface IOrderRepository {
     void checkout(Order order, OrderChangedCallback callback);
 
     // Add or update product in shopping cart by order id
-    void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback);
+//    void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback);
 
     // Delete product in shopping cart by order id
     void deleteProductCart(String orderId,  String orderItemId, OrderItemRemovedCallback callback);
+
+
 
 //    Map<String, BuyingProduct> getBuyingProductList(Map<String, OrderItem> orderItemMap);
 //    void getOrderIdAndBuyingProductInCart(String userId, CartCallback callback);
@@ -46,15 +45,6 @@ public interface IOrderRepository {
         void onError(String errorMessage);
     }
 
-    interface CartCallback {
-        void onCartLoaded(String orderId, Map<String, BuyingProduct> buyingProductMap);
-        void onError(String errorMessage);
-    }
-
-    interface BuyingProductListCallback {
-        void onProductListLoaded(Map<String, BuyingProduct> buyingProductMap);
-        void onError(String errorMessage);
-    }
 
     interface OrderCallback {
         void onOrderLoaded(Order order);

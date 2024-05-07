@@ -5,17 +5,36 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.repository.notification.INotificationRepository;
+import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
+
+import java.util.List;
 
 public class resultTestActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
+    private NotificationRepository notificationRepository;
+    private Notification notification;
     private Order od;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_success);
 
         orderRepository = new OrderRepository();
+        notificationRepository = new NotificationRepository();
+        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
+            @Override
+            public void onListLoaded(List<Notification> notificationList) {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
 //        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
 //            @Override
 //            public void onOrderLoaded(Order order) {
@@ -28,16 +47,16 @@ public class resultTestActivity extends AppCompatActivity {
 //            }
 //        });
 
-        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
-            @Override
-            public void onOrderLoaded(Order order) {
-
-            }
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+//        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
+//            @Override
+//            public void onOrderLoaded(Order order) {
+//
+//            }
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
 
 
 

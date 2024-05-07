@@ -54,8 +54,8 @@ public class NotificationFragment extends Fragment {
             throw new RuntimeException(e);
         }
 
-        notiList.add(new Notification("Giao hàng thành công", "Đơn hàng 000 của bạn đã giao thành công", date));
-        notiList.add(new Notification("Đơn hàng đang giao đến bạn", "Đơn hàng 000 đang trên đuờng giao", date));
+//        notiList.add(new Notification("Giao hàng thành công", "Đơn hàng 000 của bạn đã giao thành công", date));
+//        notiList.add(new Notification("Đơn hàng đang giao đến bạn", "Đơn hàng 000 đang trên đuờng giao", date));
         adapter.notifyDataSetChanged();
         return view;
     }

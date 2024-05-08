@@ -13,7 +13,7 @@ public class Notification {
     String idRecipient;
     String status;
     int recipientType;
-    String type;
+    String title;
     String content;
     @ServerTimestamp
     Date date;
@@ -21,13 +21,13 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String id, String idOrder, String idRecipient, String status, int recipientType, String type, String content, Date date) {
+    public Notification(String id, String idOrder, String idRecipient, String status, int recipientType, String title, String content, Date date) {
         this.id = id;
         this.idOrder = idOrder;
         this.idRecipient = idRecipient;
         this.status = status;
         this.recipientType = recipientType;
-        this.type = type;
+        this.title = title;
         this.content = content;
         this.date = date;
     }
@@ -72,13 +72,13 @@ public class Notification {
     public void setRecipientType(int recipientType) {
         this.recipientType = recipientType;
     }
-    @PropertyName("TYPE")
-    public String getType() {
-        return type;
+    @PropertyName("TITLE")
+    public String getTitle() {
+        return title;
     }
-    @PropertyName("TYPE")
-    public void setType(String type) {
-        this.type = type;
+    @PropertyName("TITLE")
+    public void setTitle(String title) {
+        this.title = title;
     }
     @PropertyName("CONTENT")
     public String getContent() {
@@ -107,7 +107,7 @@ public class Notification {
                 ", idRecipient='" + idRecipient + '\'' +
                 ", status='" + status + '\'' +
                 ", recipientType=" + recipientType +
-                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 '}';

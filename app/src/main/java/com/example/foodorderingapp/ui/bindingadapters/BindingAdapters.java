@@ -8,6 +8,9 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class BindingAdapters {
     @BindingAdapter("imageUrl")
@@ -16,6 +19,15 @@ public class BindingAdapters {
             Glide.with(imageView.getContext())
                     .load(imageUrl)
                     .into(imageView);
+        }
+    }
+
+    @BindingAdapter("dateFormatted")
+    public static void setDateFormatted(TextView textView, Date date) {
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd-MM-yyyy", Locale.getDefault());
+            String formattedDate = dateFormat.format(date);
+            textView.setText(formattedDate);
         }
     }
 

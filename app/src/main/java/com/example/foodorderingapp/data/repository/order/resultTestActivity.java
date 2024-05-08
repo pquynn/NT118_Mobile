@@ -24,17 +24,17 @@ public class resultTestActivity extends AppCompatActivity {
 
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
-        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
-            @Override
-            public void onListLoaded(List<Notification> notificationList) {
-
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+//        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
+//            @Override
+//            public void onListLoaded(List<Notification> notificationList) {
+//
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
 //        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
 //            @Override
 //            public void onOrderLoaded(Order order) {
@@ -126,16 +126,16 @@ public class resultTestActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//        orderRepository.getOrderListByStatusAndUserId("1", "Giỏ hàng", new IOrderRepository.OrderListCallback() {
-//            @Override
-//            public void onOrderListLoaded(List<Order> orderList) {
-//
-//            }
-//            @Override
-//            public void onError(String errorMessage) {
-//
-//            }
-//        });
+        orderRepository.getOrderListByStatusAndUserId("3", "Đang giao", new IOrderRepository.OrderListCallback() {
+            @Override
+            public void onOrderListLoaded(List<Order> orderList) {
+
+            }
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
 
 //        orderRepository.updateOrderStatusById("2", "Đã giao", new IOrderRepository.OrderChangedCallback() {
 //            @Override

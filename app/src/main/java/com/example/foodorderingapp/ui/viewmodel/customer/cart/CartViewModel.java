@@ -12,10 +12,11 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<Order> orderMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Double> totalPrice = new MutableLiveData<>();
 
-    private OrderRepository orderRepository = new OrderRepository();
+    private OrderRepository orderRepository;
 
     public CartViewModel(String userId){
         this.userId = userId;
+        orderRepository = new OrderRepository();
     }
 
     public MutableLiveData<Double> getTotalPrice() {

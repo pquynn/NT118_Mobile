@@ -6,30 +6,36 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Notification;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.databinding.ViewholderCartBinding;
+import com.example.foodorderingapp.databinding.ViewholderNotificationBinding;
+import com.example.foodorderingapp.ui.viewmodel.customer.notification.NotificationViewModel;
 
 import java.util.ArrayList;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder>{
     private ArrayList<Notification> notiList;
-    public NotificationAdapter(ArrayList<Notification> notiList){
+    private NotificationViewModel viewModel;
+    public NotificationAdapter(ArrayList<Notification> notiList, NotificationViewModel viewModel){
         this.notiList = notiList;
+        this.viewModel = viewModel;
     }
 
     @Override
     public NotificationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_notification, parent, false);
-        return new NotificationAdapter.ViewHolder(inflate);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ViewholderNotificationBinding binding = DataBindingUtil.inflate(inflater, R.layout.viewholder_notification, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.ViewHolder holder, int position) {
-        holder.notiName.setText(notiList.get(position).getType());
-        holder.content.setText(notiList.get(position).getContent());
-        holder.date.setText(notiList.get(position).getDate().toString());
+        holder.bind(notiList.get(position));
     }
 
     @Override
@@ -38,14 +44,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView notiName;
-        TextView content;
-        TextView date;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            notiName = itemView.findViewById(R.id.txt_noti_name);
-            content = itemView.findViewById(R.id.txt_noti_message);
-            date = itemView.findViewById(R.id.txt_date);
+        private ViewholderNotificationBinding binding;
+
+        public ViewHolder(@NonNull ViewholderNotificationBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(Notification notification){
+            binding.setNotification(notification);
+            binding.executePendingBindings();
         }
     }
 }

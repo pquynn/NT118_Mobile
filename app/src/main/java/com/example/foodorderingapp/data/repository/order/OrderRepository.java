@@ -86,7 +86,7 @@ public class OrderRepository implements IOrderRepository {
                     orderList.add(order);
 
                     // log ra
-                    Log.d("FirestoreOrderRepository", order.toString());
+                    Log.d("FirestoreOrderRepository", "getorderlist" + order.toString());
                 }
                 // callback
                 callback.onOrderListLoaded(orderList);

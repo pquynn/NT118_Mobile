@@ -6,11 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.data.model.entity.Order;
-import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrderListRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyOrdersVM extends ViewModel {

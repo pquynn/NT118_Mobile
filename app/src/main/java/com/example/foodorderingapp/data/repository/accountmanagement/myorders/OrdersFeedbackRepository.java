@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 
 import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,40 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class OrdersFeedbackRepository {
-    //Model = OrderDetail
-    private class nameAndImage{
-        String productName;
-        String productImage;
-
-        public nameAndImage(String productName, String productImage) {
-            this.productName = productName;
-            this.productImage = productImage;
-        }
-
-        public String getProductName() {
-            return productName;
-        }
-
-        public void setProductName(String productName) {
-            this.productName = productName;
-        }
-
-        public String getProductImage() {
-            return productImage;
-        }
-
-        public void setProductImage(String productImage) {
-            this.productImage = productImage;
-        }
-    }
-//    private orderItemCallback callback;
-    private orderStatusCallback callbackStatus;
     private FirebaseFirestore db ;
-//    private CollectionReference reference = firebaseFirestore.collection("ORDER");
-//    private CollectionReference refProduct = firebaseFirestore.collection("PRODUCT");
     private ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
-    private nameAndImage nameImageProduct = new nameAndImage("", "");
-    private String productName;
     private String orderStatus = "";
 
     public OrdersFeedbackRepository() {
@@ -64,48 +34,31 @@ public class OrdersFeedbackRepository {
 
     //Get danh sách sản phẩm đánh giá
     public void listFeedback(String orderId, orderItemCallback callback) {
-        db.collection("ORDER").document(orderId) // Sử dụng .document thay vì .whereEqualTo
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() { // Thay đổi thành DocumentSnapshot
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                            DocumentSnapshot document = task.getResult(); // Lấy DocumentSnapshot thay vì QuerySnapshot
-                            Map<String, Object> orderItemData = (Map<String, Object>) document.get("ORDER_ITEM");
+        db.collection("ORDER")
+                .document(orderId)
+                .get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Chuyển đổi documentSnapshot thành đối tượng Order
+                        Order order = documentSnapshot.toObject(Order.class);
+                        if (order != null) {
+                            // Lấy HashMap từ đối tượng Order
+                            HashMap<String, OrderItem> itemHashMap = (HashMap<String, OrderItem>) order.getOrderItem();
 
-                            if (orderItemData != null) {
-                                for (Map.Entry<String, Object> entry : orderItemData.entrySet()) {
-                                    String itemId = entry.getKey();
-                                    Map<String, Object> itemData = (Map<String, Object>) entry.getValue();
+                            // Chuyển HashMap thành List
+                            List<OrderItem> orderItemList = new ArrayList<>(itemHashMap.values());
 
-                                    String productId = (String) itemData.get("ID_PRODUCT");
-
-                                    // Gọi getProductName và chỉ thêm vào orderDetailList sau khi có kết quả
-                                    getProductNameImage(productId, new productNameImageCallback() {
-                                        @Override
-                                        public void loadProductNameImageSuccess(nameAndImage nameImageProduct) {
-                                            OrderDetail detail = parseOrderItem(itemData, nameImageProduct);
-                                            orderDetailList.add(detail);
-
-                                            // Gọi callback khi tất cả các item đã được xử lý
-                                            if (orderDetailList.size() == orderItemData.size()) {
-                                                callback.loadOrderItemsSuccess(orderDetailList);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void loadProductNameImageError(Exception e) {
-                                            callback.loadOrderItemsError(e);
-                                        }
-                                    });
-                                }
-                            } else {
-                                callback.loadOrderItemsError(new Exception("No order item data found"));
-                            }
+                            // Gọi callback để trả về danh sách OrderItem
+                            callback.loadOrderItemsSuccess(orderItemList);
                         } else {
-                            callback.loadOrderItemsError(task.getException());
+                            callback.loadOrderItemsError(new Exception("Order data is null"));
                         }
+                    } else {
+                        callback.loadOrderItemsError(new Exception("Document does not exist"));
                     }
+                })
+                .addOnFailureListener(exception -> {
+                    // Gọi callback khi có lỗi
+                    callback.loadOrderItemsError(exception);
                 });
     }
 
@@ -135,62 +88,6 @@ public class OrdersFeedbackRepository {
                     }
                 });
     }
-
-
-    //Lấy dữ liệu và tạo đối tượng OrderDetail
-    private OrderDetail parseOrderItem(Map<String, Object> itemData, nameAndImage nameImageProduct) {
-        String productNameGet = nameImageProduct.getProductName();
-        String productImage = nameImageProduct.getProductImage();
-        String note = (String) itemData.get("NOTE");
-        String size = (String) itemData.get("SIZE");
-        Long productPriceStr = (Long) itemData.get("PRICE");
-        Long quantityStr = (Long) itemData.get("QUANTITY");
-        int productPrice = Integer.valueOf(Long.toString(productPriceStr));
-        int quantity = Integer.valueOf(Long.toString(quantityStr));
-
-        return new OrderDetail(productNameGet, productPrice, size, note, quantity, productImage);
-    }
-
-    //Lấy product name, product image
-    // Hàm callback để lấy tên và ảnh sản phẩm
-    private void getProductNameImage(String productId, productNameImageCallback callback) {
-
-        // Truy cập trực tiếp tài liệu với ID sản phẩm
-        db.collection("PRODUCT").document(productId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String productNameGet = document.getString("PRODUCT_NAME");
-                                String productPictureGet = document.getString("PRODUCT_IMAGE");
-
-                                // Kiểm tra dữ liệu
-                                if (productNameGet != null && productPictureGet != null) {
-                                    nameImageProduct.setProductName(productNameGet);
-                                    nameImageProduct.setProductImage(productPictureGet);
-
-                                    // Gọi callback thành công
-                                    callback.loadProductNameImageSuccess(nameImageProduct);
-                                } else {
-                                    // Nếu dữ liệu thiếu, báo lỗi
-                                    callback.loadProductNameImageError(new Exception("Missing product name or image"));
-                                }
-                            } else {
-                                // Nếu tài liệu không tồn tại
-                                callback.loadProductNameImageError(new Exception("Product not found"));
-                            }
-                        } else {
-                            // Báo lỗi nếu truy vấn không thành công
-                            callback.loadProductNameImageError(task.getException());
-                        }
-                    }
-                });
-    }
-
-
     public void addComment(Comment comment) {
         CollectionReference reference = db.collection("COMMENT");
 
@@ -295,14 +192,10 @@ public class OrdersFeedbackRepository {
     }
 
     public interface orderItemCallback{
-        void loadOrderItemsSuccess(ArrayList<OrderDetail> orderItems);
+        void loadOrderItemsSuccess(List<OrderItem> orderItems);
         void loadOrderItemsError(Exception e);
     }
 
-    private interface productNameImageCallback{
-        void loadProductNameImageSuccess(nameAndImage nameImageProducts);
-        void loadProductNameImageError(Exception e);
-    }
 
     public interface orderStatusCallback{
         void loadOrderStatusSuccess(String status);

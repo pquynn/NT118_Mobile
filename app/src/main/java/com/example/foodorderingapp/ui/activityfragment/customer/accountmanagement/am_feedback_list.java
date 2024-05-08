@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.ui.adapter.FeedbackItemAdapter;
 import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.OrderFeedbackListVM;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class am_feedback_list extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
     private OrderFeedbackListVM viewModel;
-    ArrayList<OrderDetail> productList = new ArrayList<>();
+    ArrayList<OrderItem> productList = new ArrayList<>();
     String orderId, orderStatus;
 
     TextView txt_orderId, txt_orderStatus;
@@ -35,7 +37,7 @@ public class am_feedback_list extends AppCompatActivity {
         headerName.setText("Đánh giá đơn hàng");
 
         //get intent gì đó để lấy orderid
-        orderId = "4";
+        orderId = "1";
         txt_orderId = findViewById(R.id.txt_orderID);
         txt_orderId.setText(orderId);
 
@@ -59,10 +61,10 @@ public class am_feedback_list extends AppCompatActivity {
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         //Lấy danh sách từ viewModel
-        viewModel.getOrderDetailListLiveData().observe(this, new Observer<ArrayList<OrderDetail>>() {
+        viewModel.getOrderDetailListLiveData().observe(this, new Observer<List<OrderItem>>() {
             @Override
-            public void onChanged(ArrayList<OrderDetail> orderDetails) {
-                for(OrderDetail i : orderDetails){
+            public void onChanged(List<OrderItem> orderDetails) {
+                for(OrderItem i : orderDetails){
                     productList.add(i);
                 }
                 adapter = new FeedbackItemAdapter(productList);

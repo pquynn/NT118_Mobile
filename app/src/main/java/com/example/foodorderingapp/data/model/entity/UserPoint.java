@@ -1,26 +1,59 @@
 package com.example.foodorderingapp.data.model.entity;
 
-public class UserPoint {
-    private int point;
-    private String pointDate; //date_received/date_of_use;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.PropertyName;
+import com.google.firebase.firestore.ServerTimestamp;
 
-    public UserPoint(int p, String dateP){
-        this.point = p;
-        this.pointDate = dateP;
+import java.util.Date;
+
+public class UserPoint {
+    @DocumentId
+    private String id;
+    private String userId;
+    private int point;
+    @ServerTimestamp
+    private Date pointDate;
+
+    public UserPoint(String userId, int point, Date pointDate) {
+        this.userId = userId;
+        this.point = point;
+        this.pointDate = pointDate;
     }
 
-    public int getPoint(){
+    public UserPoint() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    @PropertyName("ID_USER")
+    public String getUserId() {
+        return userId;
+    }
+    @PropertyName("ID_USER")
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    @PropertyName("POINT")
+    public int getPoint() {
         return point;
     }
-    public String getPointDate(){
-        return pointDate;
-    }
-
+    @PropertyName("POINT")
     public void setPoint(int point) {
         this.point = point;
     }
 
-    public void setPointDate(String point_date) {
-        this.pointDate = point_date;
+    @PropertyName("DATE_RECEIVED")
+    @ServerTimestamp
+    public Date getPointDate() {
+        return pointDate;
+    }
+    @PropertyName("DATE_RECEIVED")
+    public void setPointDate(Date pointDate) {
+        this.pointDate = pointDate;
     }
 }

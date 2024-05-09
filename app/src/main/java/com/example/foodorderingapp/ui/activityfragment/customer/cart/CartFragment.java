@@ -57,7 +57,11 @@ public class CartFragment extends Fragment {
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CheckoutActivity.class));
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(key, value);
+//                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -65,9 +69,7 @@ public class CartFragment extends Fragment {
         viewModel = new CartViewModel(userId, getActivity());
 
         //Adapter
-//        buyingProducts = new HashMap<>();
         orderItemMap = new HashMap<>();
-
         adapter = new CartAdapter(orderItemMap, viewModel);
         binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewCart.setAdapter(adapter);

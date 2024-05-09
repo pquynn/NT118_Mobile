@@ -47,9 +47,16 @@ public class CheckoutAddressActivity extends AppCompatActivity {
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         ArrayList<UserAddress> addresses = new ArrayList<UserAddress>();
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
+        UserAddress ua1 = new UserAddress();
+        ua1.setAddressDetail("28 đường Nguyễn Văn Quỳ phường PT quận 7");
+        ua1.setRecipientName("Nguyễn Văn A");
+        ua1.setRecipientPhone("0123456789");
+        addresses.add(ua1);
+        UserAddress ua2 = new UserAddress();
+        ua2.setAddressDetail("Linh Trung, Thủ Đức");
+        ua2.setRecipientName("Nguyễn Văn A");
+        ua2.setRecipientPhone("0123456789");
+        addresses.add(ua2);
 
         adapter = new CheckoutAddressAdapter(addresses);
         recyclerViewList.setAdapter(adapter);

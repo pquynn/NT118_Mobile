@@ -1,5 +1,7 @@
-package com.example.foodorderingapp.viewmodel.checkout;
+package com.example.foodorderingapp.ui.viewmodel.customer.checkout;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -7,34 +9,46 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 
+import java.util.Map;
+
 public class CheckoutViewModel extends ViewModel {
-    String orderId;
-    private MutableLiveData<Order> orderMutableLiveData = new MutableLiveData<Order>();
+    private String userId;
+    private ProgressDialog progressDialog; // Declare ProgressDialog
+    private Context context;
+
+    private MutableLiveData<Order> orderMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
 
     private OrderRepository orderRepository = new OrderRepository();
 
-    private MutableLiveData<String> test;
-
-    public CheckoutViewModel(String orderId){
-
-        this.orderId = orderId;
-        loadOrder(orderId);
+    public CheckoutViewModel(String userId, Context context){
+        this.userId = userId;
+        this.context = context;
+        orderRepository = new OrderRepository();
     }
 
     public LiveData<Order> getOrderMutableLiveData() {
-            loadOrder(orderId);
-
+        loadOrder(userId);
         return orderMutableLiveData;
     }
 
+    public MutableLiveData<Integer> getTotalPrice() {
+        totalPrice.setValue(calculateTotalPrice(orderMutableLiveData.getValue().getOrderItem()));
+        return totalPrice;
+    }
+
+
+    // load order from firestore
     public void loadOrder(String orderId){
-        orderRepository.getOrderById(orderId, new IOrderRepository.OrderCallback() {
+        orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
             @Override
             public void onOrderLoaded(Order order) {
                 orderMutableLiveData.setValue(order);
+                totalPrice.setValue(calculateTotalPrice(order.getOrderItem()));
             }
 
             @Override
@@ -45,14 +59,20 @@ public class CheckoutViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<String> getTest() {
-        if (test == null){
-            test = new MutableLiveData<>();
-            test.setValue("a");
+    // calculate total price
+    public int calculateTotalPrice(Map<String, OrderItem> buyingProductHashMap){
+        int totalPrice = 0;
+        for(Map.Entry<String, OrderItem> entry : buyingProductHashMap.entrySet()){
+            totalPrice += entry.getValue().getPrice() * entry.getValue().getQuantity();
         }
-        return test;
+        return totalPrice;
     }
 
-
+    // Method to dismiss progress dialog
+    private void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
 }

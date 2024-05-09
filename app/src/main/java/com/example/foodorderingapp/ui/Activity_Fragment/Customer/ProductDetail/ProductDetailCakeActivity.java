@@ -1,7 +1,10 @@
 package com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +64,15 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
                 contentTextView.setText(originalText);
                 showMoreTextView.setVisibility(View.VISIBLE);
                 showLessTextView.setVisibility(View.GONE);
+            }
+        });
+
+        //Xử lý button quay lại
+        FrameLayout btnback = findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

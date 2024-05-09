@@ -1,8 +1,9 @@
 package com.example.foodorderingapp.Data.Model.Entity;
 
+import com.google.firebase.firestore.DocumentId;
+
 public class Category {
     private String id;
-
     private String imgCategory;
     private String nameCategory;
 
@@ -10,11 +11,11 @@ public class Category {
         this.imgCategory = imgCategory;
         this.nameCategory = nameCategory;
     }
-
+    @DocumentId
     public String getId() {
         return id;
     }
-
+    @DocumentId
     public void setId(String id) {
         this.id = id;
     }

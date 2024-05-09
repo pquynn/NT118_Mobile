@@ -106,33 +106,6 @@
             app:layout_constraintTop_toTopOf="@+id/ic_comment"
             tools:ignore="MissingConstraints" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/txt_descriptionProduct"-->
-<!--            style="@style/text_text_14sp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="24dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="24dp"-->
-<!--            android:text="@string/description"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/ic_star_green"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/ic_star_green"-->
-<!--            tools:ignore="MissingConstraints" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/expendContent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="104dp"-->
-<!--            android:layout_marginBottom="12dp"-->
-<!--            android:text="Xem thêm"-->
-<!--            android:textColor="@color/primary"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/txt_descriptionProduct"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            tools:ignore="MissingConstraints" />-->
 
         <!--   START Content Description     -->
         <LinearLayout
@@ -225,103 +198,119 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_size"
             tools:ignore="MissingConstraints" />
 
-        <!--  RadioButton Lớn  -->
-        <LinearLayout
-            android:id="@+id/linearLayoutRdBtnLarge"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+<!--        &lt;!&ndash;  RadioButton Lớn  &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linearLayoutRdBtnLarge"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/txt_depSize"-->
+<!--            tools:ignore="MissingConstraints">-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/radioButtonLarge"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:buttonTint="@color/primary"-->
+<!--                android:onClick="onRadioButtonClicked"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Lớn" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="40,000₫" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; RadioButton Vừa &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linearLayoutRdBtnMedium"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnLarge"-->
+<!--            tools:ignore="MissingConstraints">-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/radioButtonMedium"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:onClick="onRadioButtonClicked"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Vừa" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="35,000₫" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; RadioButton Nhỏ &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linearLayoutRdBtnSmall"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/linearLayoutRdBtnLarge"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnMedium"-->
+<!--            tools:ignore="MissingConstraints">-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/radioButtonSmall"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:onClick="onRadioButtonClicked"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Nhỏ" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="30,000₫" />-->
+<!--        </LinearLayout>-->
+
+        <RadioGroup
+            android:id="@+id/radioGroupSizes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:orientation="horizontal"
-            android:padding="10dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_depSize"
             tools:ignore="MissingConstraints">
 
-            <RadioButton
-                android:id="@+id/radioButtonLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/primary"
-                android:onClick="onRadioButtonClicked"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Lớn" />
+            <!-- RadioButton sẽ được thêm vào đây bằng code -->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="40,000₫" />
-
-        </LinearLayout>
-
-        <!-- RadioButton Vừa -->
-        <LinearLayout
-            android:id="@+id/linearLayoutRdBtnMedium"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnLarge"
-            tools:ignore="MissingConstraints">
-
-            <RadioButton
-                android:id="@+id/radioButtonMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Vừa" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="35,000₫" />
-
-        </LinearLayout>
-
-        <!-- RadioButton Nhỏ -->
-        <LinearLayout
-            android:id="@+id/linearLayoutRdBtnSmall"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutRdBtnLarge"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnMedium"
-            tools:ignore="MissingConstraints">
-
-            <RadioButton
-                android:id="@+id/radioButtonSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nhỏ" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30,000₫" />
-        </LinearLayout>
+        </RadioGroup>
         <!--  END VIEW SIZE  -->
 
         <View
@@ -332,7 +321,7 @@
             android:background="@color/search"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
             app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutRdBtnSmall"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupSizes"
             tools:ignore="MissingConstraints" />
 
         <!-- START VIEW TOPPING  -->
@@ -365,7 +354,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutRdBtnLarge"
+            app:layout_constraintEnd_toEndOf="@+id/radioGroupSizes"
             app:layout_constraintStart_toStartOf="@+id/txt_NameDrink"
             app:layout_constraintTop_toBottomOf="@+id/txt_depTopping"
             tools:ignore="MissingConstraints" />

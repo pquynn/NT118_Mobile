@@ -23,7 +23,7 @@ public interface IProductRepository {
         void onError(String errorMessage);
     }
     interface ProductDetailCallback {
-        void onProductDetailLoaded(String productName, String productImage, String productInfo, int productPrice, Map<String, Map<String, Object>> sizeMap, List<String> toppingList);
+        void onProductDetailLoaded(String productName, String productImage, String productInfo, int productPrice, Map<String, Map<String, Integer>> sizeMap, List<String> toppingList);
         void onProductDetailLoadFailed(String errorMessage);
     }
 

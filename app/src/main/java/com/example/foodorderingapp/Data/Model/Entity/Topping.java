@@ -1,13 +1,23 @@
 package com.example.foodorderingapp.Data.Model.Entity;
 
 public class Topping {
-
+    private String id;
     private String nameTopping;
     private String priceTopping;
+
+    public Topping(){}
 
     public Topping(String name, String price) {
         this.nameTopping = name;
         this.priceTopping = price;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNameTopping() {

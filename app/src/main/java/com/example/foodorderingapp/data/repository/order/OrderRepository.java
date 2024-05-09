@@ -102,6 +102,37 @@ public class OrderRepository implements IOrderRepository {
         });
     }
 
+    // Get order document list status
+    public void getOrderListByStatus(String status, OrderListCallback callback){
+        Query query = collectionRef
+                .whereEqualTo("STATUS", status);
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                // create an order list
+                List<Order> orderList = new ArrayList<>();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                    Order order = documentSnapshot.toObject(Order.class);
+                    orderList.add(order);
+
+                    // log ra
+                    Log.d("FirestoreOrderRepository", "getorderlist" + order.toString());
+                }
+                // callback
+                callback.onOrderListLoaded(orderList);
+            } else {
+                String errorMessage = "Order not found";
+                Log.e("FirestoreOrderRepository", errorMessage);
+                callback.onError(errorMessage);
+            }
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get order: " + e.getMessage();
+            Log.e("FirestoreOrderRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
+    }
+
     // Create order document (create cart)
     @Override
     public void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback){

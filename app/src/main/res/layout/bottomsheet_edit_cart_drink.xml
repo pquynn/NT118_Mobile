@@ -41,141 +41,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/size_heading" />
 
-    <!--    start: big size container-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/size_container1"
-        android:layout_width="0dp"
+        android:id="@+id/size_area"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_describe">
+        app:layout_constraintTop_toBottomOf="@id/size_describe">
 
         <TextView
-            android:id="@+id/txt_bigsize_price"
-            style="@style/regular_text_16sp"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="40.000 đ"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/radio_big"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:buttonTint="@color/primary"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/txt_bigsize"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lớn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/radio_big"
-            app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/rb_small"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Nhỏ" />
+
+            <RadioButton
+                android:id="@+id/rd_medium"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Vừa" />
+
+            <RadioButton
+                android:id="@+id/rd_large"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Lớn" />
+
+        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    end: big size container-->
 
-    <!--    start: medium size container-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/size_container2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_container1">
 
-        <TextView
-            android:id="@+id/txt_mediumsize_price"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="32.000 đ"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407" />
-
-        <RadioButton
-            android:id="@+id/radio_btn_medium"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_mediumsize"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vừa"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/radio_btn_medium"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    end: medium size container-->
-
-    <!--    start: small size container-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/size_container3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_container2">
-
-        <TextView
-            android:id="@+id/txt_smallsize_price"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="25.000 đ"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407" />
-
-        <RadioButton
-            android:id="@+id/radio_small"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_smallsize"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nhỏ"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/radio_small"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    end: small size container-->
     <!--    end: size area-->
 
 
@@ -189,7 +112,7 @@
         android:layout_marginTop="10dp"
         android:text="Topping"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_container3" />
+        app:layout_constraintTop_toBottomOf="@+id/size_area" />
 
     <TextView
         android:id="@+id/topping_describe"
@@ -214,36 +137,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topping_describe">
 
-        <TextView
-            android:id="@+id/txt_topping_price"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="40.000 đ"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.407" />
-
         <CheckBox
             android:id="@+id/checkbox"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
+            style="@style/regular_text_16sp"
+            android:text="Trân châu đen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txt_topping_name"
-            style="@style/regular_text_16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trân châu đen"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/checkbox"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--    end: big size container-->
     <!--    end: topping area-->

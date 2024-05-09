@@ -16,6 +16,9 @@ public interface IOrderRepository {
     // Get order document list by user id and status
     void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback);
 
+    // Get order document list status
+    void getOrderListByStatus(String status, OrderListCallback callback);
+
     // Create new order document by user id and orderItem
     void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback);
 

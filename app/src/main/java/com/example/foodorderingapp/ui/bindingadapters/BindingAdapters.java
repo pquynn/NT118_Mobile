@@ -31,13 +31,12 @@ public class BindingAdapters {
         }
     }
 
-//    @BindingAdapter("priceFormatted")
-//    public static void setPriceFormatted(TextView textView, int price) {
-////        String formattedPrice = new DecimalFormat("#,### đ").format(price);
-////        formattedPrice = formattedPrice.replace(",", ".");
-////        textView.setText(formattedPrice);
-//        double amount = (double) price; // Convert the integer to a double
-//        textView.setText(); // Format the double as a currency string
-//    }
+    @BindingAdapter("priceFormatted")
+    public static void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+//        formattedPrice = formattedPrice.replace(",", ".");
+        textView.setText(formattedPrice);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.adapter;//package com.example.foodorderingapp.UI.adapter;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.content.DialogInterface;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
 //import com.example.foodorderingapp.databinding.ViewholderCartBinding;
@@ -53,49 +57,115 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         OrderItem orderItem = orderItemMap.get(key);
         holder.bind(orderItem);
 
-        //button edit
-        holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isDialogOpen) {
-                    showDialog(view.getContext());
-                }
-            }
-        });
-
-        //button increase, decrease
+        //button decrease quanity
         holder.binding.btnDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
+                quantity -= 1;
                 if(quantity > 0){
-                    quantity -= 1;
-                    holder.binding.txtQuantity.setText(String.valueOf(quantity)); // Convert int to String
-                    cartViewModel.onChangeQuantityButtonClick(key, quantity);
+                    orderItem.setQuantity(quantity);
+                    notifyDataSetChanged();
+                    cartViewModel.onChangeQuantityButtonClick(key, -1 * orderItem.getPrice());
+                }
+                // show message to confirm delete product or not
+                else {
+                    showAlertDialog(v.getContext(), key);
                 }
             }
         });
 
+
+        //button increase quanity
         holder.binding.btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
                 quantity += 1;
-                holder.binding.txtQuantity.setText(String.valueOf(quantity)); // Convert int to String
-                cartViewModel.onChangeQuantityButtonClick(key, quantity);
+                orderItem.setQuantity(quantity);
+                notifyDataSetChanged();
+                cartViewModel.onChangeQuantityButtonClick(key, 1 * orderItem.getPrice());
+
+            }
+        });
+
+
+        //button edit
+        holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isDialogOpen) {
+                    showDialog(view.getContext(), orderItem);
+                }
             }
         });
 
     }
 
+    // Function to show alert dialog when quantity == 0
+    public void showAlertDialog(Context context, String orderItemId){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setTitle("Xóa sản phẩm");
+        alert.setMessage("Bạn muốn xóa sản phẩm này?");
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                cartViewModel.deleteProductCart(orderItemId);
+            }
+        });
+
+        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
 
 
     // Function to show bottom dialog when button is clicked
-    public void showDialog(Context context) {
+    public void showDialog(Context context, OrderItem orderItem) {
         isDialogOpen = true; // Update dialog state
         Dialog dialog = new Dialog(context); // Corrected line
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottomsheet_edit_cart_drink);
+        BottomsheetEditCartBinding binding = BottomsheetEditCartBinding.inflate(LayoutInflater.from(context));
+        dialog.setContentView(binding.getRoot());
+
+        binding.setCartVM(cartViewModel); // Set the ViewModel if needed
+        binding.setOrderItem(orderItem);
+
+
+//        RadioGroup radioGroup = binding.radioGroup;
+//        // Iterate through radio buttons to find the one with matching text
+//        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+//            RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+//            if (radioButton.getText().toString().equals("Lớn")) {
+//                radioButton.setChecked(true);
+//                break;
+//            }
+//        }
+
+        // Radio checked event
+//        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                // Handle radio button selection here
+//                switch (checkedId) {
+//                    case R.id.rb_small:
+//                        // Handle small size selection
+//                        break;
+//                    case R.id.rb_medium:
+//                        // Handle medium size selection
+//                        break;
+//                    case R.id.rb_large:
+//                        // Handle large size selection
+//                        break;
+//                }
+//            }
+//        });
+
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

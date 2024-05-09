@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.activityfragment.customer.notification.NotificationFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="notificationVM" type="com.example.foodorderingapp.ui.viewmodel.customer.notification.NotificationViewModel"/>
+    </data>
 
-    <LinearLayout
+    <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/white"
+        tools:context=".ui.activityfragment.customer.notification.NotificationFragment">
 
-        <include layout="@layout/header"></include>
-
-        <ScrollView
-            android:id="@+id/scrollview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <include layout="@layout/header"></include>
+
+            <ScrollView
+                android:id="@+id/scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/recyclerViewNotification"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </ScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/recyclerViewNotification"/>
+
+                </LinearLayout>
+            </ScrollView>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>

@@ -47,8 +47,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <include layout="@layout/bottom_navigation" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

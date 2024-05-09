@@ -15,6 +15,9 @@
         <item name="android:radioButtonStyle">@style/MyRadioButtonStyle</item>
         <item name="checkboxStyle">@style/MyCheckBoxStyle</item>
         <item name="android:checkboxStyle">@style/MyCheckBoxStyle</item>
+
+        <item name="colorPrimary">@color/primary</item>
+
     </style>
 
     <style name="Theme.FoodOrderingApp" parent="Base.Theme.FoodOrderingApp" />

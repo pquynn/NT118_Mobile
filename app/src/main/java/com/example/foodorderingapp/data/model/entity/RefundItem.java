@@ -3,8 +3,6 @@ package com.example.foodorderingapp.data.model.entity;
 import com.google.firebase.firestore.PropertyName;
 
 public class RefundItem {
-
-    private String id;
     private String describe;
     private String proofImage;
     private String proofVideo;
@@ -13,8 +11,7 @@ public class RefundItem {
 
     public RefundItem(){}
 
-    public RefundItem(String id, String describe, String proofImage, String proofVideo, String reason, int money) {
-        this.id = id;
+    public RefundItem(String describe, String proofImage, String proofVideo, String reason, int money) {
         this.describe = describe;
         this.proofImage = proofImage;
         this.proofVideo = proofVideo;
@@ -22,14 +19,6 @@ public class RefundItem {
         this.money = money;
     }
 
-    @PropertyName("ID")
-    public String getId() {
-        return id;
-    }
-    @PropertyName("ID")
-    public void setId(String id) {
-        this.id = id;
-    }
     @PropertyName("DESCRIBE")
     public String getDescribe() {
         return describe;
@@ -74,7 +63,6 @@ public class RefundItem {
     @Override
     public String toString() {
         return "RefundItem{" +
-                "id='" + id + '\'' +
                 ", describe='" + describe + '\'' +
                 ", proofImage='" + proofImage + '\'' +
                 ", reason='" + reason + '\'' +

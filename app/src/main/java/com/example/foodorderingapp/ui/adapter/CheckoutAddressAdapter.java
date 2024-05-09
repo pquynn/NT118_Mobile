@@ -31,7 +31,7 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.address.setText(addresslist.get(position).getAllAddress());
+        holder.address.setText("28 đường Nguyễn Văn Quỳ phường PT quận 7");
         holder.recipientName.setText(addresslist.get(position).getRecipientName());
         holder.phone.setText(addresslist.get(position).getRecipientPhone());
 

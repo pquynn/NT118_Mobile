@@ -7,12 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.foodorderingapp.R;
@@ -50,33 +52,36 @@ public class CartFragment extends Fragment {
         screenname = view.findViewById(R.id.screen_name);
         screenname.setText("Giỏ hàng");
 
+
         //button checkout
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CheckoutActivity.class));
+                Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(key, value);
+//                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
         // View model
-        viewModel = new CartViewModel(userId);
-        //Adapter
-//        buyingProducts = new HashMap<>();
-        orderItemMap = new HashMap<>();
+        viewModel = new CartViewModel(userId, getActivity());
 
+        //Adapter
+        orderItemMap = new HashMap<>();
         adapter = new CartAdapter(orderItemMap, viewModel);
         binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewCart.setAdapter(adapter);
-
+        binding.setLifecycleOwner(this);
         viewModel.getOrderMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Order>() {
             @Override
             public void onChanged(Order order) {
-                Log.d("firestore", "fragment cart: " + order.toString());
                 binding.setCartVM(viewModel);
+
                 orderItemMap.clear();
                 orderItemMap.putAll(order.getOrderItem());
                 adapter.notifyDataSetChanged();
-
             }
         });
 

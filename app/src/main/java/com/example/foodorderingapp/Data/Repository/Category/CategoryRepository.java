@@ -1,9 +1,8 @@
-package com.example.foodorderingapp.data.repository.category;
+package com.example.foodorderingapp.Data.Repository.Category;
 
 import android.util.Log;
 
-
-import com.example.foodorderingapp.data.model.entity.Category;
+import com.example.foodorderingapp.Data.Model.Entity.Category;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -11,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryRepository implements ICategoryRepository{
+public class CategoryRepository implements ICategoryRepository {
     private FirebaseFirestore db;
     public CategoryRepository() {
         db = FirebaseFirestore.getInstance();

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.OrderItem;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
-import com.example.foodorderingapp.data.model.OrderItem;
+import com.example.foodorderingapp.UI.Adapter.OrderItemAdapter;
+
 
 import java.util.ArrayList;
 

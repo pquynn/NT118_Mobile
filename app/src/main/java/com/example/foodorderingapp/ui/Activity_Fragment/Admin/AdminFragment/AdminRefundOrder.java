@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment;
+package com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
-import com.example.foodorderingapp.data.model.OrderItem;
+import com.example.foodorderingapp.UI.Adapter.OrderItemAdapter;
+import com.example.foodorderingapp.Data.Model.OrderItem;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Cart;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Cart;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.Checkout.CheckoutActivity;
-import com.example.foodorderingapp.ui.adapter.CartAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout.CheckoutActivity;
+import com.example.foodorderingapp.UI.Adapter.CartAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

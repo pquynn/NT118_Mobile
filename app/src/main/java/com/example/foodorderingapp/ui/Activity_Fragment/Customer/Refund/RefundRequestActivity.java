@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Refund;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Refund;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.RefundRequestAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.RefundRequestAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

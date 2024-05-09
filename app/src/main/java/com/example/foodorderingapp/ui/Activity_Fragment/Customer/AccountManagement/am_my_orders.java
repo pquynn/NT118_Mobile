@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.ViewPagerAdapter.MyOrdersViewPagerAdapter;
+import com.example.foodorderingapp.UI.ViewPagerAdapter.MyOrdersViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

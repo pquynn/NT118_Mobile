@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.search;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.search;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Button;
 
+import com.example.foodorderingapp.Data.Model.Entity.Product;
+import com.example.foodorderingapp.Data.Repository.Product.IProductRepository;
+import com.example.foodorderingapp.Data.Repository.Product.ProductRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.entity.Product;
-import com.example.foodorderingapp.data.repository.product.IProductRepository;
-import com.example.foodorderingapp.data.repository.product.ProductRepository;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity;
-import com.example.foodorderingapp.ui.adapter.SearchAdapter;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.UI.Adapter.SearchAdapter;
+
 
 import java.util.List;
 

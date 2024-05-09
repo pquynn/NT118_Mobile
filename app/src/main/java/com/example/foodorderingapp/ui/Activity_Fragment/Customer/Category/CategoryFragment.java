@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Category;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Category;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,18 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
+import com.example.foodorderingapp.Data.Model.CategoryList;
+import com.example.foodorderingapp.Data.Model.Entity.Category;
+import com.example.foodorderingapp.Data.Model.ProductSearch;
+import com.example.foodorderingapp.Data.Repository.Category.CategoryRepository;
+import com.example.foodorderingapp.Data.Repository.Category.ICategoryRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.repository.category.CategoryRepository;
-import com.example.foodorderingapp.data.repository.category.ICategoryRepository;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail.ProductDetailCakeActivity;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.UI.Adapter.CategoryAdapter;
+import com.example.foodorderingapp.UI.Adapter.CategoryListAdapter;
 
-import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
-import com.example.foodorderingapp.data.model.entity.Category;
-import com.example.foodorderingapp.data.model.CategoryList;
-import com.example.foodorderingapp.data.model.ProductSearch;
-import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

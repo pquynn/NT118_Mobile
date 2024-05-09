@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Admin;
+package com.example.foodorderingapp.UI.Activity_Fragment.Admin;
 
 import android.os.Bundle;
 

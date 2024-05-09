@@ -1,20 +1,24 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.Entity.Product;
+import com.example.foodorderingapp.Data.Repository.Product.IProductRepository;
+import com.example.foodorderingapp.Data.Repository.Product.ProductRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.entity.Comment;
-import com.example.foodorderingapp.data.model.entity.Topping;
-import com.example.foodorderingapp.ui.adapter.ToppingAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.Comment;
+import com.example.foodorderingapp.Data.Model.Entity.Topping;
+import com.example.foodorderingapp.UI.Adapter.ToppingAdapter;
 
 
 import java.text.ParseException;
@@ -78,6 +82,21 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
 
         toppingAdapter = new ToppingAdapter(this, getListTopping());
         rcvTopping.setAdapter(toppingAdapter);
+
+        String productId = "7";
+        ProductRepository productRepository = new ProductRepository();
+        productRepository.getProductById(productId, new IProductRepository.ProductCallback() {
+            @Override
+            public void onProductLoaded(Product product) {
+                
+
+            }
+
+            @Override
+            public void onProductLoadFailed(String errorMessage) {
+                Toast.makeText(ProductDetailDrinkActivity.this, "Failed to load product details: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void clickOpenBottemFragmment() {

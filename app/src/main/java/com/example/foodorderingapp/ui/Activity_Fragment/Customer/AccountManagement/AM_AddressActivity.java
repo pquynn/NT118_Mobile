@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.AccountAddressAdapter;
-import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.UI.Adapter.AccountAddressAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.UserAddress;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.foodorderingapp.Data.Repository.Product.ProductRepository;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.entity.Comment;
-import com.example.foodorderingapp.data.repository.product.ProductRepository;
+import com.example.foodorderingapp.Data.Model.Entity.Comment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.adapter;
+package com.example.foodorderingapp.UI.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.entity.Notification;
+import com.example.foodorderingapp.Data.Model.Entity.Notification;
 
 
 import java.util.ArrayList;

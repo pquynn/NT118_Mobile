@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Checkout;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.OrderDetailAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

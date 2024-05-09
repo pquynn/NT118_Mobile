@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Home;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.Data.Model.HomeCategory;
+import com.example.foodorderingapp.Data.Model.ProductSearch;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.search.SearchActivity;
-import com.example.foodorderingapp.ui.adapter.CategoryHomeAdapter;
-import com.example.foodorderingapp.data.model.HomeCategory;
-import com.example.foodorderingapp.ui.adapter.ProductPopularHomeAdapter;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.search.SearchActivity;
+import com.example.foodorderingapp.UI.Adapter.CategoryHomeAdapter;
+import com.example.foodorderingapp.UI.Adapter.ProductPopularHomeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

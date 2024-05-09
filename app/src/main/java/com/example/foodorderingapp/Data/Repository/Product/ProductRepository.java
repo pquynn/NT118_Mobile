@@ -1,10 +1,11 @@
-package com.example.foodorderingapp.data.repository.product;
+package com.example.foodorderingapp.Data.Repository.Product;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.foodorderingapp.data.model.entity.Product;
+
+import com.example.foodorderingapp.Data.Model.Entity.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,6 +31,7 @@ public class ProductRepository implements IProductRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Product product = documentSnapshot.toObject(Product.class);
+                        Log.d("firebase", "getProductById" + product.toString());
                         callback.onProductLoaded(product);
                     } else {
                         callback.onProductLoadFailed("Product not found");

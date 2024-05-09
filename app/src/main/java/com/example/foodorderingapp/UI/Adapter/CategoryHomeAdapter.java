@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.adapter;
+package com.example.foodorderingapp.UI.Adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.HomeCategory;
+import com.example.foodorderingapp.Data.Model.HomeCategory;
 
 import java.util.List;
 

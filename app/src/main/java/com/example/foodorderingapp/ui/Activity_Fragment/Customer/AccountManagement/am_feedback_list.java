@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.FeedbackItemAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.UI.Adapter.FeedbackItemAdapter;
+import com.example.foodorderingapp.Data.Model.OrderDetail;
 
 import java.util.ArrayList;
 

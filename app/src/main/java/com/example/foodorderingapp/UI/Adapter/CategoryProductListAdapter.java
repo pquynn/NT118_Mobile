@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.adapter;
+package com.example.foodorderingapp.UI.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.Data.Model.ProductSearch;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.ProductSearch;
+
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.adapter;
+package com.example.foodorderingapp.UI.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.Data.Model.ProductSearch;
 
 
 import java.util.List;

@@ -1,7 +1,6 @@
-package com.example.foodorderingapp.data.repository.category;
+package com.example.foodorderingapp.Data.Repository.Category;
 
-import com.example.foodorderingapp.data.model.entity.Category;
-
+import com.example.foodorderingapp.Data.Model.Entity.Category;
 import java.util.List;
 
 public interface ICategoryRepository {

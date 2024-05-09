@@ -1,15 +1,15 @@
-package com.example.foodorderingapp.ui.ViewPagerAdapter;
+package com.example.foodorderingapp.UI.ViewPagerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderCancelled;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderCompleted;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderDelivering;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderInProgress;
-import com.example.foodorderingapp.ui.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderRefunded;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderCancelled;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderCompleted;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderDelivering;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderInProgress;
+import com.example.foodorderingapp.UI.Activity_Fragment.Customer.AccountManagement.MyOrdersFragment.MyOrderRefunded;
 
 public class MyOrdersViewPagerAdapter extends FragmentStateAdapter {
 

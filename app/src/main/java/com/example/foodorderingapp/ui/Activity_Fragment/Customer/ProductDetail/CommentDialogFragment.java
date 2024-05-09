@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.ProductDetail;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.ProductDetail;
 
 
 import android.app.Dialog;
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.entity.Comment;
-import com.example.foodorderingapp.ui.adapter.CommentAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.Comment;
+import com.example.foodorderingapp.UI.Adapter.CommentAdapter;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment;
+package com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.ViewPagerAdapter.AdminOrderViewPagerAdapter;
+import com.example.foodorderingapp.UI.ViewPagerAdapter.AdminOrderViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Checkout;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.PaymentMethodAdapter;
-import com.example.foodorderingapp.data.model.PaymentMethod;
+import com.example.foodorderingapp.UI.Adapter.PaymentMethodAdapter;
+import com.example.foodorderingapp.Data.Model.PaymentMethod;
 
 import java.util.ArrayList;
 

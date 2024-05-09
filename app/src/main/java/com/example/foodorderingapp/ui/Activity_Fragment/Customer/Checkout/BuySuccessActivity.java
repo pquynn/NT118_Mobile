@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Checkout;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer.Checkout;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer.Checkout;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.CouponAdapter;
-import com.example.foodorderingapp.data.model.entity.Coupon;
+import com.example.foodorderingapp.UI.Adapter.CouponAdapter;
+import com.example.foodorderingapp.Data.Model.Entity.Coupon;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

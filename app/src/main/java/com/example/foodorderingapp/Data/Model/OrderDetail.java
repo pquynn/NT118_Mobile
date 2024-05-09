@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.data.model;
+package com.example.foodorderingapp.Data.Model;
 
 public class OrderDetail {
     private String productName;

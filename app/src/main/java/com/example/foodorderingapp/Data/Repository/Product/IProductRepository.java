@@ -1,7 +1,6 @@
-package com.example.foodorderingapp.data.repository.product;
+package com.example.foodorderingapp.Data.Repository.Product;
 
-import com.example.foodorderingapp.data.model.entity.Product;
-
+import com.example.foodorderingapp.Data.Model.Entity.Product;
 import java.util.List;
 import java.util.Map;
 

@@ -1,5 +1,6 @@
-package com.example.foodorderingapp.data.model.entity;
+package com.example.foodorderingapp.Data.Model.Entity;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.PropertyName;
 
 import java.util.List;
@@ -43,12 +44,12 @@ public class Product {
         this.topping = topping;
         this.productSize = productSize;
     }
-    @PropertyName("ID_PRODUCT")
+    @DocumentId
     public String getId() {
         return id;
     }
 
-    @PropertyName("ID_PRODUCT")
+    @DocumentId
     public void setId(String id) {
         this.id = id;
     }

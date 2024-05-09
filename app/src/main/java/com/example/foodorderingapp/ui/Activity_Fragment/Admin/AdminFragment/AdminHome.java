@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Admin.AdminFragment;
+package com.example.foodorderingapp.UI.Activity_Fragment.Admin.AdminFragment;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;

@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.Activity_Fragment.Customer;
+package com.example.foodorderingapp.UI.Activity_Fragment.Customer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;

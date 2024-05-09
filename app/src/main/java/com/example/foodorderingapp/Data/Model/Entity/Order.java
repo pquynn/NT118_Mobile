@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.data.model.entity;
+package com.example.foodorderingapp.Data.Model.Entity;
 
 public class Order {
 }

@@ -65,11 +65,11 @@ public class Product {
     public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
-    @PropertyName("ID_PRODUCT")
+    @PropertyName("ID_CATEGORY")
     public String getIdCategory() {
         return idCategory;
     }
-    @PropertyName("ID_PRODUCT")
+    @PropertyName("ID_CATEGORY")
     public void setIdCategory(String idCategory) {
         this.idCategory = idCategory;
     }

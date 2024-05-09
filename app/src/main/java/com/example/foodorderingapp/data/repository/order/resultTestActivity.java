@@ -7,19 +7,46 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.repository.product.IProductRepository;
+import com.example.foodorderingapp.data.repository.product.ProductRepository;
 
 public class resultTestActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
+    private ProductRepository productRepository;
     private Order od;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_success);
+        productRepository = new ProductRepository();
+        productRepository.getProductById("27", new IProductRepository.ProductCallback() {
+            @Override
+            public void onProductLoaded(Product product) {
 
-        orderRepository = new OrderRepository();
-//        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
+            }
+
+            @Override
+            public void onProductLoadFailed(String errorMessage) {
+
+            }
+        });
+
+//        orderRepository = new OrderRepository();
+////        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
+////            @Override
+////            public void onOrderLoaded(Order order) {
+////                Order a = order;
+////
+////            }
+////            @Override
+////            public void onError(String errorMessage) {
+////
+////            }
+////        });
+//
+//        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
 //            @Override
 //            public void onOrderLoaded(Order order) {
-//                Order a = order;
 //
 //            }
 //            @Override
@@ -27,17 +54,6 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
-            @Override
-            public void onOrderLoaded(Order order) {
-
-            }
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
 
 
 

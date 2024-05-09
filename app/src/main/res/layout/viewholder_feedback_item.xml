@@ -64,6 +64,18 @@
         android:text="Lớn"
         app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
+    <TextView
+        android:id="@+id/txt_fb_topping"
+        style="@style/text_14sp"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="Trân châu trắng"
+        app:layout_constraintStart_toEndOf="@+id/img_fb_product"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
 
     <TextView
         android:id="@+id/txt_note"
@@ -73,7 +85,7 @@
         android:layout_marginStart="16dp"
         android:text="Ghi chú"
         app:layout_constraintStart_toEndOf="@+id/img_fb_product"
-        app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_fb_topping" />
 
     <TextView
         android:id="@+id/txt_quantity"

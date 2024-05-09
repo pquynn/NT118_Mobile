@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.UserPoint;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> {
@@ -39,8 +40,9 @@ public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> 
             point*=-1;
             holder.point.setText(String.valueOf(point));
         }
-
-        holder.point_date.setText(pointList.get(position).getPointDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String dateString = sdf.format(pointList.get(position).getPointDate());
+        holder.point_date.setText(dateString);
     }
 
     @Override

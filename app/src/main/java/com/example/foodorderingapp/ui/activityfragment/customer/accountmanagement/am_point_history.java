@@ -4,19 +4,27 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.adapter.PointAdapter;
 import com.example.foodorderingapp.data.model.entity.UserPoint;
+import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.PointVM;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class am_point_history extends AppCompatActivity {
     private RecyclerView.Adapter PointAdapter;
     private RecyclerView recyclerViewList;
     private ArrayList<UserPoint> listPoint;
+    private String userId;
+    private PointVM viewModel;
+    private TextView tvTotalPoint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +33,16 @@ public class am_point_history extends AppCompatActivity {
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Tích điểm");
 
+        userId = "2";
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+            @Override
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(PointVM.class)) {
+                    return (T) new PointVM(userId);
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }
+        }).get(PointVM.class);
         recyclerViewPoint();
     }
     private void recyclerViewPoint(){
@@ -33,38 +51,28 @@ public class am_point_history extends AppCompatActivity {
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
         listPoint = new ArrayList<>();
-        createPointList();
+        viewModel.getPointList().observe(this, new Observer<ArrayList<UserPoint>>() {
+            @Override
+            public void onChanged(ArrayList<UserPoint> userPoints) {
+                for(UserPoint i : userPoints){
+                    listPoint.add(i);
 
-        PointAdapter = new PointAdapter(listPoint);
-        recyclerViewList.setAdapter(PointAdapter);
+                }
+                Collections.reverse(listPoint);
+                PointAdapter = new PointAdapter(listPoint);
+                recyclerViewList.setAdapter(PointAdapter);
+            }
+        });
+
+        tvTotalPoint = findViewById(R.id.total_point);
+        viewModel.getTotalPoint().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                String total = integer.toString();
+                tvTotalPoint.setText(total);
+            }
+        });
 
     }
-    private void createPointList(){
-        listPoint.add(new UserPoint(-100, "2024-04-07"));
-        listPoint.add(new UserPoint(200, "2024-04-01"));
-        listPoint.add(new UserPoint(0, "2024-04-03"));
-        listPoint.add(new UserPoint(-400, "2024-04-02"));
-        listPoint.add(new UserPoint(500, "2024-03-07"));
-        listPoint.add(new UserPoint(-600, "2024-02-07"));
-        listPoint.add(new UserPoint(700, "2024-01-07"));
-        listPoint.add(new UserPoint(-800, "2024-03-08"));
-        listPoint.add(new UserPoint(100, "2024-04-07"));
-        listPoint.add(new UserPoint(200, "2024-04-01"));
-        listPoint.add(new UserPoint(-300, "2024-04-03"));
-        listPoint.add(new UserPoint(400, "2024-04-02"));
-        listPoint.add(new UserPoint(500, "2024-03-07"));
-        listPoint.add(new UserPoint(600, "2024-02-07"));
-        listPoint.add(new UserPoint(700, "2024-01-07"));
-        listPoint.add(new UserPoint(800, "2024-03-08"));
-        listPoint.add(new UserPoint(100, "2024-04-07"));
-        listPoint.add(new UserPoint(200, "2024-04-01"));
-        listPoint.add(new UserPoint(300, "2024-04-03"));
-        listPoint.add(new UserPoint(400, "2024-04-02"));
-        listPoint.add(new UserPoint(500, "2024-03-07"));
-        listPoint.add(new UserPoint(600, "2024-02-07"));
-        listPoint.add(new UserPoint(700, "2024-01-07"));
-        listPoint.add(new UserPoint(800, "2024-03-08"));
-    }
-
 
 }

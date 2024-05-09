@@ -72,6 +72,8 @@ public class OrderRepository implements IOrderRepository {
 
     // Get order document list by user id and status
     public void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback){
+        Log.d("GetUserId", userId );
+        Log.d("GetStatus", status);
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
                 .whereEqualTo("STATUS", status);

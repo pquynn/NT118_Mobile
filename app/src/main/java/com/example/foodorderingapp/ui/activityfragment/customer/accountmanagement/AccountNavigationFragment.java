@@ -33,22 +33,6 @@ public class AccountNavigationFragment extends Fragment {
     public AccountNavigationFragment() {
         // Required empty public constructor
     }
-
-//    public static MyOrderCancelled newInstance(String param1, String param2) {
-//        MyOrderCancelled fragment = new MyOrderCancelled();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
     ImageView btn_goto1, btn_goto2, btn_goto3, btn_goto4, btn_goto5;
     UserInfoVM viewModel;
     String userId;

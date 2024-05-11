@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
@@ -39,18 +40,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // order item map for adapter
         orderItemMap = new HashMap<>();
-//        adapter = new OrderDetailAdapter(orderItemMap);
-//        binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
-//        binding.recyclerViewOrderDetail.setAdapter(adapter);
+        adapter = new OrderDetailAdapter(orderItemMap);
+        binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewOrderDetail.setAdapter(adapter);
 
         viewModel = new CheckoutViewModel(userId, this);
 //        orderId = viewModel.getOrderLiveData().getValue().getId();
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
 
-//            orderItemMap.clear();
-//            orderItemMap.putAll(order.getOrderItem());
-//            adapter.notifyDataSetChanged();
+            orderItemMap.clear();
+            orderItemMap.putAll(order.getOrderItem());
+            adapter.notifyDataSetChanged();
         });
 
         // set button back click event

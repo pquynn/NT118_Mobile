@@ -32,7 +32,7 @@ public class ProductRepository implements IProductRepository {
                         Product product = documentSnapshot.toObject(Product.class);
                         Log.d("firestore", "getProductById: " + product.toString());
                         callback.onProductLoaded(product);
-                        Log.d("firebase", "getProductById" + product.toString());
+//                        Log.d("firebase", "getProductById" + product.toString());
                     } else {
                         callback.onProductLoadFailed("Product not found");
                     }

@@ -34,30 +34,30 @@ public class resultTestActivity extends AppCompatActivity {
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
 
-        pointRepository.getTotalPoint("3", new PointRepository.userTotalPointCallback() {
-            @Override
-            public void loadTotalPointSuccess(int totalPoint) {
-
-            }
-
-            @Override
-            public void loadTotalPointError(Exception e) {
-
-            }
-        });
-
-//        productRepository = new ProductRepository();
-//        productRepository.getProductById("1", new IProductRepository.ProductCallback() {
+//        pointRepository.getTotalPoint("3", new PointRepository.userTotalPointCallback() {
 //            @Override
-//            public void onProductLoaded(Product product) {
+//            public void loadTotalPointSuccess(int totalPoint) {
 //
 //            }
 //
 //            @Override
-//            public void onProductLoadFailed(String errorMessage) {
+//            public void loadTotalPointError(Exception e) {
 //
 //            }
 //        });
+
+        productRepository = new ProductRepository();
+        productRepository.getProductById("1", new IProductRepository.ProductCallback() {
+            @Override
+            public void onProductLoaded(Product product) {
+
+            }
+
+            @Override
+            public void onProductLoadFailed(String errorMessage) {
+
+            }
+        });
 //        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
 //            @Override
 //            public void onListLoaded(List<Notification> notificationList) {

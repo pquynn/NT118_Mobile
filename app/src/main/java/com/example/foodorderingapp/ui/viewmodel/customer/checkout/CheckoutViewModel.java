@@ -117,6 +117,7 @@ public class CheckoutViewModel extends ViewModel {
     // start: ORDER-----------
     // load order from firestore
     public void loadOrder(String userId){
+
         orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
             @Override
             public void onOrderLoaded(Order order) {
@@ -128,7 +129,6 @@ public class CheckoutViewModel extends ViewModel {
 
             @Override
             public void onError(String errorMessage) {
-
             }
         });
     }
@@ -230,6 +230,12 @@ public class CheckoutViewModel extends ViewModel {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+    private void showProgressDialog(String message){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
 }

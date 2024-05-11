@@ -62,6 +62,7 @@ public class AuthRepository {
     }
 
     public void checkPhoneNumber(String phone, AuthCallback callback) {
+        Log.d("PHONE", phone);
         reference.whereEqualTo("PHONE", phone).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

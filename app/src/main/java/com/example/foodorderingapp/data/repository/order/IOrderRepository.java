@@ -41,7 +41,7 @@ public interface IOrderRepository {
 
 
     interface ProductCallBack {
-        void onProductLoaded(ProductForOrder product);
+//        void onProductLoaded(ProductForOrder product);
         void onError(String errorMessage);
     }
 

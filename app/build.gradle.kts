@@ -84,4 +84,5 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth")
 
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
 }

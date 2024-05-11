@@ -74,6 +74,32 @@ public class UserInfoRepository {
                     callback.loadUsserAddressesError(e);
                 });
     }
+    // get the first address by user id
+    public void getFirstAddress(String userId, userAddressCallback callback) {
+        db.collection("USER_ADDRESS")
+                .whereEqualTo("ID_USER", userId)
+                .limit(1) // Limit the result to the first document
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Get the first document
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            UserAddress userAddress = documentSnapshot.toObject(UserAddress.class);
+                            if (userAddress != null) {
+                                callback.loadUserAddressSuccess(userAddress);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadUsserAddressError(e);
+                    }
+                });
+    }
+
 
     // get the first address by user id
     public void getFirstAddress(String userId, userAddressCallback callback) {

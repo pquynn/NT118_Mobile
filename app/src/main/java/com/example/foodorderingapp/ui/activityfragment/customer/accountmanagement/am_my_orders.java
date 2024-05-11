@@ -1,6 +1,10 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +20,9 @@ public class am_my_orders extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private MyOrdersViewPagerAdapter ViewPagerAdapter;
+    FrameLayout btnBack;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +30,14 @@ public class am_my_orders extends AppCompatActivity {
 
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Đơn hàng của tôi");
+
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         viewPager = findViewById(R.id.my_orders_viewpager);
         tabLayout = findViewById(R.id.my_orders_menu);

@@ -22,11 +22,13 @@ public class Order {
     private double orderPrice;
     @ServerTimestamp
     private Date createOn;
-    private String idCoupon;
+    private int discountValue; //DISCOUNT_VALUE
     private Map<String, OrderItem> orderItemMap;
+    private String recipientName;//RECIPIENT_NAME
+    private String recipientPhone;
 
     public Order(){}
-    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, String idCoupon, Map<String, OrderItem> orderItem) {
+    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, int discountValue, Map<String, OrderItem> orderItem) {
         this.idUser = idUser;
         this.address = address;
         this.totalPrice = totalPrice;
@@ -37,7 +39,7 @@ public class Order {
         this.deliveryCost = deliveryCost;
         this.orderPrice = orderPrice;
         this.createOn = createOn;
-        this.idCoupon = idCoupon;
+        this.discountValue = discountValue;
         this.orderItemMap = orderItem;
     }
 
@@ -138,13 +140,13 @@ public class Order {
         this.createOn = createOn;
     }
 
-    @PropertyName("ID_COUPON")
-    public String getIdCoupon() {
-        return idCoupon;
+    @PropertyName("DISCOUNT_VALUE")
+    public int getDiscountValue() {
+        return discountValue;
     }
-    @PropertyName("ID_COUPON")
-    public void setIdCoupon(String idCoupon) {
-        this.idCoupon = idCoupon;
+    @PropertyName("DISCOUNT_VALUE")
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
     }
 
     @PropertyName("ORDER_ITEM")
@@ -155,6 +157,22 @@ public class Order {
     @PropertyName("ORDER_ITEM")
     public void setOrderItem(Map<String, OrderItem> orderItemMap) {
         this.orderItemMap = orderItemMap;
+    }
+    @PropertyName("RECIPIENT_NAME")
+    public String getRecipientName() {
+        return recipientName;
+    }
+    @PropertyName("RECIPIENT_NAME")
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+    @PropertyName("RECIPIENT_PHONE")
+    public String getRecipientPhone() {
+        return recipientPhone;
+    }
+    @PropertyName("RECIPIENT_PHONE")
+    public void setRecipientPhone(String recipientPhone) {
+        this.recipientPhone = recipientPhone;
     }
 
     // get order item in hashmap by orderItemId
@@ -186,7 +204,7 @@ public class Order {
                 ", deliveryCost=" + deliveryCost +
                 ", orderPrice=" + orderPrice +
                 ", createOn=" + createOn +
-                ", idCoupon='" + idCoupon + '\'' +
+                ", discountValue='" + discountValue + '\'' +
                 ", orderItem=" + orderItemMap +
                 '}';
     }

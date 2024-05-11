@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:paddingBottom="24dp"
         tools:context=".ui.activityfragment.customer.accountmanagement.am_order_detail">
 
@@ -18,154 +19,152 @@
             android:id="@+id/include2"
             layout="@layout/header_with_btnback" />
 
-        <TextView
-            android:id="@+id/lbl_order_id"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_orderInfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Mã đơn hàng:"
-            android:textColor="@color/lightgray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include2" />
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:padding="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/include2">
 
-        <TextView
-            android:id="@+id/lbl_order_status"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/lbl_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Mã đơn hàng:"
+                android:textColor="@color/lightgray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include2" />
+
+            <TextView
+                android:id="@+id/txt_orderDT_ID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:background="@color/white"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/lbl_order_id" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_orderDTStatus"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Trạng thái:"
-            android:textColor="@color/lightgray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_order_id" />
+            android:padding="15dp"
+            android:gravity="left"
+            app:layout_constraintTop_toBottomOf="@id/ll_orderInfo">
 
-        <TextView
-            android:id="@+id/txt_orderID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="#orderID"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/lbl_order_id"
-            app:layout_constraintTop_toBottomOf="@+id/include2" />
+            <TextView
+                android:id="@+id/lbl_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Trạng thái:"
+                android:textColor="@color/lightgray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_order_id" />
 
-        <TextView
-            android:id="@+id/txt_order_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Hoàn tất"
-            android:textColor="@color/secondary"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/lbl_order_status"
-            app:layout_constraintTop_toBottomOf="@+id/txt_orderID" />
+            <TextView
+                android:id="@+id/txt_orderDT_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/secondary"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-        <FrameLayout
+
+        <LinearLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/allrounded_bg"
+            android:orientation="vertical"
+            android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_order_status">
+            app:layout_constraintTop_toBottomOf="@+id/ll_orderDTStatus">
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Thông tin nhận hàng"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Thông tin nhận hàng"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout"
-            app:layout_constraintTop_toTopOf="@+id/frameLayout" />
+            <TextView
+                android:id="@+id/txtDT_cusName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/txt_cusName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="NGUYỄN VĂN A"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            <TextView
+                android:id="@+id/txtDT_cusPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular" />
 
-        <TextView
-            android:id="@+id/txt_cusPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="09123456789"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txt_cusName" />
+            <TextView
+                android:id="@+id/txtDT_cusAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_cusAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="2464 Royal LN. MESA, New Jersey 45463"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txt_cusPhone" />
-
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/frameLayout2"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/allrounded_bg"
+            android:orientation="vertical"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Phương thức thanh toán"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Phương thức thanh toán"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout2"
-            app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
-
-        <TextView
-            android:id="@+id/txt_Payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="Thanh toán khi nhận hàng"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            <TextView
+                android:id="@+id/txtDT_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_regular"
+                 />
+        </LinearLayout>
 
 
         <TextView
@@ -181,7 +180,7 @@
             app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerProductList"
+            android:id="@+id/recyclerProductListDT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -191,114 +190,181 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_totalPrice"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Tổng cộng"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerProductList" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="đ"
-            android:textSize="16sp"
+            android:orientation="horizontal"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerProductList" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerProductListDT"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="999.999"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerProductList" />
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="left"
+                android:text="Tổng cộng"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txt_orderDT_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="0dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:text="đ"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_orderDiscount"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Giảm giá ưu đãi"
-            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@id/ll_totalPrice"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Giảm giá ưu đãi"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_orderDT_discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="đ"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_orderPoint"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="THÀNH TIỀN"
-            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@id/ll_orderDiscount"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Giảm giá tích điểm"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_order_discount_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="đ"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_orderDTPrice"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="đ"
-            android:textSize="16sp"
+            android:orientation="horizontal"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_orderPoint"
+            tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/txt_order_discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="100.000"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView23"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="THÀNH TIỀN"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="đ"
-            android:textColor="@color/primary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            <TextView
+                android:id="@+id/txt_orderDT_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="end"
+                android:textColor="@color/primary"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="899.999"
-            android:textColor="@color/primary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView25"
-            app:layout_constraintTop_toBottomOf="@+id/txt_order_discount_point" />
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="đ"
+                android:textColor="@color/primary"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_order_cancel"
@@ -308,10 +374,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:padding="6dp"
             android:text="Hủy đơn hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_orderDTPrice" />
 
         <Button
             android:id="@+id/btn_order_feedback"
@@ -319,8 +386,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:padding="6dp"
             android:text="Đánh giá đơn hàng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -332,92 +400,59 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:padding="6dp"
             android:text="Yêu cầu hoàn tiền"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_order_feedback" />
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Giảm giá tích điểm"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="đ"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-        <TextView
-            android:id="@+id/txt_order_discount_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_regular"
-            android:text="1.500"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/txt_order_discount" />
 
         <!--        <FrameLayout-->
-<!--            android:id="@+id/btn_order_cancel"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="35dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:background="@drawable/red_background"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/textView21">-->
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Hủy đơn hàng"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:textSize="16sp"-->
-<!--                android:fontFamily="@font/roboto_regular"/>-->
-<!--        </FrameLayout>-->
+        <!--            android:id="@+id/btn_order_cancel"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginTop="35dp"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:background="@drawable/red_background"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/textView21">-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Hủy đơn hàng"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:textSize="16sp"-->
+        <!--                android:fontFamily="@font/roboto_regular"/>-->
+        <!--        </FrameLayout>-->
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/btn_feedback"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:background="@drawable/yellow_background"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/btn_order_cancel">-->
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/btn_feedback"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="40dp"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:background="@drawable/yellow_background"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/btn_order_cancel">-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:fontFamily="@font/roboto_regular"-->
-<!--                android:text="Đánh giá đơn hàng"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="16sp" />-->
-<!--        </FrameLayout>-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:fontFamily="@font/roboto_regular"-->
+        <!--                android:text="Đánh giá đơn hàng"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="16sp" />-->
+        <!--        </FrameLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

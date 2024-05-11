@@ -5,6 +5,8 @@ public class Topping {
     private String nameTopping;
     private String priceTopping;
 
+    public Topping(){}
+
     public Topping(String name, String price) {
         this.nameTopping = name;
         this.priceTopping = price;

@@ -2,7 +2,9 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import static android.app.PendingIntent.getActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +28,7 @@ public class am_feedback_list extends AppCompatActivity {
     private RecyclerView recyclerViewList;
     private OrderFeedbackListVM viewModel;
     ArrayList<OrderItem> productList = new ArrayList<>();
-    String orderId, orderStatus;
+    String orderId = "", orderStatus = "";
 
     TextView txt_orderId, txt_orderStatus;
     @Override
@@ -36,20 +38,15 @@ public class am_feedback_list extends AppCompatActivity {
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Đánh giá đơn hàng");
 
-        //get intent gì đó để lấy orderid
-        orderId = "1";
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("order_id")) {
+            orderId = intent.getStringExtra("order_id");
+        }
+        Log.d("GET ORDER ID", "orderId: " +orderId);
         txt_orderId = findViewById(R.id.txt_orderID);
         txt_orderId.setText(orderId);
 
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(OrderFeedbackListVM.class)) {
-                    return (T) new OrderFeedbackListVM(orderId);
-                }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
-            }
-            }).get(OrderFeedbackListVM.class);
+        viewModel = new OrderFeedbackListVM(orderId, this);
 
         recyclerViewOrderFeedBack();
 

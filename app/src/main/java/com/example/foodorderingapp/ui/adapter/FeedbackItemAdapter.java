@@ -1,8 +1,13 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_my_orders;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
 
 import java.util.ArrayList;
 
@@ -42,7 +49,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
 
         ArrayList<String> listTopping = productList.get(position).getTopping();
         if(!listTopping.isEmpty()){
-            String toppings = " ";
+            String toppings = "";
             int dem = 0;
             for(String i : listTopping){
                 toppings += i;

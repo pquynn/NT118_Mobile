@@ -74,7 +74,6 @@ public class UserInfoRepository {
                     callback.loadUsserAddressesError(e);
                 });
     }
-
     // get the first address by user id
     public void getFirstAddress(String userId, userAddressCallback callback) {
         db.collection("USER_ADDRESS")

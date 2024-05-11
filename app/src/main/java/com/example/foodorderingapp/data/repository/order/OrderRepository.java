@@ -152,7 +152,7 @@ public class OrderRepository implements IOrderRepository {
                 0,
                 0,
                 createOn,
-                "",
+                0,
                 orderItemMap
         );
 

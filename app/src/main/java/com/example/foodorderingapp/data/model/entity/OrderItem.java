@@ -116,4 +116,16 @@ public class OrderItem {
                 ", topping=" + topping +
                 '}';
     }
+
+    // Method to concatenate elements of the topping ArrayList with comma separator
+    public String getToppingString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < topping.size(); i++) {
+            stringBuilder.append(topping.get(i));
+            if (i < topping.size() - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }

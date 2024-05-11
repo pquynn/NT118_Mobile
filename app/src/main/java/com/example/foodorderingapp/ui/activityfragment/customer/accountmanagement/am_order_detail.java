@@ -10,16 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class am_order_detail extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
 
+    Map<String, OrderItem> orderItemMap;
     Button btnCancel, btnFeedback, btnRefund;
     TextView txt_orderStatus; //txt_order_status
     @Override
@@ -59,12 +62,22 @@ public class am_order_detail extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerProductList);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
-        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
+//        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
+          orderItemMap = new HashMap<>();
+        adapter = new OrderDetailAdapter(orderItemMap);
+        recyclerViewList.setAdapter(adapter);
+
+        CheckoutViewModel viewModel = new CheckoutViewModel("3", this);
+            viewModel.getOrderLiveData().observe(this, order -> {
+
+                orderItemMap.clear();
+                orderItemMap.putAll(order.getOrderItem());
+                adapter.notifyDataSetChanged();
+            });
+
 //        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 //        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
 //        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "a", 3));
-        adapter = new OrderDetailAdapter(productList);
-        recyclerViewList.setAdapter(adapter);
 
     }
 }

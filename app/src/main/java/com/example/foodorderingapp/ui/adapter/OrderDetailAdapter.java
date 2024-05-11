@@ -1,59 +1,59 @@
 package com.example.foodorderingapp.ui.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.databinding.ViewholderOrderDetailBinding;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.ViewHolder> {
-    ArrayList<OrderDetail> productList;
+    private Map<String, OrderItem> orderItemMap;
 
-    public OrderDetailAdapter(ArrayList<OrderDetail> productList){
-        this.productList = productList;
+    public OrderDetailAdapter(Map<String, OrderItem> orderItemMap){
+        this.orderItemMap = orderItemMap;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_order_detail, parent, false);
-        return new ViewHolder(inflate);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ViewholderOrderDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.viewholder_order_detail, parent, false);
+        return new OrderDetailAdapter.ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(productList.get(position).getProductPrice()));
-        holder.productSize.setText(productList.get(position).getProductSize());
-        holder.note.setText(productList.get(position).getNote());
-        //holder.quantity.setText(String.valueOf(productList.get(position).getQuantity()));
+        List<String> keys = new ArrayList<>(orderItemMap.keySet());
+        String key = keys.get(position);
+        OrderItem orderItem = orderItemMap.get(key);
+        holder.bind(orderItem);
 
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return orderItemMap.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName;
-        TextView productPrice;
-        TextView productSize;
-        TextView note;
-        TextView quantity;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            productName = itemView.findViewById(R.id.txt_product_name);
-            productPrice = itemView.findViewById(R.id.txt_product_cost);
-            productSize = itemView.findViewById(R.id.txt_product_size);
-            note = itemView.findViewById(R.id.txt_note);
-//            quantity = itemView.findViewById(R.id.quantity);
+        private ViewholderOrderDetailBinding binding;
+
+        public ViewHolder(@NonNull ViewholderOrderDetailBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(OrderItem orderItem){
+            binding.setOrderItem(orderItem);
+            binding.executePendingBindings();
         }
     }
 }

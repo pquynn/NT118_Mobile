@@ -2,7 +2,10 @@ package com.example.foodorderingapp.data.repository.accountmanagement;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.foodorderingapp.data.model.entity.UserPoint;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -55,17 +58,26 @@ public class PointRepository {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(!queryDocumentSnapshots.isEmpty()) {
+                            int totalPoint = 0; // Initialize total point
                             for (DocumentSnapshot document : queryDocumentSnapshots) {
                                 UserPoint point = document.toObject(UserPoint.class);
-                                    totalPoint += point.getPoint();
+                                totalPoint += point.getPoint();
                             }
                             Log.d("TotalPoint: ", totalPoint + "");
                             callback.loadTotalPointSuccess(totalPoint);
+                        } else {
+                            callback.loadTotalPointError(new Exception("Error: user point not found"));
                         }
-                        callback.loadTotalPointError(new Exception("Error: user point not found"));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadTotalPointError(e);
                     }
                 });
     }
+
     public void AddPoint(UserPoint userPoint){
         CollectionReference collectionReference = db.collection("USER_POINT");
         collectionReference.add(userPoint)

@@ -9,35 +9,42 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.databinding.ViewholderAddressBinding;
+import com.example.foodorderingapp.databinding.ViewholderCartBinding;
+import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutAddressViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddressAdapter.ViewHolder> {
-    private ArrayList<UserAddress> addresslist;
+    private List<UserAddress> addresslist;
+    private CheckoutAddressViewModel viewModel;
     private int row_index = 0; // position of selected viewholder
-    public CheckoutAddressAdapter(ArrayList<UserAddress> addresslist){
+    public CheckoutAddressAdapter(List<UserAddress> addresslist, CheckoutAddressViewModel viewModel){
         this.addresslist = addresslist;
+        this.viewModel = viewModel;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_address, parent, false);
-        return new ViewHolder(inflate);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ViewholderAddressBinding binding = DataBindingUtil.inflate(inflater, R.layout.viewholder_address, parent, false);
+        return new CheckoutAddressAdapter.ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.address.setText("28 đường Nguyễn Văn Quỳ phường PT quận 7");
-        holder.recipientName.setText(addresslist.get(position).getRecipientName());
-        holder.phone.setText(addresslist.get(position).getRecipientPhone());
+        UserAddress userAddress = addresslist.get(position);
+        holder.bind(userAddress);
 
-////      HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
-            holder.btn_delete.setVisibility(View.GONE);
-            holder.btn_edit.setVisibility(View.GONE);
+        // HIDE EDIT, DELETE BUTTON FROM EACH ADDRESS CONTAINER
+        holder.binding.btnDelete.setVisibility(View.GONE);
+        holder.binding.btnEdit.setVisibility(View.GONE);
 
         // Click event for view holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -51,9 +58,9 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         // Set foreground based on position of viewholder
         if (row_index == position) {
             //add foreground: solid_line
-            holder.container.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_border));
+            holder.binding.viewholderAddress.setForeground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.rounded_border));
         } else {
-            holder.container.setForeground(null);
+            holder.binding.viewholderAddress.setForeground(null);
         }
     }
 
@@ -63,20 +70,16 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView address;
-        TextView recipientName;
-        TextView phone;
-        ImageView btn_edit;
-        ImageView btn_delete;
-        ConstraintLayout container;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            address = itemView.findViewById(R.id.txt_full_address);
-            recipientName = itemView.findViewById(R.id.txt_recipient_name);
-            phone = itemView.findViewById(R.id.txt_recipient_phone);
-            btn_edit = itemView.findViewById(R.id.btn_edit);
-            btn_delete = itemView.findViewById(R.id.btn_delete);
-            container = itemView.findViewById(R.id.viewholder_address);
+        private ViewholderAddressBinding binding;
+
+        public ViewHolder(@NonNull ViewholderAddressBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(UserAddress userAddress){
+            binding.setUserAddress(userAddress);
+            binding.executePendingBindings();
         }
     }
 }

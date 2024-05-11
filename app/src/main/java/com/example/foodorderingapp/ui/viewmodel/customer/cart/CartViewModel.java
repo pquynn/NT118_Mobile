@@ -93,11 +93,7 @@ public class CartViewModel extends ViewModel {
 
     // Delete orderItem
     public void deleteProductCart(String orderItemId){
-        // Create and show progress dialog
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Đang xử lý...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        showProgressDialog("Đang xử lý...");
 
         orderRepository.deleteProductCart(
                 orderMutableLiveData.getValue().getId(),
@@ -124,5 +120,12 @@ public class CartViewModel extends ViewModel {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    private void showProgressDialog(String message){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 }

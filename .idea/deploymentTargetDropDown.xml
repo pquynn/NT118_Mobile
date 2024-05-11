@@ -2,10 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="CheckoutActivity">
+        <State />
+      </entry>
+      <entry key="CheckoutAddressActivity">
+        <State />
+      </entry>
+      <entry key="am_order_detail">
+        <State />
+      </entry>
+      <entry key="am_point_history">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="testRepository">
+      <entry key="resultTestActivity">
         <State />
       </entry>
     </value>

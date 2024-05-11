@@ -3,6 +3,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.checkout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -43,8 +44,8 @@ public class CheckoutActivity extends AppCompatActivity {
 //        binding.recyclerViewOrderDetail.setAdapter(adapter);
 
         viewModel = new CheckoutViewModel(userId, this);
-//        orderId = viewModel.getOrderMutableLiveData().getValue().getId();
-        viewModel.getOrderMutableLiveData().observe(this, order -> {
+//        orderId = viewModel.getOrderLiveData().getValue().getId();
+        viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
 
 //            orderItemMap.clear();
@@ -94,6 +95,15 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            }
+        });
+
+        // set Switch choose point check event
+        binding.btnChoosePoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int totalPoint = viewModel.getPointTotalLiveData().getValue();
+                viewModel.loadPointUsed(totalPoint, isChecked);
             }
         });
 

@@ -39,4 +39,20 @@ public class BindingAdapters {
         textView.setText(formattedPrice);
     }
 
+    @BindingAdapter("priceFormatted")
+    public static void setPriceFormatted(TextView textView, double price) {
+        String formattedPrice = new DecimalFormat("#,### đ").format(price);
+//        formattedPrice = formattedPrice.replace(",", ".");
+        textView.setText(formattedPrice);
+    }
+
+    @BindingAdapter("pointFormatted")
+    public static void setPointFormatted(TextView textView, int point) {
+        textView.setText(String.valueOf(point) + " điểm");
+    }
+
+    @BindingAdapter("productNumbFormatted")
+    public static void setProductNumbFormatted(TextView textView, int numb) {
+        textView.setText(String.valueOf(numb) + " món");
+    }
 }

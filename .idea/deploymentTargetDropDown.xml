@@ -5,19 +5,19 @@
       <entry key="AM_AddressActivity">
         <State />
       </entry>
-      <entry key="am_feedback_list">
+      <entry key="CheckoutActivity">
         <State />
       </entry>
-      <entry key="am_feedback_product">
+      <entry key="CheckoutAddressActivity">
         <State />
       </entry>
-      <entry key="am_my_orders">
-        <State />
-      </entry>
-      <entry key="am_order_detail">
+      <entry key="am_point_history">
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="resultTestActivity">
         <State />
       </entry>
     </value>

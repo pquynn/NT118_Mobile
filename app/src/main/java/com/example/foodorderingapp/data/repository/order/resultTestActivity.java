@@ -10,6 +10,7 @@ import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.repository.accountmanagement.PointRepository;
 import com.example.foodorderingapp.data.repository.notification.INotificationRepository;
 import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.product.IProductRepository;
@@ -24,6 +25,7 @@ public class resultTestActivity extends AppCompatActivity {
     private NotificationRepository notificationRepository;
     private ProductRepository productRepository;
     private Notification notification;
+    private PointRepository pointRepository = new PointRepository();
     private Order od;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,19 @@ public class resultTestActivity extends AppCompatActivity {
 
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
+
+        pointRepository.getTotalPoint("3", new PointRepository.userTotalPointCallback() {
+            @Override
+            public void loadTotalPointSuccess(int totalPoint) {
+
+            }
+
+            @Override
+            public void loadTotalPointError(Exception e) {
+
+            }
+        });
+
 //        productRepository = new ProductRepository();
 //        productRepository.getProductById("1", new IProductRepository.ProductCallback() {
 //            @Override
@@ -109,31 +124,93 @@ public class resultTestActivity extends AppCompatActivity {
 //        });
 
 //         Create an instance of OrderItem
-        OrderItem orderItem = new OrderItem();
-        String id = UUID.randomUUID().toString();
-//        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
-        orderItem.setIdProduct("12");
-        orderItem.setProductName("Hi Tea Đào");
-        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/1%2FHi%20Tea%20%C4%90%C3%A0o.png?alt=media&token=35bf18ac-c242-4b3c-ac55-065c5352dad1");
-        orderItem.setQuantity(1);
-        orderItem.setPrice(10000);
-        orderItem.setNote("Ít đường");
-        orderItem.setSize("Vừa");
-        ArrayList<String> topping = new ArrayList<>();
-        topping.add("1");
-        topping.add("5");
-        orderItem.setTopping(topping);
-        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
-                @Override
-                public void onOrderChanged() {
-
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-
-                }
-            });
+//        OrderItem orderItem = new OrderItem();
+//        String id = UUID.randomUUID().toString();
+////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
+//        orderItem.setIdProduct("12");
+//        orderItem.setProductName("Hi Tea Đào");
+//        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/1%2FHi%20Tea%20%C4%90%C3%A0o.png?alt=media&token=35bf18ac-c242-4b3c-ac55-065c5352dad1");
+//        orderItem.setQuantity(1);
+//        orderItem.setPrice(10000);
+//        orderItem.setNote("Ít đường");
+//        orderItem.setSize("Vừa");
+//        ArrayList<String> topping = new ArrayList<>();
+//        topping.add("1");
+//        topping.add("5");
+//        orderItem.setTopping(topping);
+//        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
+//                @Override
+//                public void onOrderChanged() {
+//
+//                }
+//
+//                @Override
+//                public void onError(String errorMessage) {
+//
+//                }
+//            });
+//
+//        OrderItem orderItem1 = new OrderItem();
+//        String id1 = UUID.randomUUID().toString();
+////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
+//        orderItem1.setIdProduct("2");
+//        orderItem1.setProductName("Sữa Đá");
+//        orderItem1.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/3%2FS%E1%BB%AFa%20%C4%90%C3%A1.png?alt=media&token=59dc877c-d683-4299-876f-63e89ed0b472");
+//        orderItem1.setQuantity(1);
+//        orderItem1.setPrice(49000);
+//        orderItem1.setNote("");
+//        orderItem1.setSize("Lớn");
+////        ArrayList<String> topping1 = new ArrayList<>();
+////        topping.add("1");
+////        topping.add("5");
+//        orderItem1.setTopping(topping);
+//        orderRepository.addOrUpdateProductCart("4", id1, orderItem1, new IOrderRepository.OrderChangedCallback() {
+//            @Override
+//            public void onOrderChanged() {
+//
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
+//        orderRepository.addOrUpdateProductCart("4", id1, orderItem1, new IOrderRepository.OrderChangedCallback() {
+//            @Override
+//            public void onOrderChanged() {
+//
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
+//
+//        OrderItem orderItem2 = new OrderItem();
+//        String id2 = UUID.randomUUID().toString();
+////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
+//        orderItem2.setIdProduct("6");
+//        orderItem2.setProductName("Latte Đá");
+//        orderItem2.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/3%2FLatte%20%C4%90%C3%A1.png?alt=media&token=3c1f7014-8f17-4756-acef-cb33773a2a1d");
+//        orderItem2.setQuantity(1);
+//        orderItem2.setPrice(60000);
+//        orderItem2.setNote("");
+//        orderItem2.setSize("Lớn");
+//        ArrayList<String> topping1 = new ArrayList<>();
+//        topping.add("1");
+//        orderItem2.setTopping(topping);
+//        orderRepository.addOrUpdateProductCart("4", id2, orderItem2, new IOrderRepository.OrderChangedCallback() {
+//            @Override
+//            public void onOrderChanged() {
+//
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
 
 //        orderRepository.deleteProductCart("UV4jcGJFA5p37R0OUVqH", "602447ac-2108-4d83-aca6-15349523d78d", new IOrderRepository.OrderItemRemovedCallback() {
 //            @Override

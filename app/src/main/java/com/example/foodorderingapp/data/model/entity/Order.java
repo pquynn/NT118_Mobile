@@ -19,14 +19,14 @@ public class Order {
     private String payment;
     private String status;
     private int deliveryCost;
-    private int orderPrice;
+    private double orderPrice;
     @ServerTimestamp
     private Date createOn;
     private String idCoupon;
     private Map<String, OrderItem> orderItemMap;
 
     public Order(){}
-    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, int orderPrice, Date createOn, String idCoupon, Map<String, OrderItem> orderItem) {
+    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, String idCoupon, Map<String, OrderItem> orderItem) {
         this.idUser = idUser;
         this.address = address;
         this.totalPrice = totalPrice;
@@ -120,11 +120,11 @@ public class Order {
     }
 
     @PropertyName("ORDER_PRICE")
-    public int getOrderPrice() {
+    public double getOrderPrice() {
         return orderPrice;
     }
     @PropertyName("ORDER_PRICE")
-    public void setOrderPrice(int orderPrice) {
+    public void setOrderPrice(double orderPrice) {
         this.orderPrice = orderPrice;
     }
 

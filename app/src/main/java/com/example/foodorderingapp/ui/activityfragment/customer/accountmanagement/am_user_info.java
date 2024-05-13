@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import static android.app.PendingIntent.getActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserI
 public class am_user_info extends AppCompatActivity {
 //    private UserInfoVM userInfoVM;
     TextView tvNameAcc, tvName, tvPhone, tvGoEditInfo;
-    String userId;
+    String userId = "";
     private UserInfoVM viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +27,16 @@ public class am_user_info extends AppCompatActivity {
 
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Thông tin cá nhân");
-        userId = "2";
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
-                    return (T) new UserInfoVM(userId);
-                }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if(intent.hasExtra("user_id")){
+                userId = intent.getStringExtra("user_id");
             }
-        }).get(UserInfoVM.class);
+        }
+
+
+        viewModel = new UserInfoVM(userId, this);
 
         tvNameAcc = findViewById(R.id.textView_name_acc);
         tvName = findViewById(R.id.textView_name);

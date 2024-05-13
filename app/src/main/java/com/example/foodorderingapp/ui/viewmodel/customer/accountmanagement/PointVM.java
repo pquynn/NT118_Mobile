@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -15,8 +16,10 @@ public class PointVM extends ViewModel {
 
     MutableLiveData<ArrayList<UserPoint>> pointListLiveData = new MutableLiveData<>();
     MutableLiveData<Integer> pointTotalLiveData = new MutableLiveData<>();
+    private Context context;
 
-    public PointVM(String userId){
+    public PointVM(String userId, Context context){
+        this.context = context;
         repository.getListPoint(userId, new PointRepository.userPointCallback() {
             @Override
             public void loadUserPointSuccess(ArrayList<UserPoint> userPoints) {

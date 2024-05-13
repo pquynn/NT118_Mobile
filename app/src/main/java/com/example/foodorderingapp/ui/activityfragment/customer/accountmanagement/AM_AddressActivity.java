@@ -2,10 +2,12 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,9 +32,11 @@ public class AM_AddressActivity extends AppCompatActivity {
     private FrameLayout btnBack;
     private TextView screenName;
     private ImageView btnEdit;
+    Button btnAddAddress;
     private UserInfoVM viewModel;
-    private String userId;
+    private String userId = "";
     ArrayList<UserAddress> addresses;
+    @SuppressLint("WrongViewCast")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_address);
@@ -50,7 +54,7 @@ public class AM_AddressActivity extends AppCompatActivity {
             }
         });
 
-        // set button Edit address click event
+        // set button Edit address click event --> set in adapter
         btnEdit = findViewById(R.id.btn_edit);
         if (btnEdit == null) {
             Log.e(TAG, "btnEdit is null. Check the layout and ID."); // Debug thông tin để xác định vấn đề
@@ -62,16 +66,27 @@ public class AM_AddressActivity extends AppCompatActivity {
                 }
             });
         }
-        userId = "2";
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
-                    return (T) new UserInfoVM(userId);
+        btnAddAddress = findViewById(R.id.btn_addAddress);
+        if(btnAddAddress == null){
+            Log.e(TAG,"btnAddAddress is null. Check layout and ID");
+        }else{
+            btnAddAddress.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(getApplicationContext(), AM_AddAddressActivity.class);
+                    myIntent.putExtra("user_id", userId);
+                    startActivity(myIntent);
                 }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }));
+        }
+        Intent intent = getIntent();
+        if (intent != null) {
+            if(intent.hasExtra("user_id")){
+                userId = intent.getStringExtra("user_id");
             }
-        }).get(UserInfoVM.class);
+        }
+
+        viewModel = new UserInfoVM(userId, this);
         recyclerViewAddress();
     }
 

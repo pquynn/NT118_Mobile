@@ -30,7 +30,7 @@ public class MyOrderDelivering extends Fragment {
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
     private MyOrdersVM viewModel;
-    private String userId;
+    private String userId = "";
 
     public MyOrderDelivering() {
         // Required empty public constructor
@@ -47,7 +47,10 @@ public class MyOrderDelivering extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userId = "3";
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            userId = bundle.getString("user_id");
+        }
         viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
             @Override
             public <T extends ViewModel> T create(Class<T> modelClass) {

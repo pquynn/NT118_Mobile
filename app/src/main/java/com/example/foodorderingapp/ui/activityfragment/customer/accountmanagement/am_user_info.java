@@ -4,6 +4,8 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,8 @@ public class am_user_info extends AppCompatActivity {
     TextView tvNameAcc, tvName, tvPhone, tvGoEditInfo;
     String userId = "";
     private UserInfoVM viewModel;
+
+    private FrameLayout btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +31,14 @@ public class am_user_info extends AppCompatActivity {
 
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Thông tin cá nhân");
+
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {

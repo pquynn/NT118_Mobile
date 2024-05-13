@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class am_point_history extends AppCompatActivity {
     private String userId = "";
     private PointVM viewModel;
     private TextView tvTotalPoint;
-    private Button btnBack;
+    private FrameLayout btnBack;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/feedback_item"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="220dp"
     android:layout_marginTop="16dp"
     android:background="@drawable/allrounded_bg">
 
@@ -64,6 +64,7 @@
         android:text="Lớn"
         app:layout_constraintStart_toEndOf="@+id/img_fb_product"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
+
     <TextView
         android:id="@+id/txt_fb_topping"
         style="@style/text_14sp"
@@ -117,8 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:padding="10dp"
         android:text="Đánh giá"
         android:textSize="16sp"

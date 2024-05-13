@@ -37,8 +37,8 @@ public class CheckoutViewModel extends ViewModel {
     private MutableLiveData<Integer> pointTotalLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> totalProductLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> pointUsedLiveData = new MutableLiveData<>();
-    private MutableLiveData<Double> orderPriceLiveData = new MutableLiveData<>();
-    private MutableLiveData<Double> discountValueLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> orderPriceLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> discountValueLiveData = new MutableLiveData<>();
     private MutableLiveData<String> paymentMethodLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> iconPaymentLiveData = new MutableLiveData<>();
 
@@ -60,7 +60,7 @@ public class CheckoutViewModel extends ViewModel {
 
         loadUserAddress(userId);
         pointUsedLiveData.setValue(0);
-        discountValueLiveData.setValue(0.0);
+        discountValueLiveData.setValue(0);
         paymentMethodLiveData.setValue("Thanh toán khi nhận hàng");
         iconPaymentLiveData.setValue(R.drawable.cash);
         loadOrder(userId);
@@ -95,12 +95,12 @@ public class CheckoutViewModel extends ViewModel {
         return pointUsedLiveData;
     }
 
-    public MutableLiveData<Double> getOrderPriceLiveData() {
+    public MutableLiveData<Integer> getOrderPriceLiveData() {
         orderPriceLiveData.setValue(calculateOrderPrice());
         return orderPriceLiveData;
     }
 
-    public MutableLiveData<Double> getDiscountValueLiveData() {
+    public MutableLiveData<Integer> getDiscountValueLiveData() {
         return discountValueLiveData;
     }
 
@@ -207,15 +207,15 @@ public class CheckoutViewModel extends ViewModel {
 
     // calculate discount value
     // todo: tính tiền giảm từ tiền đã cộng điểm thưởng hay sao?
-    public double calculateDiscountValue(){
-        double discountValue = 0.0;
+    public int calculateDiscountValue(){
+        int discountValue = 0;
 
         return discountValue;
     }
 
     // calculate order price
-    public Double calculateOrderPrice(){
-        Double orderPrice = 0.0;
+    public int calculateOrderPrice(){
+        int orderPrice = 0;
 
         orderPrice = totalPrice.getValue()
                 + pointUsedLiveData.getValue()

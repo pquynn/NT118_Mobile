@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
@@ -35,11 +41,12 @@ import java.util.Map;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private CartViewModel cartViewModel;
     private Map<String, OrderItem> orderItemMap;
-    private boolean isDialogOpen = false;
+    private OnItemClickListener listener;
 
-    public CartAdapter(Map<String, OrderItem> orderItemMap, CartViewModel cartViewModel){
+    public CartAdapter(Map<String, OrderItem> orderItemMap, CartViewModel cartViewModel, OnItemClickListener listener){
         this.orderItemMap = orderItemMap;
         this.cartViewModel = cartViewModel;
+        this.listener = listener;
     }
 
     @Override
@@ -94,9 +101,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isDialogOpen) {
-                    showDialog(view.getContext(), orderItem);
-                }
+                listener.onItemClick(key, orderItem);
             }
         });
 
@@ -126,60 +131,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
 
 
-    // Function to show bottom dialog when button is clicked
-    public void showDialog(Context context, OrderItem orderItem) {
-        isDialogOpen = true; // Update dialog state
-        Dialog dialog = new Dialog(context); // Corrected line
-        BottomsheetEditCartBinding binding = BottomsheetEditCartBinding.inflate(LayoutInflater.from(context));
-        dialog.setContentView(binding.getRoot());
-
-        binding.setCartVM(cartViewModel); // Set the ViewModel if needed
-        binding.setOrderItem(orderItem);
-
-
-//        RadioGroup radioGroup = binding.radioGroup;
-//        // Iterate through radio buttons to find the one with matching text
-//        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-//            RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-//            if (radioButton.getText().toString().equals("Lớn")) {
-//                radioButton.setChecked(true);
-//                break;
-//            }
-//        }
-
-        // Radio checked event
-//        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                // Handle radio button selection here
-//                switch (checkedId) {
-//                    case R.id.rb_small:
-//                        // Handle small size selection
-//                        break;
-//                    case R.id.rb_medium:
-//                        // Handle medium size selection
-//                        break;
-//                    case R.id.rb_large:
-//                        // Handle large size selection
-//                        break;
-//                }
-//            }
-//        });
-
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                isDialogOpen = false; // Update dialog state when dismissed
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
 
     @Override
     public int getItemCount() {
@@ -192,12 +143,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public ViewHolder(@NonNull ViewholderCartBinding binding){
             super(binding.getRoot());
             this.binding = binding;
+
         }
 
         void bind(OrderItem orderItem){
             binding.setOrderItem(orderItem);
             binding.executePendingBindings();
         }
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(String key, OrderItem orderItem);
     }
 }
 

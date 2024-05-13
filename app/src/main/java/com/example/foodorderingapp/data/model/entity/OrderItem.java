@@ -1,6 +1,8 @@
 package com.example.foodorderingapp.data.model.entity;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.PropertyName;
 
 import java.util.ArrayList;
@@ -118,6 +120,7 @@ public class OrderItem {
     }
 
     // Method to concatenate elements of the topping ArrayList with comma separator
+    @Exclude
     public String getToppingString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < topping.size(); i++) {

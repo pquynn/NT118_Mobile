@@ -45,19 +45,21 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-        productRepository = new ProductRepository();
-        productRepository.getProductById("1", new IProductRepository.ProductCallback() {
-            @Override
-            public void onProductLoaded(Product product) {
-
-            }
-
-            @Override
-            public void onProductLoadFailed(String errorMessage) {
-
-            }
-        });
+//
+//        productRepository = new ProductRepository();
+//        productRepository.getProductById("12", new IProductRepository.ProductCallback() {
+//            @Override
+//            public void onProductLoaded(Product product) {
+//                Product a = product;
+//
+//                Log.d("firestore", "onProductLoaded: " + a.toString());
+//            }
+//
+//            @Override
+//            public void onProductLoadFailed(String errorMessage) {
+//
+//            }
+//        });
 //        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
 //            @Override
 //            public void onListLoaded(List<Notification> notificationList) {
@@ -128,16 +130,16 @@ public class resultTestActivity extends AppCompatActivity {
 //        String id = UUID.randomUUID().toString();
 ////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
 //        orderItem.setIdProduct("12");
-//        orderItem.setProductName("Hi Tea Đào");
+//        orderItem.setProductName("test banh");
 //        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/1%2FHi%20Tea%20%C4%90%C3%A0o.png?alt=media&token=35bf18ac-c242-4b3c-ac55-065c5352dad1");
 //        orderItem.setQuantity(1);
 //        orderItem.setPrice(10000);
-//        orderItem.setNote("Ít đường");
-//        orderItem.setSize("Vừa");
-//        ArrayList<String> topping = new ArrayList<>();
-//        topping.add("1");
-//        topping.add("5");
-//        orderItem.setTopping(topping);
+//        orderItem.setNote("");
+////        orderItem.setSize("Vừa");
+////        ArrayList<String> topping = new ArrayList<>();
+////        topping.add("1");
+////        topping.add("5");
+////        orderItem.setTopping(topping);
 //        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
 //                @Override
 //                public void onOrderChanged() {
@@ -149,7 +151,7 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //                }
 //            });
-//
+////
 //        OrderItem orderItem1 = new OrderItem();
 //        String id1 = UUID.randomUUID().toString();
 ////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
@@ -198,8 +200,8 @@ public class resultTestActivity extends AppCompatActivity {
 //        orderItem2.setNote("");
 //        orderItem2.setSize("Lớn");
 //        ArrayList<String> topping1 = new ArrayList<>();
-//        topping.add("1");
-//        orderItem2.setTopping(topping);
+//        topping1.add("1");
+//        orderItem2.setTopping(topping1);
 //        orderRepository.addOrUpdateProductCart("4", id2, orderItem2, new IOrderRepository.OrderChangedCallback() {
 //            @Override
 //            public void onOrderChanged() {

@@ -30,7 +30,7 @@ public class ProductRepository implements IProductRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Product product = documentSnapshot.toObject(Product.class);
-                        Log.d("firestore", "getProductById: " + product.toString());
+//                        Log.d("firestore", "getProductById: " + product.toString());
                         callback.onProductLoaded(product);
 //                        Log.d("firebase", "getProductById" + product.toString());
                     } else {

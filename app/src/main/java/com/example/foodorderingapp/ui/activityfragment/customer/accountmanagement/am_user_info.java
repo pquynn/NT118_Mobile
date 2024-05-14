@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,9 @@ import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserI
 
 public class am_user_info extends AppCompatActivity {
 //    private UserInfoVM userInfoVM;
-    TextView tvNameAcc, tvName, tvPhone, tvGoEditInfo;
+    TextView tvNameAcc, tvName, tvPhone;
+
+    LinearLayout llAM_userInfo_phone, llAM_userInfo_name, llAM_userInfo_password;
     String userId = "";
     private UserInfoVM viewModel;
 
@@ -53,7 +56,6 @@ public class am_user_info extends AppCompatActivity {
         tvNameAcc = findViewById(R.id.textView_name_acc);
         tvName = findViewById(R.id.textView_name);
         tvPhone = findViewById(R.id.textView_phone);
-        tvGoEditInfo = findViewById(R.id.txt_goto_edit);
 
         viewModel.getUserInfoLiveData().observe(this, new Observer<User>() {
             @Override
@@ -63,6 +65,38 @@ public class am_user_info extends AppCompatActivity {
                 tvPhone.setText(user.getPhone());
             }
         });
+
+
+        llAM_userInfo_name = findViewById(R.id.llAM_userInfo_name);
+        llAM_userInfo_phone = findViewById(R.id.llAM_userInfo_phone);
+        llAM_userInfo_password = findViewById(R.id.llAM_userInfo_password);
+
+        llAM_userInfo_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), am_change_userinfo_name.class);
+                myIntent.putExtra("user_id", userId);
+                startActivity(myIntent);
+            }
+        });
+
+        llAM_userInfo_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), am_change_userinfo_phone.class);
+                myIntent.putExtra("user_id", userId);
+                startActivity(myIntent);
+            }
+        });
+        llAM_userInfo_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), am_change_password.class);
+                myIntent.putExtra("user_id", userId);
+                startActivity(myIntent);
+            }
+        });
+
 
     }
 }

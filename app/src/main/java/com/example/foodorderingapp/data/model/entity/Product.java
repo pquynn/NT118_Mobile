@@ -29,6 +29,12 @@ public class Product {
         this.productName = productName;
         this.productPrice = productPrice;
     }
+    public Product(String idCategory, String productImage, String productName, int productPrice){
+        this.idCategory = idCategory;
+        this.productImage = productImage;
+        this.productName = productName;
+        this.productPrice = productPrice;
+    }
 
     //construct lấy id, ảnh, tên, giá, mô tả
     public Product(String id, String productImage, String productName, int productPrice, String productInfo) {

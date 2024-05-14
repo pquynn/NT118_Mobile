@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodorderingapp.data.model.ProductSearch;
+import com.bumptech.glide.Glide;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
 
 
@@ -19,11 +21,22 @@ import java.util.List;
 
 public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopularHomeAdapter.ViewHolder> {
     private Context context;
-    private List<ProductSearch> productList;
+    private LayoutInflater inflater;
+    private OnItemClickListener listener;
+    private List<Product> productList;
 
-    public ProductPopularHomeAdapter(Context context, List<ProductSearch> productList) {
-        this.context = context;
+    public interface OnItemClickListener {
+        void onItemClick(Product product);
+    }
+    public ProductPopularHomeAdapter(Context context, List<Product> productList, OnItemClickListener listener) {
         this.productList = productList;
+        this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -35,19 +48,22 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductSearch product = productList.get(position);
-
-        holder.imgProduct.setImageResource(product.getImage());
-        holder.txtName.setText(product.getName());
-        holder.txtPrice.setText(product.getPrice());
-
+        if (position < 5) {
+            Product product = productList.get(position);
+            Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
+            holder.txtName.setText(product.getProductName());
+            holder.txtPrice.setText(product.getProductPrice());
+            holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
+        }else {
+            // Ẩn itemView nếu không có sản phẩm tại vị trí này
+            holder.itemView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return productList.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ConstraintLayout constraintLayout;

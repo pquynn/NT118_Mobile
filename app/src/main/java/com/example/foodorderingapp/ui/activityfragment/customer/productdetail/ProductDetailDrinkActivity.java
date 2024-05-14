@@ -133,10 +133,10 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
     private List<Topping> getListTopping() {
         List<Topping> listTopping = new ArrayList<>();
 
-        listTopping.add(new Topping("Trân châu trắng", "5.000đ"));
-        listTopping.add(new Topping("Trân châu đen", "5.000đ"));
-        listTopping.add(new Topping("Bánh Flan", "7.000đ"));
-        listTopping.add(new Topping("Thạch dừa phô mai", "10.000đ"));
+        listTopping.add(new Topping("Trân châu trắng", 5000));
+        listTopping.add(new Topping("Trân châu đen", 5000));
+        listTopping.add(new Topping("Bánh Flan", 7000));
+        listTopping.add(new Topping("Thạch dừa phô mai", 10000));
         return listTopping;
     }
 }

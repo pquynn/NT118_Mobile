@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class OrderItem {
     private String idProduct;
-
     private String productName;
     private String productImage;
     private int quantity;

@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.User;
@@ -41,6 +42,7 @@ public class CheckoutViewModel extends ViewModel {
     private MutableLiveData<Integer> discountValueLiveData = new MutableLiveData<>();
     private MutableLiveData<String> paymentMethodLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> iconPaymentLiveData = new MutableLiveData<>();
+    private MutableLiveData<Coupon> couponLiveData = new MutableLiveData<>();
 
     // REPOSITORY
     private OrderRepository orderRepository;
@@ -110,6 +112,11 @@ public class CheckoutViewModel extends ViewModel {
 
     public MutableLiveData<Integer> getIconPaymentLiveData() {
         return iconPaymentLiveData;
+    }
+
+    public MutableLiveData<Coupon> getCouponLiveData(String couponId) {
+        loadCoupon(couponId);
+        return couponLiveData;
     }
 
     // end: GETTER
@@ -186,6 +193,23 @@ public class CheckoutViewModel extends ViewModel {
         else iconPaymentLiveData.setValue(R.drawable.paypal);
     }
 
+    // load coupon by coupon id
+    public void loadCoupon(String couponId){
+        couponRepository.getCouponById(couponId, new CouponRepository.callBackCoupon() {
+            @Override
+            public void loadDataSuccess(Coupon coupon) {
+                couponLiveData.setValue(coupon);
+                int a = calculateDiscountValue(coupon.getDiscountValue());
+                discountValueLiveData.setValue(calculateDiscountValue(coupon.getDiscountValue()));
+            }
+
+            @Override
+            public void loadDataFail(Exception e) {
+                //todo: nếu ko có coupon thì hiện thông báo coupon ko hợp lệ hay gì đó
+            }
+        });
+    }
+
     // calculate total price
     public int calculateTotalPrice(@NonNull Map<String, OrderItem> buyingProductHashMap){
         int totalPrice = 0;
@@ -207,11 +231,15 @@ public class CheckoutViewModel extends ViewModel {
 
     // calculate discount value
     // todo: tính tiền giảm từ tiền đã cộng điểm thưởng hay sao?
-    public int calculateDiscountValue(){
-        int discountValue = 0;
+    public int calculateDiscountValue(double percentDiscount) {
+        // Calculate the discount value as a floating-point operation
+        double discountValue = -1 * (totalPrice.getValue() + pointUsedLiveData.getValue()) * (percentDiscount / 100.0);
+        // Convert the discount value to an integer (if needed)
+        int discountValueInteger = (int) discountValue;
 
-        return discountValue;
+        return discountValueInteger;
     }
+
 
     // calculate order price
     public int calculateOrderPrice(){
@@ -223,7 +251,6 @@ public class CheckoutViewModel extends ViewModel {
         //todo: if have delivery cost --> add to orderPrice
         return orderPrice;
     }
-
 
     // Method to dismiss progress dialog
     private void dismissProgressDialog() {

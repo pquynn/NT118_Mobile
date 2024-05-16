@@ -8,6 +8,7 @@ import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -66,36 +67,34 @@ public class CouponRepository {
                 });
     }
 
-    public void getListCouponTemp(Double orderPrice, Date date, callBackGetList callBackGetList) {
-        reference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void getCouponById(String couponId, callBackCoupon callback) {
+        reference.document(couponId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.getDouble("QUANTITY") > 0
-                                        && date.compareTo(document.getDate("END_DATE")) < 0 // date < END_DATE
-                                        && document.getDate("START_DATE").compareTo(date) < 0) { // START_DATE < date
-                                    listCoupon.add(new Coupon(document.getId(),
-                                            document.getString("COUPON_NAME"),
-                                            document.getDate("START_DATE"),
-                                            document.getDate("END_DATE"),
-                                            document.getDouble("DISCOUNT_VALUE"),
-                                            document.getDouble("MIN_ORDER"),
-                                            document.getDouble("QUANTITY"),
-                                            document.getString("DESCRIPTION")
-                                    ));
-                                }
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Coupon coupon = new Coupon(document.getId(),
+                                        document.getString("COUPON_NAME"),
+                                        document.getDate("START_DATE"),
+                                        document.getDate("END_DATE"),
+                                        document.getDouble("DISCOUNT_VALUE"),
+                                        document.getDouble("MIN_ORDER"),
+                                        document.getDouble("QUANTITY"),
+                                        document.getString("DESCRIPTION")
+                                );
+                                callback.loadDataSuccess(coupon);
+                            } else {
+                                callback.loadDataFail(new Exception("Không có ưu đãi phù hợp!"));
                             }
-
-                            callBackGetList.loadDataSuccess(listCoupon);
-
                         } else {
-                            callBackGetList.loadDataFail(new Exception("Không có ưu đãi phù hợp hoặc đã xảy ra lỗi!"));
+                            callback.loadDataFail(new Exception("Đã xảy ra lỗi!"));
                         }
                     }
                 });
     }
+
 
 
     // Thêm ưu đãi vào hóa đơn
@@ -149,6 +148,12 @@ public class CouponRepository {
 
     public interface callBackGetList {
         public void loadDataSuccess(List<Coupon> listCoupon);
+
+        public void loadDataFail(Exception e);
+    }
+
+    public interface callBackCoupon {
+        public void loadDataSuccess(Coupon coupon);
 
         public void loadDataFail(Exception e);
     }

@@ -56,7 +56,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:singleLine="false"
-            android:text="@{orderItem.toppingString}"
+            app:visibleIfNotEmpty="@{orderItem.toppingString}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
 
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{orderItem.size}"
+            app:visibleIfNotEmpty="@{orderItem.size}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
 
@@ -76,12 +76,10 @@
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@{orderItem.note}"
             android:ellipsize="end"
             android:maxLines="4"
             android:singleLine="false"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@{orderItem.note}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_topping" />
 

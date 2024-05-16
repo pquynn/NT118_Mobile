@@ -2,16 +2,20 @@ package com.example.foodorderingapp.ui.activityfragment.customer.checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.databinding.ActivityCheckoutBinding;
@@ -24,11 +28,14 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView screenName;
     FrameLayout btnBack;
     private Map<String, OrderItem> orderItemMap;
-    private String userId ="3", orderId;
+    private String userId = "3", orderId, couponId = "";
     private ActivityCheckoutBinding binding;
     private CheckoutViewModel viewModel;
     private OrderDetailAdapter adapter;
+    private static final int COUPON_REQUEST_CODE = 1;
+    private Coupon selectedCoupon;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
@@ -45,10 +52,8 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.recyclerViewOrderDetail.setAdapter(adapter);
 
         viewModel = new CheckoutViewModel(userId, this);
-//        orderId = viewModel.getOrderLiveData().getValue().getId();
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
-
             orderItemMap.clear();
             orderItemMap.putAll(order.getOrderItem());
             adapter.notifyDataSetChanged();
@@ -56,59 +61,57 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // set button back click event
         btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
 
         // set button ChangeAddress click event
-        binding.btnChangeAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CheckoutAddressActivity.class));
-            }
-        });
+        binding.btnChangeAddress.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), CheckoutAddressActivity.class)));
 
         // set button SeePayment click event
-        binding.btnSeePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PaymentMethodActivity.class));
-            }
-        });
+        binding.btnSeePayment.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PaymentMethodActivity.class)));
 
         // set button SeeCoupons click event
-        binding.btnSeeCoupons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CouponActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("orderId", orderId);
-//                bundle.putInt("orderPrice",100000); //todo: đổi thành order price sau
-//                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        binding.btnSeeCoupons.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), CouponActivity.class);
+            orderId = viewModel.getOrderLiveData().getValue().getId();
+            int orderPrice = viewModel.getOrderPriceLiveData().getValue();
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", orderId);
+            bundle.putInt("orderPrice", orderPrice);
+            bundle.putString("couponId", couponId);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, COUPON_REQUEST_CODE);
         });
 
+
         // set button Buy click event
-        binding.btnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
+        binding.btnBuy.setOnClickListener(v -> {
+            // Handle the buy action here
         });
 
         // set Switch choose point check event
-        binding.btnChoosePoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int totalPoint = viewModel.getPointTotalLiveData().getValue();
-                viewModel.loadPointUsed(totalPoint, isChecked);
-            }
+        binding.btnChoosePoint.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int totalPoint = viewModel.getPointTotalLiveData().getValue();
+            viewModel.loadPointUsed(totalPoint, isChecked);
         });
-
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == COUPON_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("couponId")) {
+                // set discount value if coupon is chosen
+                viewModel.getCouponLiveData(data.getStringExtra("couponId"))
+                        .observe(this, new Observer<Coupon>() {
+                    @Override
+                    public void onChanged(Coupon coupon) {
+                        Log.d("firestore", " coupon onActivityResult: " + coupon.getIdCoupon().toString());
+                        couponId = coupon.getIdCoupon();
+                    }
+                });
+                Log.d("firestore", "onActivityResult: " + couponId);
+            }
+        }
+    }
 }

@@ -1,6 +1,11 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +27,11 @@ public class am_point_history extends AppCompatActivity {
     private RecyclerView.Adapter PointAdapter;
     private RecyclerView recyclerViewList;
     private ArrayList<UserPoint> listPoint;
-    private String userId;
+    private String userId = "";
     private PointVM viewModel;
     private TextView tvTotalPoint;
+    private FrameLayout btnBack;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +40,24 @@ public class am_point_history extends AppCompatActivity {
         TextView headerName = findViewById(R.id.screen_name);
         headerName.setText("Tích điểm");
 
-        userId = "2";
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(PointVM.class)) {
-                    return (T) new PointVM(userId);
-                }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            public void onClick(View v) {
+                finish();
             }
-        }).get(PointVM.class);
+        });
+
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if(intent.hasExtra("user_id")){
+                userId = intent.getStringExtra("user_id");
+            }
+        }
+
+        viewModel = new PointVM(userId, this);
+
         recyclerViewPoint();
     }
     private void recyclerViewPoint(){

@@ -54,6 +54,27 @@ public class UserInfoRepository {
                 });
     }
 
+    public void getAddressById (String addressId, userAddressCallback callback){
+        db.collection("USER_ADDRESS")
+                .document(addressId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            UserAddress userAddress = documentSnapshot.toObject(UserAddress.class);
+                            callback.loadUserAddressSuccess(userAddress);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadUsserAddressError(e);
+                    }
+                });
+
+    }
+
     public void getListAddress (String userId, userAddressesCallback callback){
         db.collection("USER_ADDRESS")
                 .whereEqualTo("ID_USER", userId)

@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,24 @@ public class AccountAddressAdapter extends RecyclerView.Adapter<AccountAddressAd
         holder.address.setText(addresslist.get(position).getAllAddress());
         holder.recipientName.setText(addresslist.get(position).getRecipientName());
         holder.phone.setText(addresslist.get(position).getRecipientPhone());
+
+        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = holder.itemView.getContext();
+                Intent myIntent = new Intent(context, AM_AddAddressActivity.class);
+//                myIntent.putExtra("user_id", addresslist.get(position).getIdUser());
+                myIntent.putExtra("user_address_id", addresslist.get(position).getId());
+                context.startActivity(myIntent);
+            }
+        });
+
+//        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     @Override

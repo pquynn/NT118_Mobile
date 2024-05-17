@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_address"
+    android:background="@color/white"
     tools:context=".ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical">
 
         <include layout="@layout/header_with_btnback"></include>
@@ -160,9 +162,9 @@
                     style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginVertical="20dp"
-                    android:layout_gravity="center"
                     android:text="Lưu" />
             </LinearLayout>
         </ScrollView>

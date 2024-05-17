@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class MyOrderCancelled extends Fragment {
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
     private MyOrdersVM viewModel;
-    private String userId;
+    private String userId = "";
     public MyOrderCancelled() {
         // Required empty public constructor
     }
@@ -46,7 +47,13 @@ public class MyOrderCancelled extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userId = "3";
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            userId = bundle.getString("user_id");
+        }
+        Log.d("get user id in fragment order", "user id: " + userId);
+
         viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
             @Override
             public <T extends ViewModel> T create(Class<T> modelClass) {

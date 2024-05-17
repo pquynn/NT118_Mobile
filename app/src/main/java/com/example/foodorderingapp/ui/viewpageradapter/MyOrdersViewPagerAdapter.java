@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.ui.viewpageradapter;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -13,28 +15,41 @@ import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagemen
 
 public class MyOrdersViewPagerAdapter extends FragmentStateAdapter {
 
-
-    public MyOrdersViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    private String userId;
+    public MyOrdersViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, String userId) {
         super(fragmentActivity);
+        this.userId = userId;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Fragment fragment = new Fragment();
         switch (position) {
             case 0:
-                return new MyOrderInProgress();
+                fragment =  new MyOrderInProgress();
+                break;
             case 1:
-                return new MyOrderDelivering();
+                fragment = new MyOrderDelivering();
+                break;
             case 2:
-                return new MyOrderCompleted();
+                fragment =  new MyOrderCompleted();
+                break;
             case 3:
-                return new MyOrderCancelled();
+                fragment =  new MyOrderCancelled();
+                break;
             case 4:
-                return new MyOrderRefunded();
+                fragment = new MyOrderRefunded();
+                break;
+            default:
+                return null;
 
         }
-        return null;
+
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", userId);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override

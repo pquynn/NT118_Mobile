@@ -25,8 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CouponActivity extends AppCompatActivity implements CouponAdapter.OnItemClickListener {
-    private String orderId;
+    private String orderId, couponId;
     private int orderPrice;
+    private double discountValue;
     private CouponAdapter adapter;
     private FrameLayout btnBack;
     private TextView screenName;
@@ -36,7 +37,7 @@ public class CouponActivity extends AppCompatActivity implements CouponAdapter.O
     private List<Coupon> couponList;
 
     private Boolean isSelected = false;
-    private Coupon selectedCoupon;
+//    private Coupon selectedCoupon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,8 @@ public class CouponActivity extends AppCompatActivity implements CouponAdapter.O
         if (getIntent().getExtras() != null) {
             orderId = getIntent().getExtras().getString("orderId");
             orderPrice = getIntent().getExtras().getInt("orderPrice");
-            selectedCoupon = new Coupon();
-            selectedCoupon.setIdCoupon(getIntent().getExtras().getString("couponId"));
+            couponId = getIntent().getExtras().getString("couponId");
+            discountValue = getIntent().getExtras().getDouble("discountValue");
         }
 
         // set top navigation text
@@ -60,9 +61,25 @@ public class CouponActivity extends AppCompatActivity implements CouponAdapter.O
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
+        //init viewmodel
         viewModel = new CouponViewModel(orderId, orderPrice, this);
+
+        //init selected coupon live data
+        Coupon coupon = new Coupon();
+        coupon.setIdCoupon(couponId);
+        viewModel.getCouponLiveData().setValue(coupon);
+
+        if(!couponId.isEmpty() && couponId != null){
+            viewModel.getIsSelectedLiveData().setValue(true);
+            viewModel.getDiscountValueLiveData().setValue((int)discountValue);
+        }
+        else{
+            viewModel.getIsSelectedLiveData().setValue(false);
+        }
+
+        // init adapter
         couponList = new ArrayList<>();
-        adapter = new CouponAdapter(selectedCoupon, couponList, viewModel, this::onItemClick);
+        adapter = new CouponAdapter(viewModel.getCouponLiveData().getValue(), couponList, viewModel, this::onItemClick);
         binding.recyclerViewCoupon.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewCoupon.setAdapter(adapter);
 
@@ -77,44 +94,27 @@ public class CouponActivity extends AppCompatActivity implements CouponAdapter.O
             }
         });
 
-        //set isSelected and discountvalue live data
-        if(!selectedCoupon.getIdCoupon().isEmpty()){
-            viewModel.getIsSelectedLiveData().setValue(true);
-            viewModel.getDiscountValueLiveData().setValue( -1 * (int)(orderPrice * selectedCoupon.getDiscountValue()/100.0));
-        }
-        else{
-            viewModel.getIsSelectedLiveData().setValue(false);
-        }
 
-        // observe change in isSelected live data to hide or show discount info bar
-//        viewModel.getIsSelectedLiveData().observe(this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean aBoolean) {
-//                if(aBoolean)
-//                    binding.selectedCouponBox.setVisibility(View.VISIBLE);
-//                else
-//                    binding.selectedCouponBox.setVisibility(View.GONE);
-//            }
-//        });
-
-
+        // button add click event
         binding.btnAdd.setOnClickListener(v -> {
             if (!viewModel.getIsSelectedLiveData().getValue()) {
                 Toast.makeText(getBaseContext(), "Bạn chưa chọn mã giảm giá!", Toast.LENGTH_SHORT).show();
             } else {
                 // Create an intent to hold the coupon data
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("couponId", selectedCoupon.getIdCoupon());
+                resultIntent.putExtra("couponId", viewModel.getCouponLiveData().getValue().getIdCoupon());
                 setResult(RESULT_OK, resultIntent);
                 finish(); // Close the CouponActivity
             }
         });
     }
 
+    // when viewholder is clicked
     @Override
     public void onItemClick(Boolean isSelected, Coupon selectedCoupon) {
         viewModel.getIsSelectedLiveData().setValue(isSelected);
-        viewModel.getDiscountValueLiveData().setValue( -1 * (int)(orderPrice * selectedCoupon.getDiscountValue()/100.0));
-        this.selectedCoupon = selectedCoupon;
+        viewModel.getCouponLiveData().setValue(selectedCoupon);
+        viewModel.getDiscountValueLiveData().setValue(
+                -1 * (int)(orderPrice * viewModel.getCouponLiveData().getValue().getDiscountValue()/100.0));
     }
 }

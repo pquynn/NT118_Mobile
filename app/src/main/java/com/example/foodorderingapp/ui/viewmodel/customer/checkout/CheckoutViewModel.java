@@ -60,7 +60,7 @@ public class CheckoutViewModel extends ViewModel {
         pointRepository = new PointRepository();
         couponRepository = new CouponRepository();
 
-        loadUserAddress(userId);
+        loadDefaultUserAddress(userId);
         pointUsedLiveData.setValue(0);
         discountValueLiveData.setValue(0);
         paymentMethodLiveData.setValue("Thanh toán khi nhận hàng");
@@ -80,7 +80,11 @@ public class CheckoutViewModel extends ViewModel {
     }
 
     public MutableLiveData<UserAddress> getUserAddressLiveData() {
-        loadUserAddress(userId);
+        return userAddressLiveData;
+    }
+
+    public MutableLiveData<UserAddress> getUserAddressLiveData(String id) {
+        loadUserAddress(id);
         return userAddressLiveData;
     }
 
@@ -147,9 +151,24 @@ public class CheckoutViewModel extends ViewModel {
     // end: ORDER-----------
 
 
-    // load user address
-    public void loadUserAddress(String userId){
+    // load default user address (when checkout activity first runing)
+    public void loadDefaultUserAddress(String userId){
         userInfoRepository.getFirstAddress(userId, new UserInfoRepository.userAddressCallback() {
+            @Override
+            public void loadUserAddressSuccess(UserAddress userAddress) {
+                userAddressLiveData.setValue(userAddress);
+            }
+
+            @Override
+            public void loadUsserAddressError(Exception e) {
+
+            }
+        });
+    }
+
+    // load selected user address by id
+    public void loadUserAddress(String addressId){
+        userInfoRepository.getAddressById(addressId, new UserInfoRepository.userAddressCallback() {
             @Override
             public void loadUserAddressSuccess(UserAddress userAddress) {
                 userAddressLiveData.setValue(userAddress);
@@ -188,7 +207,7 @@ public class CheckoutViewModel extends ViewModel {
     // load payment method
     public void loadPaymentMethod(String method){
         paymentMethodLiveData.setValue(method);
-        if(method == "Thanh toán khi nhận hàng")
+        if(method.equals("Thanh toán khi nhận hàng"))
             iconPaymentLiveData.setValue(R.drawable.cash);
         else iconPaymentLiveData.setValue(R.drawable.paypal);
     }

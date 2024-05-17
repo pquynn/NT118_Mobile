@@ -50,7 +50,7 @@ public class BindingAdapters {
 
     @BindingAdapter("productNumbFormatted")
     public static void setProductNumbFormatted(TextView textView, int numb) {
-        textView.setText(String.valueOf(numb) + " món");
+        textView.setText("(" + String.valueOf(numb) + " món" + ")");
     }
 
     @BindingAdapter("selectedCoupon")

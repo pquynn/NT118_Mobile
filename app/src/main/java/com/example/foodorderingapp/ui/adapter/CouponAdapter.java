@@ -90,6 +90,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder
         }
     }
 
+    // viewholder on click listener
     public interface OnItemClickListener {
         void onItemClick(Boolean isSelected, Coupon selectedCoupon);
     }

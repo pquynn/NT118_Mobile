@@ -33,6 +33,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private CheckoutViewModel viewModel;
     private OrderDetailAdapter adapter;
     private static final int COUPON_REQUEST_CODE = 1;
+    private static final int ADDRESS_REQUEST_CODE = 2;
+    private static final int PAYMENT_REQUEST_CODE = 3;
     private Coupon selectedCoupon;
 
     @Override
@@ -64,10 +66,23 @@ public class CheckoutActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         // set button ChangeAddress click event
-        binding.btnChangeAddress.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), CheckoutAddressActivity.class)));
+        binding.btnChangeAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), CheckoutAddressActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", userId);
+            bundle.putString("addressId", viewModel.getUserAddressLiveData().getValue().getId());
+            intent.putExtras(bundle);
+            startActivityForResult(intent, ADDRESS_REQUEST_CODE);
+        });
 
         // set button SeePayment click event
-        binding.btnSeePayment.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PaymentMethodActivity.class)));
+        binding.btnSeePayment.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), PaymentMethodActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("paymentMethod", viewModel.getPaymentMethodLiveData().getValue());
+            intent.putExtras(bundle);
+            startActivityForResult(intent, PAYMENT_REQUEST_CODE);
+        });
 
         // set button SeeCoupons click event
         binding.btnSeeCoupons.setOnClickListener(v -> {
@@ -78,10 +93,10 @@ public class CheckoutActivity extends AppCompatActivity {
             bundle.putString("orderId", orderId);
             bundle.putInt("orderPrice", orderPrice);
             bundle.putString("couponId", couponId);
+            bundle.putDouble("discountValue", viewModel.getDiscountValueLiveData().getValue());
             intent.putExtras(bundle);
             startActivityForResult(intent, COUPON_REQUEST_CODE);
         });
-
 
         // set button Buy click event
         binding.btnBuy.setOnClickListener(v -> {
@@ -99,18 +114,32 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //GET DATA FROM COUPON ACTIVITY
         if (requestCode == COUPON_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("couponId")) {
                 // set discount value if coupon is chosen
                 viewModel.getCouponLiveData(data.getStringExtra("couponId"))
                         .observe(this, new Observer<Coupon>() {
-                    @Override
-                    public void onChanged(Coupon coupon) {
-                        Log.d("firestore", " coupon onActivityResult: " + coupon.getIdCoupon().toString());
-                        couponId = coupon.getIdCoupon();
-                    }
-                });
-                Log.d("firestore", "onActivityResult: " + couponId);
+                            @Override
+                            public void onChanged(Coupon coupon) {
+                                couponId = coupon.getIdCoupon();
+                                // Update the ViewModel or UI with the new coupon information
+                            }
+                        });
+            }
+        }
+        //GET DATA FROM ADDRESS ACTIVITY
+        else if (requestCode == ADDRESS_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("addressId")) {
+                String addressId = data.getStringExtra("addressId");
+                viewModel.loadUserAddress(addressId);
+            }
+        }
+        //GET DATA FROM PAYMENT METHOD ACTIVITY
+        else if (requestCode == PAYMENT_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("paymentMethod")) {
+                String paymentMethod = data.getStringExtra("paymentMethod");
+                viewModel.loadPaymentMethod(paymentMethod);
             }
         }
     }

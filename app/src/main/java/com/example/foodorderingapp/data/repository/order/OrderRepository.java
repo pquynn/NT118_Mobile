@@ -44,6 +44,7 @@ public class OrderRepository implements IOrderRepository {
         });
     }
 
+    // Get cart by user id (order has status = 'Giỏ hàng')
     public void getCartByUserId(String userId, OrderCallback callback){
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
@@ -53,7 +54,7 @@ public class OrderRepository implements IOrderRepository {
             if (!queryDocumentSnapshots.isEmpty()) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                 Order order = documentSnapshot.toObject(Order.class);
-                Log.d("FirestoreOrderRepository", "Cart loaded: " + order.toString());
+//                Log.d("FirestoreOrderRepository", "Cart loaded: " + order.toString());
                 callback.onOrderLoaded(order);
 
             } else {
@@ -69,9 +70,10 @@ public class OrderRepository implements IOrderRepository {
     }
 
 
-
     // Get order document list by user id and status
     public void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback){
+        Log.d("GetUserId", userId );
+        Log.d("GetStatus", status);
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
                 .whereEqualTo("STATUS", status);
@@ -86,7 +88,7 @@ public class OrderRepository implements IOrderRepository {
                     orderList.add(order);
 
                     // log ra
-                    Log.d("FirestoreOrderRepository", order.toString());
+                    Log.d("FirestoreOrderRepository", "getorderlist" + order.toString());
                 }
                 // callback
                 callback.onOrderListLoaded(orderList);
@@ -102,7 +104,36 @@ public class OrderRepository implements IOrderRepository {
         });
     }
 
+    // Get order document list status
+    public void getOrderListByStatus(String status, OrderListCallback callback){
+        Query query = collectionRef
+                .whereEqualTo("STATUS", status);
 
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                // create an order list
+                List<Order> orderList = new ArrayList<>();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                    Order order = documentSnapshot.toObject(Order.class);
+                    orderList.add(order);
+
+                    // log ra
+                    Log.d("FirestoreOrderRepository", "getorderlist" + order.toString());
+                }
+                // callback
+                callback.onOrderListLoaded(orderList);
+            } else {
+                String errorMessage = "Order not found";
+                Log.e("FirestoreOrderRepository", errorMessage);
+                callback.onError(errorMessage);
+            }
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get order: " + e.getMessage();
+            Log.e("FirestoreOrderRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
+    }
 
     // Create order document (create cart)
     @Override
@@ -121,7 +152,7 @@ public class OrderRepository implements IOrderRepository {
                 0,
                 0,
                 createOn,
-                "",
+                0,
                 orderItemMap
         );
 
@@ -150,16 +181,16 @@ public class OrderRepository implements IOrderRepository {
 
 
     // Add or update product to shopping cart (create new order item by order id)
-//    @Override
-//    public void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback){
-//        collectionRef.document(orderId).update("ORDER_ITEM." + orderItem.getIdOrderItem(), orderItem)
-//                .addOnSuccessListener(aVoid -> {
-//                    callback.onOrderItemLoaded(orderItem);
-//                })
-//                .addOnFailureListener(e -> {
-//                    callback.onError(e.getMessage());
-//                });
-//    }
+    @Override
+    public void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback){
+        collectionRef.document(orderId).update("ORDER_ITEM." + orderItemId, orderItem)
+                .addOnSuccessListener(aVoid -> {
+                    callback.onOrderChanged();
+                })
+                .addOnFailureListener(e -> {
+                    callback.onError(e.getMessage());
+                });
+    }
 
     // Delete product in shopping cart by order id
     public void deleteProductCart(String orderId, String orderItemId, OrderItemRemovedCallback callback){

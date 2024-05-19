@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.data.model.OrderDetail;
 
 import java.util.ArrayList;
@@ -62,8 +61,8 @@ public class activity_adminOrderDetail extends AppCompatActivity {
         ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
 //        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3));
 //        productList.add(new OrderDetail("Bánh", 60000, "Lớn", "a", 2));
-        adapter = new OrderDetailAdapter(productList);
-        recyclerViewList.setAdapter(adapter);
+//        adapter = new OrderDetailAdapter(productList);
+//        recyclerViewList.setAdapter(adapter);
 
         txtStatus = findViewById(R.id.txtStatus);
 

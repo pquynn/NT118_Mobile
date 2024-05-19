@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 public class ProductRepository implements IProductRepository {
     private FirebaseFirestore db;
-
     public ProductRepository() {
         db = FirebaseFirestore.getInstance();
     }
@@ -30,7 +30,9 @@ public class ProductRepository implements IProductRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Product product = documentSnapshot.toObject(Product.class);
+                        Log.d("firestore", "getProductById: " + product.toString());
                         callback.onProductLoaded(product);
+//                        Log.d("firebase", "getProductById" + product.toString());
                     } else {
                         callback.onProductLoadFailed("Product not found");
                     }
@@ -55,7 +57,6 @@ public class ProductRepository implements IProductRepository {
 
                         // Tạo đối tượng Product
                         Product product = new Product(id, idCategory, productImage, productName, productPrice);
-
                         productList.add(product);
                     }
                     callBack.onProductListLoaded(productList);
@@ -85,6 +86,7 @@ public class ProductRepository implements IProductRepository {
                         productList1.add(product1);
                     }
                     callback.onProductListLoaded(productList1);
+                    Log.d("firebase", "Product Detail");
                 })
                 .addOnFailureListener(e -> callback.onProductListLoadFailed(e.getMessage()));
     }
@@ -110,6 +112,7 @@ public class ProductRepository implements IProductRepository {
 
                                 // Gọi callback để trả về thông tin chi tiết của sản phẩm
                                 callback.onProductDetailLoaded(productName, productImage, productPrice, productInfo);
+
                             } else {
                                 // Document không tồn tại
                                 callback.onProductDetailLoadFailed("No such document");
@@ -122,8 +125,8 @@ public class ProductRepository implements IProductRepository {
                 });
     }
 
-    //   // lâý thông tin chi tiết sản phẩm là nước uống
-    public void getProductDetailsDrink(String productId, ProductDetailCallback callback) {
+    //Lấy thông tin chi tiết sản phẩm
+    public void getProductDetails(String productId, ProductCallback callback) {
         db.collection("PRODUCT")
                 .document(productId)
                 .get()
@@ -134,27 +137,25 @@ public class ProductRepository implements IProductRepository {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 // Lấy thông tin chi tiết của sản phẩm từ document
-                                String productImage = document.getString("PRODUCT_IMAGE");
-                                String productName = document.getString("PRODUCT_NAME");
-                                String productInfo = document.getString("PRODUCT_INFO");
-                                int productPrice = document.getLong("PRODUCT_PRICE").intValue();
-                                // Lấy size
-                                Map<String, Map<String, Object>> sizeMap = (Map<String, Map<String, Object>>) document.get("SIZE");
-                                // Lấy topping
-                                List<String> toppingList = (List<String>) document.get("TOPPING");
-
-                                Log.d("Drink Product Details", "Name: " + productName + ", Image: " + productImage + ", Price: " + productPrice + ", Info: " + productInfo + ", Sizes: " + sizeMap + ", Toppings: " + toppingList);
+                                Product product = new Product();
+                                product.setIdCategory(document.getString("ID_CATEGORY"));
+                                product.setProductImage(document.getString("PRODUCT_IMAGE"));
+                                product.setProductInfo(document.getString("PRODUCT_INFO"));
+                                product.setProductName(document.getString("PRODUCT_NAME"));
+                                product.setProductPrice(document.getLong("PRODUCT_PRICE").intValue());
+                                product.setProductSize((Map<String, Map<String, Integer>>) document.get("SIZE"));
+                                product.setTopping((List<String>) document.get("TOPPING"));
 
                                 // Gọi callback để trả về thông tin chi tiết của sản phẩm
-                                callback.onProductDetailLoaded(productName, productImage, productInfo, productPrice, sizeMap, toppingList);
+                                callback.onProductLoaded(product);
+                                Log.d("firebase", "Product Detail" + product.toString());
                             } else {
                                 // Document không tồn tại
-                                Log.d("Product Details", "No such document");
-                                callback.onProductDetailLoadFailed("No such document");
+                                callback.onProductLoadFailed("No such document");
                             }
                         } else {
                             // Đọc document thất bại
-                            callback.onProductDetailLoadFailed("Failed to get document: " + task.getException());
+                            callback.onProductLoadFailed("Failed to get document: " + task.getException());
                         }
                     }
                 });

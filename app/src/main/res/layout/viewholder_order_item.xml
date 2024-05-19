@@ -7,46 +7,66 @@
     android:layout_height="wrap_content"
     android:padding="20dp">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="#"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt_order_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/roboto_bold"
         android:text="#orderid"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/allrounded_bg_green" />
+        app:srcCompat="@drawable/order_icon" />
 
-    <FrameLayout
-        android:id="@+id/frame_log_out"
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frame_log_out"-->
+<!--        android:layout_width="130dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:background="@drawable/button_detail_order"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/imageView3">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/am_lbl_log_out"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:fontFamily="@font/roboto_bold"-->
+<!--            android:text="Chi tiết"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="16sp" />-->
+<!--    </FrameLayout>-->
+    <Button
+        android:id="@+id/btn_order_detail"
+        style="@style/ButtonStyle"
+        android:padding="5dp"
+        android:text="Chi tiết"
         android:layout_width="130dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/button_detail_order"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3">
-
-        <TextView
-            android:id="@+id/am_lbl_log_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Chi tiết"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txt_total_price"

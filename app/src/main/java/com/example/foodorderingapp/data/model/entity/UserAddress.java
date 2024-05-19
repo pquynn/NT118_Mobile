@@ -1,21 +1,24 @@
 package com.example.foodorderingapp.data.model.entity;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.PropertyName;
 
 public class UserAddress {
-    @PropertyName("RECIPIENT_NAME")
+    @DocumentId
+    private String id;
+
     private String recipientName;
-    @PropertyName("ADDRESS_DETAIL")
+
     private String addressDetail;
-    @PropertyName("CITY")
+
     private String city;
-    @PropertyName("DISTRICT")
+
     private String district;
-    @PropertyName("WARD")
+
     private String ward;
-    @PropertyName("RECIPIENT_PHONE")
+
     private String recipientPhone;
-    @PropertyName("ID_USER")
+
     private String idUser;
 //    add database attributes later
 
@@ -43,6 +46,14 @@ public class UserAddress {
         if(district.equals("null")) district = " ";
         if(city.equals("null")) city = " ";
         return addressDetail +", "+ ward +", "+ district +", "+ city;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @PropertyName("RECIPIENT_NAME")

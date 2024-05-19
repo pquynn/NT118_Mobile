@@ -10,10 +10,14 @@ public interface IOrderRepository {
     // Get order document by order id
     void getOrderById(String orderId, OrderCallback callback);
 
+    // Get cart by user id (order has status = 'Giỏ hàng')
     void getCartByUserId(String userId, OrderCallback callback);
 
     // Get order document list by user id and status
     void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback);
+
+    // Get order document list status
+    void getOrderListByStatus(String status, OrderListCallback callback);
 
     // Create new order document by user id and orderItem
     void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback);
@@ -25,25 +29,11 @@ public interface IOrderRepository {
     void checkout(Order order, OrderChangedCallback callback);
 
     // Add or update product in shopping cart by order id
-//    void addOrUpdateProductCart(String orderId, OrderItem orderItem, OrderItemCallback callback);
+    void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback);
 
     // Delete product in shopping cart by order id
     void deleteProductCart(String orderId,  String orderItemId, OrderItemRemovedCallback callback);
 
-
-
-//    Map<String, BuyingProduct> getBuyingProductList(Map<String, OrderItem> orderItemMap);
-//    void getOrderIdAndBuyingProductInCart(String userId, CartCallback callback);
-    //
-//    void getProductById(String id, ProductCallBack callBack);
-
-//    void mapIntoBuyingProductList(OrderItem orderItem, ProductForOrder product, BuyingProductListCallBack callBack);
-
-
-    interface ProductCallBack {
-//        void onProductLoaded(ProductForOrder product);
-        void onError(String errorMessage);
-    }
 
 
     interface OrderCallback {

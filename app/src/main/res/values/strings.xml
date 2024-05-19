@@ -7,5 +7,7 @@
     <string name="size">Size <font color="#FF0000">*</font></string>
     <string name="topping">Topping <font color="#FF0000">*</font></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="price_format">%,.0f đ</string>
+    <string name="large_size">Lớn</string>
+    <string name="small_size">Nhỏ</string>
+    <string name="medium_size">Vừa</string>
 </resources>

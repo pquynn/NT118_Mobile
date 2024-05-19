@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,6 +54,27 @@ public class UserInfoRepository {
                 });
     }
 
+    public void getAddressById (String addressId, userAddressCallback callback){
+        db.collection("USER_ADDRESS")
+                .document(addressId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            UserAddress userAddress = documentSnapshot.toObject(UserAddress.class);
+                            callback.loadUserAddressSuccess(userAddress);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadUsserAddressError(e);
+                    }
+                });
+
+    }
+
     public void getListAddress (String userId, userAddressesCallback callback){
         db.collection("USER_ADDRESS")
                 .whereEqualTo("ID_USER", userId)
@@ -73,6 +95,32 @@ public class UserInfoRepository {
                     callback.loadUsserAddressesError(e);
                 });
     }
+    // get the first address by user id
+    public void getFirstAddress(String userId, userAddressCallback callback) {
+        db.collection("USER_ADDRESS")
+                .whereEqualTo("ID_USER", userId)
+                .limit(1) // Limit the result to the first document
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Get the first document
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            UserAddress userAddress = documentSnapshot.toObject(UserAddress.class);
+                            if (userAddress != null) {
+                                callback.loadUserAddressSuccess(userAddress);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadUsserAddressError(e);
+                    }
+                });
+    }
+
 
     //Update user: name and phone
     public void updateNamePhone(String userId, User userInfo){
@@ -162,5 +210,10 @@ public class UserInfoRepository {
     public interface userAddressesCallback{
         void loadUserAddressesSuccess(ArrayList<UserAddress> listAddress);
         void loadUsserAddressesError(Exception e);
+    }
+
+    public interface userAddressCallback{
+        void loadUserAddressSuccess(UserAddress userAddress);
+        void loadUsserAddressError(Exception e);
     }
 }

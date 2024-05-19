@@ -2,13 +2,17 @@ package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodorderingapp.data.model.entity.Comment;
+import com.bumptech.glide.Glide;
+import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Comment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +25,6 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
     private TextView contentTextView, showMoreTextView, showLessTextView;
     private CharSequence originalText;
     private int originalMaxLines;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_cake);
@@ -59,6 +62,48 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
                 contentTextView.setText(originalText);
                 showMoreTextView.setVisibility(View.VISIBLE);
                 showLessTextView.setVisibility(View.GONE);
+            }
+        });
+
+        //Xử lý button quay lại
+        FrameLayout btnback = findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //Hiển thị thông tin chi tiết sản phẩm
+        String productId = "10";
+        ProductRepository productRepository = new ProductRepository();
+        productRepository.getProductDetailsCake(productId, new ProductRepository.ProductDetailCakeCallback() {
+            @Override
+            public void onProductDetailLoaded(String productName, String productImage, int productPrice, String productInfo) {
+                setTitle(productName); // Thiết lập tiêu đề của activity là tên sản phẩm
+
+                // Hiển thị ảnh sản phẩm
+                ImageView imgCake = findViewById(R.id.img_cake);
+                Glide.with(ProductDetailCakeActivity.this).load(productImage).into(imgCake);
+
+                // Hiển thị tên và giá sản phẩm
+                TextView txtNameCake = findViewById(R.id.txt_NameCake);
+                txtNameCake.setText(productName);
+
+                TextView txtPriceCake = findViewById(R.id.txt_priceCake);
+                txtPriceCake.setText(String.valueOf(productPrice) + "đ");
+
+                TextView txtPrice = findViewById(R.id.txt_price);
+                txtPrice.setText(String.valueOf(productPrice));
+
+                // Hiển thị mô tả sản phẩm
+                TextView contentTextView = findViewById(R.id.contentTextView);
+                contentTextView.setText(productInfo);
+            }
+
+            @Override
+            public void onProductDetailLoadFailed(String errorMessage) {
+                Toast.makeText(ProductDetailCakeActivity.this, "Failed to load product details: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

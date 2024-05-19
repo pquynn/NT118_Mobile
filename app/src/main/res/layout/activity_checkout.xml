@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="checkout" type="com.example.foodorderingapp.viewmodel.checkout.CheckoutViewModel"/>
+        <variable
+            name="checkoutVM"
+            type="com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="10dp"
-                        android:text="@{checkout.orderMutableLiveData.address}"
+                        android:text="@{checkoutVM.userAddressLiveData.recipientName}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/order_info_heading" />
 
@@ -63,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="10dp"
-                        android:text="@{checkout.orderMutableLiveData.address}"
+                        android:text="@{checkoutVM.userAddressLiveData.recipientPhone}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
 
@@ -75,7 +77,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="20dp"
-                        android:text="ddia chi"
+                        android:text="@{checkoutVM.userAddressLiveData.allAddress}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_recipient_phone" />
@@ -147,7 +149,7 @@
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/cash" />
+                            app:imageResource="@{checkoutVM.iconPaymentLiveData}" />
 
                         <TextView
                             android:id="@+id/payment_method"
@@ -157,7 +159,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="4"
                             android:paddingLeft="15dp"
-                            android:text="Thanh toán khi nhận hàng" />
+                            android:text="@{checkoutVM.paymentMethodLiveData}" />
 
                         <ImageView
                             android:id="@+id/btn_see_payment"
@@ -200,7 +202,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="4"
                             android:paddingLeft="15dp"
-                            android:text="100 điểm" />
+                            app:pointFormatted="@{checkoutVM.pointTotalLiveData}" />
 
     <!--                    <ImageView-->
     <!--                        android:id="@+id/btn_see_detail2"-->
@@ -294,7 +296,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="(4 món)" />
+                            app:productNumbFormatted="@{checkoutVM.totalProductLiveData}" />
 
                         <TextView
                             android:id="@+id/total_price"
@@ -302,7 +304,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="90.000 đ"
+                            app:priceFormatted="@{checkoutVM.totalPrice}"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
                     <!--    end:  first row-->
@@ -328,7 +330,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="-10.000 đ"
+                            app:priceFormatted="@{checkoutVM.pointUsedLiveData}"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
                     <!--    end:  second row-->
@@ -354,7 +356,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="-10.000 đ"
+                            app:priceFormatted="@{checkoutVM.discountValueLiveData}"
                             android:textAlignment="textEnd" />
                     </LinearLayout>
                     <!--    end:  third row-->
@@ -380,7 +382,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="70.000 đ"
+                            app:priceFormatted="@{checkoutVM.orderPriceLiveData}"
                             android:textAlignment="textEnd"
                             android:textColor="@color/primary" />
                     </LinearLayout>

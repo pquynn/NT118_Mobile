@@ -66,6 +66,38 @@ public class CouponRepository {
                 });
     }
 
+    public void getListCouponTemp(Double orderPrice, Date date, callBackGetList callBackGetList) {
+        reference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getDouble("QUANTITY") > 0
+                                        && date.compareTo(document.getDate("END_DATE")) < 0 // date < END_DATE
+                                        && document.getDate("START_DATE").compareTo(date) < 0) { // START_DATE < date
+                                    listCoupon.add(new Coupon(document.getId(),
+                                            document.getString("COUPON_NAME"),
+                                            document.getDate("START_DATE"),
+                                            document.getDate("END_DATE"),
+                                            document.getDouble("DISCOUNT_VALUE"),
+                                            document.getDouble("MIN_ORDER"),
+                                            document.getDouble("QUANTITY"),
+                                            document.getString("DESCRIPTION")
+                                    ));
+                                }
+                            }
+
+                            callBackGetList.loadDataSuccess(listCoupon);
+
+                        } else {
+                            callBackGetList.loadDataFail(new Exception("Không có ưu đãi phù hợp hoặc đã xảy ra lỗi!"));
+                        }
+                    }
+                });
+    }
+
+
     // Thêm ưu đãi vào hóa đơn
     public void addCouponToOrder(Coupon newCoupon, String idOrder) {
         CollectionReference referenceOrder = firebaseFirestore.collection("ORDER");

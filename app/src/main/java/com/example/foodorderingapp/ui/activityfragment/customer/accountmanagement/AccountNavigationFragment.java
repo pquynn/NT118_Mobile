@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,23 +34,7 @@ public class AccountNavigationFragment extends Fragment {
     public AccountNavigationFragment() {
         // Required empty public constructor
     }
-
-//    public static MyOrderCancelled newInstance(String param1, String param2) {
-//        MyOrderCancelled fragment = new MyOrderCancelled();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-    ImageView btn_goto1, btn_goto2, btn_goto3, btn_goto4, btn_goto5;
+    LinearLayout llAM_userInfo, llAM_userpoint, llAM_userAddress, llAM_userOrders, llAM_faqs;
     UserInfoVM viewModel;
     String userId;
     TextView tvNameAcc;
@@ -62,62 +47,68 @@ public class AccountNavigationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btn_goto1 = view.findViewById(R.id.am_btn_goto1);
-        btn_goto2 = view.findViewById(R.id.am_btn_goto2);
-        btn_goto3 = view.findViewById(R.id.am_btn_goto3);
-        btn_goto4 = view.findViewById(R.id.am_btn_goto4);
-        btn_goto5 = view.findViewById(R.id.am_btn_goto5);
 
-        btn_goto1.setOnClickListener(new View.OnClickListener() {
+        llAM_userInfo = view.findViewById(R.id.llAM_userInfo);
+        llAM_userpoint = view.findViewById(R.id.llAM_userpoint);
+        llAM_userAddress = view.findViewById(R.id.llAM_userAddress);
+        llAM_userOrders = view.findViewById(R.id.llAM_userOrders);
+        llAM_faqs = view.findViewById(R.id.llAM_faqs);
+
+        userId = "3";
+
+//        Intent intent = getIntent();
+//        if (intent != null) {
+//            if(intent.hasExtra("user_id")){
+//                userId = intent.getStringExtra("user_id");
+//            }
+//        }
+        llAM_userInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), am_user_info.class);
+                myIntent.putExtra("user_id", userId);
                 startActivity(myIntent);
             }
         });
 
-        btn_goto2.setOnClickListener(new View.OnClickListener() {
+        llAM_userpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), am_point_history.class);
+                myIntent.putExtra("user_id", userId);
                 startActivity(myIntent);
             }
         });
 
-        btn_goto3.setOnClickListener(new View.OnClickListener() {
+        llAM_userAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), AM_AddressActivity.class);
+                myIntent.putExtra("user_id", userId);
                 startActivity(myIntent);
             }
         });
 
-        btn_goto4.setOnClickListener(new View.OnClickListener() {
+        llAM_userOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), am_my_orders.class);
+                myIntent.putExtra("user_id", userId);
                 startActivity(myIntent);
             }
         });
 
-//        btn_goto5.setOnClickListener(new View.OnClickListener() {
+//        llAM_faqs.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                Intent myIntent = new Intent(requireContext(), am_user_info.class);
+//        myIntent.putExtra("user_id", userId);
 //                startActivity(myIntent);
 //            }
 //        });
 
-        userId = "2";
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(UserInfoVM.class)) {
-                    return (T) new UserInfoVM(userId);
-                }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
-            }
-        }).get(UserInfoVM.class);
+
+        viewModel = new UserInfoVM(userId, getContext());
 
         tvNameAcc = view.findViewById(R.id.textView_name_acc);
         viewModel.getUserInfoLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {

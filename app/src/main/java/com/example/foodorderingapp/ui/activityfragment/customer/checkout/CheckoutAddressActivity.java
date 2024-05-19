@@ -6,29 +6,38 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.databinding.ActivityCheckoutAddressBinding;
 import com.example.foodorderingapp.ui.adapter.CheckoutAddressAdapter;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutAddressViewModel;
+import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CheckoutAddressActivity extends AppCompatActivity {
-    private RecyclerView.Adapter adapter;
-    private RecyclerView recyclerViewList;
+    private String userId = "3";
+    private List<UserAddress> userAddressList;
+    private CheckoutAddressAdapter adapter;
+    private ActivityCheckoutAddressBinding binding;
+    private CheckoutAddressViewModel viewModel;
     private FrameLayout btnBack;
     private TextView screenName;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkout_address);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout_address);
+        binding.setLifecycleOwner(this);
 
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Thay đổi địa chỉ nhận hàng");
-
-        recyclerViewAddress();
 
         // set button back click event
         btnBack = findViewById(R.id.btn_back);
@@ -39,19 +48,22 @@ public class CheckoutAddressActivity extends AppCompatActivity {
             }
         });
 
-    }
+        // adapter
+        userAddressList = new ArrayList<>();
+        adapter = new CheckoutAddressAdapter(userAddressList, viewModel);
+        binding.recyclerViewAddress.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewAddress.setAdapter(adapter);
 
-    private void recyclerViewAddress(){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerViewAddress);
-        recyclerViewList.setLayoutManager(linearLayoutManager);
+        // viewmodel
+        viewModel = new CheckoutAddressViewModel(userId, this);
+        viewModel.getUserAddressesLiveData().observe(this, new Observer<ArrayList<UserAddress>>() {
+            @Override
+            public void onChanged(ArrayList<UserAddress> userAddresses) {
+                userAddressList.clear();
+                userAddressList.addAll(userAddresses);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-        ArrayList<UserAddress> addresses = new ArrayList<UserAddress>();
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 7", "Nguyễn A", "0123456789"));
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 8", "Nguyễn A", "0123456789"));
-//        addresses.add(new UserAddress("28 đường Nguyễn Văn Quỳ phường PT quận 9", "Nguyễn A", "0123456789"));
-
-        adapter = new CheckoutAddressAdapter(addresses);
-        recyclerViewList.setAdapter(adapter);
     }
 }

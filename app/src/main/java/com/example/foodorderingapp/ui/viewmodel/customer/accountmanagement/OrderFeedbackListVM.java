@@ -2,26 +2,31 @@ package com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrdersFeedbackRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderFeedbackListVM extends ViewModel{
 
-    private MutableLiveData<ArrayList<OrderDetail>> orderDetailListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<OrderItem>> orderDetailListLiveData = new MutableLiveData<>();
     private MutableLiveData<String> orderStatusLiveData = new MutableLiveData<>();
     private OrdersFeedbackRepository repository = new OrdersFeedbackRepository();
+    private Context context;
 //    private OrdersFeedbackRepository repositoryStatus = new OrdersFeedbackRepository();
-    public OrderFeedbackListVM(String orderId){
+    public OrderFeedbackListVM(String orderId, Context context){
+        this.context = context;
         repository.listFeedback(orderId, new OrdersFeedbackRepository.orderItemCallback() {
             @Override
-            public void loadOrderItemsSuccess(ArrayList<OrderDetail> orderItems) {
+            public void loadOrderItemsSuccess(List<OrderItem> orderItems) {
                 orderDetailListLiveData.setValue(orderItems);
             }
 
@@ -45,7 +50,7 @@ public class OrderFeedbackListVM extends ViewModel{
         });
     }
 
-    public MutableLiveData<ArrayList<OrderDetail>> getOrderDetailListLiveData() {
+    public MutableLiveData<List<OrderItem>> getOrderDetailListLiveData() {
         return orderDetailListLiveData;
     }
 

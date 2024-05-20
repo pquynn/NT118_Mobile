@@ -1,5 +1,8 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.checkout;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +39,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final int ADDRESS_REQUEST_CODE = 2;
     private static final int PAYMENT_REQUEST_CODE = 3;
     private Coupon selectedCoupon;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +112,42 @@ public class CheckoutActivity extends AppCompatActivity {
             int totalPoint = viewModel.getPointTotalLiveData().getValue();
             viewModel.loadPointUsed(totalPoint, isChecked);
         });
+
+        //start: button buy click event
+        context = this;
+        binding.btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog(context);
+            }
+        });
+
+
+        //end: button buy click event
     }
 
+    // method to show alert dialog when click btn buy
+    public void showAlertDialog(Context context){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+//        alert.setTitle("Mua hàng");
+        alert.setMessage("Xác nhận đặt mua hàng?");
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    // method to get result from activity through intent (activity2 -> activity1)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

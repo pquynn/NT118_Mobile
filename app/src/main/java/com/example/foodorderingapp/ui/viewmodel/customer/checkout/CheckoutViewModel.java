@@ -18,8 +18,12 @@ import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.example.foodorderingapp.data.repository.accountmanagement.PointRepository;
 import com.example.foodorderingapp.data.repository.accountmanagement.UserInfoRepository;
 import com.example.foodorderingapp.data.repository.coupon.CouponRepository;
+import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
+import com.example.foodorderingapp.data.repository.product.ProductRepository;
+
+import org.checkerframework.checker.units.qual.N;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +53,8 @@ public class CheckoutViewModel extends ViewModel {
     private UserInfoRepository userInfoRepository;
     private PointRepository pointRepository;
     private CouponRepository couponRepository;
-
+    private ProductRepository productRepository;
+    private NotificationRepository notificationRepository;
 
     // CONSTRUCTOR
     public CheckoutViewModel(String userId, Context context){
@@ -59,6 +64,8 @@ public class CheckoutViewModel extends ViewModel {
         userInfoRepository = new UserInfoRepository();
         pointRepository = new PointRepository();
         couponRepository = new CouponRepository();
+        productRepository = new ProductRepository();
+        notificationRepository = new NotificationRepository();
 
         loadDefaultUserAddress(userId);
         pointUsedLiveData.setValue(0);
@@ -144,9 +151,47 @@ public class CheckoutViewModel extends ViewModel {
         });
     }
 
-    //todo: xử lý cộng điểm khi mua hàng (hay khi giao thành công?), trừ điểm
-    //todo: xử lý cập nhật số lượng mã giảm giá
-    //todo: xử lý cập nhật số lượng sản phẩm
+    /*
+    todo: flow checkout:
+    (1) check if selected coupon, point, product is available
+    if yes
+        update cart to order (2)
+    else
+        reload checkout activity (3)
+
+     (2) update cart to order
+     - set order live data (address, create on, discount_value, order price,
+            payment, point, status, total_price, total_product)
+     - update quantity for selected coupon, product
+     - minus selected point
+     - add reward point when checkout success
+     - move to checkout success activity
+     - send notification to admin =)))))))))))))))))
+
+     (3) reload checkout activity
+     - if point is unavailable
+        update point live data, order price live data
+     - if coupon is unavailable
+        update coupon live data, discount value, order price live data
+     - if products are unavailable
+        update orderItem in orderLiveData (change quantity or remove in firestore too),
+            total price, total product, order_price and coupon, discount value because min_order change
+     */
+
+    // method to update order from cart to pending
+    public void updateCartToOrder(){
+        orderRepository.updateCartToOrder(orderLiveData.getValue(), new IOrderRepository.OrderChangedCallback() {
+            @Override
+            public void onOrderChanged() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
 
     // end: ORDER-----------
 

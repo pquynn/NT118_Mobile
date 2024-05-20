@@ -1,70 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_refund_request"
-    android:background="@color/white"
-    tools:context=".ui.activityfragment.customer.refund.RefundRequestActivity">
-
-    <LinearLayout
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+<!--        <variable-->
+<!--            name="orderItem"-->
+<!--            type="com.example.foodorderingapp.data.model.entity.OrderItem" />-->
+        <!--        <variable-->
+        <!--            name="refundItem"-->
+        <!--            type="com.example.foodorderingapp.data.model.entity.RefundItem" />-->
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/activity_refund_request"
+        android:background="@color/white"
+        tools:context=".ui.activityfragment.customer.refund.RefundRequestActivity">
 
-        <include layout="@layout/header_with_btnback"></include>
-
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/toolbar"-->
-<!--            app:titleCentered="true"-->
-<!--            app:titleTextColor="?attr/colorSurface"-->
-<!--            android:background="?attr/colorPrimary"/>-->
-
-<!--        <com.google.android.material.progressindicator.LinearProgressIndicator-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/progress"-->
-<!--            android:layout_below="@id/toolbar"/>-->
-
-        <ScrollView
-            android:id="@+id/scrollview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <include layout="@layout/header_with_btnback"></include>
+
+    <!--        <com.google.android.material.appbar.MaterialToolbar-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:id="@+id/toolbar"-->
+    <!--            app:titleCentered="true"-->
+    <!--            app:titleTextColor="?attr/colorSurface"-->
+    <!--            android:background="?attr/colorPrimary"/>-->
+
+    <!--        <com.google.android.material.progressindicator.LinearProgressIndicator-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:id="@+id/progress"-->
+    <!--            android:layout_below="@id/toolbar"/>-->
+
+            <ScrollView
+                android:id="@+id/scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewRefundRequest"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewRefundRequest"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/btn_send"
+                        style="@style/ButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="15dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Gửi yêu cầu" />
+
                 </LinearLayout>
+            </ScrollView>
 
 
-                <Button
-                    android:id="@+id/btn_send"
-                    style="@style/ButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="Gửi yêu cầu" />
+        </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
-
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

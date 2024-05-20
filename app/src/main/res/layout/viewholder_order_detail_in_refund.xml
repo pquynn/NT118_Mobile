@@ -12,15 +12,15 @@
         android:id="@+id/order_detail_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="105dp">
+        android:backgroundTint="@color/white">
 
         <ImageView
             android:id="@+id/img_product"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             app:imageUrl="@{orderItem.productImage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="@{orderItem.productName}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toTopOf="parent" />
@@ -66,8 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_cost"
+            app:layout_constraintStart_toEndOf="@+id/txt_product_cost"
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_name"
             app:visibleIfNotEmpty="@{orderItem.size}" />
 
         <TextView
@@ -76,10 +76,12 @@
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
             android:ellipsize="end"
             android:maxLines="4"
             android:singleLine="false"
             android:text="@{orderItem.note}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_topping" />
 

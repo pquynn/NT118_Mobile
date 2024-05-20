@@ -172,8 +172,8 @@ public class OrderRepository implements IOrderRepository {
                 });
     }
 
-    // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
-    public void checkout(Order order, OrderChangedCallback callback){
+    // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
+    public void updateCartToOrder(Order order, OrderChangedCallback callback){
         collectionRef.document(order.getId()).set(order)
                 .addOnSuccessListener(aVoid -> callback.onOrderChanged())
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));

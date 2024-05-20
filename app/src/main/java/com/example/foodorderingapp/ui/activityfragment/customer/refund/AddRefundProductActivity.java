@@ -3,54 +3,79 @@ package com.example.foodorderingapp.ui.activityfragment.customer.refund;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.databinding.ActivityChooseRefundprodBinding;
 import com.example.foodorderingapp.ui.adapter.RefundProductAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.ui.viewmodel.customer.refund.AddRefundProductViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class AddRefundProductActivity extends AppCompatActivity {
-    private RecyclerView.Adapter adapter;
-    private RecyclerView recyclerViewList;
-    private Button btnAdd;
+public class AddRefundProductActivity extends AppCompatActivity implements RefundProductAdapter.OnItemClickListener {
+    private RefundProductAdapter adapter;
+    private String orderId = "2";
+    private Map<String, OrderItem> orderItemMap;
+    private AddRefundProductViewModel viewModel;
+    private ActivityChooseRefundprodBinding binding;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_refundprod);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_refundprod);
+        binding.setLifecycleOwner(this);
 
-        // set top navigation text
+        // get order id through intent
+        if(getIntent().getExtras() != null){
+            orderId = getIntent().getExtras().getString("orderId");
+        }
+
+        // Set top navigation text
         TextView screenName = findViewById(R.id.screen_name);
         screenName.setText("Chọn sản phẩm hoàn tiền");
 
-        //
-        btnAdd = findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RefundRequestActivity.class));
+        // Initialize maps and adapter
+        orderItemMap = new HashMap<>();
+        adapter = new RefundProductAdapter(orderItemMap, this::onItemClick);
+        binding.recyclerViewRefundProd.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewRefundProd.setAdapter(adapter);
+
+        // Initialize view model
+        viewModel = new AddRefundProductViewModel(orderId, this);
+        viewModel.getOrderLiveData().observe(this, order -> {
+            orderItemMap.clear();
+            orderItemMap.putAll(order.getOrderItem());
+            adapter.notifyDataSetChanged();
+        });
+
+        // Button add click event
+        binding.btnAdd.setOnClickListener(v -> {
+            if(viewModel.getSelectedOrderItemId().getValue().isEmpty()){
+                Toast.makeText(this, "Bạn chưa chọn sản phẩm muốn hoàn tiền", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Intent intent = new Intent(getApplicationContext(), RefundRequestActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", orderId);
+                bundle.putStringArrayList("selectedOrderItemId", new ArrayList<>(viewModel.getSelectedOrderItemId().getValue()));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
-        // set recyler list
-        recyclerViewRefundProd();
     }
 
-    private void recyclerViewRefundProd() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerViewRefundProd);
-        recyclerViewList.setLayoutManager(linearLayoutManager);
-
-        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
-
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3, ""));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3, ""));
-
-        adapter = new RefundProductAdapter(productList);
-        recyclerViewList.setAdapter(adapter);
+    @Override
+    public void onItemClick(List<String> selectedOrderItemIds) {
+        viewModel.getSelectedOrderItemId().setValue(selectedOrderItemIds);
     }
 }

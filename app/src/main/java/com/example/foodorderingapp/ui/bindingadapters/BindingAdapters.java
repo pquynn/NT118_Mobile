@@ -1,8 +1,11 @@
 package com.example.foodorderingapp.ui.bindingadapters;
 
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
@@ -25,6 +28,15 @@ public class BindingAdapters {
         }
     }
 
+    @BindingAdapter({"videoUrl"})
+    public static void setVideoUrl(VideoView view, String url) {
+        if (url != null && !url.isEmpty()) {
+            Uri uri = Uri.parse(url);
+            view.setVideoURI(uri);
+            view.start();
+        }
+    }
+
     @BindingAdapter("dateFormatted")
     public static void setDateFormatted(TextView textView, Date date) {
         if (date != null) {
@@ -38,7 +50,6 @@ public class BindingAdapters {
     public static void setPriceFormatted(TextView textView, int price) {
         double priceDb = (double) price;
         String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
-//        formattedPrice = formattedPrice.replace(",", ".");
         textView.setText(formattedPrice);
     }
 
@@ -78,6 +89,15 @@ public class BindingAdapters {
         textView.setText("1 mã giảm giá được áp dụng: " + formattedPrice);
     }
 
+    @BindingAdapter("visibleLinearLayout")
+    public static void visibleLinearLayout(LinearLayout view, int value) {
+        if (value == 0) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
     @BindingAdapter("visibleIfNotEmpty")
     public static void visibleIfNotEmpty(TextView view, String text) {
         if (text == null || text.isEmpty()) {
@@ -85,6 +105,33 @@ public class BindingAdapters {
         } else {
             view.setVisibility(View.VISIBLE);
             view.setText(text);
+        }
+    }
+
+    @BindingAdapter("refundInstruction")
+    public static void setRefundInstruction(TextView view, String status) {
+
+        if(status != null && status.equals("Chờ hoàn tiền"))
+            view.setText("Yêu cầu hoàn tiền đã được xác nhận. Cửa hàng sẽ liên hệ với bạn qua điện thoại trong vòng 24 giờ để xử lý hoàn tiền.");
+        else
+            view.setText("Hoàn tiền thành công. Số tiền hoàn đã được chuyển đến bạn.");
+    }
+
+    @BindingAdapter("visiblerefundInstruction")
+    public static void visibleLinearLayout(LinearLayout view, String status) {
+        if (status != null && (status.equals("Chờ xác nhận") || status.equals("Từ chối hoàn tiền"))) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @BindingAdapter("visibleDateProgressByStatus")
+    public static void visibleDateProgressByStatus(LinearLayout view, String status) {
+        if (status != null && (status.equals("Chờ xác nhận"))) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -107,7 +107,15 @@
             android:exported="true" >
         </activity>
         <activity
+            android:name=".ui.activityfragment.customer.refund.RefundViewActivity"
+            android:exported="true" >
+        </activity>
+        <activity
             android:name=".ui.activityfragment.admin.refund.RefundProgressActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".ui.activityfragment.customer.refund.SendRefundSucessActivity"
             android:exported="true" >
         </activity> <!-- END: REFUND -->
         <!-- START: ACCOUNT -->

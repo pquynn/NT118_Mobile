@@ -25,8 +25,8 @@ public interface IOrderRepository {
     // Update order status by id
     void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback);
 
-    // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
-    void checkout(Order order, OrderChangedCallback callback);
+    // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
+    void updateCartToOrder(Order order, OrderChangedCallback callback);
 
     // Add or update product in shopping cart by order id
     void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback);

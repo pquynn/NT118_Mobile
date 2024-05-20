@@ -330,10 +330,12 @@
 
                     <!--    start:  second row-->
                     <LinearLayout
+                        android:id="@+id/ll_used_point"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        app:visibleLinearLayout="@{checkoutVM.pointUsedLiveData}">
 
                         <TextView
                             android:id="@+id/choosen_point"
@@ -356,10 +358,12 @@
 
                     <!--    start:  third row-->
                     <LinearLayout
+                        android:id="@+id/ll_coupon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        app:visibleLinearLayout="@{checkoutVM.discountValueLiveData}">
 
                         <TextView
                             android:id="@+id/choosen_coupon"

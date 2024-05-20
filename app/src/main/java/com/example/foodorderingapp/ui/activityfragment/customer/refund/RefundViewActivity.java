@@ -1,8 +1,5 @@
-package com.example.foodorderingapp.ui.activityfragment.admin.refund;
+package com.example.foodorderingapp.ui.activityfragment.customer.refund;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,37 +14,36 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Refund;
 import com.example.foodorderingapp.data.model.entity.RefundItem;
-import com.example.foodorderingapp.databinding.ActivityRefundProgressBinding;
+import com.example.foodorderingapp.databinding.ActivityRefundViewBinding;
 import com.example.foodorderingapp.ui.adapter.RefundItemAdapter;
-import com.example.foodorderingapp.ui.viewmodel.admin.refund.RefundViewModel;
+import com.example.foodorderingapp.ui.viewmodel.customer.refund.RefundViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RefundProgressActivity extends AppCompatActivity {
+public class RefundViewActivity extends AppCompatActivity {
     private RefundItemAdapter adapter;
     private Map<String, RefundItem> refundItemMap;
     private Map<String, OrderItem> orderItemMap;
     private FrameLayout btnBack;
     private TextView screenName;
-    private String orderId = "3";
+    private String orderId = "3", userId = "";
     private RefundViewModel viewModel;
-    private ActivityRefundProgressBinding binding;
-    private Context context;
+    private ActivityRefundViewBinding binding;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_refund_progress);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_refund_view);
         binding.setLifecycleOwner(this);
 
-        // get order id through intent
+        // get order id, user id through intent
         if(getIntent().getExtras() != null){
             orderId = getIntent().getExtras().getString("orderId");
         }
 
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
-        screenName.setText("Yêu cầu hoàn tiền");
+        screenName.setText("Chi tiết hoàn tiền");
 
         // set button back click event
         btnBack = findViewById(R.id.btn_back);
@@ -82,54 +78,5 @@ public class RefundProgressActivity extends AppCompatActivity {
             orderItemMap.putAll(order.getOrderItem());
             adapter.notifyDataSetChanged();
         });
-
-        context = this;
-        // btn accept refund
-        binding.btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog(context, binding.btnAccept.getText().toString());
-            }
-        });
-
-        // btn refuse refund
-        binding.btnRefuse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog(context, binding.btnRefuse.getText().toString());
-            }
-        });
-
-
     }
-
-    // Function to show alert dialog when click button
-    public void showAlertDialog(Context context, String btnName){
-        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setTitle("");
-        alert.setMessage("Xác nhận " + btnName + "?");
-
-        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                // xử lý cập nhật trạng thái
-                viewModel.updateRefundStatus(btnName);
-                binding.btnRefuse.setVisibility(View.GONE);
-                if (btnName.equals("Chấp nhận hoàn tiền"))
-                    binding.btnAccept.setText("Đã hoàn tiền");
-                else
-                    binding.btnAccept.setVisibility(View.GONE);
-            }
-        });
-
-        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alert.show();
-    }
-
 }

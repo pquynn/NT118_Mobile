@@ -129,9 +129,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         alert.show();
     }
 
-
-
-
     @Override
     public int getItemCount() {
         return orderItemMap.size();

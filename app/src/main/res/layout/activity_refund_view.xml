@@ -5,7 +5,7 @@
     <data>
         <variable
             name="refundVM"
-            type="com.example.foodorderingapp.ui.viewmodel.admin.refund.RefundViewModel" />
+            type="com.example.foodorderingapp.ui.viewmodel.customer.refund.RefundViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -201,42 +201,12 @@
 
                     <!-- start: refund item-->
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewRefundProgress"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:id="@+id/recyclerViewRefundProgress"/>
+                        android:layout_marginBottom="20dp" />
                     <!-- end: refund item-->
 
-
-                    <!-- start: button-->
-                    <Button
-                        android:id="@+id/btn_accept"
-                        style="@style/ButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="Chấp nhận hoàn tiền" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_refuse"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:paddingVertical="16dp"
-                        android:text="Từ chối hoàn tiền"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:textSize="18sp"
-                        app:cornerRadius="10dp"
-                        app:strokeColor="@color/primary"
-                        app:strokeWidth="1.5dp" />
-                    <!-- end: button-->
 
                 </LinearLayout>
             </ScrollView>

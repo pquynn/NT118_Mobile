@@ -167,6 +167,7 @@ public class AuthRepository {
         userData.put("ID_LOGIN", ""); // Cập nhật sau khi thêm người dùng vào collection LOGIN
         userData.put("PHONE", phone);
         userData.put("NAME", name);
+        userData.put("ROLE", 0);
         userData.put("GENDER", ""); // Cập nhật sau
 
         reference.add(userLoginData)

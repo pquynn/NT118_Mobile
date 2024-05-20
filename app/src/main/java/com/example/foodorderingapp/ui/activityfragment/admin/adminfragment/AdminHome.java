@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -154,12 +155,13 @@ public class AdminHome extends Fragment {
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(10);
         yAxis.setTextSize(14f); // Đặt kích thước chữ cho trục y
+        yAxis.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
 
         List<Entry> data = new ArrayList<>(); // Dữ liệu khởi tạo cho giá trị cột Y
         for (int i = 0; i < 12; i++)
             data.add(new Entry(i, 0));
 
-        LineDataSet dataSet1 = new LineDataSet(data, "Số hóa đơn năm " + lineChartYear.getYear());
+        LineDataSet dataSet1 = new LineDataSet(data, "Số hóa đơn năm " + String.valueOf(lineChartYear.getYear() + 1900));
         dataSet1.setColor(Color.BLUE);
         dataSet1.setValueTextSize(16f); // Đặt kích thước chữ cho thông tin
 
@@ -181,14 +183,16 @@ public class AdminHome extends Fragment {
             entries.add(new Entry(i, data[i]));
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Số hóa đơn năm " + lineChartYear.getYear());
+        LineDataSet dataSet = new LineDataSet(entries, "Số hóa đơn năm " + String.valueOf(lineChartYear.getYear() + 1900));
         dataSet.setColor(Color.BLUE);
         dataSet.setValueTextSize(16f); // Đặt kích thước chữ cho các điểm dữ liệu
+        dataSet.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
 
         LineData lineData = new LineData(dataSet);
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMaximum(max + 2f); // Giá trị cao nhất của cột Y là giá trị lớn nhất trong bộ dữ liệu lấy về + 2
+        yAxis.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
 
         lineChart.setData(lineData);
         lineChart.invalidate();

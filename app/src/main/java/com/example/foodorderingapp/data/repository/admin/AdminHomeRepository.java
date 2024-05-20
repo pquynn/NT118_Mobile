@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.data.repository.admin;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,7 +51,6 @@ public class AdminHomeRepository {
                         status = document.getString("STATUS");
 
                         if (status != null && (status.equals("Đang giao") || status.equals("Đã giao") || status.equals("Hoàn tiền"))) {
-                            // Tổng số đơn trong ngày bao gồm tất cả các trạng thái của đơn hàng có trong statusList
                             totalOrder++;
 
                             // Kiểm tra nếu "STATUS" là "Đã giao"
@@ -100,6 +101,7 @@ public class AdminHomeRepository {
                         if (task.isSuccessful()) {
                             dataYear = new int[12]; // Reset giá trị của dataYear
                             int month = 0;
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Kiểm tra nếu "STATUS" là "Đã giao"
                                 if (document.getString("STATUS").equals("Đã giao")) {

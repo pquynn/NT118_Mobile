@@ -64,23 +64,15 @@ public class AdminOrderItemAdapter extends RecyclerView.Adapter<AdminOrderItemAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-//        private ViewholderOrderDetailBinding binding;
-
         TextView orderid, totalPrice, totalDish;
         Button btn_detail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-//            this.binding = binding;
             orderid = itemView.findViewById(R.id.txt_order_id);
             totalPrice = itemView.findViewById(R.id.txt_total_price);
             totalDish = itemView.findViewById(R.id.txt_total_dish);
             btn_detail = itemView.findViewById(R.id.btn_order_detail);
         }
-
-//        void bind(com.example.foodorderingapp.data.model.entity.OrderItem orderItem){
-//            binding.setOrderItem(orderItem);
-//            binding.executePendingBindings();
-//        }
     }
 }

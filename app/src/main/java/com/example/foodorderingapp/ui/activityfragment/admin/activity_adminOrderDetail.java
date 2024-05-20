@@ -34,7 +34,7 @@ public class activity_adminOrderDetail extends AppCompatActivity {
     private RecyclerView recyclerViewList;
     private AdminOrderDetailVM adminOrderDetailVM;
     private ImageView btnBack;
-    private Button btnConfirm, btnDelivering, btnDelivered;
+    private Button btnConfirm, btnDelivering, btnDelivered, btnRefund;
     private String orderID, orderStatus;
 
     private static String formatNumber(double temp) {
@@ -91,6 +91,7 @@ public class activity_adminOrderDetail extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnConfirm);
         btnDelivering = findViewById(R.id.btnDelivering);
         btnDelivered = findViewById(R.id.btnDelivered);
+        btnRefund = findViewById(R.id.btnRefund);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -160,6 +161,18 @@ public class activity_adminOrderDetail extends AppCompatActivity {
                 checkOrderStatus(orderStatus);
             }
         });
+
+        btnRefund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi nút được nhấn
+//                Intent intent = new Intent(activity_adminOrderDetail.class, refund.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("orderId", orderID);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+            }
+        });
     }
 
     private void checkOrderStatus(String status) {
@@ -168,22 +181,37 @@ public class activity_adminOrderDetail extends AppCompatActivity {
                 btnConfirm.setVisibility(View.VISIBLE);
                 btnDelivering.setVisibility(View.GONE);
                 btnDelivered.setVisibility(View.GONE);
+                btnRefund.setVisibility(View.GONE);
                 break;
             case "Đã xác nhận":  // Trường hợp đơn hàng đã được xác nhận
                 btnConfirm.setVisibility(View.GONE);
                 btnDelivering.setVisibility(View.VISIBLE);
                 btnDelivered.setVisibility(View.GONE);
+                btnRefund.setVisibility(View.GONE);
                 break;
             case "Đang giao":  // Trường hợp đơn hàng dang được giao
                 btnConfirm.setVisibility(View.GONE);
                 btnDelivering.setVisibility(View.GONE);
                 btnDelivered.setVisibility(View.VISIBLE);
+                btnRefund.setVisibility(View.GONE);
                 break;
-            case "Đã giao":  // Trường hợp đơn hành đã giao thành công
+            case "Đã giao":  // Trường hợp đơn hàng đã giao thành công
                 btnConfirm.setVisibility(View.GONE);
                 btnDelivering.setVisibility(View.GONE);
                 btnDelivered.setVisibility(View.GONE);
+                btnRefund.setVisibility(View.GONE);
                 break;
+            case "Hoàn tiền": // Trường hợp đơn hàng hoàn tiền
+                btnConfirm.setVisibility(View.GONE);
+                btnDelivering.setVisibility(View.GONE);
+                btnDelivered.setVisibility(View.GONE);
+                btnRefund.setVisibility(View.VISIBLE);
+                break;
+            default: // Mặc định là các nút đều biến mất
+                btnConfirm.setVisibility(View.GONE);
+                btnDelivering.setVisibility(View.GONE);
+                btnDelivered.setVisibility(View.GONE);
+                btnRefund.setVisibility(View.GONE);
         }
     }
 }

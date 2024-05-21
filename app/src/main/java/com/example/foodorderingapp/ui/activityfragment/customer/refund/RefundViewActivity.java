@@ -46,6 +46,7 @@ public class RefundViewActivity extends AppCompatActivity {
         screenName.setText("Chi tiết hoàn tiền");
 
         // set button back click event
+        // todo: nút back chỉ trở về trang order detail thoi
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

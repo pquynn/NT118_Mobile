@@ -106,8 +106,8 @@ public class RefundViewModel extends ViewModel {
         if (order != null) {
             for (String key : keys) {
                 OrderItem orderItem = order.getOrderItemElementById(key);
-                RefundItem refundItem = new RefundItem();
                 if (orderItem != null) {
+                    RefundItem refundItem = new RefundItem();
                     orderItemMap.put(key, orderItem);
                     refundItemMap.put(key, refundItem);
                 }
@@ -167,7 +167,7 @@ public class RefundViewModel extends ViewModel {
         Order order = orderLiveData.getValue();
         int totalMoney = 0;
         for (Map.Entry<String, RefundItem> entry : refundItemMap.entrySet()) {
-            totalMoney += entry.getValue().getMoney();
+            totalMoney += entry.getValue().getMoney() * entry.getValue().getQuantity();
         }
 
         Refund refund = new Refund();
@@ -183,8 +183,18 @@ public class RefundViewModel extends ViewModel {
         refundRepository.createRefund(refund, new IRefundRepository.RefundCallback() {
             @Override
             public void onRefundLoaded(Refund refund) {
+                // update order status to 'hoan tien' when create refund successfully
                 dismissProgressDialog();
-                refundLiveData.setValue(refund);
+                orderRepository.updateOrderStatusById(orderId, "Hoàn tiền", new IOrderRepository.OrderChangedCallback() {
+                    @Override
+                    public void onOrderChanged() {
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
             }
 
             @Override
@@ -195,7 +205,6 @@ public class RefundViewModel extends ViewModel {
             }
         });
     }
-
 
 
     // method to show progress dialog

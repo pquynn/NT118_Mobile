@@ -8,15 +8,17 @@ public class RefundItem {
     private String proofVideo;
     private String reason;
     private int money;
+    private int quantity;
 
     public RefundItem(){}
 
-    public RefundItem(String describe, String proofImage, String proofVideo, String reason, int money) {
+    public RefundItem(String describe, String proofImage, String proofVideo, String reason, int money, int quantity) {
         this.describe = describe;
         this.proofImage = proofImage;
         this.proofVideo = proofVideo;
         this.reason = reason;
         this.money = money;
+        this.quantity = quantity;
     }
 
     @PropertyName("DESCRIBE")
@@ -59,14 +61,24 @@ public class RefundItem {
     public void setMoney(int money) {
         this.money = money;
     }
+    @PropertyName("QUANTITY")
+    public int getQuantity() {
+        return quantity;
+    }
+    @PropertyName("QUANTITY")
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {
         return "RefundItem{" +
-                ", describe='" + describe + '\'' +
+                "describe='" + describe + '\'' +
                 ", proofImage='" + proofImage + '\'' +
+                ", proofVideo='" + proofVideo + '\'' +
                 ", reason='" + reason + '\'' +
                 ", money=" + money +
+                ", quantity=" + quantity +
                 '}';
     }
 }

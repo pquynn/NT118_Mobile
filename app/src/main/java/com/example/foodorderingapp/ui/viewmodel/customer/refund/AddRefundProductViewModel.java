@@ -21,7 +21,7 @@ public class AddRefundProductViewModel extends ViewModel {
     // Live data
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
     private MutableLiveData<List<String>> selectedOrderItemId = new MutableLiveData<>();
-
+    private MutableLiveData<List<Integer>> selectedQuantity = new MutableLiveData<>();
     // Repository
     private OrderRepository orderRepository;
 
@@ -31,6 +31,7 @@ public class AddRefundProductViewModel extends ViewModel {
         this.context = context;
         this.orderRepository = new OrderRepository();
         selectedOrderItemId.setValue(new ArrayList<>());
+        selectedQuantity.setValue(new ArrayList<>());
     }
 
     // Getter
@@ -41,6 +42,10 @@ public class AddRefundProductViewModel extends ViewModel {
 
     public MutableLiveData<List<String>> getSelectedOrderItemId() {
         return selectedOrderItemId;
+    }
+
+    public MutableLiveData<List<Integer>> getSelectedQuantity() {
+        return selectedQuantity;
     }
 
     // Load order live data by order id

@@ -43,15 +43,21 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
     private boolean isDialogOpen = false, isChecked = false;
     private Map<Integer, Uri> imageUris = new HashMap<>();
     private Map<Integer, Uri> videoUris = new HashMap<>();
+    private List<String> selectedOrderItemId;
+    private List<Integer> selectedQuantity;
     private int currentPosition = -1;
     private ActivityResultLauncher<Intent> selectImgLauncher;
     private ActivityResultLauncher<Intent> selectVideoLauncher;
 
     public RefundRequestAdapter(Map<String, OrderItem> orderItemMap,
+                                List<String> selectedOrderItemId,
+                                List<Integer> selectedQuantity,
                                 Context context,
                                 ActivityResultLauncher<Intent> selectImgLauncher,
                                 ActivityResultLauncher<Intent> selectVideoLauncher) {
         this.orderItemMap = orderItemMap;
+        this.selectedOrderItemId = selectedOrderItemId;
+        this.selectedQuantity = selectedQuantity;
         this.context = context;
         this.selectImgLauncher = selectImgLauncher;
         this.selectVideoLauncher = selectVideoLauncher;
@@ -70,6 +76,10 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         List<String> keys = new ArrayList<>(orderItemMap.keySet());
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
+        //get quantity
+        int quantity = selectedQuantity.get(selectedOrderItemId.indexOf(key));
+        holder.binding.txtQuantity.setText(String.valueOf(quantity));
+
         holder.bind(orderItem);
 
         // button select refund reason click event

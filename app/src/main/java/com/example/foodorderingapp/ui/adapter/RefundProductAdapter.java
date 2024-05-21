@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.ui.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
@@ -19,11 +20,10 @@ import java.util.Map;
 public class RefundProductAdapter extends RecyclerView.Adapter<RefundProductAdapter.ViewHolder> {
     private Map<String, OrderItem> orderItemMap;
     private List<String> selectedOrderItemIds = new ArrayList<>();
-    private OnItemClickListener listener;
+    private List<Integer> selectedQuantities = new ArrayList<>();
 
-    public RefundProductAdapter(Map<String, OrderItem> orderItemMap, OnItemClickListener listener) {
+    public RefundProductAdapter(Map<String, OrderItem> orderItemMap) {
         this.orderItemMap = orderItemMap;
-        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +40,30 @@ public class RefundProductAdapter extends RecyclerView.Adapter<RefundProductAdap
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
         holder.bind(orderItem, key);
+
+        //button decrease quanity
+        holder.binding.btnDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
+                if(quantity > 1){
+                    quantity -= 1;
+                    holder.binding.txtQuantity.setText(String.valueOf(quantity));
+                }
+            }
+        });
+
+        //button increase quanity
+        holder.binding.btnIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
+                if(quantity < orderItem.getQuantity()){
+                    quantity += 1;
+                    holder.binding.txtQuantity.setText(String.valueOf(quantity));
+                }
+            }
+        });
     }
 
     @Override
@@ -61,22 +85,10 @@ public class RefundProductAdapter extends RecyclerView.Adapter<RefundProductAdap
 
             // Set initial state of checkbox
             binding.checkBox.setChecked(selectedOrderItemIds.contains(key));
-
-            // Checkbox check event
-            binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    if (!selectedOrderItemIds.contains(key)) {
-                        selectedOrderItemIds.add(key);
-                    }
-                } else {
-                    selectedOrderItemIds.remove(key);
-                }
-                listener.onItemClick(selectedOrderItemIds);
-            });
         }
-    }
 
-    public interface OnItemClickListener {
-        void onItemClick(List<String> selectedOrderItemIds);
+        public ViewholderRefundProdBinding getBinding(){
+            return binding;
+        }
     }
 }

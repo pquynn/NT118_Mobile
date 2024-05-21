@@ -35,6 +35,43 @@
         </LinearLayout>
         <!--    end: product view-->
 
+        <!--    start: choose QUANTITY container-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/choose_quantity_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_detail_container">
+
+            <TextView
+                android:id="@+id/lbl_quantity"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SỐ LƯỢNG SẢN PHẨM: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/txt_quantity"
+                style="@style/regular_text_16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lbl_quantity"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--    end: choose QUANTITY container-->
+
         <!--    start: choose reason container-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/choose_reason_container"
@@ -46,7 +83,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_detail_container">
+            app:layout_constraintTop_toBottomOf="@+id/choose_quantity_container">
 
             <TextView
                 style="@style/regular_text_16sp"

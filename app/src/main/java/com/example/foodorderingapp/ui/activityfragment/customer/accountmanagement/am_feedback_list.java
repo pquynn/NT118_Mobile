@@ -2,12 +2,14 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import static android.app.PendingIntent.getActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,9 +30,10 @@ public class am_feedback_list extends AppCompatActivity {
     private RecyclerView recyclerViewList;
     private OrderFeedbackListVM viewModel;
     ArrayList<OrderItem> productList = new ArrayList<>();
-    String orderId = "", orderStatus = "";
+    String orderId = "", orderStatus = "", userID = "";
 
     TextView txt_orderId, txt_orderStatus;
+    Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,7 @@ public class am_feedback_list extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerFeedbackList);
         recyclerViewList.setLayoutManager(linearLayoutManager);
 
+
         //Lấy danh sách từ viewModel
         viewModel.getOrderDetailListLiveData().observe(this, new Observer<List<OrderItem>>() {
             @Override
@@ -64,8 +68,16 @@ public class am_feedback_list extends AppCompatActivity {
                 for(OrderItem i : orderDetails){
                     productList.add(i);
                 }
-                adapter = new FeedbackItemAdapter(productList);
-                recyclerViewList.setAdapter(adapter);
+                viewModel.getUserIDLiveData().observe((LifecycleOwner) context, new Observer<String>() {
+                    @Override
+                    public void onChanged(String s) {
+                        userID = s;
+                        Log.d("get User ID: ", userID);
+                        adapter = new FeedbackItemAdapter(productList, userID);
+                        recyclerViewList.setAdapter(adapter);
+                    }
+                });
+
             }
         });
         txt_orderStatus = findViewById(R.id.txt_order_status);

@@ -11,6 +11,8 @@ import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -88,6 +90,47 @@ public class OrdersFeedbackRepository {
                     }
                 });
     }
+
+    public void getUserIdByOrderId(String orderID, userIDCallback callback){
+        db.collection("ORDER")
+                .document(orderID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful() && task.getResult() != null && task.getResult().exists()){
+                            DocumentSnapshot document = task.getResult();
+                            String userID = document.getString("ID_USER");
+                            if(userID != null){
+                                callback.loadUserIDSuccess(userID);
+                            }else{
+                                callback.loadUserIDError(new Exception("User id not found"));
+                            }
+                        }else {
+                            callback.loadUserIDError(task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    public void checkExistComment(String userID, String productID, checkCommentCallback callback){
+        db.collection("COMMENT")
+                .whereEqualTo("ID_PRODUCT", productID)
+                .whereEqualTo("ID_USER", userID)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            callback.checkCommentSuccess(1);
+                        }else{
+                            callback.checkCommentError(new Exception("Error check comment"));
+                        }
+                    }
+                });
+    }
     public void addComment(Comment comment) {
         CollectionReference reference = db.collection("COMMENT");
 
@@ -144,6 +187,23 @@ public class OrdersFeedbackRepository {
                 });
     }
 
+    public void getCommentByProductIDUserID(String productID, String userID, commentCallback callback){
+        db.collection("COMMENT")
+                .whereEqualTo("ID_PRODUCT", productID)
+                .whereEqualTo("ID_USER", userID)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        Comment comment = documentSnapshot.toObject(Comment.class);
+                        callback.loadCommentSuccess(comment);
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e("Error load comment in firestore:", "Comment not found");
+                    callback.loadCommentError(new Exception("Comment not found"));
+                });
+    }
+
     public void getCommentsByProductID(String productID) {
         db.collection("COMMENT")
                 .whereEqualTo("ID_PRODUCT", productID)
@@ -156,12 +216,14 @@ public class OrdersFeedbackRepository {
                             if (querySnapshot != null && !querySnapshot.isEmpty()) {
                                 List<Comment> listComment = new ArrayList<>();
                                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                                    listComment.add(new Comment(documentSnapshot.getString("ID_PRODUCT"),
-                                            documentSnapshot.getString("USER_ID"),
-                                            documentSnapshot.getString("USER_NAME"),
-                                            Float.parseFloat(String.valueOf(documentSnapshot.getDouble("POINT"))),
-                                            documentSnapshot.getString("CONTENT"),
-                                            documentSnapshot.getDate("CM_DATE")));
+                                    Comment comment = documentSnapshot.toObject(Comment.class);
+                                    listComment.add(comment);
+//                                    listComment.add(new Comment(documentSnapshot.getString("ID_PRODUCT"),
+//                                            documentSnapshot.getString("USER_ID"),
+//                                            documentSnapshot.getString("USER_NAME"),
+//                                            Float.parseFloat(String.valueOf(documentSnapshot.getDouble("POINT"))),
+//                                            documentSnapshot.getString("CONTENT"),
+//                                            documentSnapshot.getDate("CM_DATE")));
                                 }
                                 // Xử lý danh sách comment ở đây
 //                                for (Comment comment : listComment) {
@@ -196,9 +258,27 @@ public class OrdersFeedbackRepository {
         void loadOrderItemsError(Exception e);
     }
 
+    public interface checkCommentCallback{
+        void checkCommentSuccess(int isExist);
+        void checkCommentError(Exception e);
+    }
+    public interface commentCallback{
+        void loadCommentSuccess(Comment comment);
+        void loadCommentError(Exception e);
+    }
+
+    public interface commentListCallback{
+        void loadListCommentSuccess(List<Comment> listComment);
+        void loadlistCommentError(Exception e);
+    }
 
     public interface orderStatusCallback{
         void loadOrderStatusSuccess(String status);
         void loadOrderStatusError(Exception e);
+    }
+
+    public interface userIDCallback{
+        void loadUserIDSuccess(String userID);
+        void loadUserIDError(Exception e);
     }
 }

@@ -3,6 +3,8 @@ package com.example.foodorderingapp.ui.adapter;
 import static androidx.core.content.ContentProviderCompat.requireContext;
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_feedback_product;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_my_orders;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
 
@@ -25,9 +28,11 @@ import java.util.ArrayList;
 
 public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapter.ViewHolder>{
     ArrayList<OrderItem> productList;
+    String userId;
 
-    public FeedbackItemAdapter(ArrayList<OrderItem> productList){
+    public FeedbackItemAdapter(ArrayList<OrderItem> productList, String userId){
         this.productList = productList;
+        this.userId = userId;
     }
 
     @Override
@@ -63,6 +68,17 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
             holder.topping.setVisibility(View.GONE);
         }
 
+        holder.btnProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = holder.itemView.getContext();
+                Intent myIntent = new Intent(context, am_feedback_product.class);
+                myIntent.putExtra("product_id", productList.get(position).getIdProduct());
+                myIntent.putExtra("user_id", userId);
+                context.startActivity(myIntent);
+            }
+        });
+
     }
 
     @Override
@@ -74,6 +90,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
         TextView productName, productPrice, productSize, note, quantity;
         TextView topping;
         ImageView productImage;
+        Button btnProduct;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.txt_product_name);
@@ -83,6 +100,7 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
             quantity = itemView.findViewById(R.id.txt_quantity);
             productImage = itemView.findViewById(R.id.img_fb_product);
             topping = itemView.findViewById(R.id.txt_fb_topping);
+            btnProduct = itemView.findViewById(R.id.btn_product);
         }
     }
 }

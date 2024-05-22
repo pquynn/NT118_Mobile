@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -75,8 +76,9 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
         });
 
         //Hiển thị thông tin chi tiết sản phẩm
-        String productId = "10";
+
         ProductRepository productRepository = new ProductRepository();
+        String productId = "10";
         productRepository.getProductDetailsCake(productId, new ProductRepository.ProductDetailCakeCallback() {
             @Override
             public void onProductDetailLoaded(String productName, String productImage, int productPrice, String productInfo) {

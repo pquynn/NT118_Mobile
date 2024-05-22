@@ -39,11 +39,11 @@ public class CategoryHomeAdapter extends RecyclerView.Adapter<CategoryHomeAdapte
         holder.txtname.setText(homeCategory.getNameCategory());
 
         //Set màu cho danh mục All - xanh, còn lại trắng
-        if (position == 0) {
-            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.lightgreen, mcontext.getTheme()))); // Set green color for the first item
-        } else {
-            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.white, mcontext.getTheme()))); // Set white color for other items
-        }
+//        if (position == 0) {
+//            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.lightgreen, mcontext.getTheme()))); // Set green color for the first item
+//        } else {
+//            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.white, mcontext.getTheme()))); // Set white color for other items
+//        }
     }
 
     @Override

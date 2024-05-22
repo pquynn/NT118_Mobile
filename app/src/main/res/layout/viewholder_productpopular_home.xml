@@ -25,8 +25,8 @@
                 android:id="@+id/img_product"
                 android:layout_width="150dp"
                 android:layout_height="160dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/img2" />
+                android:scaleType="fitXY"/>
+<!--                app:srcCompat="@drawable/img2" />-->
         </LinearLayout>
 
         <TextView

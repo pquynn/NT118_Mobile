@@ -88,12 +88,13 @@ public class HomeViewModel extends ViewModel {
                                 .addOnSuccessListener(productsResult -> {
                                     List<Product> products = new ArrayList<>();
                                     for (DocumentSnapshot document : productsResult.getDocuments()) {
+                                        String id = document.getId();
                                         String idCategory = document.getString("ID_CATEGORY");
                                         String productImage = document.getString("PRODUCT_IMAGE");
                                         String productName = document.getString("PRODUCT_NAME");
                                         int productPrice = document.getLong("PRODUCT_PRICE").intValue();
 
-                                        Product product = new Product(idCategory, productImage, productName, productPrice);
+                                        Product product = new Product(id, idCategory, productImage, productName, productPrice);
                                         products.add(product);
                                         Log.d("firebase", "best selling products" + product.toString());
                                     }

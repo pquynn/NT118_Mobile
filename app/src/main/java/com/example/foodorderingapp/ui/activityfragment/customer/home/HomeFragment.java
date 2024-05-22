@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -69,39 +70,30 @@ public class HomeFragment extends Fragment {
         });
 
         rcv_ProductPopular = view.findViewById(R.id.rcv_ProductPopular);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         rcv_ProductPopular.setLayoutManager(layoutManager);
-        ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getActivity(), new ArrayList<>(), product -> {
-            if ("1".equals(product.getIdCategory()) && "3".equals(product.getIdCategory())) {
-                Intent intent = new Intent(getContext(), ProductDetailDrinkActivity.class);
-                intent.putExtra("PRODUCT_ID", product.getProductName());
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getContext(), ProductDetailCakeActivity.class);
-                intent.putExtra("PRODUCT_ID", product.getProductName());
-                startActivity(intent);
-            }
-        });
-        rcv_homeCategory.setHasFixedSize(true);
-        rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
+        Context context = getContext();
+        if (context != null) {
+            ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getActivity(), new ArrayList<>(), product -> {
+                if ("1".equals(product.getIdCategory()) || "3".equals(product.getIdCategory())) {
+                    Intent intent = new Intent(getContext(), ProductDetailDrinkActivity.class);
+                    intent.putExtra("PRODUCT_ID", product.getProductName());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getContext(), ProductDetailCakeActivity.class);
+                    intent.putExtra("PRODUCT_ID", product.getProductName());
+                    startActivity(intent);
+                }
+            });
+            rcv_homeCategory.setHasFixedSize(true);
+            rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
 
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+            viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        viewModel.getBestSellingProducts().observe(getViewLifecycleOwner(), products -> {
-            productPopularHomeAdapter.setProductList(products);
-        });
+            viewModel.getBestSellingProducts().observe(getViewLifecycleOwner(), products -> {
+                productPopularHomeAdapter.setProductList(products);
+            });
+        }
     }
-
-//    private List<HomeCategory> getHomeCategory() {
-//        List<HomeCategory> list = new ArrayList<>();
-//
-//        list.add(new HomeCategory("All"));
-//        list.add(new HomeCategory("Cà Phê"));
-//        list.add(new HomeCategory("Trà Sữa"));
-//        list.add(new HomeCategory("Trà"));
-//        list.add(new HomeCategory("Bánh"));
-//
-//        return list;
-//    }
 
 }

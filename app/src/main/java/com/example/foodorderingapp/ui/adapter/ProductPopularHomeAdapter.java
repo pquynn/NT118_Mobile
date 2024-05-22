@@ -48,16 +48,13 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (position < 5) {
-            Product product = productList.get(position);
+        Product product = productList.get(position);
+        holder.txtName.setText(product.getProductName());
+        holder.txtPrice.setText(String.valueOf(product.getProductPrice()));
+        if (context != null) {
             Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
-            holder.txtName.setText(product.getProductName());
-            holder.txtPrice.setText(product.getProductPrice());
-            holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
-        }else {
-            // Ẩn itemView nếu không có sản phẩm tại vị trí này
-            holder.itemView.setVisibility(View.GONE);
         }
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
     }
 
     @Override

@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -160,5 +162,61 @@ public class ProductRepository implements IProductRepository {
                     }
                 });
     }
+    // Method to update product quantity
+    public void updateProductQuantity(String productId, String size, int quantityPurchased) {
+        DocumentReference productRef = db.collection("PRODUCT").document(productId);
+        productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Get the current quantity of the specified size
+                        Map<String, Object> sizeMap = (Map<String, Object>) document.get("SIZE");
+                        if (sizeMap != null && sizeMap.containsKey(size)) {
+                            Map<String, Object> sizeDetails = (Map<String, Object>) sizeMap.get(size);
+                            if (sizeDetails != null && sizeDetails.containsKey("QUANTITY")) {
+                                Long currentQuantity = (Long) sizeDetails.get("QUANTITY");
+                                if (currentQuantity != null) {
+                                    // Calculate new quantity
+                                    long newQuantity = currentQuantity - quantityPurchased;
 
+                                    // Update the quantity in Firestore
+                                    sizeDetails.put("QUANTITY", newQuantity);
+                                    sizeMap.put(size, sizeDetails);
+
+                                    // Update the product document with new quantity
+                                    productRef.update("SIZE", sizeMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    // Successfully updated
+                                                    Log.d("Firestore", "Product quantity updated successfully.");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Failed to update
+                                                    Log.w("Firestore", "Error updating product quantity", e);
+                                                }
+                                            });
+                                } else {
+                                    Log.w("Firestore", "Current quantity is null.");
+                                }
+                            } else {
+                                Log.w("Firestore", "Size details do not contain quantity.");
+                            }
+                        } else {
+                            Log.w("Firestore", "Size map does not contain the specified size.");
+                        }
+                    } else {
+                        Log.w("Firestore", "No such document.");
+                    }
+                } else {
+                    Log.w("Firestore", "Task failed: ", task.getException());
+                }
+            }
+        });
+    }
 }

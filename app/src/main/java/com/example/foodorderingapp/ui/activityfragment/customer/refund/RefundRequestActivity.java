@@ -125,11 +125,11 @@ public class RefundRequestActivity extends AppCompatActivity {
             dialog.dismiss();
             if (updateRefundItemMap()) {
                 viewModel.sendRefundRequest(refundItemMap);
-                Intent intent = new Intent(this, SendRefundSucessActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("orderId", orderId);
-                intent.putExtras(bundle);
-                startActivity(intent);
+//                Intent intent = new Intent(this, SendRefundSucessActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("orderId", orderId);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
             }
         });
 

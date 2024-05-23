@@ -81,9 +81,9 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckoutActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString(key, value);
-//                intent.putExtras(bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", viewModel.getOrderLiveData().getValue().getId());
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

@@ -71,17 +71,23 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-//        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
-//            @Override
-//            public void onOrderLoaded(Order order) {
-//                Order a = order;
-//
-//            }
-//            @Override
-//            public void onError(String errorMessage) {
-//
-//            }
-//        });
+        orderRepository.getOrderById("4", new IOrderRepository.OrderCallback() {
+            @Override
+            public void onOrderLoaded(Order order) {
+                Log.d("firestore", "get order from firestore: " + order.toString());
+
+                order.setTotalPrice(8);
+                order.setTotalProduct(8);
+                order.setOrderPrice(8);
+                order.setRecipientName("a");
+                order.setStatus("test");
+                orderRepository.updateCartToOrder(order);
+            }
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
 
 //        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
 //            @Override

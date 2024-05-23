@@ -26,7 +26,7 @@ public interface IOrderRepository {
     void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback);
 
     // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
-    void updateCartToOrder(Order order, OrderChangedCallback callback);
+    void updateCartToOrder(Order order);
 
     // Add or update product in shopping cart by order id
     void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback);
@@ -38,6 +38,11 @@ public interface IOrderRepository {
 
     interface OrderCallback {
         void onOrderLoaded(Order order);
+        void onError(String errorMessage);
+    }
+
+    interface OrderUpdatedCallback {
+        void onOrderChanged(Order order);
         void onError(String errorMessage);
     }
 

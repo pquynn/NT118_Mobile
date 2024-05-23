@@ -8,16 +8,16 @@
       <entry key="CheckoutActivity">
         <State />
       </entry>
-      <entry key="MainActivity">
+      <entry key="MediaFullScreenActivity">
         <State />
       </entry>
       <entry key="RefundProgressActivity">
         <State />
       </entry>
-      <entry key="RefundViewActivity">
+      <entry key="app">
         <State />
       </entry>
-      <entry key="app">
+      <entry key="resultTestActivity">
         <State />
       </entry>
     </value>

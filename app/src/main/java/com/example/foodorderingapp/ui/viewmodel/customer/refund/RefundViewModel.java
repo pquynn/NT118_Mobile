@@ -2,7 +2,9 @@ package com.example.foodorderingapp.ui.viewmodel.customer.refund;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -16,6 +18,7 @@ import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.data.repository.refund.IRefundRepository;
 import com.example.foodorderingapp.data.repository.refund.RefundRepository;
+import com.example.foodorderingapp.ui.activityfragment.customer.refund.SendRefundSucessActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
@@ -188,6 +191,11 @@ public class RefundViewModel extends ViewModel {
                 orderRepository.updateOrderStatusById(orderId, "Hoàn tiền", new IOrderRepository.OrderChangedCallback() {
                     @Override
                     public void onOrderChanged() {
+                        Intent intent = new Intent(context, SendRefundSucessActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId", orderId);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
                     }
 
                     @Override

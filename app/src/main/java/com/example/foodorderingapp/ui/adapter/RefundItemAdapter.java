@@ -1,6 +1,11 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.ContentInfo;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,6 +16,7 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.RefundItem;
 import com.example.foodorderingapp.databinding.ViewholderRefundProgressBinding;
+import com.example.foodorderingapp.ui.activityfragment.customer.refund.MediaFullScreenActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +25,12 @@ import java.util.Map;
 public class RefundItemAdapter extends RecyclerView.Adapter<RefundItemAdapter.ViewHolder> {
     private Map<String, OrderItem> orderItemMap;
     private Map<String, RefundItem> refundItemMap;
-    private boolean isImageFitToScreen = false;
+    private Context context;
 
-    public RefundItemAdapter(Map<String, OrderItem> orderItemMap, Map<String, RefundItem> refundItemMap){
+    public RefundItemAdapter(Map<String, OrderItem> orderItemMap, Map<String, RefundItem> refundItemMap, Context context){
         this.orderItemMap = orderItemMap;
         this.refundItemMap = refundItemMap;
+        this.context = context;
     }
 
     @Override
@@ -43,20 +50,29 @@ public class RefundItemAdapter extends RecyclerView.Adapter<RefundItemAdapter.Vi
         holder.bind(orderItem, refundItem);
 
         //TODO: XỬ LÝ TRƯỜNG HỢP IMAGE VIEW, VIDEO VIEW CLICK EVENT (MỞ ACTIVITY MỚI?)
-//        holder.binding.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                if(isImageFitToScreen) {
-////                    isImageFitToScreen=false;
-////                    holder.binding.imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-////                    holder.binding.imageView.setAdjustViewBounds(true);
-////                }else{
-////                    isImageFitToScreen=true;
-////                    holder.binding.imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-////                    holder.binding.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-////                }
-//            }
-//        });
+        holder.binding.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MediaFullScreenActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isImage", true);
+                bundle.putString("mediaUrl", refundItem.getProofImage());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.binding.videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MediaFullScreenActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isImage", false);
+                bundle.putString("mediaUrl", refundItem.getProofVideo());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

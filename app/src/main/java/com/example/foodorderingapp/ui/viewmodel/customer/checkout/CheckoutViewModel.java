@@ -2,7 +2,10 @@ package com.example.foodorderingapp.ui.viewmodel.customer.checkout;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -13,27 +16,41 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.data.model.entity.UserPoint;
 import com.example.foodorderingapp.data.repository.accountmanagement.PointRepository;
 import com.example.foodorderingapp.data.repository.accountmanagement.UserInfoRepository;
 import com.example.foodorderingapp.data.repository.coupon.CouponRepository;
 import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
+import com.example.foodorderingapp.data.repository.product.IProductRepository;
 import com.example.foodorderingapp.data.repository.product.ProductRepository;
+import com.example.foodorderingapp.ui.activityfragment.customer.checkout.BuySuccessActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.refund.SendRefundSucessActivity;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 
 import org.checkerframework.checker.units.qual.N;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 public class CheckoutViewModel extends ViewModel {
-    private String userId;
+    private String userId, orderId;
     private String img = "@drawable/cash";
     private ProgressDialog progressDialog; // Declare ProgressDialog
     private Context context;
+    private boolean isValid = true;
     
     //LIVE DATA
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
@@ -47,6 +64,7 @@ public class CheckoutViewModel extends ViewModel {
     private MutableLiveData<String> paymentMethodLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> iconPaymentLiveData = new MutableLiveData<>();
     private MutableLiveData<Coupon> couponLiveData = new MutableLiveData<>();
+//    private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
 
     // REPOSITORY
     private OrderRepository orderRepository;
@@ -57,8 +75,9 @@ public class CheckoutViewModel extends ViewModel {
     private NotificationRepository notificationRepository;
 
     // CONSTRUCTOR
-    public CheckoutViewModel(String userId, Context context){
+    public CheckoutViewModel(String userId, String orderId, Context context){
         this.userId = userId;
+        this.orderId = orderId;
         this.context = context;
         orderRepository = new OrderRepository();
         userInfoRepository = new UserInfoRepository();
@@ -72,12 +91,12 @@ public class CheckoutViewModel extends ViewModel {
         discountValueLiveData.setValue(0);
         paymentMethodLiveData.setValue("Thanh toán khi nhận hàng");
         iconPaymentLiveData.setValue(R.drawable.cash);
-        loadOrder(userId);
+        loadOrder();
     }
 
     // start: GETTER
     public MutableLiveData<Order> getOrderLiveData() {
-        loadOrder(userId);
+        loadOrder();
         return orderLiveData;
     }
 
@@ -130,13 +149,38 @@ public class CheckoutViewModel extends ViewModel {
         return couponLiveData;
     }
 
-    // end: GETTER
+//    public MutableLiveData<List<Product>> getProductListLiveData() {
+//        loadProductList(orderLiveData.getValue().getOrderItem());
+//        return productListLiveData;
+//    }
+// end: GETTER
+
+//    //method to load productlist
+//    public void loadProductList(Map<String, OrderItem> orderItems) {
+//        List<Product> productList = new ArrayList<>();
+//        for (Map.Entry<String, OrderItem> entry : orderItems.entrySet()) {
+//            productRepository.getProductById(entry.getValue().getIdProduct(), new ProductRepository.ProductCallback() {
+//                @Override
+//                public void onProductLoaded(Product product) {
+//                    productList.add(product);
+//                    if (productList.size() == orderItems.size()) {
+//                        productListLiveData.postValue(productList);
+//                    }
+//                }
+//
+//                @Override
+//                public void onProductLoadFailed(String errorMessage) {
+//                    // Handle error
+//                }
+//            });
+//        }
+//    }
+
 
     // start: ORDER-----------
     // load order from firestore
-    public void loadOrder(String userId){
-
-        orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
+    public void loadOrder(){
+        orderRepository.getOrderById(orderId, new IOrderRepository.OrderCallback() {
             @Override
             public void onOrderLoaded(Order order) {
                 orderLiveData.setValue(order);
@@ -147,6 +191,7 @@ public class CheckoutViewModel extends ViewModel {
 
             @Override
             public void onError(String errorMessage) {
+
             }
         });
     }
@@ -178,22 +223,151 @@ public class CheckoutViewModel extends ViewModel {
             total price, total product, order_price and coupon, discount value because min_order change
      */
 
-    // method to update order from cart to pending
-    public void updateCartToOrder(){
-        orderRepository.updateCartToOrder(orderLiveData.getValue(), new IOrderRepository.OrderChangedCallback() {
-            @Override
-            public void onOrderChanged() {
+    // method to check valid before checkout
+    public boolean isValidCheckout(){
+        // (1) check if selected coupon, point, product is available
 
+        //check point
+        /*
+        todo: không cần check điểm vì firestore cập nhật là giao diện cập nhật theo. vậy có cần báo cho user không?
+         */
+        // check coupon
+        if(discountValueLiveData.getValue() < 0){
+            couponRepository.getCouponById(couponLiveData.getValue().getIdCoupon(), new CouponRepository.callBackCoupon() {
+                @Override
+                public void loadDataSuccess(Coupon coupon) {
+                    if(coupon.getQuantity() < 1){
+                        Toast.makeText(context, "Mã giảm giá đã hết lượt sử dụng!", Toast.LENGTH_LONG).show();
+                        isValid = false;
+                        reloadCheckoutActivity();
+                    }
+                }
+
+                @Override
+                public void loadDataFail(Exception e) {
+                    Toast.makeText(context, "Mã giảm giá không tồn tại!", Toast.LENGTH_LONG).show();
+                    isValid = false;
+                    reloadCheckoutActivity();
+                }
+            });
+        }
+
+        if(isValid){
+            //check quantity
+            for(Map.Entry<String, OrderItem> orderItemEntry : getOrderLiveData().getValue().getOrderItem().entrySet()){
+                productRepository.getProductById(orderItemEntry.getValue().getIdProduct(), new IProductRepository.ProductCallback() {
+                    @Override
+                    public void onProductLoaded(Product product) {
+                        String size;
+                        if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
+                            size = "Mặc định";
+                        }
+                        else size = orderItemEntry.getValue().getSize();
+                        if(product.getProductSize().get(size).get("QUANTITY") < 1){
+                            Toast.makeText(context, product.getProductName() + " không còn đủ số lượng!", Toast.LENGTH_LONG).show();
+                            isValid = false;
+                        }
+                    }
+
+                    @Override
+                    public void onProductLoadFailed(String errorMessage) {
+                        Toast.makeText(context, "Lỗi vì không tìm thấy sản phẩm", Toast.LENGTH_LONG).show();
+                        isValid = false;
+                    }
+                });
+
+                if(!isValid)
+                    break;
             }
+        }
 
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+        return isValid;
     }
 
-    // end: ORDER-----------
+    // Checkout method using repository and Firestore transaction
+
+    public void checkout(){
+        showProgressDialog("Đang xử lý...");
+
+        if(isValidCheckout()){
+//            // update order before upload to firestore
+//            Date now = new Date();
+            Order order = orderLiveData.getValue();
+//            order.setTotalPrice(totalPrice.getValue());
+//            order.setTotalProduct(totalProductLiveData.getValue());
+//            order.setOrderPrice(orderPriceLiveData.getValue());
+//            order.setAddress(userAddressLiveData.getValue().getAllAddress());
+//            order.setRecipientName(userAddressLiveData.getValue().getRecipientName());
+//            order.setRecipientPhone(userAddressLiveData.getValue().getRecipientPhone());
+//            order.setPoint(pointUsedLiveData.getValue());
+//            order.setDiscountValue(discountValueLiveData.getValue());
+//            order.setPayment(paymentMethodLiveData.getValue());
+//            order.setDeliveryCost(0);
+//            order.setCreateOn(now);
+//            order.setStatus("Chờ xác nhận");
+//
+////            // update product quantity
+//            for(Map.Entry<String, OrderItem> orderItemEntry : order.getOrderItem().entrySet()){
+//                String size;
+//                if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
+//                    size = "Mặc định";
+//                }
+//                else
+//                    size = orderItemEntry.getValue().getSize();
+//                productRepository.updateProductQuantity(
+//                        orderItemEntry.getValue().getIdProduct(),
+//                        size,
+//                        orderItemEntry.getValue().getQuantity());
+//            }
+//
+//            // update coupon quantity
+//            if(discountValueLiveData.getValue() < 0 && discountValueLiveData.getValue() != null)
+//                couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
+//
+//            // update user point (minus current point and add reward point)
+//            if(pointUsedLiveData.getValue() != 0){
+//                UserPoint minusPoint = new UserPoint();
+//                String id = UUID.randomUUID().toString();
+//                minusPoint.setId(id);
+//                minusPoint.setPoint(pointUsedLiveData.getValue());
+//                minusPoint.setPointDate(now);
+//                minusPoint.setUserId(userId);
+//                pointRepository.AddPoint(minusPoint);
+//            }
+//
+//            UserPoint plusPoint = new UserPoint();
+//            String id1 = UUID.randomUUID().toString();
+//            plusPoint.setId(id1);
+//            plusPoint.setPoint((int)order.getOrderPrice() / 1000);
+//            plusPoint.setPointDate(now);
+//            plusPoint.setUserId(userId);
+//            pointRepository.AddPoint(plusPoint);
+//
+//            // update cart to order status "chờ xác nhận" in firestore
+//            orderRepository.updateCartToOrder(order);
+
+
+            // todo: send notificaiton to admin
+            // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
+
+            // start buy success activity if success
+            Intent intent = new Intent(context, BuySuccessActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", order.getId());
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+
+            dismissProgressDialog();
+        }
+        else
+            reloadCheckoutActivity();
+    }
+
+    private void reloadCheckoutActivity() {
+        // Implementation to reload checkout activity
+    }
+
+     //end: ORDER-----------
 
 
     // load default user address (when checkout activity first runing)
@@ -247,6 +421,9 @@ public class CheckoutViewModel extends ViewModel {
             pointUsedLiveData.setValue(-1 * totalPoint);
         else
             pointUsedLiveData.setValue(0);
+
+        // update order price
+        orderPriceLiveData.setValue(calculateOrderPrice());
     }
 
     // load payment method
@@ -263,8 +440,6 @@ public class CheckoutViewModel extends ViewModel {
             @Override
             public void loadDataSuccess(Coupon coupon) {
                 couponLiveData.setValue(coupon);
-                int a = calculateDiscountValue(coupon.getDiscountValue());
-                discountValueLiveData.setValue(calculateDiscountValue(coupon.getDiscountValue()));
             }
 
             @Override
@@ -295,13 +470,13 @@ public class CheckoutViewModel extends ViewModel {
 
     // calculate discount value
     // todo: tính tiền giảm từ tiền đã cộng điểm thưởng hay sao?
-    public int calculateDiscountValue(double percentDiscount) {
+    public void loadDiscountValue(double percentDiscount) {
         // Calculate the discount value as a floating-point operation
         double discountValue = -1 * (totalPrice.getValue() + pointUsedLiveData.getValue()) * (percentDiscount / 100.0);
         // Convert the discount value to an integer (if needed)
         int discountValueInteger = (int) discountValue;
 
-        return discountValueInteger;
+        discountValueLiveData.setValue(discountValueInteger);
     }
 
 
@@ -328,5 +503,7 @@ public class CheckoutViewModel extends ViewModel {
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
+
+
 
 }

@@ -58,7 +58,7 @@ public class RefundViewActivity extends AppCompatActivity {
         // init adapter
         refundItemMap = new HashMap<>();
         orderItemMap = new HashMap<>();
-        adapter = new RefundItemAdapter(orderItemMap, refundItemMap);
+        adapter = new RefundItemAdapter(orderItemMap, refundItemMap, this);
         binding.recyclerViewRefundProgress.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewRefundProgress.setAdapter(adapter);
 

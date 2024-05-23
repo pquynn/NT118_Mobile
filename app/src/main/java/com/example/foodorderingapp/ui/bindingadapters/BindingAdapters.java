@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.bindingadapters;
 
 import android.net.Uri;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -134,4 +135,42 @@ public class BindingAdapters {
             view.setVisibility(View.VISIBLE);
         }
     }
+
+    @BindingAdapter("visibleAcceptButtonByStatus")
+    public static void visibleAcceptButtonByStatus(Button button, String status) {
+        if(status != null){
+            switch (status){
+                case "Chờ xác nhận":{
+                    button.setVisibility(View.VISIBLE);
+                    button.setText("Chấp nhận hoàn tiền");
+                    break;
+                }
+                case "Chờ hoàn tiền":{
+                    button.setVisibility(View.VISIBLE);
+                    button.setText("Đã hoàn tiền");
+                    break;
+                }
+                case "Đã hoàn tiền":{
+                    button.setVisibility(View.GONE);
+                }
+                default:{
+                    break;
+                }
+            }
+
+        }
+    }
+
+    @BindingAdapter("visibleRefuseButtonByStatus")
+    public static void visibleRefuseButtonByStatus(Button button, String status) {
+        if(status != null){
+            if(status.equals("Chờ xác nhận")){
+                button.setVisibility(View.VISIBLE);
+            }
+            else {
+                button.setVisibility(View.GONE);
+            }
+        }
+    }
+
 }

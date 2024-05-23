@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -173,11 +174,38 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
-    public void updateCartToOrder(Order order, OrderChangedCallback callback){
+//    public void updateCartToOrder(Order order, OrderUpdatedCallback callback) {
+//        if (order == null) {
+//            if (callback != null) {
+//                callback.onError("Order cannot be null");
+//            }
+//            return;
+//        }
+//
+//        if (callback == null) {
+//            throw new IllegalArgumentException("Callback cannot be null");
+//        }
+//
+//        collectionRef.document(order.getId()).set(order)
+//                .addOnSuccessListener(aVoid -> callback.onOrderChanged(order))
+//                .addOnFailureListener(e -> callback.onError(e.getMessage()));
+//    }
+    public void updateCartToOrder(Order order) {
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null");
+        }
         collectionRef.document(order.getId()).set(order)
-                .addOnSuccessListener(aVoid -> callback.onOrderChanged())
-                .addOnFailureListener(e -> callback.onError(e.getMessage()));
+                .addOnSuccessListener(aVoid -> {
+                    // Handle success case, e.g., logging or updating UI
+                    Log.d("firestore", "updateCartToOrder: " );
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure case, e.g., logging or updating UI
+                    Log.d("firestore", "Error updating order: " + e.getMessage());
+                });
     }
+
+
 
 
     // Add or update product to shopping cart (create new order item by order id)

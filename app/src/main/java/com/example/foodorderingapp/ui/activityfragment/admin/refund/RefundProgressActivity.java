@@ -61,7 +61,7 @@ public class RefundProgressActivity extends AppCompatActivity {
         // init adapter
         refundItemMap = new HashMap<>();
         orderItemMap = new HashMap<>();
-        adapter = new RefundItemAdapter(orderItemMap, refundItemMap);
+        adapter = new RefundItemAdapter(orderItemMap, refundItemMap, this);
         binding.recyclerViewRefundProgress.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewRefundProgress.setAdapter(adapter);
 
@@ -115,11 +115,11 @@ public class RefundProgressActivity extends AppCompatActivity {
                 dialog.dismiss();
                 // xử lý cập nhật trạng thái
                 viewModel.updateRefundStatus(btnName);
-                binding.btnRefuse.setVisibility(View.GONE);
-                if (btnName.equals("Chấp nhận hoàn tiền"))
-                    binding.btnAccept.setText("Đã hoàn tiền");
-                else
-                    binding.btnAccept.setVisibility(View.GONE);
+//                binding.btnRefuse.setVisibility(View.GONE);
+//                if (btnName.equals("Chấp nhận hoàn tiền"))
+//                    binding.btnAccept.setText("Đã hoàn tiền");
+//                else
+//                    binding.btnAccept.setVisibility(View.GONE);
             }
         });
 

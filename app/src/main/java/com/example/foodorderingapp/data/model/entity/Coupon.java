@@ -94,4 +94,18 @@ public class Coupon {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "idCoupon='" + idCoupon + '\'' +
+                ", couponName='" + couponName + '\'' +
+                ", validFrom=" + validFrom +
+                ", validTo=" + validTo +
+                ", discountValue=" + discountValue +
+                ", minOrder=" + minOrder +
+                ", quantity=" + quantity +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

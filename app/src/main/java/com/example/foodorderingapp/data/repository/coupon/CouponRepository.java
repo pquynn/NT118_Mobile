@@ -8,10 +8,13 @@ import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +37,37 @@ public class CouponRepository {
         reference.document(input.getIdCoupon())
                 .update(counpon);
     }
+
+    public void updateQuantityById(String id) {
+        firebaseFirestore.runTransaction((Transaction.Function<Void>) transaction -> {
+            DocumentReference docRef = reference.document(id);
+            DocumentSnapshot snapshot = transaction.get(docRef);
+
+            if (snapshot.exists()) {
+                Long currentQuantity = snapshot.getLong("QUANTITY");
+                if (currentQuantity != null) {
+                    long newQuantity = currentQuantity - 1;
+
+                    if (newQuantity < 0) {
+                        throw new FirebaseFirestoreException("Quantity cannot be negative", FirebaseFirestoreException.Code.ABORTED);
+                    }
+
+                    transaction.update(docRef, "QUANTITY", newQuantity);
+                } else {
+                    throw new FirebaseFirestoreException("Quantity field is missing", FirebaseFirestoreException.Code.INVALID_ARGUMENT);
+                }
+            } else {
+                throw new FirebaseFirestoreException("Coupon does not exist", FirebaseFirestoreException.Code.NOT_FOUND);
+            }
+
+            return null;
+        }).addOnSuccessListener(aVoid -> {
+            // Handle success, if needed
+        }).addOnFailureListener(e -> {
+            // Handle failure, if needed
+        });
+    }
+
 
     public void getListCoupon(Double orderPrice, Date date, callBackGetList callBackGetList) {
         reference.whereLessThanOrEqualTo("MIN_ORDER", orderPrice)

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,18 +21,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CheckoutActivity extends AppCompatActivity {
     TextView screenName;
     FrameLayout btnBack;
     private Map<String, OrderItem> orderItemMap;
-    private String userId = "3", orderId, couponId = "";
+    private String userId = "3", orderId = "4", couponId = "";
     private ActivityCheckoutBinding binding;
     private CheckoutViewModel viewModel;
     private OrderDetailAdapter adapter;
@@ -47,6 +50,10 @@ public class CheckoutActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
         binding.setLifecycleOwner(this);
 
+        if(getIntent().getExtras() != null){
+            orderId = getIntent().getExtras().getString("orderId");
+        }
+
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Xác nhận đơn hàng");
@@ -57,7 +64,7 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewOrderDetail.setAdapter(adapter);
 
-        viewModel = new CheckoutViewModel(userId, this);
+        viewModel = new CheckoutViewModel(userId, orderId, this);
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
             orderItemMap.clear();
@@ -65,7 +72,9 @@ public class CheckoutActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         });
 
-        // set button back click event
+
+
+        // set button back click eventa
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
@@ -102,15 +111,16 @@ public class CheckoutActivity extends AppCompatActivity {
             startActivityForResult(intent, COUPON_REQUEST_CODE);
         });
 
-        // set button Buy click event
-        binding.btnBuy.setOnClickListener(v -> {
-            // Handle the buy action here
-        });
 
         // set Switch choose point check event
         binding.btnChoosePoint.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int totalPoint = viewModel.getPointTotalLiveData().getValue();
-            viewModel.loadPointUsed(totalPoint, isChecked);
+            viewModel.getPointTotalLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    viewModel.loadPointUsed(integer, isChecked);
+                }
+            });
+
         });
 
         //start: button buy click event
@@ -135,6 +145,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                viewModel.checkout();
             }
         });
 
@@ -161,6 +172,7 @@ public class CheckoutActivity extends AppCompatActivity {
                             @Override
                             public void onChanged(Coupon coupon) {
                                 couponId = coupon.getIdCoupon();
+                                viewModel.loadDiscountValue(coupon.getDiscountValue());
                                 // Update the ViewModel or UI with the new coupon information
                             }
                         });

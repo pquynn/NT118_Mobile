@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,30 +132,43 @@ public class OrdersFeedbackRepository {
                     }
                 });
     }
-    public void addComment(Comment comment) {
+    public void addComment(Comment commentGet, commentCallback callback) {
         CollectionReference reference = db.collection("COMMENT");
+        Date date = new Date();
 
-        Map<String, Object> commentData = new HashMap<>();
-        commentData.put("CONTENT", comment.getContent());
-        commentData.put("POINT", comment.getRatingBar());
-        commentData.put("CM_DATE", comment.getDate());
-        commentData.put("ID_PRODUCT", comment.getIdProduct());
-        commentData.put("ID_USER", comment.getIdUser());
-        commentData.put("USER_NAME", comment.getNameUser());
+//        Map<String, Object> commentData = new HashMap<>();
+//        commentData.put("CONTENT", comment.getContent());
+//        commentData.put("POINT", comment.getRatingBar());
+//        commentData.put("CM_DATE", comment.getDate());
+//        commentData.put("ID_PRODUCT", comment.getIdProduct());
+//        commentData.put("ID_USER", comment.getIdUser());
+//        commentData.put("USER_NAME", comment.getNameUser());
 
-        db.collection("COMMENT")
-                .add(commentData)
-                .addOnSuccessListener(documentReference -> {
-                    // Thêm bình luận thành công
-                    Log.d("AddComment", "Bình luận đã được thêm vào bộ sưu tập COMMENTS với ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    // Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS
-                    Log.e("AddComment", "Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS", e);
-                });
+        Comment comment = new Comment(
+            commentGet.getIdProduct(),
+            commentGet.getIdUser(),
+            commentGet.getNameUser(),
+            commentGet.getRatingBar(),
+            commentGet.getContent(),
+            commentGet.getDate()
+        );
+
+//        db.collection("COMMENT")
+//                .add(commentData)
+//                .addOnSuccessListener(documentReference -> {
+//                    // Thêm bình luận thành công
+//                    Log.d("AddComment", "Bình luận đã được thêm vào bộ sưu tập COMMENTS với ID: " + documentReference.getId());
+//                })
+//                .addOnFailureListener(e -> {
+//                    // Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS
+//                    Log.e("AddComment", "Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS", e);
+//                });
+        db.collection("COMMENT").add(comment)
+                .addOnSuccessListener(documentReference -> callback.loadCommentSuccess(comment))
+                .addOnFailureListener(e -> callback.loadCommentError(new Exception("Add comment Error")));
     }
 
-    public void updateComment(String commentId, Comment comment) {
+    public void updateComment(String commentId, Comment comment, commentCallback callback) {
         Map<String, Object> newCommentData = new HashMap<>();
         newCommentData.put("CONTENT", comment.getContent()); // Cập nhật CONTENT
         newCommentData.put("POINT", comment.getRatingBar()); // Cập nhật POINT
@@ -165,11 +179,11 @@ public class OrdersFeedbackRepository {
                 .update(newCommentData)
                 .addOnSuccessListener(aVoid -> {
                     // Sửa comment thành công
-                    Log.d("UpdateComment", "Bình luận đã được sửa thành công");
+                    callback.loadCommentSuccess(comment);
                 })
                 .addOnFailureListener(e -> {
                     // Lỗi khi sửa comment
-                    Log.e("UpdateComment", "Lỗi khi sửa bình luận", e);
+                    callback.loadCommentError(new Exception("Error: update comment"));
                 });
     }
 

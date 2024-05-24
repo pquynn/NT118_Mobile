@@ -70,9 +70,13 @@ public class CheckoutActivity extends AppCompatActivity {
             orderItemMap.clear();
             orderItemMap.putAll(order.getOrderItem());
             adapter.notifyDataSetChanged();
+//            viewModel.loadProductList();
+//            viewModel.getProductListLiveData().observe(binding.getLifecycleOwner(), new Observer<List<Product>>() {
+//                @Override
+//                public void onChanged(List<Product> products) {
+//                }
+//            });
         });
-
-
 
         // set button back click eventa
         btnBack = findViewById(R.id.btn_back);

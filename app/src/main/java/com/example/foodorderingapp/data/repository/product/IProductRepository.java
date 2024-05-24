@@ -33,4 +33,9 @@ public interface IProductRepository {
         void onProductDetailLoaded(String productName, String productImage, int productPrice, String productInfo);
         void onProductDetailLoadFailed(String errorMessage);
     }
+
+    interface BooleanCallback{
+        void onSuccess(boolean isValid);
+        void onError(String errorMessage);
+    }
 }

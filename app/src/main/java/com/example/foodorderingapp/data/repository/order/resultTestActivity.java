@@ -34,6 +34,7 @@ public class resultTestActivity extends AppCompatActivity {
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
 
+
 //        pointRepository.getTotalPoint("3", new PointRepository.userTotalPointCallback() {
 //            @Override
 //            public void loadTotalPointSuccess(int totalPoint) {
@@ -47,6 +48,40 @@ public class resultTestActivity extends AppCompatActivity {
 //        });
 //
 //        productRepository = new ProductRepository();
+//        List<String> names = new ArrayList<>();
+//        names.add("Latte đá");
+//        names.add("Hi Tea Đào");
+//        names.add("CloudTea Trà Xanh Tây Bắc");
+//        productRepository.getProductListByNames(names, new IProductRepository.ProductListCallback() {
+//            @Override
+//            public void onProductListLoaded(List<Product> productList) {
+//                Log.d("firestore", "onProductListLoaded: " + productList);
+//            }
+//
+//            @Override
+//            public void onProductListLoadFailed(String errorMessage) {
+//
+//            }
+//        });
+
+//        productRepository = new ProductRepository();
+//        List<String> names = new ArrayList<>();
+//        names.add("30");
+//        names.add("5");
+//        names.add("12");
+//        productRepository.getProductListByIds(names, new IProductRepository.ProductListCallback() {
+//            @Override
+//            public void onProductListLoaded(List<Product> productList) {
+//                Log.d("firestore", "onProductListLoaded: " + productList);
+//            }
+//
+//            @Override
+//            public void onProductListLoadFailed(String errorMessage) {
+//
+//            }
+//        });
+
+
 //        productRepository.getProductById("12", new IProductRepository.ProductCallback() {
 //            @Override
 //            public void onProductLoaded(Product product) {
@@ -71,23 +106,23 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        orderRepository.getOrderById("4", new IOrderRepository.OrderCallback() {
-            @Override
-            public void onOrderLoaded(Order order) {
-                Log.d("firestore", "get order from firestore: " + order.toString());
-
-                order.setTotalPrice(8);
-                order.setTotalProduct(8);
-                order.setOrderPrice(8);
-                order.setRecipientName("a");
-                order.setStatus("test");
-                orderRepository.updateCartToOrder(order);
-            }
-            @Override
-            public void onError(String errorMessage) {
-
-            }
-        });
+//        orderRepository.getOrderById("4", new IOrderRepository.OrderCallback() {
+//            @Override
+//            public void onOrderLoaded(Order order) {
+//                Log.d("firestore", "get order from firestore: " + order.toString());
+//
+//                order.setTotalPrice(8);
+//                order.setTotalProduct(8);
+//                order.setOrderPrice(8);
+//                order.setRecipientName("a");
+//                order.setStatus("test");
+//                orderRepository.updateCartToOrder(order);
+//            }
+//            @Override
+//            public void onError(String errorMessage) {
+//
+//            }
+//        });
 
 //        orderRepository.getCartByUserId("3", new IOrderRepository.OrderCallback() {
 //            @Override

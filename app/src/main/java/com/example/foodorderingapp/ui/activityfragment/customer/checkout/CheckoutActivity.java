@@ -50,10 +50,6 @@ public class CheckoutActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
         binding.setLifecycleOwner(this);
 
-        if(getIntent().getExtras() != null){
-            orderId = getIntent().getExtras().getString("orderId");
-        }
-
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Xác nhận đơn hàng");
@@ -64,18 +60,20 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewOrderDetail.setAdapter(adapter);
 
-        viewModel = new CheckoutViewModel(userId, orderId, this);
+        viewModel = new CheckoutViewModel(userId, this, CheckoutActivity.this);
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
             orderItemMap.clear();
             orderItemMap.putAll(order.getOrderItem());
             adapter.notifyDataSetChanged();
-//            viewModel.loadProductList();
-//            viewModel.getProductListLiveData().observe(binding.getLifecycleOwner(), new Observer<List<Product>>() {
-//                @Override
-//                public void onChanged(List<Product> products) {
-//                }
-//            });
+        });
+
+        viewModel.getCouponLiveData().observe(this, new Observer<Coupon>() {
+            @Override
+            public void onChanged(Coupon coupon) {
+                if(coupon != null && coupon.getIdCoupon() != null)
+                    couponId = coupon.getIdCoupon();
+            }
         });
 
         // set button back click eventa

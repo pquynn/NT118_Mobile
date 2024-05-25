@@ -1,7 +1,10 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.checkout;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.data.repository.product.IProductRepository;
 import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.ui.activityfragment.customer.checkout.BuySuccessActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.refund.SendRefundSucessActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,21 +40,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 
+import org.checkerframework.checker.units.qual.C;
 import org.checkerframework.checker.units.qual.N;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public class CheckoutViewModel extends ViewModel {
-    private String userId, orderId;
+    private String userId;
     private String img = "@drawable/cash";
     private ProgressDialog progressDialog; // Declare ProgressDialog
     private Context context;
-    private boolean isValid = true;
+    private Activity activity;
     
     //LIVE DATA
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
@@ -64,7 +70,6 @@ public class CheckoutViewModel extends ViewModel {
     private MutableLiveData<String> paymentMethodLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> iconPaymentLiveData = new MutableLiveData<>();
     private MutableLiveData<Coupon> couponLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
 
     // REPOSITORY
     private OrderRepository orderRepository;
@@ -75,10 +80,11 @@ public class CheckoutViewModel extends ViewModel {
     private NotificationRepository notificationRepository;
 
     // CONSTRUCTOR
-    public CheckoutViewModel(String userId, String orderId, Context context){
+    public CheckoutViewModel(String userId, Context context, Activity activity){
         this.userId = userId;
-        this.orderId = orderId;
         this.context = context;
+        this.activity = activity;
+
         orderRepository = new OrderRepository();
         userInfoRepository = new UserInfoRepository();
         pointRepository = new PointRepository();
@@ -148,51 +154,22 @@ public class CheckoutViewModel extends ViewModel {
         loadCoupon(couponId);
         return couponLiveData;
     }
-
-    public MutableLiveData<List<Product>> getProductListLiveData() {
-        loadProductList();
-        return productListLiveData;
+    public MutableLiveData<Coupon> getCouponLiveData() {
+        return couponLiveData;
     }
 // end: GETTER
-
-    //method to load productlist
-    public void loadProductList() {
-        List<String> ids = new ArrayList<>();
-        if(orderLiveData.getValue() != null){
-            for (Map.Entry<String, OrderItem> entry : orderLiveData.getValue().getOrderItem().entrySet()) {
-                ids.add(entry.getValue().getIdProduct());
-            }
-            productRepository.getProductListByIds(ids, new IProductRepository.ProductListCallback() {
-                @Override
-                public void onProductListLoaded(List<Product> productList) {
-                    productListLiveData.setValue(productList);
-                    Log.d("firestore", "onProductLoaded vm: " + productListLiveData.getValue().toString());
-                }
-
-                @Override
-                public void onProductListLoadFailed(String errorMessage) {
-
-                }
-            });
-        }
-
-//        Log.d("firestore", "onProductLoaded vm: " + product.toString());
-    }
 
 
     // start: ORDER-----------
     // load order from firestore
     public void loadOrder(){
-        orderRepository.getOrderById(orderId, new IOrderRepository.OrderCallback() {
+        orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
             @Override
             public void onOrderLoaded(Order order) {
                 orderLiveData.setValue(order);
                 totalPrice.setValue(calculateTotalPrice(order.getOrderItem()));
                 totalProductLiveData.setValue(calculateTotalProduct(order.getOrderItem()));
                 orderPriceLiveData.setValue(calculateOrderPrice());
-//                loadProductList(order.getOrderItem());
-
-//                Log.d("firestore", "onload order: " + productListLiveData.getValue().toString());
             }
 
             @Override
@@ -227,257 +204,200 @@ public class CheckoutViewModel extends ViewModel {
      - if products are unavailable
         update orderItem in orderLiveData (change quantity or remove in firestore too),
             total price, total product, order_price and coupon, discount value because min_order change
+        //todo: về việc xử lý trường hợp hết hàng cho sản phẩm nhất định
+        nếu có sản phẩm không đủ số lượng --> hiện alert xem user muốn trở về giỏ hàng để cập nhật lại sl
+        nếu có sản phẩm hết hàng trong giỏ hàng --> todo: có thể làm chức năng bổ sung
+        hiện tại giỏ hàng xử lý: nếu có hết hàng --> ko cho mua --> xóa sp thì đc mua
      */
 
     // method to check valid before checkout
-    public void checkout(){
-        // (1) check if selected coupon, point, product is available
+    public void checkout() {
+//        showProgressDialog("Đang xử lý...");
 
-        //check point
-        /*
-        todo: không cần check điểm vì firestore cập nhật là giao diện cập nhật theo. vậy có cần báo cho user không?
-         */
-        // check coupon
-        if(discountValueLiveData.getValue() < 0){
+        if (discountValueLiveData.getValue() < 0) {
             couponRepository.getCouponById(couponLiveData.getValue().getIdCoupon(), new CouponRepository.callBackCoupon() {
                 @Override
                 public void loadDataSuccess(Coupon coupon) {
-                    if(coupon.getQuantity() < 1){
+                    if (coupon.getQuantity() < 1) {
                         Toast.makeText(context, "Mã giảm giá đã hết lượt sử dụng!", Toast.LENGTH_LONG).show();
-                        isValid = false;
-                        reloadCheckoutActivity();
+                        dismissProgressDialog();
+                        reloadSelectedCoupon();
+                    } else {
+                        // check product quantity
+                        checkProductQuantity();
                     }
                 }
 
                 @Override
                 public void loadDataFail(Exception e) {
                     Toast.makeText(context, "Mã giảm giá không tồn tại!", Toast.LENGTH_LONG).show();
-                    isValid = false;
-                    reloadCheckoutActivity();
+                    dismissProgressDialog();
+                    reloadSelectedCoupon();
                 }
             });
         }
+        else checkProductQuantity();
+    }
 
-        if(isValid){
-            //check quantity
-            List<String> ids = new ArrayList<>();
-            if(orderLiveData.getValue() != null){
-                Order order = orderLiveData.getValue();
-                for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
-                    ids.add(entry.getValue().getIdProduct());
-                }
-                productRepository.getProductListByIds(ids, new IProductRepository.ProductListCallback() {
-                    @Override
-                    public void onProductListLoaded(List<Product> productList) {
-//                        productListLiveData.setValue(productList);
-                        for(Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()){
-                            String size;
-                            if(entry.getValue().getSize() == null || entry.getValue().getSize().isEmpty())
-                            size = "Mặc định";
+    public void checkProductQuantity(){
+        // Check quantity
+        List<String> ids = new ArrayList<>();
+        if (orderLiveData.getValue() != null) {
+            Order order = orderLiveData.getValue();
+            for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                ids.add(entry.getValue().getIdProduct());
+            }
 
-                            else size = entry.getValue().getSize();
-                            int index = productList.indexOf(entry.getValue().getIdProduct());
-                            if(productList.get(index).getProductSize().get(size).get("QUANTITY") < 1){
-                                Toast.makeText(context, entry.getValue().getProductName() + " không còn đủ số lượng!", Toast.LENGTH_LONG).show();
-                                isValid = false;
+            productRepository.getProductListByIds(ids, new IProductRepository.ProductListCallback() {
+                @Override
+                public void onProductListLoaded(List<Product> productList) {
+                    boolean allProductsAvailable = true;
+                    List<String> unavailablePName = new ArrayList<>();
+
+                    for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                        String size = (entry.getValue().getSize() == null || entry.getValue().getSize().isEmpty()) ? "Mặc định" : entry.getValue().getSize();
+                        String productId = entry.getValue().getIdProduct();
+
+                        Product product = null;
+                        for (Product p : productList) {
+                            if (p.getId().equals(productId)) {
+                                product = p;
                                 break;
                             }
                         }
 
-                        if(isValid){
-//                            showProgressDialog("Đang xử lý...");
-//            // update order before upload to firestore
-//            Date now = new Date();
-                                Order order = orderLiveData.getValue();
-//            order.setTotalPrice(totalPrice.getValue());
-//            order.setTotalProduct(totalProductLiveData.getValue());
-//            order.setOrderPrice(orderPriceLiveData.getValue());
-//            order.setAddress(userAddressLiveData.getValue().getAllAddress());
-//            order.setRecipientName(userAddressLiveData.getValue().getRecipientName());
-//            order.setRecipientPhone(userAddressLiveData.getValue().getRecipientPhone());
-//            order.setPoint(pointUsedLiveData.getValue());
-//            order.setDiscountValue(discountValueLiveData.getValue());
-//            order.setPayment(paymentMethodLiveData.getValue());
-//            order.setDeliveryCost(0);
-//            order.setCreateOn(now);
-//            order.setStatus("Chờ xác nhận");
-//
-////            // update product quantity
-//            for(Map.Entry<String, OrderItem> orderItemEntry : order.getOrderItem().entrySet()){
-//                String size;
-//                if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
-//                    size = "Mặc định";
-//                }
-//                else
-//                    size = orderItemEntry.getValue().getSize();
-//                productRepository.updateProductQuantity(
-//                        orderItemEntry.getValue().getIdProduct(),
-//                        size,
-//                        orderItemEntry.getValue().getQuantity());
-//            }
-//
-//            // update coupon quantity
-//            if(discountValueLiveData.getValue() < 0 && discountValueLiveData.getValue() != null)
-//                couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
-//
-//            // update user point (minus current point and add reward point)
-//            if(pointUsedLiveData.getValue() != 0){
-//                UserPoint minusPoint = new UserPoint();
-//                String id = UUID.randomUUID().toString();
-//                minusPoint.setId(id);
-//                minusPoint.setPoint(pointUsedLiveData.getValue());
-//                minusPoint.setPointDate(now);
-//                minusPoint.setUserId(userId);
-//                pointRepository.AddPoint(minusPoint);
-//            }
-//
-//            UserPoint plusPoint = new UserPoint();
-//            String id1 = UUID.randomUUID().toString();
-//            plusPoint.setId(id1);
-//            plusPoint.setPoint((int)order.getOrderPrice() / 1000);
-//            plusPoint.setPointDate(now);
-//            plusPoint.setUserId(userId);
-//            pointRepository.AddPoint(plusPoint);
-//
-//            // update cart to order status "chờ xác nhận" in firestore
-//            orderRepository.updateCartToOrder(order);
-
-
-                                // todo: send notificaiton to admin
-                                // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
-
-                                // start buy success activity if success
-                                Intent intent = new Intent(context, BuySuccessActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("orderId", order.getId());
-                                intent.putExtras(bundle);
-                                context.startActivity(intent);
-
-                                dismissProgressDialog();
-                            }
-                            else
-                                reloadCheckoutActivity();
+                        if (product == null || product.getProductSize().get(size).get("QUANTITY") < entry.getValue().getQuantity()) {
+                            allProductsAvailable = false;
+                            unavailablePName.add(product.getProductName());
+//                            dismissProgressDialog();
+//                            Toast.makeText(context, "Sản phẩm ko đủ sl", Toast.LENGTH_SHORT).show();
+//                            showAlertDialog(context);
+//                            break;  // Exit the callback to prevent further processing
                         }
-//                    }
-
-                    @Override
-                    public void onProductListLoadFailed(String errorMessage) {
-                         Toast.makeText(context, "Lỗi vì không tìm thấy sản phẩm", Toast.LENGTH_LONG).show();
-                        isValid = false;
                     }
-                });
-            }
-//            for(Map.Entry<String, OrderItem> orderItemEntry : getOrderLiveData().getValue().getOrderItem().entrySet()){
-//                productRepository.getProductById(orderItemEntry.getValue().getIdProduct(), new IProductRepository.ProductCallback() {
-//                    @Override
-//                    public void onProductLoaded(Product product) {
-//                        String size;
-//                        if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
-//                            size = "Mặc định";
-//                        }
-//                        else size = orderItemEntry.getValue().getSize();
-//                        if(product.getProductSize().get(size).get("QUANTITY") < 1){
-//                            Toast.makeText(context, product.getProductName() + " không còn đủ số lượng!", Toast.LENGTH_LONG).show();
-//                            isValid = false;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onProductLoadFailed(String errorMessage) {
-//                        Toast.makeText(context, "Lỗi vì không tìm thấy sản phẩm", Toast.LENGTH_LONG).show();
-//                        isValid = false;
-//                    }
-//                });
-//
-//                if(!isValid)
-//                    break;
-//            }
-        }
 
-//        return isValid;
+                    if (allProductsAvailable) {
+                        processOrder();
+                    }
+                    else{
+                        dismissProgressDialog();
+                        showAlertDialog(context, unavailablePName);
+                    }
+                }
+
+                @Override
+                public void onProductListLoadFailed(String errorMessage) {
+                    Toast.makeText(context, "Lỗi vì không tìm thấy sản phẩm", Toast.LENGTH_LONG).show();
+                    dismissProgressDialog();
+                }
+            });
+        }
     }
 
-    // Checkout method using repository and Firestore transaction
+    public void processOrder() {
+        // update order before upload to firestore
+        Date now = new Date();
+        Order order = orderLiveData.getValue();
+        order.setTotalPrice(totalPrice.getValue());
+        order.setTotalProduct(totalProductLiveData.getValue());
+        order.setOrderPrice(orderPriceLiveData.getValue());
+        order.setAddress(userAddressLiveData.getValue().getAllAddress());
+        order.setRecipientName(userAddressLiveData.getValue().getRecipientName());
+        order.setRecipientPhone(userAddressLiveData.getValue().getRecipientPhone());
+        order.setPoint(pointUsedLiveData.getValue());
+        order.setDiscountValue(discountValueLiveData.getValue());
+        order.setPayment(paymentMethodLiveData.getValue());
+        order.setDeliveryCost(0);
+        order.setCreateOn(now);
+        order.setStatus("Chờ xác nhận");
 
-//    public void checkout(){
-//        showProgressDialog("Đang xử lý...");
-//
-//        if(isValidCheckout()){
-////            // update order before upload to firestore
-////            Date now = new Date();
-//            Order order = orderLiveData.getValue();
-////            order.setTotalPrice(totalPrice.getValue());
-////            order.setTotalProduct(totalProductLiveData.getValue());
-////            order.setOrderPrice(orderPriceLiveData.getValue());
-////            order.setAddress(userAddressLiveData.getValue().getAllAddress());
-////            order.setRecipientName(userAddressLiveData.getValue().getRecipientName());
-////            order.setRecipientPhone(userAddressLiveData.getValue().getRecipientPhone());
-////            order.setPoint(pointUsedLiveData.getValue());
-////            order.setDiscountValue(discountValueLiveData.getValue());
-////            order.setPayment(paymentMethodLiveData.getValue());
-////            order.setDeliveryCost(0);
-////            order.setCreateOn(now);
-////            order.setStatus("Chờ xác nhận");
-////
-//////            // update product quantity
-////            for(Map.Entry<String, OrderItem> orderItemEntry : order.getOrderItem().entrySet()){
-////                String size;
-////                if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
-////                    size = "Mặc định";
-////                }
-////                else
-////                    size = orderItemEntry.getValue().getSize();
-////                productRepository.updateProductQuantity(
-////                        orderItemEntry.getValue().getIdProduct(),
-////                        size,
-////                        orderItemEntry.getValue().getQuantity());
-////            }
-////
-////            // update coupon quantity
-////            if(discountValueLiveData.getValue() < 0 && discountValueLiveData.getValue() != null)
-////                couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
-////
-////            // update user point (minus current point and add reward point)
-////            if(pointUsedLiveData.getValue() != 0){
-////                UserPoint minusPoint = new UserPoint();
-////                String id = UUID.randomUUID().toString();
-////                minusPoint.setId(id);
-////                minusPoint.setPoint(pointUsedLiveData.getValue());
-////                minusPoint.setPointDate(now);
-////                minusPoint.setUserId(userId);
-////                pointRepository.AddPoint(minusPoint);
-////            }
-////
-////            UserPoint plusPoint = new UserPoint();
-////            String id1 = UUID.randomUUID().toString();
-////            plusPoint.setId(id1);
-////            plusPoint.setPoint((int)order.getOrderPrice() / 1000);
-////            plusPoint.setPointDate(now);
-////            plusPoint.setUserId(userId);
-////            pointRepository.AddPoint(plusPoint);
-////
-////            // update cart to order status "chờ xác nhận" in firestore
-////            orderRepository.updateCartToOrder(order);
-//
-//
-//            // todo: send notificaiton to admin
-//            // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
-//
-//            // start buy success activity if success
-//            Intent intent = new Intent(context, BuySuccessActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("orderId", order.getId());
-//            intent.putExtras(bundle);
-//            context.startActivity(intent);
-//
-//            dismissProgressDialog();
-//        }
-//        else
-//            reloadCheckoutActivity();
-//    }
+        // update product quantity
+        for(Map.Entry<String, OrderItem> orderItemEntry : order.getOrderItem().entrySet()){
+            String size;
+            if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
+                size = "Mặc định";
+            }
+            else
+                size = orderItemEntry.getValue().getSize();
+            productRepository.updateProductQuantity(
+                    orderItemEntry.getValue().getIdProduct(),
+                    size,
+                    orderItemEntry.getValue().getQuantity());
+        }
 
-    private void reloadCheckoutActivity() {
-        // Implementation to reload checkout activity
+        // update coupon quantity
+        if(discountValueLiveData.getValue() < 0 && discountValueLiveData.getValue() != null)
+            couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
+
+        // update user point (minus current point and add reward point)
+        if(pointUsedLiveData.getValue() != 0){
+            UserPoint minusPoint = new UserPoint();
+            String id = UUID.randomUUID().toString();
+            minusPoint.setId(id);
+            minusPoint.setPoint(pointUsedLiveData.getValue());
+            minusPoint.setPointDate(now);
+            minusPoint.setUserId(userId);
+            pointRepository.AddPoint(minusPoint);
+        }
+
+        UserPoint plusPoint = new UserPoint();
+        String id1 = UUID.randomUUID().toString();
+        plusPoint.setId(id1);
+        plusPoint.setPoint((int)order.getOrderPrice() / 1000);
+        plusPoint.setPointDate(now);
+        plusPoint.setUserId(userId);
+        pointRepository.AddPoint(plusPoint);
+
+        // update cart to order status "chờ xác nhận" in firestore
+        orderRepository.updateCartToOrder(order);
+
+        // todo: send notificaiton to admin
+        // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
+
+
+        // Assuming the process is successful:
+        dismissProgressDialog();
+        Intent intent = new Intent(context, BuySuccessActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("orderId", orderLiveData.getValue().getId());
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    public void showAlertDialog(Context context, List<String> productName) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+
+        // ghep ten sp
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < productName.size(); i++) {
+            stringBuilder.append(productName.get(i));
+            if (i < productName.size() - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        alert.setTitle("Thông báo");
+        alert.setMessage(stringBuilder.toString()
+                + " hiện không đủ số lượng. Quay về giỏ hàng để chọn lại sản phẩm.");
+        alert.setPositiveButton("Về giỏ hàng", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (context instanceof Activity) {
+                    ((Activity) context).finish();
+                }
+            }
+        });
+
+        alert.show();
+    }
+
+
+
+    public void reloadSelectedCoupon(){
+        Coupon coupon = new Coupon();
+        coupon.setIdCoupon("");
+        couponLiveData.setValue(coupon);
+        discountValueLiveData.setValue(0);
     }
 
      //end: ORDER-----------
@@ -605,12 +525,12 @@ public class CheckoutViewModel extends ViewModel {
     }
 
     // Method to dismiss progress dialog
-    private void dismissProgressDialog() {
+    public void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
-    private void showProgressDialog(String message){
+    public void showProgressDialog(String message){
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(message);
         progressDialog.setCancelable(false);

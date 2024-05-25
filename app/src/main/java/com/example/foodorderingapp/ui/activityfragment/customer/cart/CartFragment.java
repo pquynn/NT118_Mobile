@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -54,6 +55,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
     // bottom sheet
     private boolean isDialogOpen = false;
     private List<Topping> toppings;
+    private List<Product> productList;
     private List<String> toppingNames, toppingSelected, tempCheckedTopping;
     private int tempOrderItemPrice = 0, oldSizePrice = 0, newSizePrice = 0;
     private Product tempProduct;
@@ -81,9 +83,6 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckoutActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("orderId", viewModel.getOrderLiveData().getValue().getId());
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -93,23 +92,92 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
 
         //Adapter
         orderItemMap = new HashMap<>();
-        adapter = new CartAdapter(orderItemMap, viewModel, this::onItemClick);
+        productList = new ArrayList<>();
+        adapter = new CartAdapter(orderItemMap, productList, viewModel, this::onItemClick, getActivity());
         binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewCart.setAdapter(adapter);
         binding.setLifecycleOwner(this);
+
+        if(viewModel.getOrderLiveData() == null || viewModel.getOrderLiveData().getValue() == null){
+            binding.emptyCartContainer.setVisibility(View.VISIBLE);
+            binding.linearLayout4.setVisibility(View.GONE);
+            binding.linearLayout5.setVisibility(View.GONE);
+        }
+        else {
+            binding.emptyCartContainer.setVisibility(View.GONE);
+            binding.linearLayout4.setVisibility(View.VISIBLE);
+            binding.linearLayout5.setVisibility(View.VISIBLE);
+        }
+
         viewModel.getOrderLiveData().observe(getViewLifecycleOwner(), new Observer<Order>() {
             @Override
             public void onChanged(Order order) {
                 binding.setCartVM(viewModel);
 
+                //observe productlist when order change
+                viewModel.loadProductList();
+
+                // update order item map
                 orderItemMap.clear();
                 orderItemMap.putAll(order.getOrderItem());
+                adapter.notifyDataSetChanged();
+
+                binding.swipeRefreshLayout.setRefreshing(false); // Stop the refreshing animation
+
+                // check if cart is empty or not
+                if(order.getOrderItem() == null || order.getOrderItem().isEmpty()){
+                    binding.emptyCartContainer.setVisibility(View.VISIBLE);
+                    binding.linearLayout4.setVisibility(View.GONE);
+                    binding.linearLayout5.setVisibility(View.GONE);
+                }
+                else {
+                    binding.emptyCartContainer.setVisibility(View.GONE);
+                    binding.linearLayout4.setVisibility(View.VISIBLE);
+                    binding.linearLayout5.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        viewModel.getIsValidCheckout().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean == true){
+                    binding.btnCheckout.setEnabled(true);
+//                    binding.btnCheckout.setB
+                    binding.outOfStockWarning.setVisibility(View.GONE);
+                }
+                else {
+                    binding.btnCheckout.setEnabled(false);
+                    binding.outOfStockWarning.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        viewModel.getProductListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                productList.clear();
+                productList.addAll(products);
                 adapter.notifyDataSetChanged();
             }
         });
 
-
+        // Set the color scheme for the spinner
+        binding.swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.primary),
+                getResources().getColor(R.color.secondary),
+                getResources().getColor(R.color.primary)
+        );
+        // Set up the swipe refresh listener
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Trigger the reload in the ViewModel
+                viewModel.reloadData();
+            }
+        });
     }
+
 
     @Override
     public void onItemClick(String key, OrderItem orderItem) {
@@ -207,6 +275,9 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         toppingSelected = new ArrayList<>();
         toppingNames = new ArrayList<>();
 
+//        toppingNames.clear();
+//        toppingSelected.clear();
+//        tempCheckedTopping.clear();
 
         // init adapter
         cartToppingAdapter = new CartToppingAdapter(toppings, toppingNames, toppingSelected, viewModel, this::onItemCheckedChanged);
@@ -269,6 +340,9 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
                                 bindingBottomSheet.tvSmallPrice.setVisibility(View.VISIBLE);
                                 bindingBottomSheet.tvSmallPrice.setText(setPriceFormatted(details.get("PRICE")));
                                 break;
+                            }
+                            case "Mặc định":{
+                                bindingBottomSheet.sizeArea.setVisibility(View.GONE);
                             }
                         }
                     }

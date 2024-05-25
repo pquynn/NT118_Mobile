@@ -247,7 +247,6 @@ public void getProductListByIds(List<String> ids, ProductListCallback callback){
         callback.onProductListLoadFailed("Names list is empty");
         return;
     }
-    Log.d("firestore", "ids: " + ids.toString());
     db.collection("PRODUCT")
             .whereIn(FieldPath.documentId(), ids)
             .get()
@@ -259,9 +258,6 @@ public void getProductListByIds(List<String> ids, ProductListCallback callback){
                             Product product = document.toObject(Product.class);
                             if (product != null) {
                                 productList.add(product);
-                                Log.d("firestore", "on repo: " + product);
-                            } else {
-                                Log.d("firestore", "Document to object conversion failed");
                             }
                         }
                     }

@@ -34,6 +34,8 @@ public interface IOrderRepository {
     // Delete product in shopping cart by order id
     void deleteProductCart(String orderId,  String orderItemId, OrderItemRemovedCallback callback);
 
+    // update order item map by order id
+    void updateOrderItemsByOrderId(String orderId, Map<String, OrderItem> orderItemMap);
 
 
     interface OrderCallback {

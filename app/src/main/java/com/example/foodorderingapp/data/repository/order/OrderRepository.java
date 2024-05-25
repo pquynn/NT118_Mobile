@@ -196,8 +196,6 @@ public class OrderRepository implements IOrderRepository {
         }
         collectionRef.document(order.getId()).set(order)
                 .addOnSuccessListener(aVoid -> {
-                    // Handle success case, e.g., logging or updating UI
-                    Log.d("firestore", "updateCartToOrder: " );
                 })
                 .addOnFailureListener(e -> {
                     // Handle failure case, e.g., logging or updating UI
@@ -229,6 +227,16 @@ public class OrderRepository implements IOrderRepository {
                 .addOnFailureListener(e -> {
                     callback.onError(e.getMessage());
                 });
+    }
+
+
+    // method to update order items by order id
+    public void updateOrderItemsByOrderId(String orderId, Map<String, OrderItem> orderItemMap) {
+
+        collectionRef.document(orderId).update("ORDER_ITEM", orderItemMap)
+                .addOnSuccessListener(aVoid ->
+                        Log.d("firestore", "update order item: " ))
+                .addOnFailureListener(e -> System.err.println("Error updating order items: " + e.getMessage()));
     }
 
 }

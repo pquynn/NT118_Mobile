@@ -10,7 +10,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:background">@drawable/rounder_component_button</item>
-        <item name="backgroundTint">@color/primary</item>
+        <item name="backgroundTint">@color/state_list_button_colors</item>
         <item name="android:padding">12dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -34,8 +35,10 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
     private MutableLiveData<Product> productLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
 //    private MutableLiveData<Map<String, Integer>> sizeListLiveData = new MutableLiveData<>();
     private List<Topping> toppings = new ArrayList<>();
+    private MutableLiveData<Boolean> isValidCheckout = new MutableLiveData<>();
 
     // Repository
     private OrderRepository orderRepository;
@@ -48,7 +51,7 @@ public class CartViewModel extends ViewModel {
         orderRepository = new OrderRepository();
         productRepository = new ProductRepository();
         toppingRepository = new ToppingRepository();
-        loadToppingList();
+        reloadData();
     }
 
     // Getter
@@ -67,8 +70,21 @@ public class CartViewModel extends ViewModel {
         return productLiveData;
     }
 
+    public MutableLiveData<List<Product>> getProductListLiveData() {
+        loadProductList();
+        return productListLiveData;
+    }
+
     public List<Topping> getToppings() {
         return toppings;
+    }
+
+    public MutableLiveData<Boolean> getIsValidCheckout() {
+        return isValidCheckout;
+    }
+
+    public void setIsValidCheckout(boolean isValidCheckout) {
+        this.isValidCheckout.setValue(isValidCheckout);
     }
 
     // load method
@@ -102,6 +118,64 @@ public class CartViewModel extends ViewModel {
         });
     }
 
+    // method to update order item to firestore
+    public void updateOrderItemByOrderId(String orderItemId){
+        if (orderLiveData.getValue() == null) {
+            // Handle the case where orderLiveData is null
+            return;
+        }
+
+        String orderId = orderLiveData.getValue().getId();
+        OrderItem orderItem = orderLiveData.getValue().getOrderItemElementById(orderItemId);
+
+        if (orderId == null || orderItem == null) {
+            // Handle the case where orderId or orderItem is null
+            return;
+        }
+        orderRepository.addOrUpdateProductCart(
+                orderId,
+                orderItemId,
+                orderItem,
+                new IOrderRepository.OrderChangedCallback() {
+                    @Override
+                    public void onOrderChanged() {
+//                        dismissProgressDialog();
+                        Toast.makeText(context, "Rất tiếc, bạn chỉ có thể mua tối đa " + orderItem.getQuantity() +" sản phẩm " + orderItem.getProductName(), Toast.LENGTH_SHORT).show();
+                        reloadData();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                }
+        );
+    }
+
+    // method to load product list live data base on order item
+    public void loadProductList() {
+        List<String> ids = new ArrayList<>();
+        if(orderLiveData.getValue() != null){
+            for (Map.Entry<String, OrderItem> entry : orderLiveData.getValue().getOrderItem().entrySet()) {
+                ids.add(entry.getValue().getIdProduct());
+            }
+            productRepository.getProductListByIds(ids, new IProductRepository.ProductListCallback() {
+                @Override
+                public void onProductListLoaded(List<Product> productList) {
+                    productListLiveData.setValue(productList);
+                }
+
+                @Override
+                public void onProductListLoadFailed(String errorMessage) {
+
+                }
+            });
+        }
+
+//        Log.d("firestore", "onProductLoaded vm: " + product.toString());
+    }
+
+    // method to load topping list in firestore
     public void loadToppingList(){
         toppingRepository.getAllToppings(new IToppingRepository.ToppingListCallBack() {
             @Override
@@ -125,6 +199,11 @@ public class CartViewModel extends ViewModel {
         return totalPrice;
     }
 
+    public void updateTotalPrice(int deltaPrice){
+        int newPrice = totalPrice.getValue() - deltaPrice;
+        totalPrice.setValue(newPrice);
+    }
+
     // Delete orderItem
     public void deleteProductCart(String orderItemId){
         showProgressDialog("Đang xử lý...");
@@ -136,7 +215,7 @@ public class CartViewModel extends ViewModel {
                     @Override
                     public void onOrderItemRemoved(String id) {
                         // Load new cart product after delete from db
-                        loadCart(userId);
+                        reloadData();
                         // Dismiss progress dialog
                         dismissProgressDialog();
 
@@ -162,7 +241,15 @@ public class CartViewModel extends ViewModel {
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
-    
+
+
+    // method to reload activity
+    public void reloadData(){
+        loadCart(userId);
+        loadToppingList();
+        isValidCheckout.setValue(true);
+    }
+
     
     // EVENT LISTENER
     // Click listeners for increase and decrease buttons

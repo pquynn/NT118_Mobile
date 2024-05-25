@@ -84,4 +84,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth")
 
+    // import swipe refresh layout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
 }

@@ -166,32 +166,43 @@ public class resultTestActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+        OrderItem orderItem = new OrderItem();
+        String id = UUID.randomUUID().toString();
+//        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
+        orderItem.setIdProduct("16");
+        orderItem.setProductName("Mochi Kem Matcha");
+        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/2%2FMochi%20Kem%20Matcha.png?alt=media&token=cb7199be-fe57-46d7-9cfe-8fda1a6b1b45");
+        orderItem.setQuantity(1);
+        orderItem.setPrice(19000);
+        orderItem.setNote("");
+
 //         Create an instance of OrderItem
 //        OrderItem orderItem = new OrderItem();
 //        String id = UUID.randomUUID().toString();
 ////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
-//        orderItem.setIdProduct("12");
-//        orderItem.setProductName("test banh");
+//        orderItem.setIdProduct("15");
+//        orderItem.setProductName("Mochi Kem Chocolate");
 //        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/1%2FHi%20Tea%20%C4%90%C3%A0o.png?alt=media&token=35bf18ac-c242-4b3c-ac55-065c5352dad1");
 //        orderItem.setQuantity(1);
-//        orderItem.setPrice(10000);
+//        orderItem.setPrice(19000);
 //        orderItem.setNote("");
-////        orderItem.setSize("Vừa");
-////        ArrayList<String> topping = new ArrayList<>();
-////        topping.add("1");
-////        topping.add("5");
-////        orderItem.setTopping(topping);
-//        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
-//                @Override
-//                public void onOrderChanged() {
-//
-//                }
-//
-//                @Override
-//                public void onError(String errorMessage) {
-//
-//                }
-//            });
+//        orderItem.setSize("Vừa");
+//        ArrayList<String> topping = new ArrayList<>();
+//        topping.add("1");
+//        topping.add("5");
+//        orderItem.setTopping(topping);
+        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
+                @Override
+                public void onOrderChanged() {
+
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
 ////
 //        OrderItem orderItem1 = new OrderItem();
 //        String id1 = UUID.randomUUID().toString();

@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,12 +42,16 @@ import java.util.Map;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private CartViewModel cartViewModel;
     private Map<String, OrderItem> orderItemMap;
+    private List<Product> productList;
     private OnItemClickListener listener;
+    private Context context;
 
-    public CartAdapter(Map<String, OrderItem> orderItemMap, CartViewModel cartViewModel, OnItemClickListener listener){
+    public CartAdapter(Map<String, OrderItem> orderItemMap, List<Product> productList, CartViewModel cartViewModel, OnItemClickListener listener, Context context){
         this.orderItemMap = orderItemMap;
         this.cartViewModel = cartViewModel;
+        this.productList = productList;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -63,6 +68,66 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
         holder.bind(orderItem);
+
+        // check if product is available
+        //1. get size of order item
+        String size = (orderItem.getSize() == null || orderItem.getSize().isEmpty()) ? "Mặc định" : orderItem.getSize();
+        String productId = orderItem.getIdProduct();
+
+        //2. get product
+        Product product = null;
+        for (Product p : productList) {
+            if (p.getId().equals(productId)) {
+                product = p;
+                break;
+            }
+        }
+
+        //3. check --> if unavailable --> disable button checkout
+        int grey = ContextCompat.getColor(context, R.color.transparent50_gray);
+        int dark = ContextCompat.getColor(context, R.color.dark_text);
+
+        holder.binding.btnEdit.setVisibility(View.VISIBLE);
+        holder.binding.clEditQuantity.setVisibility(View.VISIBLE);
+        holder.binding.clOutOfStock.setVisibility(View.INVISIBLE);
+        holder.binding.btnDelete.setVisibility(View.INVISIBLE);
+        holder.binding.txtProductCost.setTextColor(dark);
+        holder.binding.txtProductName.setTextColor(dark);
+        holder.binding.txtProductSize.setTextColor(dark);
+
+        int productQuantity = 0;
+
+        if (product != null) {
+            productQuantity = product.getProductSize().get(size).getOrDefault("QUANTITY", 0);
+            if (product == null || productQuantity == 0) {
+                // if product is out of stock --> change viewholder UI
+                cartViewModel.updateTotalPrice(orderItem.getQuantity() * orderItem.getPrice());
+                orderItem.setQuantity(0);
+                cartViewModel.setIsValidCheckout(false);
+                holder.binding.btnEdit.setVisibility(View.INVISIBLE);
+                holder.binding.clEditQuantity.setVisibility(View.INVISIBLE);
+                holder.binding.clOutOfStock.setVisibility(View.VISIBLE);
+                holder.binding.btnDelete.setVisibility(View.VISIBLE);
+                holder.binding.txtProductCost.setTextColor(grey);
+                holder.binding.txtProductName.setTextColor(grey);
+                holder.binding.txtProductSize.setTextColor(grey);
+
+            } else if (productQuantity < orderItem.getQuantity() && productQuantity > 0) {
+                // if product quantity is less than order item quantity --> update order item
+                orderItem.setQuantity(productQuantity);
+//                notifyDataSetChanged();
+                cartViewModel.updateOrderItemByOrderId(key);
+            }
+
+        }
+        //button delete click
+        holder.binding.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartViewModel.deleteProductCart(key);
+            }
+        });
+
 
         //button decrease quanity
         holder.binding.btnDecrease.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,8 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,14 +21,15 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.SearchAdapter;
+import com.example.foodorderingapp.ui.viewmodel.customer.search.SearchViewModel;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements IProductRepository.ProductListCallback {
+public class SearchActivity extends AppCompatActivity {
     RecyclerView rcv_productSearch;
     SearchAdapter searchAdapter;
     SearchView searchView;
-    private ProductRepository productRepository;
+    private SearchViewModel searchViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +60,14 @@ public class SearchActivity extends AppCompatActivity implements IProductReposit
         //set đường kẻ giữa các sản phẩm
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         rcv_productSearch.addItemDecoration(itemDecoration);
-        //Hiên thị danh sách sản phẩm từ FireStore
-        productRepository = new ProductRepository();
-        productRepository.getAllProducts(this);
+
+        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        searchViewModel.getProductListLiveData().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                searchAdapter.setFilterList(products);
+            }
+        });
 
         // Xử lý sự kiện khi người dùng nhập vào SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -96,17 +104,5 @@ public class SearchActivity extends AppCompatActivity implements IProductReposit
             }
         });
 
-    }
-
-    //Load danh sách sản phẩm từ FireStore
-    @Override
-    public void onProductListLoaded(List<Product> productList) {
-        searchAdapter.setFilterList(productList); // Cập nhật dữ liệu cho Adapter
-        searchAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onProductListLoadFailed(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

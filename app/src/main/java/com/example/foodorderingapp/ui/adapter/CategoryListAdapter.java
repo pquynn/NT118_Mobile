@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.CategoryList;
+import com.example.foodorderingapp.data.model.entity.Product;
 
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryListViewHolder> {
-
     private Context mContext;
     private List<CategoryList> mlistCategory;
     private OnItemClickListener listener; // Thêm biến thành viên cho OnItemClickListener
 
     // Định nghĩa interface OnItemClickListener
     public interface OnItemClickListener {
-        void onItemClick(ProductSearch product);
+        void onItemClick(Product product);
     }
 
     // Phương thức để thiết lập OnItemClickListener
@@ -33,7 +33,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     //lấy mục sản phẩm ở một vị trí cụ thể
-    public ProductSearch getItemAtPosition(int position) {
+    public Product getItemAtPosition(int position) {
         return mlistCategory.get(position).getListProducts().get(position);
     }
 

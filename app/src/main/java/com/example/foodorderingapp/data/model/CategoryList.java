@@ -1,12 +1,14 @@
 package com.example.foodorderingapp.data.model;
 
+import com.example.foodorderingapp.data.model.entity.Product;
+
 import java.util.List;
 
 public class CategoryList {
     private String nameCategory;
-    private List<ProductSearch> listProducts;
+    private List<Product> listProducts;
 
-    public CategoryList(String nameCategory, List<ProductSearch> listProducts) {
+    public CategoryList(String nameCategory, List<Product> listProducts) {
         this.nameCategory = nameCategory;
         this.listProducts = listProducts;
     }
@@ -19,11 +21,11 @@ public class CategoryList {
         this.nameCategory = nameCategory;
     }
 
-    public List<ProductSearch> getListProducts() {
+    public List<Product> getListProducts() {
         return listProducts;
     }
 
-    public void setListProducts(List<ProductSearch> listProducts) {
+    public void setListProducts(List<Product> listProducts) {
         this.listProducts = listProducts;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
 public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryProductListAdapter.CategoryProductListViewHolder> {
+    private List<Product> mProducts;
+    private Context context;
 
-    private List<ProductSearch> mProducts;
-
-    public void setData(List<ProductSearch> list){
+    public void setData(List<Product> list){
         this.mProducts = list;
         notifyDataSetChanged();
     }
@@ -31,13 +34,13 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
 
     @Override
     public void onBindViewHolder(@NonNull CategoryProductListViewHolder holder, int position) {
-        ProductSearch productSearchDomain = mProducts.get(position);
-        if (productSearchDomain == null){
+        Product product = mProducts.get(position);
+        if (product == null){
             return;
         }
-        holder.imgProduct.setImageResource(productSearchDomain.getImage());
-        holder.tvName.setText(productSearchDomain.getName());
-        holder.tvPrice.setText(productSearchDomain.getPrice());
+        Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
+        holder.tvName.setText(product.getProductName());
+        holder.tvPrice.setText(product.getProductPrice());
     }
 
     @Override

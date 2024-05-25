@@ -70,17 +70,17 @@ public class HomeFragment extends Fragment {
         });
 
         rcv_ProductPopular = view.findViewById(R.id.rcv_ProductPopular);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         rcv_ProductPopular.setLayoutManager(layoutManager);
         Context context = getContext();
         if (context != null) {
-            ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getActivity(), new ArrayList<>(), product -> {
+            ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), product -> {
                 if ("1".equals(product.getIdCategory()) || "3".equals(product.getIdCategory())) {
-                    Intent intent = new Intent(getContext(), ProductDetailDrinkActivity.class);
+                    Intent intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
                     intent.putExtra("PRODUCT_ID", product.getProductName());
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getContext(), ProductDetailCakeActivity.class);
+                    Intent intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
                     intent.putExtra("PRODUCT_ID", product.getProductName());
                     startActivity(intent);
                 }

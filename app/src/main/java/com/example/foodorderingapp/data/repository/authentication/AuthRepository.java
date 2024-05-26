@@ -39,6 +39,27 @@ public class AuthRepository {
     private String verificationCode;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
+    public void getUserID(String phone, AuthCallbackGetUserID getUserID) {
+        reference_user.whereEqualTo("PHONE", phone)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                            if (getUserID != null){
+                                getUserID.onSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm số điện thoại
+                            if (getUserID != null) {
+                                getUserID.onFailure(new Exception("No matching user info found or task failed!"));
+                            }
+                        }
+                    }
+                });
+    }
+
     public void signIn(String phone, String password, AuthCallback callback) {
         reference.whereEqualTo("PHONE", phone).whereEqualTo("PASSWORD", password).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

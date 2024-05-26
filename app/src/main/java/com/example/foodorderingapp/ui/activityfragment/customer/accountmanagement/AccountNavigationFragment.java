@@ -1,10 +1,14 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +31,9 @@ import java.util.ArrayList;
 
 public class AccountNavigationFragment extends Fragment {
 
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
@@ -117,5 +124,17 @@ public class AccountNavigationFragment extends Fragment {
                 tvNameAcc.setText(user.getUserName());
             }
         });
+
+        // Đăng xuất ứng dụng
+//        Button btnLogout = view.findViewById(R.id.btn_log_out);
+//        btnLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.clear();
+//                editor.commit();
+//            }
+//        });
     }
 }

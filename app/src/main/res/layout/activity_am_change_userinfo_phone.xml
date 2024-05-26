@@ -42,6 +42,8 @@
         android:fontFamily="@font/roboto_regular"
         android:hint="Số điện thoại"
         android:inputType="phone"
+        android:maxLength="10"
+        android:ems="10"
         android:padding="20dp"
         android:textColorHint="@color/text"
         android:textColorLink="@color/black"

@@ -19,6 +19,7 @@ public class OrderFeedbackListVM extends ViewModel{
 
     private MutableLiveData<List<OrderItem>> orderDetailListLiveData = new MutableLiveData<>();
     private MutableLiveData<String> orderStatusLiveData = new MutableLiveData<>();
+    private MutableLiveData<String> userIDLiveData = new MutableLiveData<>();
     private OrdersFeedbackRepository repository = new OrdersFeedbackRepository();
     private Context context;
 //    private OrdersFeedbackRepository repositoryStatus = new OrdersFeedbackRepository();
@@ -48,6 +49,18 @@ public class OrderFeedbackListVM extends ViewModel{
                 Log.d(TAG, "onErrorStatus: " + e.getMessage());
             }
         });
+
+        repository.getUserIdByOrderId(orderId, new OrdersFeedbackRepository.userIDCallback() {
+            @Override
+            public void loadUserIDSuccess(String userID) {
+                userIDLiveData.setValue(userID);
+            }
+
+            @Override
+            public void loadUserIDError(Exception e) {
+
+            }
+        });
     }
 
     public MutableLiveData<List<OrderItem>> getOrderDetailListLiveData() {
@@ -57,4 +70,6 @@ public class OrderFeedbackListVM extends ViewModel{
     public MutableLiveData<String> getOrderStatusLiveData() {
         return orderStatusLiveData;
     }
+
+    public MutableLiveData<String> getUserIDLiveData(){return userIDLiveData;}
 }

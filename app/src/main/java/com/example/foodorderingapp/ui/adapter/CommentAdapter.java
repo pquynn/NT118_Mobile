@@ -33,7 +33,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
         Comment comment = listComment.get(position);
 
-        holder.txtName.setText(comment.getName());
+        holder.txtName.setText(comment.getNameUser());
         holder.txtContent.setText(comment.getContent());
         holder.txtDate.setText(comment.getDate().toString());
         holder.ratingBar.setRating(comment.getRatingBar());

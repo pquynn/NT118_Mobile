@@ -53,7 +53,8 @@ public class PaymentMethodActivity extends AppCompatActivity implements PaymentM
         recyclerViewList.setAdapter(adapter);
 
         methodList.add(new PaymentMethod("Thanh toán khi nhận hàng", R.drawable.cash));
-        methodList.add(new PaymentMethod("Paypal", R.drawable.paypal));
+        methodList.add(new PaymentMethod("Ví MoMo", R.drawable.momo));
+        methodList.add(new PaymentMethod("ZaloPay", R.drawable.zalopay));
         adapter.notifyDataSetChanged();
 
         // button add click event

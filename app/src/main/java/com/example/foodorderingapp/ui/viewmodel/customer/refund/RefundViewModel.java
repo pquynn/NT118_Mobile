@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.refund;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class RefundViewModel extends ViewModel {
     private String orderId;
     private ProgressDialog progressDialog;
     private Context context;
+    private Activity activity;
 
     // Live data
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
@@ -46,9 +48,10 @@ public class RefundViewModel extends ViewModel {
     private OrderRepository orderRepository;
     private RefundRepository refundRepository;
     // Constructor
-    public RefundViewModel(String orderId, Context context) {
+    public RefundViewModel(String orderId, Context context, Activity activity) {
         this.orderId = orderId;
         this.context = context;
+        this.activity = activity;
         this.orderRepository = new OrderRepository();
         refundRepository = new RefundRepository();
         loadOrder();
@@ -196,6 +199,7 @@ public class RefundViewModel extends ViewModel {
                         bundle.putString("orderId", orderId);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
+                        activity.finish();
                     }
 
                     @Override

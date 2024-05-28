@@ -38,4 +38,8 @@ public class NotificationViewModel {
             }
         });
     }
+
+    public void reloadData(){
+        loadNotification(recipientId, recipientType);
+    }
 }

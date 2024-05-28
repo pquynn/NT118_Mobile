@@ -49,6 +49,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.recyclerview)
     implementation(libs.firebase.storage)
+    implementation(fileTree(mapOf(
+        "dir" to "E:\\zalopay",
+        "include" to listOf("*.aar", "*.jar")
+    )))
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.ext.junit)
@@ -75,7 +79,6 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
 
-
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
@@ -86,5 +89,12 @@ dependencies {
 
     // import swipe refresh layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // momo payment mobile-sdk
+    implementation ("com.github.momo-wallet:mobile-sdk:1.0.7")
+
+    // zalo
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
 
 }

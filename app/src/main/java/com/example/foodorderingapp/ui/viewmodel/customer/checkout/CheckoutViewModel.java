@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.CreateOrder;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
@@ -42,6 +44,8 @@ import com.google.firebase.firestore.Transaction;
 
 import org.checkerframework.checker.units.qual.C;
 import org.checkerframework.checker.units.qual.N;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,6 +54,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+
+import vn.momo.momo_partner.AppMoMoLib;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class CheckoutViewModel extends ViewModel {
     private String userId;
@@ -78,6 +88,16 @@ public class CheckoutViewModel extends ViewModel {
     private CouponRepository couponRepository;
     private ProductRepository productRepository;
     private NotificationRepository notificationRepository;
+
+    // momo
+    private MutableLiveData<Boolean> paymentRequestResult = new MutableLiveData<>();
+    private String amount = "1000";
+    private String fee = "0";
+    int environment = 0;//developer default
+    private String merchantName = "Thanh toán";
+    private String merchantCode = "SCB01";
+    private String merchantNameLabel = "Nhà cung cấp";
+    private String description = "Thanh toán dịch vụ ABC";
 
     // CONSTRUCTOR
     public CheckoutViewModel(String userId, Context context, Activity activity){
@@ -157,6 +177,10 @@ public class CheckoutViewModel extends ViewModel {
     public MutableLiveData<Coupon> getCouponLiveData() {
         return couponLiveData;
     }
+
+    public MutableLiveData<Boolean> getPaymentRequestResult() {
+        return paymentRequestResult;
+    }
 // end: GETTER
 
 
@@ -212,7 +236,7 @@ public class CheckoutViewModel extends ViewModel {
 
     // method to check valid before checkout
     public void checkout() {
-//        showProgressDialog("Đang xử lý...");
+        showProgressDialog("Đang xử lý...");
 
         if (discountValueLiveData.getValue() < 0) {
             couponRepository.getCouponById(couponLiveData.getValue().getIdCoupon(), new CouponRepository.callBackCoupon() {
@@ -269,15 +293,22 @@ public class CheckoutViewModel extends ViewModel {
                         if (product == null || product.getProductSize().get(size).get("QUANTITY") < entry.getValue().getQuantity()) {
                             allProductsAvailable = false;
                             unavailablePName.add(product.getProductName());
-//                            dismissProgressDialog();
-//                            Toast.makeText(context, "Sản phẩm ko đủ sl", Toast.LENGTH_SHORT).show();
-//                            showAlertDialog(context);
-//                            break;  // Exit the callback to prevent further processing
                         }
                     }
 
                     if (allProductsAvailable) {
-                        processOrder();
+                        dismissProgressDialog();
+
+                        if(paymentMethodLiveData.getValue().equals("Ví MoMo")){
+                            requestPayment();
+                        }
+                        else if(paymentMethodLiveData.getValue().equals("ZaloPay")){
+                            requestZalo();
+                        }
+                        else{
+                            processOrder();
+                        }
+
                     }
                     else{
                         dismissProgressDialog();
@@ -294,6 +325,7 @@ public class CheckoutViewModel extends ViewModel {
         }
     }
 
+    // method to process order: update order from cart to official order
     public void processOrder() {
         // update order before upload to firestore
         Date now = new Date();
@@ -354,7 +386,6 @@ public class CheckoutViewModel extends ViewModel {
         // todo: send notificaiton to admin
         // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
 
-
         // Assuming the process is successful:
         dismissProgressDialog();
         Intent intent = new Intent(context, BuySuccessActivity.class);
@@ -362,8 +393,10 @@ public class CheckoutViewModel extends ViewModel {
         bundle.putString("orderId", orderLiveData.getValue().getId());
         intent.putExtras(bundle);
         context.startActivity(intent);
+        activity.finish();
     }
 
+    // method to show alert if product quantity is unavailable
     public void showAlertDialog(Context context, List<String> productName) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
@@ -391,7 +424,95 @@ public class CheckoutViewModel extends ViewModel {
         alert.show();
     }
 
+    // method to init environment for online payment
+    public void initializeEnvironment() {
+        //momo
+        AppMoMoLib.getInstance().setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT);
 
+        //zalo
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+    }
+
+
+    //Request zalo pay method
+    private void requestZalo(){
+        CreateOrder orderApi = new CreateOrder();
+
+        try {
+            String amount = orderPriceLiveData.getValue().toString();
+            JSONObject data = orderApi.createOrder(amount);
+            String code = data.getString("return_code");
+
+            if (code.equals("1")) {
+                String token = data.getString("zp_trans_token");
+                ZaloPaySDK.getInstance().payOrder(activity, token, "demozpdk://app", new PayOrderListener() {
+                    @Override
+                    public void onPaymentSucceeded(String s, String s1, String s2) {
+                        processOrder();
+                    }
+
+                    @Override
+                    public void onPaymentCanceled(String s, String s1) {
+                        Toast.makeText(context, "Giao dịch không thành công! Bạn đã hủy thanh toán.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                        Toast.makeText(context, "Giao dịch đang bị lỗi! Hãy thử lại.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //Get token through MoMo app--------
+    private void requestPayment() {
+        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT);
+        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN);
+//        if (edAmount.getText().toString() != null && edAmount.getText().toString().trim().length() != 0)
+//            amount = edAmount.getText().toString().trim();
+
+        Map<String, Object> eventValue = new HashMap<>();
+        //client Required
+        eventValue.put("merchantname", merchantName); //Tên đối tác. được đăng ký tại https://business.momo.vn. VD: Google, Apple, Tiki , CGV Cinemas
+        eventValue.put("merchantcode", merchantCode); //Mã đối tác, được cung cấp bởi MoMo tại https://business.momo.vn
+        eventValue.put("amount", amount); //Kiểu integer
+        eventValue.put("orderId", "orderId123456789"); //uniqueue id cho Bill order, giá trị duy nhất cho mỗi đơn hàng
+        eventValue.put("orderLabel", "Mã đơn hàng"); //gán nhãn
+
+        //client Optional - bill info
+        eventValue.put("merchantnamelabel", "Dịch vụ");//gán nhãn
+        eventValue.put("fee", "0"); //Kiểu integer
+        eventValue.put("description", description); //mô tả đơn hàng - short description
+
+        //client extra data
+        eventValue.put("requestId",  merchantCode+"merchant_billId_"+System.currentTimeMillis());
+        eventValue.put("partnerCode", merchantCode);
+        //Example extra data
+        JSONObject objExtraData = new JSONObject();
+        try {
+            objExtraData.put("site_code", "008");
+            objExtraData.put("site_name", "CGV Cresent Mall");
+            objExtraData.put("screen_code", 0);
+            objExtraData.put("screen_name", "Special");
+            objExtraData.put("movie_name", "Kẻ Trộm Mặt Trăng 3");
+            objExtraData.put("movie_format", "2D");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        eventValue.put("extraData", objExtraData.toString());
+
+        eventValue.put("extra", "");
+        AppMoMoLib.getInstance().requestMoMoCallBack(activity, eventValue);
+
+    }
 
     public void reloadSelectedCoupon(){
         Coupon coupon = new Coupon();
@@ -464,7 +585,9 @@ public class CheckoutViewModel extends ViewModel {
         paymentMethodLiveData.setValue(method);
         if(method.equals("Thanh toán khi nhận hàng"))
             iconPaymentLiveData.setValue(R.drawable.cash);
-        else iconPaymentLiveData.setValue(R.drawable.paypal);
+        else if(method.equals("ZaloPay"))
+            iconPaymentLiveData.setValue(R.drawable.zalopay);
+        else iconPaymentLiveData.setValue(R.drawable.momo);
     }
 
     // load coupon by coupon id

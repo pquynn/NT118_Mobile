@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.refund;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -64,7 +66,7 @@ public class RefundRequestActivity extends AppCompatActivity {
         screenName.setText("Yêu cầu hoàn tiền");
 
         btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> showBackAlert(context));
 
         orderItemMap = new HashMap<>();
         refundItemMap = new HashMap<>();
@@ -97,7 +99,7 @@ public class RefundRequestActivity extends AppCompatActivity {
         binding.recyclerViewRefundRequest.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewRefundRequest.setAdapter(adapter);
 
-        viewModel = new RefundViewModel(orderId, this);
+        viewModel = new RefundViewModel(orderId, this, this);
 
         viewModel.getOrderLiveData().observe(this, new Observer<Order>() {
             @Override
@@ -114,8 +116,41 @@ public class RefundRequestActivity extends AppCompatActivity {
         });
 
         context = this;
+        //on button send clicked
         binding.btnSend.setOnClickListener(v -> showAlertDialog(context));
+
+
+        //on back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                showBackAlert(context);
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
     }
+
+    //method to show alert dialog when click btn back
+    public void showBackAlert(Context context){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setMessage("Xác nhận dừng gửi yêu cầu hoàn tiền?");
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
 
     public void showAlertDialog(Context context) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);

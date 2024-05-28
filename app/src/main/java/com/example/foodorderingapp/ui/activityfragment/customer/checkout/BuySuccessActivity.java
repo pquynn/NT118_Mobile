@@ -2,9 +2,13 @@ package com.example.foodorderingapp.ui.activityfragment.customer.checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment.MyOrderInProgress;
+import com.example.foodorderingapp.ui.activityfragment.customer.cart.CartFragment;
 import com.example.foodorderingapp.ui.activityfragment.customer.refund.RefundViewActivity;
 
 import android.view.View;
@@ -32,10 +36,19 @@ public class BuySuccessActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                //todo: cho nó trở về trang gì đó, vậy nếu user dùng nút bank của điện thoại thì sao????
+                startActivity(new Intent(getApplicationContext(), CartFragment.class));
             }
         });
+
+        //on back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(getApplicationContext(), CartFragment.class));
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+
 
         if(getIntent().getExtras() != null){
             orderId = getIntent().getExtras().getString("orderId");

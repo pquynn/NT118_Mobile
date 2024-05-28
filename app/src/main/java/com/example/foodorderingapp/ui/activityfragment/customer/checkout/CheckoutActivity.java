@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -25,10 +27,15 @@ import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
+import com.google.firebase.FirebaseApp;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import vn.momo.momo_partner.AppMoMoLib;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPaySDK;
 
 public class CheckoutActivity extends AppCompatActivity {
     TextView screenName;
@@ -47,8 +54,14 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
         binding.setLifecycleOwner(this);
+        viewModel = new CheckoutViewModel(userId, this, CheckoutActivity.this);
+
+        // init environment for zalopay and momo
+        viewModel.initializeEnvironment();
+
 
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
@@ -60,7 +73,7 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewOrderDetail.setAdapter(adapter);
 
-        viewModel = new CheckoutViewModel(userId, this, CheckoutActivity.this);
+
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
             orderItemMap.clear();
@@ -78,7 +91,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // set button back click eventa
         btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> showBackToCartAlert(context));
 
         // set button ChangeAddress click event
         binding.btnChangeAddress.setOnClickListener(v -> {
@@ -136,6 +149,36 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         //end: button buy click event
+
+        //on back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                showBackToCartAlert(context);
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    //method to show alert dialog when click btn back
+    public void showBackToCartAlert(Context context){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setMessage("Bạn muốn quay về giỏ hàng?");
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     // method to show alert dialog when click btn buy
@@ -194,5 +237,50 @@ public class CheckoutActivity extends AppCompatActivity {
                 viewModel.loadPaymentMethod(paymentMethod);
             }
         }
+        //GET DATA FROM MOMO PAYMENT GATEWAY
+        else if(requestCode == AppMoMoLib.getInstance().REQUEST_CODE_MOMO && resultCode == -1) {
+            if(data != null) {
+                if(data.getIntExtra("status", -1) == 0) {
+                    //TOKEN IS AVAILABLE
+                    Log.d("momo", "momo thanh toan thanh cong " + data.getStringExtra("message"));
+//                    tvMessage.setText("message: " + "Get token " + data.getStringExtra("message"));
+                    String token = data.getStringExtra("data"); //Token response
+                    String phoneNumber = data.getStringExtra("phonenumber");
+                    String env = data.getStringExtra("env");
+                    if(env == null){
+                        env = "app";
+                    }
+
+                    if(token != null && !token.equals("")) {
+                        // TODO: send phoneNumber & token to your server side to process payment with MoMo server
+                        // IF Momo topup success, continue to process your order
+                    } else {
+                        Log.d("momo", "khong thanh cong");
+                    }
+                } else if(data.getIntExtra("status", -1) == 1) {
+                    //TOKEN FAIL
+                    String message = data.getStringExtra("message") != null?data.getStringExtra("message"):"Thất bại";
+                    Log.d("momo", "khong thanh cong");
+                } else if(data.getIntExtra("status", -1) == 2) {
+                    //TOKEN FAIL
+                    Log.d("momo", "khong thanh cong");
+                } else {
+                    //TOKEN FAIL
+                    Log.d("momo", "khong thanh cong");
+                }
+            } else {
+                Log.d("momo", "khong thanh cong");
+            }
+        } else {
+            Log.d("momo", "khong thanh cong");
+        }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
+    }
+
+
 }

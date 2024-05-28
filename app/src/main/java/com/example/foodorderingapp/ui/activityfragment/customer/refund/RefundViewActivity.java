@@ -62,7 +62,7 @@ public class RefundViewActivity extends AppCompatActivity {
         binding.recyclerViewRefundProgress.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewRefundProgress.setAdapter(adapter);
 
-        viewModel = new RefundViewModel(orderId, this);
+        viewModel = new RefundViewModel(orderId, this, this);
         // observe change in refund live data
         viewModel.getRefundLiveData().observe(this, new Observer<Refund>() {
             @Override

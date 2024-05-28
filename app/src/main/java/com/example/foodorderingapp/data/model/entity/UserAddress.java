@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.data.model.entity;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 public class UserAddress {
@@ -39,7 +40,7 @@ public class UserAddress {
         this.recipientPhone = recipientPhone;
         this.idUser = idUser;
     }
-
+    @Exclude
     public String getAllAddress(){
         if(addressDetail.equals("null")) addressDetail = " ";
         if(ward.equals("null")) ward = " ";

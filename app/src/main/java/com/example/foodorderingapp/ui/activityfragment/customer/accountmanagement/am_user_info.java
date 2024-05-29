@@ -27,6 +27,8 @@ public class am_user_info extends AppCompatActivity {
     private UserInfoVM viewModel;
 
     private FrameLayout btnBack;
+
+    private static final int EDIT_NAME_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,10 @@ public class am_user_info extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Trả kết quả về MainActivity
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("updatedName", String.valueOf(tvName.getText()));
+                setResult(RESULT_OK, resultIntent);
                 finish();
             }
         });
@@ -67,6 +73,7 @@ public class am_user_info extends AppCompatActivity {
         });
 
 
+
         llAM_userInfo_name = findViewById(R.id.llAM_userInfo_name);
         llAM_userInfo_phone = findViewById(R.id.llAM_userInfo_phone);
         llAM_userInfo_password = findViewById(R.id.llAM_userInfo_password);
@@ -76,7 +83,8 @@ public class am_user_info extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), am_change_userinfo_name.class);
                 myIntent.putExtra("user_id", userId);
-                startActivity(myIntent);
+                //startActivity(myIntent);
+                startActivityIfNeeded(myIntent, EDIT_NAME_REQUEST_CODE);
             }
         });
 
@@ -98,5 +106,15 @@ public class am_user_info extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_NAME_REQUEST_CODE && resultCode == RESULT_OK) {
+            String updatedName = data.getStringExtra("updatedName");
+            tvName.setText(updatedName);
+            tvNameAcc.setText(updatedName);
+        }
     }
 }

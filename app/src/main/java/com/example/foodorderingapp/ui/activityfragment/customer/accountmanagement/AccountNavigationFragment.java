@@ -1,6 +1,9 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -31,6 +37,9 @@ public class AccountNavigationFragment extends Fragment {
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
 
+    AlertDialog progressDialog;
+
+
     public AccountNavigationFragment() {
         // Required empty public constructor
     }
@@ -38,6 +47,19 @@ public class AccountNavigationFragment extends Fragment {
     UserInfoVM viewModel;
     String userId;
     TextView tvNameAcc;
+
+    private final ActivityResultLauncher<Intent> editNameLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String updatedName = data.getStringExtra("updatedName");
+                        tvNameAcc.setText(updatedName);
+                    }
+                }
+            }
+    );
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +76,16 @@ public class AccountNavigationFragment extends Fragment {
         llAM_userOrders = view.findViewById(R.id.llAM_userOrders);
         llAM_faqs = view.findViewById(R.id.llAM_faqs);
 
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         userId = "3";
 
 //        Intent intent = getIntent();
@@ -67,7 +99,7 @@ public class AccountNavigationFragment extends Fragment {
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), am_user_info.class);
                 myIntent.putExtra("user_id", userId);
-                startActivity(myIntent);
+                editNameLauncher.launch(myIntent);
             }
         });
 
@@ -111,10 +143,12 @@ public class AccountNavigationFragment extends Fragment {
         viewModel = new UserInfoVM(userId, getContext());
 
         tvNameAcc = view.findViewById(R.id.textView_name_acc);
+        progressDialog.show();
         viewModel.getUserInfoLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 tvNameAcc.setText(user.getUserName());
+                progressDialog.dismiss();
             }
         });
     }

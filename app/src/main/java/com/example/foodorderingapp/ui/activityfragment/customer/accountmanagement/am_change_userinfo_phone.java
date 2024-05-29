@@ -2,8 +2,11 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -35,6 +39,7 @@ public class am_change_userinfo_phone extends AppCompatActivity {
     Button btn_saveChanges;
     EditText textinput_phone;
     FrameLayout btnBack;
+    AlertDialog progressDialog;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,16 @@ public class am_change_userinfo_phone extends AppCompatActivity {
             }
         });
 
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         Intent intent = getIntent();
         if (intent != null) {
             if(intent.hasExtra("user_id")){
@@ -60,12 +75,13 @@ public class am_change_userinfo_phone extends AppCompatActivity {
 
         viewModel = new UserInfoVM(userId, this);
         textinput_phone = findViewById(R.id.textinputAM_userinfo_phone);
+        progressDialog.show();
         viewModel.getUserInfoLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 userPhone = user.getPhone();
                 textinput_phone.setText(userPhone);
-//                textinput_phone.setText(user.getPhone());
+                progressDialog.dismiss();
             }
         });
 
@@ -102,9 +118,11 @@ public class am_change_userinfo_phone extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập số điện thoại mới!", Toast.LENGTH_SHORT).show();
                 }  else {
                     // Xử lý đăng nhập khi EditText được điền đầy đủ
+                    progressDialog.show();
                     authRepository.checkPhoneNumber(phone, new AuthRepository.AuthCallback() {
                         @Override
                         public void onLoginSuccess(String data) {
+                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Số điện thoại đã được sử dụng!", Toast.LENGTH_SHORT).show();
                         }
 
@@ -117,13 +135,14 @@ public class am_change_userinfo_phone extends AppCompatActivity {
                                     intent.putExtra("phone", phone);
                                     intent.putExtra("oldPhone", userPhone);
                                     intent.putExtra("verificationCode", authRepository.getVerificationCode());
-
+                                    progressDialog.dismiss();
                                     startActivity(intent);
                                     finish();
                                 }
 
                                 @Override
                                 public void onFailure(Exception e) {
+                                    progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Nhập sai số điện thoại hoặc quá trình đã gặp sự cố!", Toast.LENGTH_SHORT).show();
                                 }
                             });

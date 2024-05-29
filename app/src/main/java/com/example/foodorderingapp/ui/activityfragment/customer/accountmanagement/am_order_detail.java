@@ -2,14 +2,18 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +42,7 @@ public class am_order_detail extends AppCompatActivity {
     TextView txt_orderTotal, txt_orderDiscount, txt_orderPoint, txt_orderPrice;
     LinearLayout ll_orderDiscount, ll_orderPoint;
     String orderId = "", orderStatus = "";
-
+    AlertDialog progressDialog;
     FrameLayout btnBack;
     @SuppressLint("WrongViewCast")
     @Override
@@ -58,6 +62,15 @@ public class am_order_detail extends AppCompatActivity {
             }
         });
 
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         txt_orderId = findViewById(R.id.txt_orderDT_ID);
         txt_orderStatus = findViewById(R.id.txt_orderDT_status);
@@ -100,17 +113,19 @@ public class am_order_detail extends AppCompatActivity {
         recyclerViewOrderDetail();
         txt_orderStatus.setText("");
 
+        progressDialog.show();
         viewModel.getOrderStatusLiveDate().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 orderStatus = s;
                 txt_orderStatus.setText(orderStatus);
                 SetVisibilityButton(orderStatus);
+                progressDialog.dismiss();
             }
         });
 
 
-
+        progressDialog.show();
         viewModel.getOrderMutableLiveData().observe(this, new Observer<Order>() {
             @Override
             public void onChanged(Order order) {
@@ -129,6 +144,7 @@ public class am_order_detail extends AppCompatActivity {
                     ll_orderDiscount.setVisibility(View.VISIBLE);
                     txt_orderDiscount.setText(String.valueOf(order.getDiscountValue()));
                 }
+                progressDialog.dismiss();
             }
         });
 
@@ -166,6 +182,7 @@ public class am_order_detail extends AppCompatActivity {
 
         adapter = new OrderDetailAdapter(orderItemMap);
         recyclerViewList.setAdapter(adapter);
+        progressDialog.show();
             viewModel.getOrderMutableLiveData().observe(this, new Observer<Order>() {
                 @Override
                 public void onChanged(Order order) {
@@ -173,6 +190,7 @@ public class am_order_detail extends AppCompatActivity {
                 orderItemMap.putAll(order.getOrderItem());
 
                 adapter.notifyDataSetChanged();
+                progressDialog.dismiss();
                 Log.d("Get in load detail", "GET IN LOAD DETAIL");
                 }
             });

@@ -23,6 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
 import com.example.foodorderingapp.data.model.OrderItem;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserInfoVM;
@@ -34,6 +37,7 @@ public class AccountNavigationFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
+    private Button btnLogout;
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
@@ -54,6 +58,7 @@ public class AccountNavigationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        btnLogout = view.findViewById(R.id.btn_log_out);
 
         llAM_userInfo = view.findViewById(R.id.llAM_userInfo);
         llAM_userpoint = view.findViewById(R.id.llAM_userpoint);
@@ -126,15 +131,19 @@ public class AccountNavigationFragment extends Fragment {
         });
 
         // Đăng xuất ứng dụng
-//        Button btnLogout = view.findViewById(R.id.btn_log_out);
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.clear();
-//                editor.commit();
-//            }
-//        });
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+                String userID = sharedPreferences.getString(KEY_USER_ID, null);
+                if (userID != null){
+                    AuthRepository authRepository = new AuthRepository();
+                    authRepository.logOut(userID);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                }
+            }
+        });
     }
 }

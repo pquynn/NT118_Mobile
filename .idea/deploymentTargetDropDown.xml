@@ -2,7 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="SelectLocation">
+        <State />
+      </entry>
       <entry key="activity_login">
+        <State />
+      </entry>
+      <entry key="am_user_info">
         <State />
       </entry>
       <entry key="app">

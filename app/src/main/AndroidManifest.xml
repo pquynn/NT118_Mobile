@@ -21,7 +21,7 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activityfragment.customer.SelectLocation"
+            android:name=".ui.activityfragment.customer.accountmanagement.SelectLocation"
             android:exported="true" />
         <activity
             android:name=".data.repository.order.resultTestActivity"

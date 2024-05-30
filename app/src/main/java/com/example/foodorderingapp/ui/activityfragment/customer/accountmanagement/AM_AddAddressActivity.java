@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -23,6 +25,7 @@ import com.example.foodorderingapp.data.repository.accountmanagement.UserInfoRep
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserAddressVM;
 
 public class AM_AddAddressActivity extends AppCompatActivity {
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     private FrameLayout btnBack;
     private TextView screenName;
     String userId, userAddressId;
@@ -162,6 +165,27 @@ public class AM_AddAddressActivity extends AppCompatActivity {
             }
         });
 
+        // Đăng ký ActivityResultLauncher
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
 
+                        // Hiện dữ liệu từ trang chọn địa chỉ
+                        input_address_detail.setText(data.getStringExtra("address_detail"));
+                        input_ward.setText(data.getStringExtra("ward"));
+                        input_district.setText(data.getStringExtra("district"));
+                        input_city.setText(data.getStringExtra("city"));
+                    }
+                }
+        );
+
+        // Nút chuyển qua trang chọn địa chỉ
+//        btn_getAddress.setOnClickListener(v -> {
+//            Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
+//            activityResultLauncher.launch(intentNew);
+//        });
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.ui.activityfragment.authentication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.foodorderingapp.data.repository.admin.AdminHomeRepository;
+import com.example.foodorderingapp.data.repository.admin.AdminOrderRepository;
 import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
@@ -30,6 +33,8 @@ public class activity_login extends AppCompatActivity {
     private ImageButton imgBtnVisibility;
     private ProgressBar progressBar;
     private AuthRepository authRepository = new AuthRepository();
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +104,25 @@ public class activity_login extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
 
-                            Intent intent = new Intent(activity_login.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            authRepository.getUserID(phone, new AuthRepository.AuthCallbackGetUserID() {
+                                @Override
+                                public void onSuccess(String userID) {
+                                    SharedPreferences sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString(KEY_USER_ID, userID);
+                                    editor.apply();
+
+                                    Intent intent = new Intent(activity_login.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Đã xảy ra lỗi trong quá trình đăng nhập!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override

@@ -39,6 +39,27 @@ public class AuthRepository {
     private String verificationCode;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
+    public void getUserID(String phone, AuthCallbackGetUserID getUserID) {
+        reference_user.whereEqualTo("PHONE", phone)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                            if (getUserID != null){
+                                getUserID.onSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm số điện thoại
+                            if (getUserID != null) {
+                                getUserID.onFailure(new Exception("No matching user info found or task failed!"));
+                            }
+                        }
+                    }
+                });
+    }
+
     public void signIn(String phone, String password, AuthCallback callback) {
         reference.whereEqualTo("PHONE", phone).whereEqualTo("PASSWORD", password).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -54,7 +75,7 @@ public class AuthRepository {
                 } else {
                     // Không tìm thấy hoặc có lỗi xảy ra
                     if (callback != null) {
-                        callback.onLoginFailure(new Exception("No matching login info found or task failed"));
+                        callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
                     }
                 }
             }
@@ -62,6 +83,7 @@ public class AuthRepository {
     }
 
     public void checkPhoneNumber(String phone, AuthCallback callback) {
+        Log.d("PHONE", phone);
         reference.whereEqualTo("PHONE", phone).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -79,7 +101,7 @@ public class AuthRepository {
         });
     }
 
-    public void sendOTP(String phone, boolean isResend,Activity activity, AuthCallbackOTP callback) {
+    public void sendOTP(String phone, boolean isResend, Activity activity, AuthCallbackOTP callback) {
         // Xóa số 0 ở đầu
         phone = phone.replaceFirst("^0", "");
         // Thêm +84 vào đầu chuỗi
@@ -123,7 +145,7 @@ public class AuthRepository {
     }
 
     public void changePassword(String phone, String password, AuthCallbackUpdatePassword callBack) {
-        // Tìm các tài liệu có trường PHONE trùng khớp với số điện thoại được cung cấp
+        // Tìm các tài khoản trong LOGIN có trường PHONE trùng khớp với số điện thoại được cung cấp
         reference.whereEqualTo("PHONE", phone)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -157,6 +179,74 @@ public class AuthRepository {
                 });
     }
 
+    public void changePhone(String oldPhone, String newPhone, AuthCallbackUpdatePassword callBack) {
+        // Tìm các tài khoản trong LOGIN có trường PHONE trùng khớp với số điện thoại được cung cấp
+        reference.whereEqualTo("PHONE", oldPhone)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                            reference.document(document.getId()).update("PHONE", newPhone)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            // Số điện thoại đã được cập nhật thành công
+                                            if (callBack != null) {
+                                                callBack.onUpdateSuccess();
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Xảy ra lỗi khi cố gắng cập nhật số điện thoại
+                                            if (callBack != null) {
+                                                callBack.onUpdateFailure(new Exception("No matching login info found or task failed"));
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // Không tìm số điện thoại
+                        }
+                    }
+                });
+
+        // Tìm các tài khoản trong USER có trường PHONE trùng khớp với số điện thoại được cung cấp
+        reference_user.whereEqualTo("PHONE", oldPhone)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                            reference.document(document.getId()).update("PHONE", newPhone)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            // Số điện thoại đã được cập nhật thành công
+                                            if (callBack != null) {
+                                                callBack.onUpdateSuccess();
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Xảy ra lỗi khi cố gắng cập nhật số điện thoại
+                                            if (callBack != null) {
+                                                callBack.onUpdateFailure(new Exception("No matching login info found or task failed"));
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // Không tìm số điện thoại
+                        }
+                    }
+                });
+    }
+
     public void createUser(String name, String phone, String password, Context context) {
         Map<String, Object> userLoginData = new HashMap<>();
         userLoginData.put("PHONE", phone); // Điền thông tin số điện thoại
@@ -166,6 +256,7 @@ public class AuthRepository {
         userData.put("ID_LOGIN", ""); // Cập nhật sau khi thêm người dùng vào collection LOGIN
         userData.put("PHONE", phone);
         userData.put("NAME", name);
+        userData.put("ROLE", 0);
         userData.put("GENDER", ""); // Cập nhật sau
 
         reference.add(userLoginData)
@@ -225,5 +316,11 @@ public class AuthRepository {
         void onUpdateSuccess();
 
         void onUpdateFailure(Exception e);
+    }
+
+    public interface AuthCallbackGetUserID {
+        void onSuccess(String userID);
+
+        void onFailure(Exception e);
     }
 }

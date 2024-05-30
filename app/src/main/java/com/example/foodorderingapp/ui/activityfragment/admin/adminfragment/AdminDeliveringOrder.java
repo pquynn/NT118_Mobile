@@ -1,22 +1,27 @@
 package com.example.foodorderingapp.ui.activityfragment.admin.adminfragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
 import com.example.foodorderingapp.data.model.OrderItem;
+import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.ui.AdminOrderVM;
+import com.example.foodorderingapp.ui.adapter.AdminOrderItemAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,8 +35,9 @@ public class AdminDeliveringOrder extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private RecyclerView recyclerViewList;
-    private OrderItemAdapter Adapter;
+    private AdminOrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
+    private AdminOrderVM adminOrderVM;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,24 +85,32 @@ public class AdminDeliveringOrder extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dataInitialize();
+        adminOrderVM = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @Override
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(AdminOrderVM.class)) {
+                    return (T) new AdminOrderVM("Đang giao");
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }
+        }).get(AdminOrderVM.class);
+
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
-
-        Adapter = new OrderItemAdapter(listOrderItem);
-        recyclerViewList.setAdapter(Adapter);
-    }
-
-    private void dataInitialize() {
         listOrderItem = new ArrayList<>();
-        listOrderItem.add(new OrderItem("#order001", 200000, 5));
-        listOrderItem.add(new OrderItem("#order002", 300000, 6));
-        listOrderItem.add(new OrderItem("#order003", 400000, 7));
-        listOrderItem.add(new OrderItem("#order004", 500000, 8));
-        listOrderItem.add(new OrderItem("#order005", 600000, 9));
-        listOrderItem.add(new OrderItem("#order006", 700000, 10));
-        listOrderItem.add(new OrderItem("#order007", 700000, 10));
-        listOrderItem.add(new OrderItem("#order008", 700000, 10));
+
+        adminOrderVM.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
+            @Override
+            public void onChanged(List<Order> orders) {
+                for (Order i : orders) {
+                    if (i != null) {
+                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                    }
+                }
+                Adapter = new AdminOrderItemAdapter(listOrderItem);
+                recyclerViewList.setAdapter(Adapter);
+            }
+        });
     }
 }

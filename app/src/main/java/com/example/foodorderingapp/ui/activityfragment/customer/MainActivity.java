@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -30,6 +31,10 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     String token = "";
+    // private SharedPreferences sharedPreferences;
+    // private static final String SHARE_PREF_NAME = "sharePrefName";
+    // private static final String KEY_USER_ID = "userID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         } , 300);
+    //     sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+    //     Log.d("USER_ID", sharedPreferences.getString(KEY_USER_ID, null) + "!");
     }
 
 }

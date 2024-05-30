@@ -19,6 +19,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,7 +36,7 @@ public class activity_verifyOTP extends AppCompatActivity {
     private EditText firstInput, secondInput, thirdInput, fourthInput, fifthInput, sixthInput;
     private Button btnCofirm;
     private ProgressBar progressBar;
-    private String phone, userName;
+    private String phone, userName, oldPhone;
     private Intent intent;
     private String verificationCode;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -67,6 +69,10 @@ public class activity_verifyOTP extends AppCompatActivity {
         userName = "";
         if (intent.getStringExtra("userName") != null) {
             userName = intent.getStringExtra("userName");
+        }
+        oldPhone = "";
+        if (intent.getStringExtra("oldPhone") != null) {
+            oldPhone = intent.getStringExtra("oldPhone");
         }
 
         firstInput.addTextChangedListener(new TextWatcher() {
@@ -169,12 +175,35 @@ public class activity_verifyOTP extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 progressBar.setVisibility(View.GONE);
 
-                                Intent intent = new Intent(activity_verifyOTP.this, activity_setpassword.class);
+                                Intent intent = null;
 
-                                intent.putExtra("phone", phone);
+                                if (Objects.equals(oldPhone, "")){
+                                    // Trường hợp dành cho các trang quên mật khẩu, tạo tài khoản
+                                    intent = new Intent(activity_verifyOTP.this, activity_setpassword.class);
 
-                                if (!Objects.equals(userName, "")) {
-                                    intent.putExtra("userName", userName);
+                                    intent.putExtra("phone", phone);
+
+                                    if (!Objects.equals(userName, "")) {
+                                        intent.putExtra("userName", userName);
+                                    }
+                                } else {
+                                    // Trường hợp cho đổi số điện thoại khách hàng
+                                    AuthRepository authRepository = new AuthRepository();
+
+                                    authRepository.changePhone(oldPhone, phone, new AuthRepository.AuthCallbackUpdatePassword() {
+                                        @Override
+                                        public void onUpdateSuccess() {
+                                            Toast.makeText(getApplicationContext(), "Cập nhật số điện thoại thành công!", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onUpdateFailure(Exception e) {
+                                            Toast.makeText(getApplicationContext(), "Quá trình đổi số điện thoại đã gặp lỗi!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                    intent = new Intent(activity_verifyOTP.this, MainActivity.class);
+
                                 }
 
                                 startActivity(intent);

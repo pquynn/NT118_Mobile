@@ -8,16 +8,10 @@
       <entry key="MainActivity">
         <State />
       </entry>
-      <entry key="RefundProgressActivity">
-        <State />
-      </entry>
-      <entry key="SearchActivity">
+      <entry key="activity_signup">
         <State />
       </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="resultTestActivity">
         <State />
       </entry>
     </value>

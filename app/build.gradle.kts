@@ -39,6 +39,15 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    packagingOptions {
+        exclude ("META-INF/DEPENDENCIES")
+        exclude ("META-INF/LICENSE")
+        exclude ("META-INF/LICENSE.txt")
+        exclude ("META-INF/NOTICE")
+        exclude ("META-INF/NOTICE.txt")
+        exclude ("META-INF/ASL2.0")
+    }
 }
 
 dependencies {
@@ -86,6 +95,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging")
 
     // import swipe refresh layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -97,4 +107,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.6.0")
     implementation("commons-codec:commons-codec:1.14")
 
+    // google credentical
+    implementation ("com.google.auth:google-auth-library-oauth2-http:1.1.0")
+    implementation ("com.google.api-client:google-api-client:1.33.0")
+    implementation ("com.android.volley:volley:1.2.1")
+    implementation ("com.google.code.gson:gson:2.8.6")
 }

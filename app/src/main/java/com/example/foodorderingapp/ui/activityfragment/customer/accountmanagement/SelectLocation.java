@@ -204,17 +204,6 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                             myMap.clear();
                             myMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí của bạn"));
                             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
-//
-//                            List<Address> addressList = null;
-//
-//                            Geocoder geocoder = new Geocoder(SelectLocation.this);
-//                            try {
-//                                addressList = geocoder.getFromLocationName(String.valueOf(txtAddress.getText()), 1);
-//                            } catch (Exception e) {
-//                                throw new RuntimeException(e);
-//                            }
-//
-//                            txtAddress.setText(addressList != null ? addressList.get(0).getAddressLine(0) : null);
                         }
                     }
                 });

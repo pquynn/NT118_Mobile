@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class AM_AddAddressActivity extends AppCompatActivity {
     EditText input_recipient_name, input_recipient_phone, input_address_detail, input_ward, input_district, input_city;
     Button btn_saveAddress;
     AlertDialog progressDialog;
+    LinearLayout btn_getAddress; //nút chuyển activity lấy địa chỉ
 
     UserInfoRepository repository_user = new UserInfoRepository();
     @Override
@@ -47,6 +49,7 @@ public class AM_AddAddressActivity extends AppCompatActivity {
         input_district = findViewById(R.id.input_district);
         input_city = findViewById(R.id.input_city);
         btn_saveAddress = findViewById(R.id.btn_saveAddress);
+        btn_getAddress = findViewById(R.id.ll_getAddress);
 
         // Tạo AlertDialog với ProgressBar
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

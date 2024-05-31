@@ -6,15 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.foodorderingapp.data.model.SendNotification;
+import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.Refund;
 import com.example.foodorderingapp.data.model.entity.RefundItem;
+import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.data.repository.refund.IRefundRepository;
@@ -33,7 +37,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class RefundViewModel extends ViewModel {
-    private String orderId;
+    private String orderId, token;
     private ProgressDialog progressDialog;
     private Context context;
     private Activity activity;
@@ -47,6 +51,7 @@ public class RefundViewModel extends ViewModel {
     // Repository
     private OrderRepository orderRepository;
     private RefundRepository refundRepository;
+    private NotificationRepository notificationRepository;
     // Constructor
     public RefundViewModel(String orderId, Context context, Activity activity) {
         this.orderId = orderId;
@@ -54,6 +59,7 @@ public class RefundViewModel extends ViewModel {
         this.activity = activity;
         this.orderRepository = new OrderRepository();
         refundRepository = new RefundRepository();
+        notificationRepository = new NotificationRepository();
         loadOrder();
     }
 
@@ -194,6 +200,10 @@ public class RefundViewModel extends ViewModel {
                 orderRepository.updateOrderStatusById(orderId, "Hoàn tiền", new IOrderRepository.OrderChangedCallback() {
                     @Override
                     public void onOrderChanged() {
+                        // send notification to admin
+                        sendNotification();
+
+                        // start activity send successfully
                         Intent intent = new Intent(context, SendRefundSucessActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("orderId", orderId);
@@ -218,7 +228,6 @@ public class RefundViewModel extends ViewModel {
         });
     }
 
-
     // method to show progress dialog
     private void showProgressDialog(String message){
         progressDialog = new ProgressDialog(context);
@@ -232,5 +241,37 @@ public class RefundViewModel extends ViewModel {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+
+    // method to send notification
+    public void sendNotification(){
+        // lấy token admin
+        token = "e6x9kl1gR42feGKCrduNYu:APA91bH19xySfpN6qTGhPHpSLOa0ql78UKyw_GDizxxdMnhCyNJo5FvTe32hHs-1xxXIglqjO1uj5YUM0iOW41RUyFPoipzt7h1KMGUh1n9W830a0ojwj567FpCR3vn2T_A3pA-MhMxK";
+        String title = "Bạn có yêu cầu hoàn tiên!!!";
+        String body = "Khách hàng của đơn hàng " + orderId + " vừa gửi yêu cầu hoàn tiền đến bạn, hãy vào kiểm tra";
+
+        // send notification
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SendNotification notificationSender =
+                        new SendNotification(token, title, body, context);
+                notificationSender.SendNotifications();
+            }
+        } , 20);
+
+        // create notification in firestore
+        Notification notification = new Notification();
+        notification.setId(UUID.randomUUID().toString());
+        notification.setIdRecipient("4"); //todo: có tìm thông tin admin không???
+        notification.setRecipientType(1);
+        notification.setIdOrder(orderId);
+        notification.setStatus("unread");
+        notification.setDate(new Date());
+        notification.setTitle(title);
+        notification.setContent(body);
+        notificationRepository.createNotification(notification);
     }
 }

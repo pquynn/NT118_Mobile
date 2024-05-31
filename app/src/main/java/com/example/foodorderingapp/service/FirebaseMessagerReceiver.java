@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,19 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.UUID;
 
 public class FirebaseMessagerReceiver extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         if (message.getNotification() != null) {
-            showNotification(message.getNotification().getTitle(), message.getNotification().getBody());
+            showNotification(
+                    message.getNotification().getTitle(),
+                    message.getNotification().getBody());
         }
     }
 
@@ -57,7 +63,9 @@ public class FirebaseMessagerReceiver extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        notificationManager.notify(0, builder.build());
+        // Generate a unique ID for the notification using UUID
+        int notificationId = UUID.randomUUID().hashCode();
+        notificationManager.notify(notificationId, builder.build());
     }
 
 }

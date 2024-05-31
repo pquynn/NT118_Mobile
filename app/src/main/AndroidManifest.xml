@@ -67,7 +67,7 @@
             android:name=".ui.activityfragment.customer.accountmanagement.am_point_history"
             android:exported="true" />
         <activity
-            android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo"
+            android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo_name"
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.am_change_password"

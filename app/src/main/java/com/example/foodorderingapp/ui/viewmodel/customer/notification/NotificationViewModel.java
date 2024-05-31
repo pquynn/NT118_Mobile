@@ -42,4 +42,8 @@ public class NotificationViewModel {
     public void reloadData(){
         loadNotification(recipientId, recipientType);
     }
+
+    public void updateNotificationStatus(String notiId){
+        notificationRepository.updateNotificationStatus("read", notiId);
+    }
 }

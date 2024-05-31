@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,7 +19,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.CreateOrder;
+import com.example.foodorderingapp.data.model.SendNotification;
 import com.example.foodorderingapp.data.model.entity.Coupon;
+import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Product;
@@ -52,6 +55,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -62,7 +66,7 @@ import vn.zalopay.sdk.ZaloPaySDK;
 import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class CheckoutViewModel extends ViewModel {
-    private String userId;
+    private String userId, token;
     private String img = "@drawable/cash";
     private ProgressDialog progressDialog; // Declare ProgressDialog
     private Context context;
@@ -382,9 +386,8 @@ public class CheckoutViewModel extends ViewModel {
 
         // update cart to order status "chờ xác nhận" in firestore
         orderRepository.updateCartToOrder(order);
-
-        // todo: send notificaiton to admin
-        // todo: hủy đơn hàng thì nhớ cộng lại sl sp vào và có cộng coupon???
+        // send notificaiton to admin
+        sendNotification();
 
         // Assuming the process is successful:
         dismissProgressDialog();
@@ -661,5 +664,37 @@ public class CheckoutViewModel extends ViewModel {
     }
 
 
+    // method to send notification
+    public void sendNotification(){
+        // lấy token admin
+        token = "e6x9kl1gR42feGKCrduNYu:APA91bH19xySfpN6qTGhPHpSLOa0ql78UKyw_GDizxxdMnhCyNJo5FvTe32hHs-1xxXIglqjO1uj5YUM0iOW41RUyFPoipzt7h1KMGUh1n9W830a0ojwj567FpCR3vn2T_A3pA-MhMxK";
+        String orderId = orderLiveData.getValue().getId();
+        String title = "Bạn có đơn hàng mới";
+        String body = "Đơn hàng " + orderId + " đang chờ bạn xác nhận";
+
+        // send notification
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SendNotification notificationSender =
+                        new SendNotification(token, title, body, context);
+                notificationSender.SendNotifications();
+
+            }
+        } , 20);
+
+        // create notification in firestore
+        Notification notification = new Notification();
+        notification.setId(UUID.randomUUID().toString());
+        notification.setIdRecipient("4"); //todo: có tìm thông tin admin không???
+        notification.setRecipientType(1);
+        notification.setIdOrder(orderId);
+        notification.setStatus("unread");
+        notification.setDate(new Date());
+        notification.setTitle(title);
+        notification.setContent(body);
+        notificationRepository.createNotification(notification);
+    }
 
 }

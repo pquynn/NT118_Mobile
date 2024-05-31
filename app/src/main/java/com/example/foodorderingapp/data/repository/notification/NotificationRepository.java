@@ -52,4 +52,41 @@ public class NotificationRepository implements INotificationRepository{
         });
 
     }
+
+
+    // method to create new notification
+    @Override
+    public void createNotification(Notification notification){
+        collectionRef.add(notification)
+                .addOnSuccessListener(documentReference -> {})
+                .addOnFailureListener(e -> {
+                    Log.e("error", "create noti unsuccessfully ");
+                });
+    }
+
+    // method to update notification status unread <--> read
+    @Override
+    public void updateNotificationStatus(String status, String notificationId){
+        collectionRef.document(notificationId).update("STATUS", status)
+                .addOnSuccessListener(aVoid -> {})
+                .addOnFailureListener(e -> {});
+    }
+
+    // method to update notification
+    @Override
+    public void updateNotification(Notification notification){
+        if (notification == null) {
+            throw new IllegalArgumentException("notification cannot be null");
+        }
+        collectionRef.document(notification.getId()).set(notification)
+                .addOnSuccessListener(aVoid -> {
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure case, e.g., logging or updating UI
+                    Log.d("firestore", "Error updating notification: " + e.getMessage());
+                });
+    }
+
+    // method to delete notification when expire???
+
 }

@@ -43,42 +43,42 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragment_area);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("fcm", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-                        // Get new FCM registration token
-                        token = task.getResult();
-                        // Log and toast
-                        Log.d("fcm", token);
-                    }
-                });
+//        FirebaseMessaging.getInstance().getToken()
+//                .addOnCompleteListener(new OnCompleteListener<String>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<String> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w("fcm", "Fetching FCM registration token failed", task.getException());
+//                            return;
+//                        }
+//                        // Get new FCM registration token
+//                        token = task.getResult();
+//                        // Log and toast
+//                        Log.d("fcm", token);
+//                    }
+//                });
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        sendNoti();
+//        sendNoti();
     }
 
-    public void sendNoti(){
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                SendNotification notificationSender =
-                        new SendNotification(token, "push noti from server", "aaaaaa",
-                                getApplicationContext());
-                notificationSender.SendNotifications();
-
-            }
-        } , 300);
-    //     sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
-    //     Log.d("USER_ID", sharedPreferences.getString(KEY_USER_ID, null) + "!");
-    }
+//    public void sendNoti(){
+//
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                SendNotification notificationSender =
+//                        new SendNotification(token, "push noti from server", "aaaaaa",
+//                                getApplicationContext());
+//                notificationSender.SendNotifications();
+//
+//            }
+//        } , 300);
+//    //     sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+//    //     Log.d("USER_ID", sharedPreferences.getString(KEY_USER_ID, null) + "!");
+//    }
 
 }

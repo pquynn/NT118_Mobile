@@ -63,7 +63,7 @@ public class NotificationFragment extends Fragment {
         viewModel = new NotificationViewModel(userId, role);
         //Adapter
         notiList = new ArrayList<Notification>();
-        adapter = new NotificationAdapter(notiList, viewModel);
+        adapter = new NotificationAdapter(notiList, viewModel, getContext());
         binding.recyclerViewNotification.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewNotification.setAdapter(adapter);
 
@@ -74,13 +74,13 @@ public class NotificationFragment extends Fragment {
                 notiList.clear();
                 notiList.addAll(notifications);
                 adapter.notifyDataSetChanged();
+                binding.swipeRefreshLayout.setRefreshing(false); // Stop the refreshing animation
 
                 if(notifications.isEmpty()){
                     binding.noNotificationContainer.setVisibility(View.VISIBLE);
                     binding.scrollview.setVisibility(View.GONE);
                 }
                 else{
-
                     binding.noNotificationContainer.setVisibility(View.GONE);
                     binding.scrollview.setVisibility(View.VISIBLE);
                 }

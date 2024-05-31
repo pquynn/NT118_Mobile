@@ -68,15 +68,18 @@ public class HomeViewModel extends ViewModel {
 
                         for (OrderItem item : order.getOrderItem().values()) {
                             String productId = item.getIdProduct();
-                            int count = productCountMap.getOrDefault(productId, 0) + item.getQuantity();
-                            productCountMap.put(productId, count);
-                            Log.d("firebaseVM", "Product ID: " + productId + ", Quantity: " + item.getQuantity() + ", Total Count: " + count);
+                            if (productId != null && !productId.isEmpty()) {
+                                int count = productCountMap.getOrDefault(productId, 0) + item.getQuantity();
+                                productCountMap.put(productId, count);
+                                Log.d("firebaseVM", "Product ID: " + productId + ", Quantity: " + item.getQuantity() + ", Total Count: " + count);
+                            }
                         }
                     }
 
                     List<String> sortedProductIds = productCountMap.entrySet().stream()
                             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                             .map(Map.Entry::getKey)
+                            .filter(productId -> productId != null && !productId.isEmpty()) // Ensure no empty IDs
                             .limit(5)
                             .collect(Collectors.toList());
                     Log.d("firebaseVM", "Sorted Product IDs: " + sortedProductIds);
@@ -102,14 +105,14 @@ public class HomeViewModel extends ViewModel {
                                     Log.d("firebaseVM", "Best Selling Products: " + products);
                                 })
                                 .addOnFailureListener(exception -> {
-                                     Log.e("firebaseVM", "Error getting products: ", exception);
+                                    Log.e("firebaseVM", "Error getting products: ", exception);
                                 });
-                    }else {
+                    } else {
                         Log.d("firebaseVM", "No products found in orders.");
                     }
                 })
                 .addOnFailureListener(exception -> {
-                        Log.d("firebase", "fail");
+                    Log.d("firebase", "fail");
                 });
     }
 

@@ -1,7 +1,7 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.search;
 
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 
@@ -15,15 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.widget.Button;
 
 import com.example.foodorderingapp.data.model.entity.Product;
-import com.example.foodorderingapp.data.repository.product.IProductRepository;
-import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.SearchAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.search.SearchViewModel;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SearchActivity extends AppCompatActivity {
     RecyclerView rcv_productSearch;
@@ -90,17 +91,19 @@ public class SearchActivity extends AppCompatActivity {
             public void onProductClick(Product product) {
                 // Xử lý sự kiện click vào sản phẩm ở đây
                 // Ví dụ: Chuyển sang màn hình chi tiết sản phẩm
-                if (product.getIdCategory() != null) {
-                    if (product.getIdCategory().equals("2") || product.getIdCategory().equals("4")) {
-                        Intent intent = new Intent(SearchActivity.this, ProductDetailCakeActivity.class);
-                        intent.putExtra("productId", product.getId());
-                        startActivity(intent);
-                    } else if (product.getIdCategory().equals("1") || product.getIdCategory().equals("3")) {
-                        Intent intent = new Intent(SearchActivity.this, ProductDetailDrinkActivity.class);
-                        intent.putExtra("productId", product.getId());
-                        startActivity(intent);
-                    }
+                Log.d("ProductClick", "idCategory: " + product.getIdCategory());
+                Log.d("ProductClick", "Product ID: " + product.getId());
+                Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
+                Intent intent;
+                if (validCategories.contains(product.getIdCategory())) {
+                    intent = new Intent(SearchActivity.this, ProductDetailCakeActivity.class);
+                } else {
+                    intent = new Intent(SearchActivity.this, ProductDetailDrinkActivity.class);
                 }
+                //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
+        //        intent = new Intent(getActivity(), ProductDetailDrink.class);
+                intent.putExtra("productID", product.getId());
+                startActivity(intent);
             }
         });
 

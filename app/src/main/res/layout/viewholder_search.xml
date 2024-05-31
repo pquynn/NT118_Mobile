@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/img_increase"
+        android:id="@+id/add_to_cart"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"

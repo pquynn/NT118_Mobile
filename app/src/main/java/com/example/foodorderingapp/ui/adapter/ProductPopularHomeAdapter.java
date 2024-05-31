@@ -17,6 +17,7 @@ import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
 
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopularHomeAdapter.ViewHolder> {
@@ -51,16 +52,24 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.txtName.setText(product.getProductName());
-        holder.txtPrice.setText(String.valueOf(product.getProductPrice()));
-//        if (context != null) {
-//            Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
-//        }
-        Glide.with(context)
-                .load(product.getProductImage())
-                .into(holder.imgProduct);
+//        holder.txtPrice.setText(String.valueOf(product.getProductPrice()));
+        setPriceFormatted(holder.txtPrice, product.getProductPrice());
+        String productImage = product.getProductImage();
+        if (productImage != null && !productImage.isEmpty()) {
+            Glide.with(context)
+                    .load(productImage)
+                    .into(holder.imgProduct);
+        }
+
         holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
     }
 
+    //set format giá
+    public static void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        textView.setText(formattedPrice);
+    }
     @Override
     public int getItemCount() {
         return productList.size();

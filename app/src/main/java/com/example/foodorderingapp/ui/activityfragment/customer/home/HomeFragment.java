@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +18,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.search.SearchActivity;
@@ -51,13 +54,35 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Xử lý khi click vào frameLayoutSearch
         FrameLayout frameSearch = view.findViewById(R.id.frameLayoutSearch);
         frameSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Xử lý khi click vào frameLayoutSearch
                 // Mở activity SearchActivity
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+//        // Xử lý khi click vào Xem thêm của Danh mục
+//        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
+//        tvExtend1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CategoryFragment categoryFragment = new CategoryFragment();
+//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_area, categoryFragment);
+//                transaction.addToBackStack(null);  // Add this transaction to the back stack
+//                transaction.commit();
+//            }
+//        });
+
+        // Xử lý khi click vào Xem thêm của Cửa hàng
+        TextView tvExtend2 = view.findViewById(R.id.textExtend2);
+        tvExtend2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), StoreActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,15 +103,6 @@ public class HomeFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), product -> {
-//                if ("1".equals(product.getIdCategory()) || "3".equals(product.getIdCategory())) {
-//                    Intent intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
-//                    intent.putExtra("PRODUCT_ID", product.getProductName());
-//                    startActivity(intent);
-//                } else {
-//                    Intent intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
-//                    intent.putExtra("PRODUCT_ID", product.getProductName());
-//                    startActivity(intent);
-//                }
                 Log.d("ProductClick", "idCategory: " + product.getIdCategory());
                 Log.d("ProductClick", "Product ID: " + product.getId());
                 Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
@@ -96,6 +112,8 @@ public class HomeFragment extends Fragment {
                 } else {
                     intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
                 }
+                //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
+//                intent = new Intent(getActivity(), ProductDetailDrink.class);
                 intent.putExtra("productID", product.getId());
                 startActivity(intent);
             });

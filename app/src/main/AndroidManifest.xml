@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -19,15 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".ui.activityfragment.customer.home.StoreActivity"
+            android:exported="false" />
         <activity
             android:name=".data.repository.order.resultTestActivity"
             android:exported="true" />
         <activity
             android:name=".data.repository.refund.uploadImageActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.activityfragment.admin.AdminMainActivity"
             android:exported="true" />
@@ -96,63 +95,39 @@
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.checkout.PaymentMethodActivity"
-            android:exported="true">
-        </activity>
-
-        <!--   END: CART - CHECKOUT - PAYMENT-->
-
-        <!--    START: REFUND   -->
+            android:exported="true"></activity> <!-- END: CART - CHECKOUT - PAYMENT -->
+        <!-- START: REFUND -->
         <activity
             android:name=".ui.activityfragment.customer.refund.AddRefundProductActivity"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".ui.activityfragment.customer.refund.RefundRequestActivity"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".ui.activityfragment.admin.refund.RefundProgressActivity"
-            android:exported="true">
-        </activity>
-        <!--    END: REFUND   -->
-
-        <!--   START: ACCOUNT-->
+            android:exported="true"></activity> <!-- END: REFUND -->
+        <!-- START: ACCOUNT -->
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.AM_AddressActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity"
-            android:exported="true">
-        </activity>
-        <!--   START: ACCOUNT-->
-
-        <!--   START: SEARCH-->
+            android:exported="true"></activity> <!-- START: ACCOUNT -->
+        <!-- START: SEARCH -->
         <activity
             android:name=".ui.activityfragment.customer.search.SearchActivity"
-            android:exported="true">
-        </activity>
-        <!--   END: SEARCH-->
-
-        <!--   START: PRODUCT DETAIL-->
+            android:exported="true"></activity> <!-- END: SEARCH -->
+        <!-- START: PRODUCT DETAIL -->
         <activity
             android:name=".ui.activityfragment.customer.productdetail.ProductDetailCakeActivity"
-            android:exported="true">
-        </activity>
-        <!--   END: PRODUCT DETAIL-->
-
-        <!--   START: PRODUCT DETAIL-->
+            android:exported="true"></activity> <!-- END: PRODUCT DETAIL -->
+        <!-- START: PRODUCT DETAIL -->
         <activity
             android:name=".ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity"
-            android:exported="true">
-        </activity>
-        <!--   END: PRODUCT DETAIL-->
+            android:exported="true"></activity> <!-- END: PRODUCT DETAIL -->
         <activity
             android:name=".data.repository.product.testProduct"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

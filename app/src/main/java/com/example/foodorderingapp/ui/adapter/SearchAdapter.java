@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ProductVie
 
         Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
         holder.tvName.setText(product.getProductName());
-        holder.tvPrice.setText(String.valueOf(product.getProductPrice()));
+        setPriceFormatted(holder.tvPrice, product.getProductPrice());
+        holder.addToCart.setVisibility(View.GONE);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +82,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ProductVie
         private ShapeableImageView imgProduct;
         private TextView tvName;
         private TextView tvPrice;
+        private FrameLayout addToCart;
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.img_product);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPrice = itemView.findViewById(R.id.tv_price);
+            addToCart = itemView.findViewById(R.id.add_to_cart);
         }
+    }
+    //set format giá
+    public static void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        textView.setText(formattedPrice);
     }
 
     //Lọc sản phẩm dựa trên tên sản phẩm

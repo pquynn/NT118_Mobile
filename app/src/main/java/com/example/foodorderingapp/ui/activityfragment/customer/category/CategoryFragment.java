@@ -81,6 +81,8 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         } else {
             intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
         }
+//        Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm khi gộp 2 product lại
+//        intent = new Intent(getActivity(), ProductDetailDrink.class);
         intent.putExtra("productID", product.getId());
         startActivity(intent);
     }

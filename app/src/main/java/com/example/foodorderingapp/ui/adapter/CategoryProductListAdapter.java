@@ -67,23 +67,6 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
                 }
             }
         });
-//        holder.itemView.setOnClickListener(v -> {
-//            String categoryID = product.getIdCategory();
-//            String id = product.getId();
-//
-//            Intent intent;
-//            if (categoryID == "1" || categoryID == "3") {
-//                intent = new Intent(context, ProductDetailDrinkActivity.class);
-//            } else if (categoryID == "2" || categoryID == "4") {
-//                intent = new Intent(context, ProductDetailCakeActivity.class);
-//            } else {
-//                // Xử lý trường hợp không khớp với categoryID nào
-//                return;
-//            }
-//            // Truyền productId qua Intent
-//            intent.putExtra("productID", id);
-//            context.startActivity(intent);
-//        });
     }
 
     @Override

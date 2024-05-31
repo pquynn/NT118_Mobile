@@ -29,6 +29,7 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
         void onItemClick(Product product);
     }
     public ProductPopularHomeAdapter(Context context, List<Product> productList, OnItemClickListener listener) {
+        this.context = context;
         this.productList = productList;
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
@@ -51,9 +52,12 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
         Product product = productList.get(position);
         holder.txtName.setText(product.getProductName());
         holder.txtPrice.setText(String.valueOf(product.getProductPrice()));
-        if (context != null) {
-            Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
-        }
+//        if (context != null) {
+//            Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
+//        }
+        Glide.with(context)
+                .load(product.getProductImage())
+                .into(holder.imgProduct);
         holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
     }
 

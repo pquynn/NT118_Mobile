@@ -12,6 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ToppingRepository implements IToppingRepository{
     private FirebaseFirestore db;
     public ToppingRepository() {
@@ -63,6 +66,28 @@ public class ToppingRepository implements IToppingRepository{
                             }
                         } else {
                             callback.onToppingLoadFailed("Failed to get toppings: " + task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void getAllToppings(ToppingListCallBack callback) {
+        db.collection("TOPPING")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Topping> toppingList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Topping topping = new Topping();
+                                topping.setNameTopping(document.getString("TOPPING_NAME"));
+                                topping.setPriceTopping(document.getLong("TOPPING_PRICE").intValue());
+                                toppingList.add(topping);
+                            }
+                            callback.onToppingListLoaded(toppingList);
+                        } else {
+                            callback.onFailed("Failed to get topping documents: " + task.getException());
                         }
                     }
                 });

@@ -60,6 +60,7 @@ public class ProductRepository implements IProductRepository {
                         // Tạo đối tượng Product
                         Product product = new Product(id, idCategory, productImage, productName, productPrice);
                         productList.add(product);
+                        Log.d("firestore", "getProductById: " + product.toString());
                     }
                     callBack.onProductListLoaded(productList);
                 })
@@ -104,16 +105,17 @@ public class ProductRepository implements IProductRepository {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+                                String id = document.getId();
                                 // Lấy thông tin chi tiết của sản phẩm từ document
                                 String productName = document.getString("PRODUCT_NAME");
                                 String productImage = document.getString("PRODUCT_IMAGE");
                                 int productPrice = document.getLong("PRODUCT_PRICE").intValue();
                                 String productInfo = document.getString("PRODUCT_INFO");
 
-                                Log.d("Cake Product Details", "Name: " + productName + ", Image: " + productImage + ", Price: " + productPrice + ", Info: " + productInfo);
+                                Log.d("Cake Product Details", "id" + id + "Name: " + productName + ", Image: " + productImage + ", Price: " + productPrice + ", Info: " + productInfo);
 
                                 // Gọi callback để trả về thông tin chi tiết của sản phẩm
-                                callback.onProductDetailLoaded(productName, productImage, productPrice, productInfo);
+                                callback.onProductDetailLoaded(id, productName, productImage, productPrice, productInfo);
 
                             } else {
                                 // Document không tồn tại

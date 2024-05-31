@@ -2,10 +2,19 @@ package com.example.foodorderingapp.data.repository.category;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.foodorderingapp.data.model.CategoryList;
 import com.example.foodorderingapp.data.model.entity.Category;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +52,7 @@ public class CategoryRepository implements ICategoryRepository{
                             String categoryName = document.getString("CATEGORY_NAME");
 
                             Category category = new Category(categoryImage, categoryName);
+                            category.setId(id);
                             categoryList.add(category);
                         }
                         callBack.onCategoryListLoaded(categoryList);

@@ -149,6 +149,10 @@
             android:exported="true">
         </activity>
         <!--   END: PRODUCT DETAIL-->
+        <activity
+            android:name=".data.repository.product.testProduct"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

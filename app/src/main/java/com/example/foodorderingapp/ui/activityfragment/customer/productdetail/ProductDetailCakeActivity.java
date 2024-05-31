@@ -1,19 +1,27 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
+import static com.example.foodorderingapp.ui.bindingadapters.BindingAdapters.setPriceFormatted;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
+import com.example.foodorderingapp.ui.viewmodel.customer.productdetail.ProductDetailViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +34,7 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
     private TextView contentTextView, showMoreTextView, showLessTextView;
     private CharSequence originalText;
     private int originalMaxLines;
+    private ProductDetailViewModel productDetailViewModel;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_cake);
@@ -75,39 +84,67 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
             }
         });
 
-        //Hiển thị thông tin chi tiết sản phẩm
+        // Button tăng giảm số lượng
+        View layoutButtonCount = findViewById(R.id.layout_button_count);
 
-        ProductRepository productRepository = new ProductRepository();
-        String productId = "10";
-        productRepository.getProductDetailsCake(productId, new ProductRepository.ProductDetailCakeCallback() {
+        FrameLayout btnDecrease = layoutButtonCount.findViewById(R.id.img_decrease);
+        FrameLayout btnIncrease = layoutButtonCount.findViewById(R.id.img_increase);
+        final TextView txtQuantity = layoutButtonCount.findViewById(R.id.count);
+
+        btnDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProductDetailLoaded(String productName, String productImage, int productPrice, String productInfo) {
-                setTitle(productName); // Thiết lập tiêu đề của activity là tên sản phẩm
-
-                // Hiển thị ảnh sản phẩm
-                ImageView imgCake = findViewById(R.id.img_cake);
-                Glide.with(ProductDetailCakeActivity.this).load(productImage).into(imgCake);
-
-                // Hiển thị tên và giá sản phẩm
-                TextView txtNameCake = findViewById(R.id.txt_NameCake);
-                txtNameCake.setText(productName);
-
-                TextView txtPriceCake = findViewById(R.id.txt_priceCake);
-                txtPriceCake.setText(String.valueOf(productPrice) + "đ");
-
-                TextView txtPrice = findViewById(R.id.txt_price);
-                txtPrice.setText(String.valueOf(productPrice));
-
-                // Hiển thị mô tả sản phẩm
-                TextView contentTextView = findViewById(R.id.contentTextView);
-                contentTextView.setText(productInfo);
-            }
-
-            @Override
-            public void onProductDetailLoadFailed(String errorMessage) {
-                Toast.makeText(ProductDetailCakeActivity.this, "Failed to load product details: " + errorMessage, Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(txtQuantity.getText().toString());
+                if (quantity > 1) {
+                    quantity--;
+                    txtQuantity.setText(String.valueOf(quantity));
+                }
             }
         });
+
+        btnIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(txtQuantity.getText().toString());
+                quantity++;
+                txtQuantity.setText(String.valueOf(quantity));
+            }
+        });
+
+        Intent intent = getIntent();
+        // Kiểm tra xem intent có dữ liệu không
+        if (intent != null) {
+            // Lấy dữ liệu từ intent
+            Log.d("LoadData", "Sucessful");
+            String productId = intent.getStringExtra("productID");
+            productDetailViewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
+            productDetailViewModel.getProductDetail(productId).observe(this, new Observer<Product>() {
+                @Override
+                public void onChanged(Product product) {
+                    // Hiển thị ảnh sản phẩm
+                    ImageView imgCake = findViewById(R.id.img_cake);
+                    Glide.with(ProductDetailCakeActivity.this).load(product.getProductImage()).into(imgCake);
+
+                    // Hiển thị tên và giá sản phẩm
+                    TextView txtNameCake = findViewById(R.id.txt_NameCake);
+                    txtNameCake.setText(product.getProductName());
+
+                    TextView txtPriceCake = findViewById(R.id.txt_priceCake);
+                    txtPriceCake.setText(String.valueOf(product.getProductPrice()));
+
+                    // Hiển thị mô tả sản phẩm
+                    TextView contentTextView = findViewById(R.id.contentTextView);
+                    contentTextView.setText(product.getProductInfo());
+
+                    TextView txtPrice = findViewById(R.id.txt_price);
+                    txtPrice.setText(String.valueOf(product.getProductPrice()));
+                }
+            });
+
+        } else {
+            // Xử lý trường hợp intent không có dữ liệu
+            Log.d("LoadData", "Failed");
+        }
     }
 
     private void clickOpenBottemFragmment() {

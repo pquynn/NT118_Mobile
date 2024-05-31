@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,26 +21,12 @@ import java.util.List;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryListViewHolder> {
     private Context mContext;
     private List<CategoryList> mlistCategory;
-    private OnItemClickListener listener; // Thêm biến thành viên cho OnItemClickListener
+    private CategoryProductListAdapter.ProductClickListener productClickListener;
 
-    // Định nghĩa interface OnItemClickListener
-    public interface OnItemClickListener {
-        void onItemClick(Product product);
-    }
-
-    // Phương thức để thiết lập OnItemClickListener
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    //lấy mục sản phẩm ở một vị trí cụ thể
-    public Product getItemAtPosition(int position) {
-        return mlistCategory.get(position).getListProducts().get(position);
-    }
-
-    public CategoryListAdapter(Context context, List<CategoryList> list){
+    public CategoryListAdapter(Context context, List<CategoryList> list, CategoryProductListAdapter.ProductClickListener listener){
         this.mContext = context;
         this.mlistCategory = list;
+        this.productClickListener = listener;
     }
 
     public void setData(List<CategoryList> list){
@@ -60,27 +47,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         if (category == null) {
             return;
         }
-
-        holder.tvCategoryName.setText(category.getNameCategory());
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-        holder.rcvListCategory.setLayoutManager(linearLayoutManager);
-
-        CategoryProductListAdapter categoryProductListAdapter = new CategoryProductListAdapter();
-        categoryProductListAdapter.setData(category.getListProducts());
-
-        holder.rcvListCategory.setAdapter(categoryProductListAdapter);
-
-        // Gọi phương thức onItemClick của OnItemClickListener khi một mục được nhấp vào
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = holder.getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onItemClick(getItemAtPosition(position));
-                }
-            }
-        });
+        holder.bind(category, productClickListener);
     }
 
     @Override
@@ -91,15 +58,21 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return 0;
     }
 
-    public class CategoryListViewHolder extends RecyclerView.ViewHolder{
-
+    public static class CategoryListViewHolder extends RecyclerView.ViewHolder{
         private TextView tvCategoryName;
         private RecyclerView rcvListCategory;
+
         public CategoryListViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvCategoryName = itemView.findViewById(R.id.tv_categoryName);
             rcvListCategory = itemView.findViewById(R.id.rcv_ListCategory);
+        }
+
+        public void bind(CategoryList categoryList, CategoryProductListAdapter.ProductClickListener listener) {
+            tvCategoryName.setText(categoryList.getCategory().getNameCategory());
+            rcvListCategory.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false));
+            CategoryProductListAdapter productAdapter = new CategoryProductListAdapter(itemView.getContext(), categoryList.getListProducts(), listener);
+            rcvListCategory.setAdapter(productAdapter);
         }
     }
 }

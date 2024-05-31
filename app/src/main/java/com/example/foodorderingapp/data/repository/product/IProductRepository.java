@@ -30,7 +30,7 @@ public interface IProductRepository {
     }
 
     interface ProductDetailCakeCallback {
-        void onProductDetailLoaded(String productName, String productImage, int productPrice, String productInfo);
+        void onProductDetailLoaded(String id,String productName, String productImage, int productPrice, String productInfo);
         void onProductDetailLoadFailed(String errorMessage);
     }
 }

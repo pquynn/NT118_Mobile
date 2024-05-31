@@ -29,7 +29,10 @@ import com.example.foodorderingapp.ui.adapter.ProductPopularHomeAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.home.HomeViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,19 +78,31 @@ public class HomeFragment extends Fragment {
         Context context = getContext();
         if (context != null) {
             ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), product -> {
-                if ("1".equals(product.getIdCategory()) || "3".equals(product.getIdCategory())) {
-                    Intent intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
-                    intent.putExtra("PRODUCT_ID", product.getProductName());
-                    startActivity(intent);
+//                if ("1".equals(product.getIdCategory()) || "3".equals(product.getIdCategory())) {
+//                    Intent intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
+//                    intent.putExtra("PRODUCT_ID", product.getProductName());
+//                    startActivity(intent);
+//                } else {
+//                    Intent intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
+//                    intent.putExtra("PRODUCT_ID", product.getProductName());
+//                    startActivity(intent);
+//                }
+                Log.d("ProductClick", "idCategory: " + product.getIdCategory());
+                Log.d("ProductClick", "Product ID: " + product.getId());
+                Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
+                Intent intent;
+                if (validCategories.contains(product.getIdCategory())) {
+                    intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
                 } else {
-                    Intent intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
-                    intent.putExtra("PRODUCT_ID", product.getProductName());
-                    startActivity(intent);
+                    intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
                 }
+                intent.putExtra("productID", product.getId());
+                startActivity(intent);
             });
             rcv_homeCategory.setHasFixedSize(true);
             rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
 
+            //Hiển thị danh sách sản phẩm phổ biến
             viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
             viewModel.getBestSellingProducts().observe(getViewLifecycleOwner(), products -> {

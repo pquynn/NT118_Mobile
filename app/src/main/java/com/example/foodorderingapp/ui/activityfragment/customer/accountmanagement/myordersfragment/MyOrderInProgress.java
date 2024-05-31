@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class MyOrderInProgress extends Fragment {
     private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
-    private MyOrdersVM viewModel;
+    private MyOrdersVM viewModel, viewModel2;
     private String userId = "";
     AlertDialog progressDialog;
 
@@ -79,32 +80,53 @@ public class MyOrderInProgress extends Fragment {
             @Override
             public <T extends ViewModel> T create(Class<T> modelClass) {
                 if (modelClass.isAssignableFrom(MyOrdersVM.class)) {
-                    return (T) new MyOrdersVM(userId, "Đang xử lý");
+                    return (T) new MyOrdersVM(userId, "Chờ xác nhận");
                 }
                 throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
             }
         }).get(MyOrdersVM.class);
+
+        viewModel2 = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+            @Override
+            public <T extends ViewModel> T create(Class<T> modelClass) {
+                if (modelClass.isAssignableFrom(MyOrdersVM.class)) {
+                    return (T) new MyOrdersVM(userId, "Đã xác nhận");
+                }
+                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+            }
+        }).get(MyOrdersVM.class);
+
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
-
+        Adapter = new OrderItemAdapter(listOrderItem);
+        recyclerViewList.setAdapter(Adapter);
         //progressDialog.show();
         viewModel.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
-                for(Order i : orders){
-                    if(i!=null){
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
-                    }
-                }
-                Adapter = new OrderItemAdapter(listOrderItem);
-                recyclerViewList.setAdapter(Adapter);
-                //progressDialog.dismiss();
+                Log.d("MyOrderInProgress", "Received data from viewModel1: " + orders.size() + " orders");
+                updateOrderList(orders);
+            }
+        });
+
+        viewModel2.getOrderListLiveData2().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
+            @Override
+            public void onChanged(List<Order> orders) {
+                Log.d("MyOrderInProgress", "Received data from viewModel2: " + orders.size() + " orders");
+                updateOrderList(orders);
             }
         });
 
     }
-
+    private void updateOrderList(List<Order> orders) {
+        for (Order order : orders) {
+            if (order != null) {
+                listOrderItem.add(new OrderItem(order.getId(), order.getTotalPrice(), order.getTotalProduct()));
+            }
+        }
+        Adapter.notifyDataSetChanged();
+    }
 
 
 

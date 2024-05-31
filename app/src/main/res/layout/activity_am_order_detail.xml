@@ -224,15 +224,6 @@
                 android:gravity="end"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="0dp"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="end"
-                android:text="đ"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -268,13 +259,6 @@
                 android:gravity="end"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="đ"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -310,14 +294,6 @@
                 android:gravity="end"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="đ"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -354,15 +330,6 @@
                 android:textColor="@color/primary"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:text="đ"
-                android:textColor="@color/primary"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
 

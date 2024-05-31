@@ -130,14 +130,13 @@ public class AccountNavigationFragment extends Fragment {
             }
         });
 
-//        llAM_faqs.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(requireContext(), am_user_info.class);
-//        myIntent.putExtra("user_id", userId);
-//                startActivity(myIntent);
-//            }
-//        });
+        llAM_faqs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(requireContext(), am_faqs.class);
+                startActivity(myIntent);
+            }
+        });
 
 
         viewModel = new UserInfoVM(userId, getContext());

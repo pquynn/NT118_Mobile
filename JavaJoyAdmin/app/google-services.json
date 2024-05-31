@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "778833360382",
+    "project_id": "javajoy-mobileapp",
+    "storage_bucket": "javajoy-mobileapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778833360382:android:a627e44973aa8fb1b4fcaf",
+        "android_client_info": {
+          "package_name": "com.example.foodorderingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778833360382-e55261mk3t46inl3cbski3us901f4tna.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodorderingapp",
+            "certificate_hash": "02b9187ce5cc289edb2e8481dab0e37e14dfcf95"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778833360382:android:3d5bb7340d227b95b4fcaf",
+        "android_client_info": {
+          "package_name": "com.example.javajoyadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

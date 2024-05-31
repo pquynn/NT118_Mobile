@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="orderItem"
+            type="com.example.javajoyadmin.data.model.entity.OrderItem" />
+        <variable
+            name="refundItem"
+            type="com.example.javajoyadmin.data.model.entity.RefundItem" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewholder_refund_progress"
+        android:background="@color/white">
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="5dp"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:background="@drawable/straight_solid_line"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--    start: product view-->
+        <LinearLayout
+            android:id="@+id/order_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/grey_border_rectangle"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/viewholder_order_item"
+                layout="@layout/viewholder_order_detail_in_refund"
+                bind:orderItem="@{orderItem}"/>
+
+        </LinearLayout>
+        <!--    end: product view-->
+
+        <!--    start: choose QUANTITY container-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/choose_quantity_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_detail_container">
+
+            <TextView
+                android:id="@+id/lbl_quantity"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SỐ LƯỢNG SẢN PHẨM: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/txt_quantity"
+                style="@style/regular_text_16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{String.valueOf(refundItem.quantity)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lbl_quantity"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--    end: choose QUANTITY container-->
+
+        <!--    start: choose reason container-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/choose_reason_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choose_quantity_container">
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LÝ DO"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/txt_reason"
+                style="@style/regular_text_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:text="@{refundItem.reason}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"></TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--    end: choose reason container-->
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/regular_text_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="HÌNH ẢNH, VIDEO"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choose_reason_container"></TextView>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/regular_text_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="5dp"
+            android:text="CHÚ THÍCH"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upload_container"></TextView>
+
+        <TextView
+            android:id="@+id/txt_description"
+            style="@style/regular_text_16sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="textMultiLine"
+            android:lines="1"
+            android:maxLines="10"
+            android:text="@{refundItem.describe}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+        <!-- activity_main.xml -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/upload_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:context=".ui.activityfragment.customer.MainActivity">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:adjustViewBounds="true"
+                app:imageUrl="@{refundItem.proofImage}"/>
+
+            <FrameLayout
+                android:id="@+id/fl_video"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/black_rectangle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_view"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <VideoView
+                    android:id="@+id/video_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:videoUrl="@{refundItem.proofVideo}"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
 import static com.example.foodorderingapp.ui.bindingadapters.BindingAdapters.setPriceFormatted;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrdersFeedbackRepository;
 import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
@@ -31,25 +34,22 @@ import java.util.List;
 
 public class ProductDetailCakeActivity extends AppCompatActivity {
     private ImageView imgComment;
-    private TextView contentTextView, showMoreTextView, showLessTextView;
+    private TextView contentTextView, showMoreTextView, showLessTextView, quantityComment;
     private CharSequence originalText;
     private int originalMaxLines;
     private ProductDetailViewModel productDetailViewModel;
+    private String productId;
+    private OrdersFeedbackRepository ordersFeedbackRepository = new OrdersFeedbackRepository();
+    private Context context = this;
+    private CommentDialogFragment commentDialogFragment = null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productdetail_cake);
 
-        imgComment = findViewById(R.id.ic_comment);
-        imgComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickOpenBottemFragmment();
-            }
-        });
-
         contentTextView = findViewById(R.id.contentTextView);
         showMoreTextView = findViewById(R.id.showMoreTextView);
         showLessTextView = findViewById(R.id.showLessTextView);
+        quantityComment = findViewById(R.id.txt_comment);
         // Lưu trạng thái ban đầu của nội dung
         originalMaxLines = contentTextView.getMaxLines();
         originalText = contentTextView.getText();
@@ -116,7 +116,7 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
         if (intent != null) {
             // Lấy dữ liệu từ intent
             Log.d("LoadData", "Sucessful");
-            String productId = intent.getStringExtra("productID");
+            productId = intent.getStringExtra("productID");
             productDetailViewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
             productDetailViewModel.getProductDetail(productId).observe(this, new Observer<Product>() {
                 @Override
@@ -145,29 +145,50 @@ public class ProductDetailCakeActivity extends AppCompatActivity {
             // Xử lý trường hợp intent không có dữ liệu
             Log.d("LoadData", "Failed");
         }
-    }
 
-    private void clickOpenBottemFragmment() {
-        String dateString = "06-03-2025";
-        // Define the date format of your input string
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        imgComment = findViewById(R.id.ic_comment);
+        ordersFeedbackRepository.checkExistComments(productId, new OrdersFeedbackRepository.checkCommentsCallback() {
+            @Override
+            public void loadCommentsSuccess(int isExist) {
+                quantityComment.setText(isExist+"");
+                if(isExist>0){
+                    imgComment.setOnClickListener(new View.OnClickListener() {
 
-        // Parse the string to obtain a Date object
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+                        @Override
+                        public void onClick(View v) {
+                            commentDialogFragment = null;
+                            productDetailViewModel.getListCommentLiveData(productId).observe((LifecycleOwner) context , new Observer<List<Comment>>() {
+                                @Override
+                                public void onChanged(List<Comment> list) {
+                                    // Remove the observer after receiving the data to prevent multiple dialogs
+                                    productDetailViewModel.getListCommentLiveData(productId).removeObserver(this);
 
-        List<Comment> listComment = new ArrayList<>();
-        listComment.add(new Comment("1", "1", "Bảo Ngọc", 5, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("1", "1", "Ngọc Bảo", 5, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("1", "1", "Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("1", "1", "Ngọc Bảo", 4, "Chất lượng, ngon tuyệt vời", date));
-        listComment.add(new Comment("1", "1", "Ngọc Bảo", 3, "Chất lượng, ngon tuyệt vời", date));
+                                    Log.d("Comment dialog: ", "get in");
+                                    commentDialogFragment = new CommentDialogFragment(list);
+                                    commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());
+                                }
+                            });
+                        }
+                    });
 
-        CommentDialogFragment commentDialogFragment = new CommentDialogFragment(listComment);
-        commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());
+                }else{
+                    imgComment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Load comment in activity: ", "No comments");
+
+                            commentDialogFragment = new CommentDialogFragment(null);
+                            commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void loadCommentError(Exception e) {
+
+            }
+        });
     }
 }

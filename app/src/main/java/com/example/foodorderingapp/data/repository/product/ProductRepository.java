@@ -165,6 +165,7 @@ public class ProductRepository implements IProductRepository {
                 });
     }
     // Method to update product quantity
+    //Cập nhật SL theo số lượng SP đã mua và productID
     public void updateProductQuantity(String productId, String size, int quantityPurchased) {
         DocumentReference productRef = db.collection("PRODUCT").document(productId);
         productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -173,13 +174,16 @@ public class ProductRepository implements IProductRepository {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+
                         // Get the current quantity of the specified size
+                        // Lấy số lượng hiện tại trong trường SIZE
                         Map<String, Object> sizeMap = (Map<String, Object>) document.get("SIZE");
                         if (sizeMap != null && sizeMap.containsKey(size)) {
                             Map<String, Object> sizeDetails = (Map<String, Object>) sizeMap.get(size);
                             if (sizeDetails != null && sizeDetails.containsKey("QUANTITY")) {
                                 Long currentQuantity = (Long) sizeDetails.get("QUANTITY");
                                 if (currentQuantity != null) {
+
                                     // Calculate new quantity
                                     long newQuantity = currentQuantity - quantityPurchased;
 
@@ -188,6 +192,14 @@ public class ProductRepository implements IProductRepository {
                                     sizeMap.put(size, sizeDetails);
 
                                     // Update the product document with new quantity
+                                    // Tính lại số lượng
+                                    long newQuantity = currentQuantity - quantityPurchased;
+
+                                    // Cập nhật số lượng trong Firestore
+                                    sizeDetails.put("QUANTITY", newQuantity);
+                                    sizeMap.put(size, sizeDetails);
+
+                                    //Cập nhật dữ liệu với số lượng mới
                                     productRef.update("SIZE", sizeMap)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override

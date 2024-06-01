@@ -22,6 +22,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private List<Category> mCategory;
     private Context context;
+    private OnItemClickListener listener;
+
+    // Interface để xử lý sự kiện click
+    public interface OnItemClickListener {
+        void onItemClick(Category category);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public CategoryAdapter(Context context) {
         this.context = context;
@@ -47,6 +57,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         Glide.with(context).load(category.getImgCategory()).into(holder.imgCategory);
         holder.txtname.setText(category.getNameCategory());
+        // Thêm sự kiện click vào itemView
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(category);
+                }
+            }
+        });
     }
 
     @Override
@@ -59,6 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         private TextView txtname;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+
             imgCategory = itemView.findViewById(R.id.img_category);
             txtname = itemView.findViewById(R.id.txt_name);
         }

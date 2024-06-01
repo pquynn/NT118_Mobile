@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
@@ -35,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -64,18 +69,15 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        // Xử lý khi click vào Xem thêm của Danh mục
-//        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
-//        tvExtend1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CategoryFragment categoryFragment = new CategoryFragment();
-//                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragment_area, categoryFragment);
-//                transaction.addToBackStack(null);  // Add this transaction to the back stack
-//                transaction.commit();
-//            }
-//        });
+        // Xử lý khi click vào Xem thêm của Danh mục --> điều hướng sang Fragment Category
+        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
+        tvExtend1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), R.id.fragment_area);
+                navController.navigate(R.id.categoryFragment);
+            }
+        });
 
         // Xử lý khi click vào Xem thêm của Cửa hàng
         TextView tvExtend2 = view.findViewById(R.id.textExtend2);
@@ -125,6 +127,16 @@ public class HomeFragment extends Fragment {
 
             viewModel.getBestSellingProducts().observe(getViewLifecycleOwner(), products -> {
                 productPopularHomeAdapter.setProductList(products);
+            });
+
+            TextView averagePoint = view.findViewById(R.id.text_ic_star);
+
+            viewModel.getCommentList().observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
+                @Override
+                public void onChanged(List<Comment> commentList) {
+                    double averageScore = viewModel.calculateAverageScore(commentList);
+                    averagePoint.setText(String.format(Locale.getDefault(), "%.1f", averageScore));
+                }
             });
         }
     }

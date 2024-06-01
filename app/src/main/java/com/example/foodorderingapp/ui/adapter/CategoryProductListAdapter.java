@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
@@ -90,4 +91,5 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
             tvPrice = itemView.findViewById(R.id.tv_price);
         }
     }
+
 }

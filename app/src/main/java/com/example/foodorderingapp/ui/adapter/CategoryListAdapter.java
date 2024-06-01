@@ -58,6 +58,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return 0;
     }
 
+    public CategoryList getItem(int position) {
+        if (position >= 0 && position < mlistCategory.size()) {
+            return mlistCategory.get(position);
+        }
+        return null;
+    }
+
     public static class CategoryListViewHolder extends RecyclerView.ViewHolder{
         private TextView tvCategoryName;
         private RecyclerView rcvListCategory;

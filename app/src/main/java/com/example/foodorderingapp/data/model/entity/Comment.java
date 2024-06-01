@@ -36,10 +36,6 @@ public class Comment {
         this.id = id;
     }
 
-//    public String getName() {
-//        return "";
-//    }
-
     @PropertyName("ID_PRODUCT")
     public String getIdProduct() {
         return idProduct;
@@ -69,7 +65,7 @@ public class Comment {
         return ratingBar;
     }
     @PropertyName("POINT")
-    public void setRatingBar(int     ratingBar) {
+    public void setRatingBar(int ratingBar) {
         this.ratingBar = ratingBar;
     }
     @PropertyName("CONTENT")

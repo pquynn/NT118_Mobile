@@ -7,11 +7,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodorderingapp.data.model.entity.Category;
+import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.repository.category.CategoryRepository;
 import com.example.foodorderingapp.data.repository.category.ICategoryRepository;
+import com.example.foodorderingapp.data.repository.comment.CommentRepository;
+import com.example.foodorderingapp.data.repository.comment.ICommentRepository;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,17 +28,30 @@ import java.util.stream.Collectors;
 
 public class HomeViewModel extends ViewModel {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CategoryRepository categoryRepository;
+    private CommentRepository commentRepository;
     private MutableLiveData<List<Product>> bestSellingProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Category>> categoryListLiveData = new MutableLiveData<>();
-    private CategoryRepository categoryRepository;
+    private MutableLiveData<List<Comment>> commentListLiveData = new MutableLiveData<>();
 
     public HomeViewModel() {
         categoryRepository = new CategoryRepository();
+        commentRepository = new CommentRepository();
         loadCategories();
     }
 
     public LiveData<List<Category>> getCategoryListLiveData() {
         return categoryListLiveData;
+    }
+
+    public LiveData<List<Comment>> getCommentList(){
+        loadComment();
+        return commentListLiveData;
+    }
+    //Khai báo danh sách sản phẩm bán chạy.
+    public LiveData<List<Product>> getBestSellingProducts() {
+        fetchBestSellingProducts();
+        return bestSellingProductsLiveData;
     }
 
     private void loadCategories() {
@@ -51,11 +67,7 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
-    //Khai báo danh sách sản phẩm bán chạy.
-    public LiveData<List<Product>> getBestSellingProducts() {
-            fetchBestSellingProducts();
-            return bestSellingProductsLiveData;
-    }
+
     //Hàm tính sản phẩm bán chạy
     public void fetchBestSellingProducts() {
         db.collection("ORDER")
@@ -116,5 +128,27 @@ public class HomeViewModel extends ViewModel {
                 });
     }
 
+    //tính tổng point trong Comment
+    public void loadComment() {
+        commentRepository.getAllComment(new ICommentRepository.CommentListListener() {
+            @Override
+            public void onCommentList(List<Comment> comments) {
+                commentListLiveData.setValue(comments);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
+
+    public double calculateAverageScore(List<Comment> commentList) {
+        double totalScore = 0;
+        for (Comment comment : commentList) {
+            totalScore += comment.getRatingBar();
+        }
+        return commentList.size() == 0 ? 0 : totalScore / commentList.size();
+    }
 }
 

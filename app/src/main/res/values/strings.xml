@@ -13,4 +13,17 @@
     <string name="reason1">Gửi sai sản phẩm</string>
     <string name="reason2">Khác với mô tả</string>
     <string name="reason3">Hàng bể vỡ</string>
+    <string name="present_home">
+        <b> Java Joy Coffee\n</b>
+        Giờ hoạt động: 7:30 - 21:30\n
+        Địa chỉ: 253 Hoàng Văn Thụ, Phường 1, Quận Tân Bình
+    </string>
+    <string name="description_home">
+        Chúng tôi cung cấp một thực đơn đa dạng với nhiều loại bánh ngọt, từ bánh mousse mịn màng, bánh ngọt truyền thống cho đến bánh tươi mới nướng mỗi ngày. Các loại nước uống của JavaJoy Coffee cũng được pha chế từ những nguyên liệu tốt nhất, bao gồm cà phê đậm đà, trà thơm ngon và các loại sinh tố trái cây tươi mát. \n\n
+        Hãy đến và cảm nhận sự khác biệt tại JavaJoy Coffee, nơi mà mỗi ly cà phê, mỗi miếng bánh đều chứa đựng niềm đam mê và tình yêu của chúng tôi dành cho ẩm thực. JavaJoy Coffee - Nơi hội tụ hương vị tuyệt vời!
+    </string>
+    <string name="contact">
+         Số điện thoại: 0903543622\n
+        Email: javajoycf@gmail.com
+    </string>
 </resources>

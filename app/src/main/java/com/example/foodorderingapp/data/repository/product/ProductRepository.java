@@ -61,6 +61,7 @@ public class ProductRepository implements IProductRepository {
                         // Tạo đối tượng Product
                         Product product = new Product(id, idCategory, productImage, productName, productPrice);
                         productList.add(product);
+                        Log.d("firestore", "getProductById: " + product.toString());
                     }
                     callBack.onProductListLoaded(productList);
                 })
@@ -105,16 +106,17 @@ public class ProductRepository implements IProductRepository {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+                                String id = document.getId();
                                 // Lấy thông tin chi tiết của sản phẩm từ document
                                 String productName = document.getString("PRODUCT_NAME");
                                 String productImage = document.getString("PRODUCT_IMAGE");
                                 int productPrice = document.getLong("PRODUCT_PRICE").intValue();
                                 String productInfo = document.getString("PRODUCT_INFO");
 
-                                Log.d("Cake Product Details", "Name: " + productName + ", Image: " + productImage + ", Price: " + productPrice + ", Info: " + productInfo);
+                                Log.d("Cake Product Details", "id" + id + "Name: " + productName + ", Image: " + productImage + ", Price: " + productPrice + ", Info: " + productInfo);
 
                                 // Gọi callback để trả về thông tin chi tiết của sản phẩm
-                                callback.onProductDetailLoaded(productName, productImage, productPrice, productInfo);
+                                callback.onProductDetailLoaded(id, productName, productImage, productPrice, productInfo);
 
                             } else {
                                 // Document không tồn tại
@@ -163,6 +165,7 @@ public class ProductRepository implements IProductRepository {
                     }
                 });
     }
+    // Method to update product quantity
     //Cập nhật SL theo số lượng SP đã mua và productID
     public void updateProductQuantity(String productId, String size, int quantityPurchased) {
         DocumentReference productRef = db.collection("PRODUCT").document(productId);
@@ -305,4 +308,62 @@ public void getProductListByIds(List<String> ids, ProductListCallback callback){
 //    }
 
 
+                        // Get the current quantity of the specified size
+                        // Lấy số lượng hiện tại trong trường SIZE
+                        Map<String, Object> sizeMap = (Map<String, Object>) document.get("SIZE");
+                        if (sizeMap != null && sizeMap.containsKey(size)) {
+                            Map<String, Object> sizeDetails = (Map<String, Object>) sizeMap.get(size);
+                            if (sizeDetails != null && sizeDetails.containsKey("QUANTITY")) {
+                                Long currentQuantity = (Long) sizeDetails.get("QUANTITY");
+                                if (currentQuantity != null) {
+
+                                    // Calculate new quantity
+                                    long newQuantity = currentQuantity - quantityPurchased;
+
+                                    // Update the quantity in Firestore
+                                    sizeDetails.put("QUANTITY", newQuantity);
+                                    sizeMap.put(size, sizeDetails);
+
+                                    // Update the product document with new quantity
+                                    // Tính lại số lượng
+                                    long newQuantity = currentQuantity - quantityPurchased;
+
+                                    // Cập nhật số lượng trong Firestore
+                                    sizeDetails.put("QUANTITY", newQuantity);
+                                    sizeMap.put(size, sizeDetails);
+
+                                    //Cập nhật dữ liệu với số lượng mới
+                                    productRef.update("SIZE", sizeMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    // Successfully updated
+                                                    Log.d("Firestore", "Product quantity updated successfully.");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Failed to update
+                                                    Log.w("Firestore", "Error updating product quantity", e);
+                                                }
+                                            });
+                                } else {
+                                    Log.w("Firestore", "Current quantity is null.");
+                                }
+                            } else {
+                                Log.w("Firestore", "Size details do not contain quantity.");
+                            }
+                        } else {
+                            Log.w("Firestore", "Size map does not contain the specified size.");
+                        }
+                    } else {
+                        Log.w("Firestore", "No such document.");
+                    }
+                } else {
+                    Log.w("Firestore", "Task failed: ", task.getException());
+                }
+            }
+        });
+    }
 }

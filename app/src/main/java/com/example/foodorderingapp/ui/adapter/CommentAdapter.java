@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
@@ -33,9 +36,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
         Comment comment = listComment.get(position);
 
-        holder.txtName.setText(comment.getName());
+        holder.txtName.setText(comment.getNameUser());
         holder.txtContent.setText(comment.getContent());
-        holder.txtDate.setText(comment.getDate().toString());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault());
+        Date date = comment.getDate();
+        String formattedDate = dateFormat.format(date);
+        holder.txtDate.setText(formattedDate);
+
+
         holder.ratingBar.setRating(comment.getRatingBar());
     }
 

@@ -1,5 +1,8 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,20 +11,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.data.model.entity.Category;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
 public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryProductListAdapter.CategoryProductListViewHolder> {
+    private List<Product> mProducts;
+    private Context context;
+    private ProductClickListener mListener; // Khai báo listener
 
-    private List<ProductSearch> mProducts;
-
-    public void setData(List<ProductSearch> list){
+    // Khai báo interface để định nghĩa listener
+    public interface ProductClickListener {
+        void onProductClick(Product product);
+    }
+    //Khởi tạo
+    public CategoryProductListAdapter(Context context, List<Product> list,  ProductClickListener listener){
+        this.context = context;
         this.mProducts = list;
+        this.mListener = listener;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public CategoryProductListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,13 +48,26 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
 
     @Override
     public void onBindViewHolder(@NonNull CategoryProductListViewHolder holder, int position) {
-        ProductSearch productSearchDomain = mProducts.get(position);
-        if (productSearchDomain == null){
+        Product product = mProducts.get(position);
+        if (product == null){
             return;
         }
-        holder.imgProduct.setImageResource(productSearchDomain.getImage());
-        holder.tvName.setText(productSearchDomain.getName());
-        holder.tvPrice.setText(productSearchDomain.getPrice());
+        Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
+        holder.tvName.setText(product.getProductName());
+        holder.tvPrice.setText(String.valueOf(product.getProductPrice()));
+
+        //Xử lý sự kiện khi click vào sản phẩm
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
+                if (mListener != null) {
+                    mListener.onProductClick(product);
+                } else {
+                    Log.d("Listerer Error", "Error");
+                }
+            }
+        });
     }
 
     @Override
@@ -61,4 +91,5 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
             tvPrice = itemView.findViewById(R.id.tv_price);
         }
     }
+
 }

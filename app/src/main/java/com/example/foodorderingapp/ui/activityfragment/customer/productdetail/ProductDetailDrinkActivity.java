@@ -1,26 +1,36 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.adapter.ToppingAdapter;
 import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.entity.Topping;
+import com.example.foodorderingapp.ui.viewmodel.customer.productdetail.ProductDetailViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDetailDrinkActivity extends AppCompatActivity {
     private RecyclerView rcvTopping;
@@ -29,6 +39,8 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
     private TextView contentTextView, showMoreTextView, showLessTextView;
     private CharSequence originalText;
     private int originalMaxLines;
+    private ProductDetailViewModel productDetailViewModel;
+    private Product product;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +83,109 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
             }
         });
 
+        //Xử lý button quay lại
+        FrameLayout btnback = findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        rcvTopping = findViewById(R.id.rcv_topping);
-        rcvTopping.setLayoutManager(new LinearLayoutManager(this));
+        // Button tăng giảm số lượng
+        View layoutButtonCount = findViewById(R.id.layout_button_count);
 
-        toppingAdapter = new ToppingAdapter(this, getListTopping());
-        rcvTopping.setAdapter(toppingAdapter);
+        FrameLayout btnDecrease = layoutButtonCount.findViewById(R.id.img_decrease);
+        FrameLayout btnIncrease = layoutButtonCount.findViewById(R.id.img_increase);
+        final TextView txtQuantity = layoutButtonCount.findViewById(R.id.count);
+
+        btnDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(txtQuantity.getText().toString());
+                if (quantity > 1) {
+                    quantity--;
+                    txtQuantity.setText(String.valueOf(quantity));
+                }
+            }
+        });
+
+        btnIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(txtQuantity.getText().toString());
+                quantity++;
+                txtQuantity.setText(String.valueOf(quantity));
+            }
+        });
+
+        Intent intent = getIntent();
+        // Kiểm tra xem intent có dữ liệu không
+        if (intent != null) {
+            // Lấy dữ liệu từ intent
+            Log.d("LoadData", "Sucessful");
+            String productId = intent.getStringExtra("productID");
+            productDetailViewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
+            productDetailViewModel.getProductDetail(productId).observe(this, new Observer<Product>() {
+                @Override
+                public void onChanged(Product product) {
+                    // Hiển thị ảnh sản phẩm
+                    ImageView imgCake = findViewById(R.id.img_cake);
+                    Glide.with(ProductDetailDrinkActivity.this).load(product.getProductImage()).into(imgCake);
+
+                    // Hiển thị tên và giá sản phẩm
+                    TextView txtNameCake = findViewById(R.id.txt_NameCake);
+                    txtNameCake.setText(product.getProductName());
+
+                    TextView txtPriceCake = findViewById(R.id.txt_priceCake);
+                    txtPriceCake.setText(String.valueOf(product.getProductPrice()));
+
+                    // Hiển thị mô tả sản phẩm
+                    TextView contentTextView = findViewById(R.id.contentTextView);
+                    contentTextView.setText(product.getProductInfo());
+
+//                    TextView txtPrice = findViewById(R.id.txt_price);
+//                    txtPrice.setText(String.valueOf(product.getProductPrice()));
+
+                    TextView txtSmallPrice = findViewById(R.id.tv_small_price);
+                    TextView txtMediumPrice = findViewById(R.id.tv_medium_price);
+                    TextView txtLargePrice = findViewById(R.id.tv_big_price);
+                    //Hiển thị size
+                    Map<String, Map<String, Integer>> size = product.getProductSize();
+                    for (Map.Entry<String, Map<String, Integer>> entry : size.entrySet()) {
+                        String sizeName = entry.getKey();
+                        Map<String, Integer> sizeInfo = entry.getValue();
+                        // Tìm TextView tương ứng với tên kích thước và cập nhật giá
+                        switch (sizeName) {
+                            case "Nhỏ":
+                                txtSmallPrice.setText(String.valueOf(sizeInfo.get("PRICE")));
+                                break;
+                            case "Vừa":
+                                txtMediumPrice.setText(String.valueOf(sizeInfo.get("PRICE")));
+                                break;
+                            case "Lớn":
+                                txtLargePrice.setText(String.valueOf(sizeInfo.get("PRICE")));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    //Hiển thị danh sách topping
+
+                }
+            });
+
+        } else {
+            // Xử lý trường hợp intent không có dữ liệu
+            Log.d("LoadData", "Failed");
+        }
+
+//        rcvTopping = findViewById(R.id.rcv_topping);
+//        rcvTopping.setLayoutManager(new LinearLayoutManager(this));
+//
+//        toppingAdapter = new ToppingAdapter(this, getListTopping());
+//        rcvTopping.setAdapter(toppingAdapter);
     }
 
     private void clickOpenBottemFragmment() {
@@ -101,42 +210,5 @@ public class ProductDetailDrinkActivity extends AppCompatActivity {
 
         CommentDialogFragment commentDialogFragment = new CommentDialogFragment(listComment);
         commentDialogFragment.show(getSupportFragmentManager(), commentDialogFragment.getTag());
-    }
-
-    public void onRadioButtonClicked(@NonNull View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        RadioButton radioButtonLarge = findViewById(R.id.radioButtonLarge);
-        RadioButton radioButtonMedium = findViewById(R.id.radioButtonMedium);
-        RadioButton radioButtonSmall = findViewById(R.id.radioButtonSmall);
-
-        // Huỷ chọn tất cả các RadioButton ngoại trừ RadioButton được chọn
-        if (view.getId() == R.id.radioButtonLarge) {
-            if (checked) {
-                radioButtonMedium.setChecked(false);
-                radioButtonSmall.setChecked(false);
-            }
-        } else if (view.getId() == R.id.radioButtonMedium) {
-            if (checked) {
-                radioButtonLarge.setChecked(false);
-                radioButtonSmall.setChecked(false);
-            }
-        } else if (view.getId() == R.id.radioButtonSmall) {
-            if (checked) {
-                radioButtonLarge.setChecked(false);
-                radioButtonMedium.setChecked(false);
-            }
-        }
-    }
-
-    @NonNull
-    private List<Topping> getListTopping() {
-        List<Topping> listTopping = new ArrayList<>();
-
-//        listTopping.add(new Topping("Trân châu trắng", "5.000đ"));
-//        listTopping.add(new Topping("Trân châu đen", "5.000đ"));
-//        listTopping.add(new Topping("Bánh Flan", "7.000đ"));
-//        listTopping.add(new Topping("Thạch dừa phô mai", "10.000đ"));
-        return listTopping;
     }
 }

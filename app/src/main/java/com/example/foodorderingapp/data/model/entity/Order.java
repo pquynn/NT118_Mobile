@@ -1,3 +1,4 @@
+
 package com.example.foodorderingapp.data.model.entity;
 
 import com.google.firebase.firestore.DocumentId;
@@ -209,4 +210,3 @@ public class Order {
                 '}';
     }
 }
-

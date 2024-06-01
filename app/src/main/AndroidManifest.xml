@@ -21,7 +21,10 @@
         tools:targetApi="31" >
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo_phone"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".ui.activityfragment.customer.home.StoreActivity"
+            android:exported="true" />
         <activity
             android:name=".data.repository.order.resultTestActivity"
             android:exported="true" />

@@ -11,13 +11,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderRepository implements IOrderRepository {
     private FirebaseFirestore db;
     private CollectionReference collectionRef;
+
     public OrderRepository() {
         db = FirebaseFirestore.getInstance();
         collectionRef = db.collection("ORDER");
@@ -41,11 +44,11 @@ public class OrderRepository implements IOrderRepository {
                     String errorMessage = "Failed to get order: " + e.getMessage();
                     Log.e("FirestoreOrderRepository", errorMessage);
                     callback.onError(errorMessage);
-        });
+                });
     }
 
     // Get cart by user id (order has status = 'Giỏ hàng')
-    public void getCartByUserId(String userId, OrderCallback callback){
+    public void getCartByUserId(String userId, OrderCallback callback) {
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
                 .whereEqualTo("STATUS", "Giỏ hàng");
@@ -71,8 +74,8 @@ public class OrderRepository implements IOrderRepository {
 
 
     // Get order document list by user id and status
-    public void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback){
-        Log.d("GetUserId", userId );
+    public void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback) {
+        Log.d("GetUserId", userId);
         Log.d("GetStatus", status);
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
@@ -105,9 +108,17 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // Get order document list status
-    public void getOrderListByStatus(String status, OrderListCallback callback){
-        Query query = collectionRef
-                .whereEqualTo("STATUS", status);
+    public void getOrderListByStatus(String status, OrderListCallback callback) {
+        Query query;
+        if (Objects.equals(status, "Chờ xác nhận") || Objects.equals(status, "Đã xác nhận")) {
+            query = collectionRef
+                    .whereIn("STATUS", Arrays.asList("Chờ xác nhận", "Đã xác nhận"))
+                    .orderBy("CREATE_ON", Query.Direction.ASCENDING); // Hóa đơn mới nhất đứng cuối danh sách
+        } else {
+            query = collectionRef
+                    .whereEqualTo("STATUS", status)
+                    .orderBy("CREATE_ON", Query.Direction.ASCENDING); // Hóa đơn mới nhất đứng cuối danh sách
+        }
 
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {
@@ -137,8 +148,8 @@ public class OrderRepository implements IOrderRepository {
 
     // Create order document (create cart)
     @Override
-    public void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback){
-    //  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public void createOrder(String userId, Map<String, OrderItem> orderItemMap, OrderCallback callback) {
+        //  DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date createOn = new Date(0);
 
         Order order = new Order(
@@ -162,7 +173,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // Update order status by id
-    public void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback){
+    public void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback) {
         collectionRef.document(orderId).update("STATUS", status)
                 .addOnSuccessListener(aVoid -> {
                     callback.onOrderChanged();
@@ -173,7 +184,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
-    public void checkout(Order order, OrderChangedCallback callback){
+    public void checkout(Order order, OrderChangedCallback callback) {
         collectionRef.document(order.getId()).set(order)
                 .addOnSuccessListener(aVoid -> callback.onOrderChanged())
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
@@ -182,7 +193,7 @@ public class OrderRepository implements IOrderRepository {
 
     // Add or update product to shopping cart (create new order item by order id)
     @Override
-    public void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback){
+    public void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback) {
         collectionRef.document(orderId).update("ORDER_ITEM." + orderItemId, orderItem)
                 .addOnSuccessListener(aVoid -> {
                     callback.onOrderChanged();
@@ -193,7 +204,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // Delete product in shopping cart by order id
-    public void deleteProductCart(String orderId, String orderItemId, OrderItemRemovedCallback callback){
+    public void deleteProductCart(String orderId, String orderItemId, OrderItemRemovedCallback callback) {
         collectionRef.document(orderId).update("ORDER_ITEM." + orderItemId, FieldValue.delete())
                 .addOnSuccessListener(aVoid -> {
                     callback.onOrderItemRemoved(orderItemId);

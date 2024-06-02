@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8F9">
+    android:background="#F7F8F9"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/screen_name"
@@ -29,157 +27,176 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TableLayout
-        android:id="@+id/tableInfo"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:stretchColumns="*"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutTitle">
+        android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center|center_horizontal">
-
-            <Button
-                android:id="@+id/datePickerButton"
-                style="?android:spinnerStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="JAN 01 2020"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
-
-        </TableRow>
-
-        <TableRow
+        <TableLayout
+            android:id="@+id/tableInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/rounded_white_container"
-                android:orientation="vertical"
-                android:paddingVertical="20dp">
-
-                <TextView
-                    android:id="@+id/textViewRevenue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Tổng doanh thu"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/txtRevenue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="0,0 Đ"
-                    android:textColor="@color/primary"
-                    android:textSize="36sp" />
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:stretchColumns="*">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TableRow
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_white_container"
-                android:orientation="vertical"
-                android:paddingVertical="20dp">
+                android:background="@color/white"
+                android:gravity="center|center_horizontal">
 
-                <TextView
-                    android:id="@+id/textViewTotalOrder"
+                <Button
+                    android:id="@+id/datePickerButton"
+                    style="?android:spinnerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Tổng đơn"
+                    android:text="Ngày 1 - 1 - 2000"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/txtTotalOrder"
-                    style="@style/Heading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:gravity="center"
-                    android:text="0 đơn" />
-            </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_white_container"
-                android:orientation="vertical"
-                android:paddingVertical="20dp">
-
-                <TextView
-                    android:id="@+id/textViewRefund"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Tiền hoàn"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/txtRefund"
-                    style="@style/Heading1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:gravity="center"
-                    android:text="0.0 Đ" />
-            </LinearLayout>
-
-        </TableRow>
-
-        <TableRow>
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:indeterminateTint="@color/primary"
-                android:visibility="gone" />
-        </TableRow>
+                android:gravity="center">
 
-    </TableLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounded_white_container"
+                    android:orientation="vertical"
+                    android:paddingVertical="20dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textViewRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Tổng doanh thu"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txtRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="0,0 Đ"
+                        android:textColor="@color/primary"
+                        android:textSize="36sp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_white_container"
+                    android:orientation="vertical"
+                    android:paddingVertical="20dp">
+
+                    <TextView
+                        android:id="@+id/textViewTotalOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Tổng đơn"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txtTotalOrder"
+                        style="@style/Heading1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="0 đơn" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_white_container"
+                    android:orientation="vertical"
+                    android:paddingVertical="20dp">
+
+                    <TextView
+                        android:id="@+id/textViewRefund"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Tiền hoàn"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txtRefund"
+                        style="@style/Heading1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="0.0 Đ" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:indeterminateTint="@color/primary"
+                    android:visibility="gone" />
+            </TableRow>
+
+            <TableRow
+                android:gravity="center"
+                android:weightSum="1">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:padding="5dp">
+
+                </com.github.mikephil.charting.charts.LineChart>
+
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,26 +40,95 @@ public class AuthRepository {
     private String verificationCode;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
 
-    public void signIn(String phone, String password, AuthCallback callback) {
-        reference.whereEqualTo("PHONE", phone).whereEqualTo("PASSWORD", password).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                    QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
-                    loginInfo = new Login(document.getId(), document.getString("PHONE"), document.getString("PASSWORD"));
+    public void getUserID(String phone, AuthCallbackGetUserID getUserID) {
+        reference_user.whereEqualTo("PHONE", phone)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+                            if (getUserID != null) {
+                                getUserID.onSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm số điện thoại
+                            if (getUserID != null) {
+                                getUserID.onFailure(new Exception("No matching user info found or task failed!"));
+                            }
+                        }
+                    }
+                });
+    }
 
-                    // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
-                    if (callback != null) {
-                        callback.onLoginSuccess(document.getId());
+    public void signIn(String phone, String password, AuthCallback callback) {
+        reference.whereEqualTo("PHONE", phone)
+                .whereEqualTo("PASSWORD", password)
+                .limit(1).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<String> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.w("fcm", "Fetching FCM registration token failed", task.getException());
+                                                return;
+                                            }
+                                            // Get new FCM registration token
+                                            updateToken(document.getId(), task.getResult());
+                                        }
+                                    });
+
+                            // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
+                            if (callback != null) {
+                                callback.onLoginSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm thấy hoặc có lỗi xảy ra
+                            if (callback != null) {
+                                callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
+                            }
+                        }
                     }
-                } else {
-                    // Không tìm thấy hoặc có lỗi xảy ra
-                    if (callback != null) {
-                        callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
+                });
+    }
+
+    private void updateToken(String idLogin, String token) {
+        reference.document(idLogin).update("TOKEN", token)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        // Cập nhật thành công token
                     }
-                }
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xảy ra lỗi khi cố gắng cập nhật token
+                        Log.e("updateToken", "Failed!");
+                    }
+                });
+    }
+
+    public void logOut(String userID) {
+        reference_user.document(userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                updateToken(task.getResult().getString("ID_LOGIN"), "");
+                            } else {
+                                Log.w("logOut", "Failed!");
+                            }
+                        }
+
+                });
     }
 
     public void checkPhoneNumber(String phone, AuthCallback callback) {
@@ -229,11 +299,13 @@ public class AuthRepository {
         Map<String, Object> userLoginData = new HashMap<>();
         userLoginData.put("PHONE", phone); // Điền thông tin số điện thoại
         userLoginData.put("PASSWORD", password); // Điền thông tin mật khẩu
+        userLoginData.put("TOKEN", ""); // Điền thông tin token
 
         Map<String, Object> userData = new HashMap<>();
         userData.put("ID_LOGIN", ""); // Cập nhật sau khi thêm người dùng vào collection LOGIN
         userData.put("PHONE", phone);
         userData.put("NAME", name);
+        userData.put("ROLE", 0);
         userData.put("GENDER", ""); // Cập nhật sau
 
         reference.add(userLoginData)
@@ -264,18 +336,6 @@ public class AuthRepository {
     public String getVerificationCode() {
         return verificationCode;
     }
-
-//    public String getLoginID() {
-//        return this.loginInfo.getId();
-//    }
-//
-//    public String getLoginPhone() {
-//        return this.loginInfo.getPhone();
-//    }
-//
-//    public String getLoginPassword() {
-//        return this.loginInfo.getPassword();
-//    }
 
     public interface AuthCallback {
         void onLoginSuccess(String data);

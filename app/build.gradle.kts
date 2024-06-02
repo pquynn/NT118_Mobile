@@ -84,4 +84,12 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth")
 
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
+
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:20.0.0")
+
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging")
+
 }

@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.data.model.entity;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 public class UserAddress {
@@ -40,13 +41,6 @@ public class UserAddress {
         this.idUser = idUser;
     }
 
-    public String getAllAddress(){
-        if(addressDetail.equals("null")) addressDetail = " ";
-        if(ward.equals("null")) ward = " ";
-        if(district.equals("null")) district = " ";
-        if(city.equals("null")) city = " ";
-        return addressDetail +", "+ ward +", "+ district +", "+ city;
-    }
 
     public String getId() {
         return id;
@@ -112,4 +106,16 @@ public class UserAddress {
     public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
+
+
+    @Exclude
+    public String getAllAddress(){
+        if(addressDetail.equals("null")) addressDetail = " ";
+        if(ward.equals("null")) ward = " ";
+        if(district.equals("null")) district = " ";
+        if(city.equals("null")) city = " ";
+
+        return addressDetail +", "+ ward +", "+ district +", "+ city;
+    }
+
 }

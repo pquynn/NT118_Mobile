@@ -21,6 +21,9 @@
         android:theme="@style/Theme.FoodOrderingApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activityfragment.customer.accountmanagement.am_faqs"
+            android:exported="true" />
+        <activity
             android:name=".ui.activityfragment.customer.accountmanagement.SelectLocation"
             android:exported="true" />
         <activity
@@ -131,6 +134,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDGGyK8delYa1bpENd_3lC-2yBiRaoRtFM" />
+            android:exported="true"></activity>
     </application>
 
 </manifest>

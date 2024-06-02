@@ -1,9 +1,12 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -31,7 +34,7 @@ public class MyOrderDelivering extends Fragment {
     private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
     private MyOrdersVM viewModel;
     private String userId = "";
-
+    AlertDialog progressDialog;
     public MyOrderDelivering() {
         // Required empty public constructor
     }
@@ -46,6 +49,16 @@ public class MyOrderDelivering extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -65,6 +78,7 @@ public class MyOrderDelivering extends Fragment {
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
 
+        //progressDialog.show();
         viewModel.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
@@ -75,6 +89,7 @@ public class MyOrderDelivering extends Fragment {
                 }
                 Adapter = new OrderItemAdapter(listOrderItem);
                 recyclerViewList.setAdapter(Adapter);
+                //progressDialog.dismiss();
             }
         });
 

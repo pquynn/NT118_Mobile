@@ -1,15 +1,22 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,16 +26,20 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.User;
+import com.example.foodorderingapp.data.repository.order.IOrderRepository;
+import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.MyOrderDetailVM;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class am_order_detail extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
+    private Context context = this;
     private RecyclerView recyclerViewList;
     MyOrderDetailVM viewModel;
     Map<String, OrderItem> orderItemMap;
@@ -38,8 +49,9 @@ public class am_order_detail extends AppCompatActivity {
     TextView txt_orderTotal, txt_orderDiscount, txt_orderPoint, txt_orderPrice;
     LinearLayout ll_orderDiscount, ll_orderPoint;
     String orderId = "", orderStatus = "";
-
+    AlertDialog progressDialog;
     FrameLayout btnBack;
+    OrderRepository orderRepository = new OrderRepository();
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,15 @@ public class am_order_detail extends AppCompatActivity {
             }
         });
 
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         txt_orderId = findViewById(R.id.txt_orderDT_ID);
         txt_orderStatus = findViewById(R.id.txt_orderDT_status);
@@ -100,17 +121,19 @@ public class am_order_detail extends AppCompatActivity {
         recyclerViewOrderDetail();
         txt_orderStatus.setText("");
 
+        progressDialog.show();
         viewModel.getOrderStatusLiveDate().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 orderStatus = s;
                 txt_orderStatus.setText(orderStatus);
                 SetVisibilityButton(orderStatus);
+                progressDialog.dismiss();
             }
         });
 
 
-
+        progressDialog.show();
         viewModel.getOrderMutableLiveData().observe(this, new Observer<Order>() {
             @Override
             public void onChanged(Order order) {
@@ -119,16 +142,17 @@ public class am_order_detail extends AppCompatActivity {
                 txt_cusPhone.setText(order.getRecipientPhone());
                 txt_Payment.setText(order.getPayment());
 
-                txt_orderTotal.setText(String.valueOf(order.getTotalPrice()));
-                txt_orderPrice.setText(String.valueOf(order.getOrderPrice()));
+                setPriceFormatted(txt_orderTotal, order.getTotalPrice());
+                setPriceFormatted(txt_orderPrice, order.getOrderPrice());
                 if(order.getPoint()>0){
                     ll_orderPoint.setVisibility(View.VISIBLE);
-                    txt_orderPoint.setText(String.valueOf(order.getPoint()));
+                    setPriceFormatted(txt_orderPoint, order.getPoint());
                 }
                 if(order.getDiscountValue() > 0){
                     ll_orderDiscount.setVisibility(View.VISIBLE);
-                    txt_orderDiscount.setText(String.valueOf(order.getDiscountValue()));
+                    setPriceFormatted(txt_orderDiscount, order.getDiscountValue());
                 }
+                progressDialog.dismiss();
             }
         });
 
@@ -140,6 +164,35 @@ public class am_order_detail extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new android.app.AlertDialog.Builder(context)
+                        .setTitle("Xác nhận hủy đơn hàng")
+                        .setMessage("Bạn có chắc muốn hủy đơn hàng này?")
+                        .setPositiveButton("Xác nhận hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                orderRepository.updateOrderStatusById(orderId, "Đã hủy", new IOrderRepository.OrderChangedCallback() {
+                                    @Override
+                                    public void onOrderChanged() {
+                                        Toast.makeText(context, "Đã hủy đơn hàng!", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(context, "Hủy đơn hàng thất bại!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Hủy bỏ", null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
     }
     private void SetVisibilityButton(String status){
         btnCancel.setVisibility(View.GONE);
@@ -147,7 +200,7 @@ public class am_order_detail extends AppCompatActivity {
         btnRefund.setVisibility(View.GONE);
 
         switch (status) {
-            case "Đang xử lý": //pending
+            case "Chờ xác nhận": //pending
                 btnCancel.setVisibility(View.VISIBLE);
                 break;
             case "Đã giao": //completed
@@ -166,6 +219,7 @@ public class am_order_detail extends AppCompatActivity {
 
         adapter = new OrderDetailAdapter(orderItemMap);
         recyclerViewList.setAdapter(adapter);
+        progressDialog.show();
             viewModel.getOrderMutableLiveData().observe(this, new Observer<Order>() {
                 @Override
                 public void onChanged(Order order) {
@@ -173,10 +227,15 @@ public class am_order_detail extends AppCompatActivity {
                 orderItemMap.putAll(order.getOrderItem());
 
                 adapter.notifyDataSetChanged();
+                progressDialog.dismiss();
                 Log.d("Get in load detail", "GET IN LOAD DETAIL");
                 }
             });
+    }
 
-
+    private void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        textView.setText(formattedPrice);
     }
 }

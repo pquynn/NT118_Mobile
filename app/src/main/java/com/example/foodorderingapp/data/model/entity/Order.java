@@ -19,7 +19,7 @@ public class Order {
     private String payment;
     private String status;
     private int deliveryCost;
-    private double orderPrice;
+    private int orderPrice;
     @ServerTimestamp
     private Date createOn;
     private int discountValue; //DISCOUNT_VALUE
@@ -28,7 +28,7 @@ public class Order {
     private String recipientPhone;
 
     public Order(){}
-    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, int discountValue, Map<String, OrderItem> orderItem) {
+    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, int orderPrice, Date createOn, int discountValue, Map<String, OrderItem> orderItem) {
         this.idUser = idUser;
         this.address = address;
         this.totalPrice = totalPrice;
@@ -122,11 +122,11 @@ public class Order {
     }
 
     @PropertyName("ORDER_PRICE")
-    public double getOrderPrice() {
+    public int getOrderPrice() {
         return orderPrice;
     }
     @PropertyName("ORDER_PRICE")
-    public void setOrderPrice(double orderPrice) {
+    public void setOrderPrice(int orderPrice) {
         this.orderPrice = orderPrice;
     }
 

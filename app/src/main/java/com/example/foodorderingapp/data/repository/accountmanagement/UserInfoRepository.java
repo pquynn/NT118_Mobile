@@ -40,7 +40,7 @@ public class UserInfoRepository {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isComplete() && task.getResult() != null && task.getResult().exists()){
                             DocumentSnapshot document = task.getResult();
-                            userInfo = new User(document.getString("USER_NAME"), document.getString("PHONE"),userId, document.getString("ID_LOGIN"));
+                            userInfo = document.toObject(User.class);
 
                             if(callback != null){
                                 callback.loadUserInfoSuccess(userInfo);
@@ -123,51 +123,91 @@ public class UserInfoRepository {
 
 
     //Update user: name and phone
-    public void updateNamePhone(String userId, User userInfo){
-        Map<String, Object> newUserData = new HashMap<>();
-        newUserData.put("NAME", userInfo.getUserName());
-        newUserData.put("PHONE", userInfo.getPhone());
-
-        db.collection("USER")
-                .document(userId)
-                .update(newUserData)
-                .addOnSuccessListener(aVoid -> {
-                    // Sửa comment thành công
-                    Log.d("UpdateUserSuccess", "Update user success!");
+//    public void updateNamePhone(String userId, User userInfo){
+//        Map<String, Object> newUserData = new HashMap<>();
+//        newUserData.put("NAME", userInfo.getUserName());
+//        newUserData.put("PHONE", userInfo.getPhone());
+//
+//        db.collection("USER")
+//                .document(userId)
+//                .update(newUserData)
+//                .addOnSuccessListener(aVoid -> {
+//                    // Sửa comment thành công
+//                    Log.d("UpdateUserSuccess", "Update user success!");
+//                })
+//                .addOnFailureListener(e -> {
+//                    // Lỗi khi sửa comment
+//                    Log.e("UpdateUserError", "Error update user: ", e);
+//                });
+//
+//    }
+    //Update user: name
+    public void updateUserName(String userId, String userName, updateNameCallback callback){
+        db.collection("USER").document(userId)
+                .update("USER_NAME", userName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callback.updateNameSuccess();
+                    }
                 })
-                .addOnFailureListener(e -> {
-                    // Lỗi khi sửa comment
-                    Log.e("UpdateUserError", "Error update user: ", e);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.updateNameError(e);
+                    }
+                });
+
+        db.collection("COMMENT").whereEqualTo("ID_USER", userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                            document.getReference().update("USER_NAME", userName)
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            callback.updateNameError(e);
+                                        }
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.updateNameError(e);
+                    }
                 });
 
     }
     //Update user: password
 
     //add address
-    public void addAddress(UserAddress userAddress){
-        HashMap<String, Object> address = new HashMap<>();
-        address.put("ADDRESS_DETAIL", userAddress.getAddressDetail());
-        address.put("CITY", userAddress.getCity());
-        address.put("DISTRICT", userAddress.getDistrict());
-        address.put("WARD",userAddress.getWard());
-        address.put("ID_USER", userAddress.getIdUser());
-        address.put("RECIPIENT_NAME", userAddress.getRecipientName());
-        address.put("RECIPIENT_PHONE", userAddress.getRecipientPhone());
+    public void addAddress(UserAddress userAddress, userAddressCallback callback){
+        UserAddress address = new UserAddress(
+                userAddress.getRecipientName(),
+                userAddress.getAddressDetail(),
+                userAddress.getCity(),
+                userAddress.getDistrict(),
+                userAddress.getWard(),
+                userAddress.getRecipientPhone(),
+                userAddress.getIdUser()
+        );
 
-        db.collection("USER")
+        db.collection("USER_ADDRESS")
                 .add(address)
                 .addOnSuccessListener(aVoid -> {
-                    // Sửa comment thành công
-                    Log.d("AddUserSuccess", "Add user success!");
+                    callback.loadUserAddressSuccess(address);
                 })
                 .addOnFailureListener(e -> {
-                    // Lỗi khi sửa comment
-                    Log.e("AddUserError", "Error add user: ", e);
+                    callback.loadUsserAddressError(e);
                 });
 
     }
     //update address
-    public void updateAdress(String addressId, UserAddress userAddress){
+    public void updateAddress(String addressId, UserAddress userAddress, userAddressCallback callback){
         Map<String, Object> newAddress = new HashMap<>();
         newAddress.put("ADDRESS_DETAIL", userAddress.getAddressDetail());
         newAddress.put("CITY", userAddress.getCity());
@@ -180,26 +220,24 @@ public class UserInfoRepository {
                 .document(addressId)
                 .update(newAddress)
                 .addOnSuccessListener(aVoid -> {
-                    // Sửa comment thành công
-                    Log.d("UpdateUserAddressSuccess", "Update user address success!");
+                    callback.loadUserAddressSuccess(userAddress);
                 })
                 .addOnFailureListener(e -> {
-                    // Lỗi khi sửa comment
-                    Log.e("UpdateUserAddressError", "Error update user address: ", e);
+                    callback.loadUsserAddressError(e);
                 });
     }
     //delete address
-    public void deleteAdress(String addressId){
+    public void deleteAdress(String addressId, deleteAddressCallback callback){
         db.collection("USER_ADDRESS")
                 .document(addressId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     // Xóa comment thành công
-                    Log.d("DeleteUserAddressSuccess", "Delete user address success!");
+                    callback.deleteAddressSuccess();
                 })
                 .addOnFailureListener(e -> {
                     // Lỗi khi xóa comment
-                    Log.e("DeleteUserAddressError", "Error delete user address:", e);
+                    callback.deleteAddressError(e);
                 });
     }
     public interface userInfoCallback{
@@ -216,4 +254,15 @@ public class UserInfoRepository {
         void loadUserAddressSuccess(UserAddress userAddress);
         void loadUsserAddressError(Exception e);
     }
+
+    public interface updateNameCallback{
+        void updateNameSuccess();
+        void updateNameError(Exception e);
+    }
+
+    public interface deleteAddressCallback{
+        void deleteAddressSuccess();
+        void deleteAddressError(Exception e);
+    }
+
 }

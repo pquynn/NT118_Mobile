@@ -269,7 +269,7 @@ public class AuthRepository {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
-                            reference.document(document.getId()).update("PHONE", newPhone)
+                            reference_user.document(document.getId()).update("PHONE", newPhone)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {

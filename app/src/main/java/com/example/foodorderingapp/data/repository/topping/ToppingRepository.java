@@ -31,7 +31,7 @@ public class ToppingRepository implements IToppingRepository{
                             if (document.exists()) {
                                 Topping topping = new Topping();
                                 topping.setNameTopping(document.getString("TOPPING_NAME"));
-                                topping.setPriceTopping(String.valueOf(document.getLong("TOPPING_PRICE").intValue()));
+                                topping.setPriceTopping(document.getLong("TOPPING_PRICE").intValue());
                                 callback.onToppingLoaded(topping);
                                 Log.d("firebase", "topping" + topping.toString());
                             } else {
@@ -56,7 +56,7 @@ public class ToppingRepository implements IToppingRepository{
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Topping topping = new Topping();
                                 topping.setNameTopping(document.getString("TOPPING_NAME"));
-                                topping.setPriceTopping(String.valueOf(document.getLong("TOPPING_PRICE").intValue()));
+                                topping.setPriceTopping(document.getLong("TOPPING_PRICE").intValue());
                                 callback.onToppingLoaded(topping);
                                 // Nếu bạn muốn lấy một topping duy nhất, bạn có thể break ở đây
                                 Log.d("firebase", "topping" + topping.toString());

@@ -19,6 +19,7 @@ import com.example.foodorderingapp.data.model.OrderItem;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.ViewHolder>{
@@ -37,7 +38,10 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
     @Override
     public void onBindViewHolder(@NonNull OrderItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.orderid.setText(OrderItemList.get(position).getOrderid());
-        holder.totalPrice.setText(String.valueOf(OrderItemList.get(position).getTotalPrice()));
+
+        double priceDB = (double) OrderItemList.get(position).getTotalPrice();
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDB);
+        holder.totalPrice.setText(formattedPrice);
         holder.totalDish.setText(String.valueOf(OrderItemList.get(position).getTotalDish()));
 
         holder.btn_detail.setOnClickListener(new View.OnClickListener() {

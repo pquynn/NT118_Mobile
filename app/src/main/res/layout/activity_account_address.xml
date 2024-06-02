@@ -9,9 +9,11 @@
     tools:context=".ui.activityfragment.customer.accountmanagement.AM_AddressActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
         <include layout="@layout/header_with_btnback"></include>
 
@@ -30,23 +32,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <Button
+                    android:id="@+id/btn_addAddress"
+                    style="@style/ButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Thêm địa chỉ mới" />
+
             </LinearLayout>
+
         </ScrollView>
 
-
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_addAddress"
-        style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="32dp"
-        android:text="Thêm địa chỉ mới"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

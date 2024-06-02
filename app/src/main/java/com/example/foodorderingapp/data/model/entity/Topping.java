@@ -1,13 +1,12 @@
 package com.example.foodorderingapp.data.model.entity;
 
 public class Topping {
-
     private String nameTopping;
-    private String priceTopping;
+    private int priceTopping;
 
     public Topping(){}
 
-    public Topping(String name, String price) {
+    public Topping(String name, int price) {
         this.nameTopping = name;
         this.priceTopping = price;
     }
@@ -20,11 +19,11 @@ public class Topping {
         this.nameTopping = nameTopping;
     }
 
-    public String getPriceTopping() {
+    public int getPriceTopping() {
         return priceTopping;
     }
 
-    public void setPriceTopping(String priceTopping) {
+    public void setPriceTopping(int priceTopping) {
         this.priceTopping = priceTopping;
     }
 }

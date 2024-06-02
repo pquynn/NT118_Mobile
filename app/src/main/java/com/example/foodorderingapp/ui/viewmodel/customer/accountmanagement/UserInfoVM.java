@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -15,8 +16,10 @@ public class UserInfoVM extends ViewModel {
     UserInfoRepository repository = new UserInfoRepository();
     MutableLiveData<User> userInfoLiveData = new MutableLiveData<>();
     MutableLiveData<ArrayList<UserAddress>>  userAddressesLiveData= new MutableLiveData<>();
+    private Context context;
 
-    public UserInfoVM(String userId){
+    public UserInfoVM(String userId, Context context){
+        this.context = context;
         repository.getUserInfo(userId, new UserInfoRepository.userInfoCallback() {
             @Override
             public void loadUserInfoSuccess(User userInfo) {

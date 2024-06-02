@@ -40,7 +40,7 @@ public class PointAdapter extends RecyclerView.Adapter<PointAdapter.ViewHolder> 
             point*=-1;
             holder.point.setText(String.valueOf(point));
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM/yyyy");
         String dateString = sdf.format(pointList.get(position).getPointDate());
         holder.point_date.setText(dateString);
     }

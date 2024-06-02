@@ -14,7 +14,40 @@ import java.util.List;
 public class MyOrdersVM extends ViewModel {
     OrderRepository repository = new OrderRepository();
     MutableLiveData<List<Order>> orderListLiveData = new MutableLiveData<>();
+    MutableLiveData<List<Order>> orderListLiveData2 = new MutableLiveData<>();
+    String userId;
+    String orderStatus;
     public MyOrdersVM (String userId, String orderStatus){
+        this.userId = userId;
+        this.orderStatus = orderStatus;
+
+    }
+    public MutableLiveData<List<Order>> getOrderListLiveData(){
+        loadOrder(userId, orderStatus);
+        return orderListLiveData;
+    }
+
+    public MutableLiveData<List<Order>> getOrderListLiveData2(){
+        loadOrder2(userId, orderStatus);
+        return orderListLiveData2;
+    }
+
+    private void loadOrder2(String userId, String orderStatus){
+        orderStatus = "Đã xác nhận";
+        repository.getOrderListByStatusAndUserId(userId, orderStatus, new IOrderRepository.OrderListCallback() {
+            @Override
+            public void onOrderListLoaded(List<Order> orderList) {
+                orderListLiveData2.setValue(orderList);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("MyOrdersVMError", "Error load my orders by status in MyOrdersVM");
+            }
+        });
+    }
+
+    private void loadOrder(String userId, String orderStatus){
         repository.getOrderListByStatusAndUserId(userId, orderStatus, new IOrderRepository.OrderListCallback() {
             @Override
             public void onOrderListLoaded(List<Order> orderList) {
@@ -28,7 +61,4 @@ public class MyOrdersVM extends ViewModel {
         });
     }
 
-    public MutableLiveData<List<Order>> getOrderListLiveData(){
-        return orderListLiveData;
-    }
 }

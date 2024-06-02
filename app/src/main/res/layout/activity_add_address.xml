@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_address"
+    android:background="@color/white"
     tools:context=".ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical">
 
         <include layout="@layout/header_with_btnback"></include>
@@ -23,6 +25,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_getAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="15dp"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/location" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginLeft="8dp"
+                        android:text="Nhập địa chỉ"
+                        android:textColor="@color/primary"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/txt_recipient_name"
@@ -156,13 +186,13 @@
                     android:textColorHint="@color/text" />
 
                 <Button
-                    android:id="@+id/btn_add"
+                    android:id="@+id/btn_saveAddress"
                     style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginVertical="20dp"
-                    android:layout_gravity="center"
                     android:text="Lưu" />
             </LinearLayout>
         </ScrollView>

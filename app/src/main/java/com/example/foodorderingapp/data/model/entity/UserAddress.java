@@ -1,21 +1,25 @@
 package com.example.foodorderingapp.data.model.entity;
 
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 public class UserAddress {
-    @PropertyName("RECIPIENT_NAME")
+    @DocumentId
+    private String id;
+
     private String recipientName;
-    @PropertyName("ADDRESS_DETAIL")
+
     private String addressDetail;
-    @PropertyName("CITY")
+
     private String city;
-    @PropertyName("DISTRICT")
+
     private String district;
-    @PropertyName("WARD")
+
     private String ward;
-    @PropertyName("RECIPIENT_PHONE")
+
     private String recipientPhone;
-    @PropertyName("ID_USER")
+
     private String idUser;
 //    add database attributes later
 
@@ -37,12 +41,13 @@ public class UserAddress {
         this.idUser = idUser;
     }
 
-    public String getAllAddress(){
-        if(addressDetail.equals("null")) addressDetail = " ";
-        if(ward.equals("null")) ward = " ";
-        if(district.equals("null")) district = " ";
-        if(city.equals("null")) city = " ";
-        return addressDetail +", "+ ward +", "+ district +", "+ city;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @PropertyName("RECIPIENT_NAME")
@@ -101,4 +106,16 @@ public class UserAddress {
     public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
+
+
+    @Exclude
+    public String getAllAddress(){
+        if(addressDetail.equals("null")) addressDetail = " ";
+        if(ward.equals("null")) ward = " ";
+        if(district.equals("null")) district = " ";
+        if(city.equals("null")) city = " ";
+
+        return addressDetail +", "+ ward +", "+ district +", "+ city;
+    }
+
 }

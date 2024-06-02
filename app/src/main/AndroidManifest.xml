@@ -152,15 +152,10 @@
         </activity> <!-- END: SEARCH -->
         <!-- START: PRODUCT DETAIL -->
         <activity
-            android:name=".ui.activityfragment.customer.productdetail.ProductDetailCakeActivity"
-            android:exported="true" >
-        </activity> <!-- END: PRODUCT DETAIL -->
-        <!-- START: PRODUCT DETAIL -->
-        <activity
-            android:name=".ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity"
+            android:name=".ui.activityfragment.customer.productdetail.ProductDetailActivity"
             android:exported="true" >
         </activity>
-
+        <!-- END: PRODUCT DETAIL -->
         <service
             android:name=".service.FirebaseMessagerReceiver"
             android:exported="true">

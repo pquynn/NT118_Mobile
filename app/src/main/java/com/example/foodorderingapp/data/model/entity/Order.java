@@ -29,9 +29,11 @@ public class Order {
     private String recipientPhone;
 
     public Order(){}
-    public Order(String idUser, String address, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, int discountValue, Map<String, OrderItem> orderItem) {
+    public Order(String idUser, String address, String recipientName, String recipientPhone, int totalPrice, int totalProduct, int point, String payment, String status, int deliveryCost, double orderPrice, Date createOn, int discountValue, Map<String, OrderItem> orderItem) {
         this.idUser = idUser;
         this.address = address;
+        this.recipientName = recipientName;
+        this.recipientPhone = recipientPhone;
         this.totalPrice = totalPrice;
         this.totalProduct = totalProduct;
         this.point = point;

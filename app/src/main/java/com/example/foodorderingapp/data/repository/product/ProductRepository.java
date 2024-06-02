@@ -143,6 +143,7 @@ public class ProductRepository implements IProductRepository {
                             if (document.exists()) {
                                 // Lấy thông tin chi tiết của sản phẩm từ document
                                 Product product = new Product();
+                                product.setId(productId);
                                 product.setIdCategory(document.getString("ID_CATEGORY"));
                                 product.setProductImage(document.getString("PRODUCT_IMAGE"));
                                 product.setProductInfo(document.getString("PRODUCT_INFO"));
@@ -307,63 +308,4 @@ public void getProductListByIds(List<String> ids, ProductListCallback callback){
 //                });
 //    }
 
-
-                        // Get the current quantity of the specified size
-                        // Lấy số lượng hiện tại trong trường SIZE
-                        Map<String, Object> sizeMap = (Map<String, Object>) document.get("SIZE");
-                        if (sizeMap != null && sizeMap.containsKey(size)) {
-                            Map<String, Object> sizeDetails = (Map<String, Object>) sizeMap.get(size);
-                            if (sizeDetails != null && sizeDetails.containsKey("QUANTITY")) {
-                                Long currentQuantity = (Long) sizeDetails.get("QUANTITY");
-                                if (currentQuantity != null) {
-
-                                    // Calculate new quantity
-                                    long newQuantity = currentQuantity - quantityPurchased;
-
-                                    // Update the quantity in Firestore
-                                    sizeDetails.put("QUANTITY", newQuantity);
-                                    sizeMap.put(size, sizeDetails);
-
-                                    // Update the product document with new quantity
-                                    // Tính lại số lượng
-                                    long newQuantity = currentQuantity - quantityPurchased;
-
-                                    // Cập nhật số lượng trong Firestore
-                                    sizeDetails.put("QUANTITY", newQuantity);
-                                    sizeMap.put(size, sizeDetails);
-
-                                    //Cập nhật dữ liệu với số lượng mới
-                                    productRef.update("SIZE", sizeMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    // Successfully updated
-                                                    Log.d("Firestore", "Product quantity updated successfully.");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    // Failed to update
-                                                    Log.w("Firestore", "Error updating product quantity", e);
-                                                }
-                                            });
-                                } else {
-                                    Log.w("Firestore", "Current quantity is null.");
-                                }
-                            } else {
-                                Log.w("Firestore", "Size details do not contain quantity.");
-                            }
-                        } else {
-                            Log.w("Firestore", "Size map does not contain the specified size.");
-                        }
-                    } else {
-                        Log.w("Firestore", "No such document.");
-                    }
-                } else {
-                    Log.w("Firestore", "Task failed: ", task.getException());
-                }
-            }
-        });
-    }
 }

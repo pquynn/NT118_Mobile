@@ -46,7 +46,7 @@ import java.util.Map;
 public class CartFragment extends Fragment  implements CartAdapter.OnItemClickListener, CartToppingAdapter.OnCheckedChangeListener {
     TextView screenname;
     private Map<String, OrderItem> orderItemMap;
-    private String userId ="3";
+    private String userId ="1";
     private FragmentCartBinding binding;
     private BottomsheetEditCartBinding bindingBottomSheet;
     private CartViewModel viewModel;

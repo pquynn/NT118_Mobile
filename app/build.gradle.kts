@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.firebase.storage)
     implementation(fileTree(mapOf(
-        "dir" to "E:\\zalopay",
+        "dir" to "zalopay",
         "include" to listOf("*.aar", "*.jar")
     )))
     testImplementation(libs.junit)
@@ -69,7 +69,7 @@ dependencies {
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:3.12.4")
     // Firebase Android testing
-    androidTestImplementation ("com.google.firebase:firebase-firestore-testing:latest_version_here")
+//    androidTestImplementation ("com.google.firebase:firebase-firestore-testing:latest_version_here")
 
 
     implementation("de.hdodenhof:circleimageview:3.1.0")

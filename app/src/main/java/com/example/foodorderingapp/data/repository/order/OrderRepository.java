@@ -59,8 +59,7 @@ public class OrderRepository implements IOrderRepository {
                 callback.onOrderLoaded(order);
 
             } else {
-                String errorMessage = "Order not found";
-                Log.e("FirestoreOrderRepository", errorMessage);
+                String errorMessage = "Cart not found";
                 callback.onError(errorMessage);
             }
         }).addOnFailureListener(e -> {
@@ -145,10 +144,12 @@ public class OrderRepository implements IOrderRepository {
         Order order = new Order(
                 userId,
                 "",
+                "",
+                "",
                 0,
                 0,
                 0,
-                "COD",
+                "",
                 "Giỏ hàng",
                 0,
                 0,

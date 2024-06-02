@@ -172,7 +172,6 @@ public class CartViewModel extends ViewModel {
             });
         }
 
-//        Log.d("firestore", "onProductLoaded vm: " + product.toString());
     }
 
     // method to load topping list in firestore
@@ -276,7 +275,7 @@ public class CartViewModel extends ViewModel {
         );
     }
 
-    // Check listenter
+    // Check listenter for button confirm to edit product cart
     public void onConfrimButtonClick(String orderItemId, String productId, String newSize, List<String> newToppings, String newNote, int newPrice) {
         showProgressDialog("Đang xử lý...");
         OrderItem newOrderItem = orderLiveData.getValue().getOrderItemElementById(orderItemId);
@@ -329,14 +328,14 @@ public class CartViewModel extends ViewModel {
 
                                     @Override
                                     public void onError(String errorMessage) {
-
+                                        Log.e("error", "onError: " + errorMessage);
                                     }
                                 });
                             }
 
                             @Override
                             public void onError(String errorMessage) {
-
+                                Log.e("error", "onError: " + errorMessage);
                             }
                         });
 
@@ -378,7 +377,7 @@ public class CartViewModel extends ViewModel {
 
                 @Override
                 public void onError(String errorMessage) {
-
+                    Log.e("error", "onError: " + errorMessage);
                 }
             });
         }

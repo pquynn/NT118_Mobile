@@ -16,8 +16,9 @@ import android.widget.Button;
 
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 import com.example.foodorderingapp.ui.adapter.SearchAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.search.SearchViewModel;
 
@@ -96,9 +97,9 @@ public class SearchActivity extends AppCompatActivity {
                 Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
                 Intent intent;
                 if (validCategories.contains(product.getIdCategory())) {
-                    intent = new Intent(SearchActivity.this, ProductDetailCakeActivity.class);
+                    intent = new Intent(SearchActivity.this, ProductDetailActivity.class);
                 } else {
-                    intent = new Intent(SearchActivity.this, ProductDetailDrinkActivity.class);
+                    intent = new Intent(SearchActivity.this, ProductDetailActivity.class);
                 }
                 //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
         //        intent = new Intent(getActivity(), ProductDetailDrink.class);

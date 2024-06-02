@@ -169,12 +169,12 @@ public class OrdersFeedbackRepository {
                                 }
                                 // Xử lý danh sách comment ở đây
                                 for (Comment comment : listComment) {
-                                    Log.d("CommentInfo", "ID_PRODUCT: " + comment.getIdProduct());
-                                    Log.d("CommentInfo", "CONTENT: " + comment.getContent());
-                                    Log.d("CommentInfo", "POINT: " + comment.getRatingBar());
-                                    Log.d("CommentInfo", "CM_DATE: " + comment.getDate());
-                                    Log.d("CommentInfo", "USER_NAME: " + comment.getNameUser());
-                                    Log.d("CommentInfo", "USER_ID: " + comment.getIdUser());
+//                                    Log.d("CommentInfo", "ID_PRODUCT: " + comment.getIdProduct());
+//                                    Log.d("CommentInfo", "CONTENT: " + comment.getContent());
+//                                    Log.d("CommentInfo", "POINT: " + comment.getRatingBar());
+//                                    Log.d("CommentInfo", "CM_DATE: " + comment.getDate());
+//                                    Log.d("CommentInfo", "USER_NAME: " + comment.getNameUser());
+//                                    Log.d("CommentInfo", "USER_ID: " + comment.getIdUser());
                                 }
                                 callback.loadListCommentSuccess(listComment);
                             } else {
@@ -184,6 +184,39 @@ public class OrdersFeedbackRepository {
                         } else {
                             Log.d("COMMENT", "Lỗi khi lấy danh sách"); // Thông báo khi có lỗi xảy ra trong quá trình lấy danh sách comment
                             callback.loadlistCommentError(new Exception("Error load list comment"));
+                        }
+                    }
+                });
+    }
+
+    public void calculateProductAveragePoint(String productId, averagePointCallback callback){
+        db.collection("COMMENT")
+                .whereEqualTo("ID_PRODUCT", productId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult(); // Sử dụng QuerySnapshot thay vì QueryDocumentSnapshot
+
+                            if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                                int totalPoint = 0, size = 0;
+                                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                                    Comment comment = documentSnapshot.toObject(Comment.class);
+                                    totalPoint += comment.getRatingBar();
+                                    size++;
+                                }
+                                if(size > 0){
+                                    callback.onLoad(totalPoint * 1.0 / size);
+                                }
+                                else
+                                    callback.onLoad(0.0);
+                            } else {
+                                Log.d("COMMENT", "Danh sách comment trống"); // Thông báo nếu danh sách comment rỗng
+                                callback.onError(new Exception("Error load list comment"));
+                            }
+                        } else {
+                            Log.d("COMMENT", "Lỗi khi lấy danh sách"); // Thông báo khi có lỗi xảy ra trong quá trình lấy danh sách comment
+                            callback.onError(new Exception("Error load list comment"));
                         }
                     }
                 });
@@ -241,5 +274,10 @@ public class OrdersFeedbackRepository {
     public interface checkCommentsCallback{
         void loadCommentsSuccess(int isExist);
         void loadCommentError(Exception e);
+    }
+
+    public interface averagePointCallback{
+        void onLoad(double point);
+        void onError(Exception e);
     }
 }

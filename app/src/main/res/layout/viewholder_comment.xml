@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingRight="24dp"
     android:layout_marginBottom="5dp">
 
     <!-- Tên người bình luận -->
@@ -13,37 +14,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nguyễn Thị C"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"/>
 
     <!-- Điểm đánh giá và số sao -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="24dp"
-        android:orientation="horizontal">
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/CustomRatingBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="4"
-            android:stepSize="1" />
-    </LinearLayout>
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:numStars="5"
+        android:rating="4"
+        android:stepSize="1"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp"
+        android:progressDrawable="@drawable/customer_dialog_star"/>
 
     <!-- Nội dung bình luận -->
     <TextView
         android:id="@+id/txt_comment"
-        android:layout_width="wrap_content"
+        style="@style/regular_text_16sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ngon......."
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="24dp"/>
+        android:layout_marginStart="24dp"
+        android:text="Ngon......." />
 
     <!-- Ngày bình luận -->
     <TextView
@@ -52,5 +47,6 @@
         android:layout_height="wrap_content"
         android:text="10-3-2024 10:16"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginStart="24dp"/>
 </LinearLayout>

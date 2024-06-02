@@ -27,8 +27,9 @@ import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.search.SearchActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryHomeAdapter;
 import com.example.foodorderingapp.data.model.HomeCategory;
@@ -110,9 +111,9 @@ public class HomeFragment extends Fragment {
                 Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
                 Intent intent;
                 if (validCategories.contains(product.getIdCategory())) {
-                    intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
+                    intent = new Intent(getActivity(), ProductDetailActivity.class);
                 } else {
-                    intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
+                    intent = new Intent(getActivity(), ProductDetailActivity.class);
                 }
                 //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
 //                intent = new Intent(getActivity(), ProductDetailDrink.class);

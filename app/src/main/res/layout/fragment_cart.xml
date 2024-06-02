@@ -35,7 +35,6 @@
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="8dp"
                     android:background="@color/box"
-                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -43,9 +42,9 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
                         android:layout_marginTop="7dp"
-                        tools:srcCompat="@drawable/information" />
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/information" />
 
                     <TextView
                         android:layout_width="match_parent"

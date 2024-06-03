@@ -21,9 +21,9 @@
 
         <FrameLayout
             android:id="@+id/green_rec"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/rectangle_primary"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,8 +32,8 @@
 
             <ImageView
                 android:id="@+id/img_coupon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/coupon_white" />
 
@@ -41,11 +41,11 @@
 
         <TextView
             android:id="@+id/txt_description"
-            style="@style/text_14sp"
+            style="@style/black_text_12sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
             android:maxLines="4"
             android:singleLine="false"
@@ -60,7 +60,7 @@
             style="@style/bold_text_18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:text="@{coupon.couponName}"
             app:layout_constraintStart_toEndOf="@+id/green_rec"
@@ -71,8 +71,8 @@
             style="@style/light_text_14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="10dp"
             android:textColor="#9C9BA6"
             android:textSize="12sp"

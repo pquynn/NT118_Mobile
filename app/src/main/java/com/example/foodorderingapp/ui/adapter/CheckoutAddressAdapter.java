@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.example.foodorderingapp.databinding.ViewholderAddressBinding;
@@ -23,11 +25,19 @@ import java.util.List;
 
 public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddressAdapter.ViewHolder> {
     private List<UserAddress> addresslist;
+    private UserAddress selectedAddress;
     private CheckoutAddressViewModel viewModel;
-    private int row_index = 0; // position of selected viewholder
-    public CheckoutAddressAdapter(List<UserAddress> addresslist, CheckoutAddressViewModel viewModel){
+    private OnItemClickListener listener;
+    private int row_index; // position of selected viewholder
+    public CheckoutAddressAdapter(UserAddress selectedAddress, List<UserAddress> addresslist, CheckoutAddressViewModel viewModel, OnItemClickListener listener){
         this.addresslist = addresslist;
         this.viewModel = viewModel;
+        this.selectedAddress = selectedAddress;
+        this.listener = listener;
+    }
+
+    public void setSelectedAddress(UserAddress userAddress){
+        selectedAddress = userAddress;
     }
 
     @Override
@@ -50,10 +60,20 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                row_index = holder.getAdapterPosition();
+                row_index = holder.getBindingAdapterPosition();
+                selectedAddress = userAddress;
+                listener.onItemClick(selectedAddress);
                 notifyDataSetChanged();
             }
         });
+
+        // check if there is any address is chosen in checkout, if yes set row_index
+        if (selectedAddress.getId().equals(userAddress.getId())) {
+            row_index = holder.getBindingAdapterPosition();
+        }
+        else{
+            row_index = -1;
+        }
 
         // Set foreground based on position of viewholder
         if (row_index == position) {
@@ -81,5 +101,10 @@ public class CheckoutAddressAdapter extends RecyclerView.Adapter<CheckoutAddress
             binding.setUserAddress(userAddress);
             binding.executePendingBindings();
         }
+    }
+
+    // viewholder on click listener
+    public interface OnItemClickListener {
+        void onItemClick(UserAddress selectedAddress);
     }
 }

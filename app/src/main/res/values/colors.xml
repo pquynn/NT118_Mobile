@@ -22,6 +22,6 @@
     <color name="light_text">#32343E</color>
     <color name="orange">#DD5746</color>
     <color name="light_blue">#1679AB</color>
-
+    <color name="transparent50_gray">#99676767</color>
     <color name="text_home_search">#676767</color>
 </resources>

@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.viewmodel.customer.coupon;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,6 +20,9 @@ public class CouponViewModel extends ViewModel {
     private Context context; // Context variable
 
     private MutableLiveData<List<Coupon>> couponListMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isSelectedLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> discountValueLiveData = new MutableLiveData<>();
+    private MutableLiveData<Coupon> couponLiveData = new MutableLiveData<>();
 
     private CouponRepository couponRepository;
 
@@ -26,6 +30,8 @@ public class CouponViewModel extends ViewModel {
         this.orderId = orderId;
         this.orderPrice = orderPrice;
         this.context = context;
+        isSelectedLiveData.setValue(false);
+        discountValueLiveData.setValue(0);
         couponRepository = new CouponRepository();
     }
 
@@ -34,6 +40,20 @@ public class CouponViewModel extends ViewModel {
         return couponListMutableLiveData;
     }
 
+
+    public MutableLiveData<Boolean> getIsSelectedLiveData() {
+        return isSelectedLiveData;
+    }
+
+    public MutableLiveData<Integer> getDiscountValueLiveData() {
+        return discountValueLiveData;
+    }
+
+    public MutableLiveData<Coupon> getCouponLiveData() {
+        return couponLiveData;
+    }
+
+    // load coupon list by order price
     public void loadCouponList(int orderPrice){
         couponRepository.getListCoupon((double)orderPrice, new Date(), new CouponRepository.callBackGetList() {
             @Override

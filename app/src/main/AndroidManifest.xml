@@ -19,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderingApp"
-        tools:targetApi="31">
+        tools:replace="android:theme"
+        tools:targetApi="31" >
+        <activity
+            android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo_phone"
+            android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.am_faqs"
             android:exported="true" />
@@ -28,7 +32,7 @@
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.home.StoreActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".data.repository.order.resultTestActivity"
             android:exported="true" />
@@ -94,7 +98,16 @@
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.checkout.CheckoutActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="demozpdk"
+                    android:host="app" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activityfragment.customer.checkout.CheckoutAddressActivity"
             android:exported="true" />
@@ -125,19 +138,27 @@
         <activity
             android:name=".ui.activityfragment.customer.search.SearchActivity"
             android:exported="true"></activity> <!-- END: SEARCH -->
+      
         <!-- START: PRODUCT DETAIL -->
         <activity
-            android:name=".ui.activityfragment.customer.productdetail.ProductDetailCakeActivity"
-            android:exported="true"></activity> <!-- END: PRODUCT DETAIL -->
-        <!-- START: PRODUCT DETAIL -->
-        <activity
-            android:name=".ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity"
-            android:exported="true"></activity> <!-- END: PRODUCT DETAIL -->
+            android:name=".ui.activityfragment.customer.productdetail.ProductDetailActivity"
+            android:exported="true" >
+        </activity>
+        <!-- END: PRODUCT DETAIL -->
+
+
         <!-- START: Google Map -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDGGyK8delYa1bpENd_3lC-2yBiRaoRtFM" />
-           
+        <!-- START: FIREBASE CLOUD MESSAGING -->
+        <service
+            android:name=".service.FirebaseMessagerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.notification;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foodorderingapp.data.model.entity.Notification;
@@ -13,6 +15,7 @@ public class NotificationViewModel {
     private int recipientType;
     private NotificationRepository notificationRepository;
     private MutableLiveData<List<Notification>> notiListMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> unreadNotiCountLiveData = new MutableLiveData<>();
 
     public NotificationViewModel(String recipientId, int recipientType) {
         this.recipientId = recipientId;
@@ -23,6 +26,11 @@ public class NotificationViewModel {
     public MutableLiveData<List<Notification>> getNotiListMutableLiveData() {
         loadNotification(recipientId, recipientType);
         return notiListMutableLiveData;
+    }
+
+    public MutableLiveData<Integer> getUnreadNotiCountLiveData() {
+        loadUnreadNotiCount();
+        return unreadNotiCountLiveData;
     }
 
     public void loadNotification(String recipientId, int recipientType){
@@ -37,5 +45,26 @@ public class NotificationViewModel {
 
             }
         });
+    }
+
+    // method to load noti ietm count
+    public void loadUnreadNotiCount(){
+        notificationRepository.calculateUnreadNoti(recipientId, new INotificationRepository.IntegerCallback() {
+            @Override
+            public void onLoad(int count) {
+                Log.d("badge", "onLoad: " + count);
+                unreadNotiCountLiveData.setValue(count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
+
+    public void reloadData(){
+        loadNotification(recipientId, recipientType);
+        loadUnreadNotiCount();
     }
 }

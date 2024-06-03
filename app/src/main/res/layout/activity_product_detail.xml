@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+            <variable
+                name="productVM"
+                type="com.example.foodorderingapp.ui.viewmodel.customer.productdetail.ProductDetailViewModel" />
+        <!--        <variable-->
+        <!--            name="refundItem"-->
+        <!--            type="com.example.foodorderingapp.data.model.entity.RefundItem" />-->
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/img_drink"
+                android:layout_width="0dp"
+                android:layout_height="350dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:imageUrl="@{productVM.productLiveData.productImage}"
+                tools:ignore="MissingConstraints" />
+
+            <FrameLayout
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/circle_background"
+                android:padding="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/img_lessthan"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/less_than" />
+            </FrameLayout>
+
+<!--            out of stock warning linear-->
+            <LinearLayout
+                android:id="@+id/out_of_stock_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/box"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/icon_info"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="10dp"
+                    app:srcCompat="@drawable/information" />
+
+                <TextView
+                    style="@style/text_14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thông báo: Sản phẩm hiện đang hết hàng. Vui lòng quay lại sau hoặc liên hệ cửa hàng để biết thêm thông tin!" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txt_NameDrink"
+                style="@style/Heading2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="@{productVM.productLiveData.productName}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_drink"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txt_priceDrink"
+                style="@style/text_20sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:priceFormatted="@{productVM.productLiveData.productPrice}"
+                app:layout_constraintEnd_toEndOf="@+id/txt_NameDrink"
+                app:layout_constraintStart_toStartOf="@+id/txt_NameDrink"
+                app:layout_constraintTop_toBottomOf="@+id/txt_NameDrink"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/ic_star_green"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="7dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="@+id/txt_priceDrink"
+                app:layout_constraintTop_toBottomOf="@+id/txt_priceDrink"
+                app:srcCompat="@drawable/ic_star_green_full"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/text_ic_star"
+                style="@style/Heading3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="@{String.valueOf(productVM.averagePointLiveData.doubleValue())}"
+                app:layout_constraintStart_toEndOf="@+id/ic_star_green"
+                app:layout_constraintTop_toTopOf="@+id/ic_star_green"
+                tools:ignore="HardcodedText,MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/ic_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                app:layout_constraintStart_toEndOf="@+id/text_ic_star"
+                app:layout_constraintTop_toTopOf="@+id/ic_star_green"
+                app:srcCompat="@drawable/ic_comment" />
+
+            <TextView
+                android:id="@+id/txt_comment"
+                style="@style/Heading3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="5"
+                app:layout_constraintStart_toEndOf="@+id/ic_comment"
+                app:layout_constraintTop_toTopOf="@+id/ic_comment"
+                tools:ignore="MissingConstraints" />
+
+            <!--   START Content Description     -->
+            <LinearLayout
+                android:id="@+id/txt_descriptionProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintStart_toStartOf="@+id/ic_star_green"
+                app:layout_constraintTop_toBottomOf="@+id/ic_star_green"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/contentTextView"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{productVM.productLiveData.productInfo}"
+                    android:maxLines="2" /> <!-- Giới hạn số dòng hiển thị ban đầu -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+                    <TextView
+                        android:id="@+id/showMoreTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xem thêm"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:textColor="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/showLessTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rút gọn"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:textColor="@color/primary"
+                        android:visibility="gone" /> <!-- Ẩn ban đầu, chỉ hiển thị khi cần rút gọn lại -->
+
+                </LinearLayout>
+            </LinearLayout>
+            <!--   END Content Description     -->
+
+            <!--        START VIEW SIZE            -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/size_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_descriptionProduct">
+
+                <TextView
+                    android:id="@+id/size_heading"
+                    style="@style/bold_text_18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Size*"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/size_describe"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="Chọn 1 loại size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/size_heading" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/size_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/size_describe">
+
+                    <TextView
+                        android:id="@+id/tv_medium_price"
+                        style="@style/regular_text_16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="40dp"
+                        android:text="6.000 đ"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_small_price" />
+
+                    <TextView
+                        android:id="@+id/tv_big_price"
+                        style="@style/regular_text_16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="12dp"
+                        android:text="10.000 đ"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_medium_price" />
+
+                    <TextView
+                        android:id="@+id/tv_small_price"
+                        style="@style/regular_text_16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="40dp"
+                        android:text="0 đ"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RadioButton
+                            android:id="@+id/rb_small"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:text="Nhỏ" />
+
+                        <RadioButton
+                            android:id="@+id/rb_medium"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Vừa"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_large"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Lớn" />
+
+                    </RadioGroup>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--    end: size area-->
+
+            <!--    start: topping area-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topping_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/size_area">
+
+                <TextView
+                    android:id="@+id/topping_heading"
+                    style="@style/bold_text_18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Topping"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/topping_describe"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="Có thể chọn nhiều loại topping"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topping_heading" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTopping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topping_describe" />
+                <!--    end: big size container-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--    end: topping area-->
+
+
+            <TextView
+                android:id="@+id/txt_Different"
+                style="@style/bold_text_18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Ghi chú"
+                app:layout_constraintStart_toStartOf="@+id/txt_NameDrink"
+                app:layout_constraintTop_toBottomOf="@+id/topping_area"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/txt_depDifferent"
+                style="@style/TextPlaceholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Những tùy chọn khác"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txt_NameDrink"
+                app:layout_constraintTop_toBottomOf="@+id/txt_Different"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/editTextDifferent"
+                style="@style/TextPlaceholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="Thêm ghi chú"
+                android:padding="20dp"
+                android:background="@drawable/rounder_component_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txt_depDifferent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_depDifferent" />
+
+
+            <!--        VIEW ADD TO CART NAVIGATION    -->
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextDifferent"
+                tools:ignore="MissingConstraints">
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottomProductDetailView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounder_background_addcart">
+
+                    <TextView
+                        android:id="@+id/txt_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:priceFormatted="@{productVM.productCartLiveData.price}"
+                        android:textSize="28sp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="20dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_edit_quantity"
+                            android:layout_width="105dp"
+                            android:layout_height="42dp"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/rounder_background_count"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints">
+
+                            <!-- start button minus -->
+                            <FrameLayout
+                                android:id="@+id/btn_decrease"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/circle_lightgreen"
+                                android:padding="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/img_minus"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/minus"
+                                    tools:ignore="ContentDescription" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/txt_quantity"
+                                style="@style/btn_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:text="@{String.valueOf(productVM.productCartLiveData.quantity)}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/btn_increase"
+                                app:layout_constraintStart_toEndOf="@+id/btn_decrease"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="HardcodedText" />
+
+                            <!-- start button plus -->
+                            <FrameLayout
+                                android:id="@+id/btn_increase"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/circle_lightgreen"
+                                android:padding="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/img_plus"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/plus"
+                                    tools:ignore="ContentDescription" />
+                            </FrameLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="85dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp">
+
+                        <Button
+                            android:id="@+id/btn_addtocart"
+                            style="@style/ButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="THÊM VÀO GIỎ HÀNG"/>
+                    </LinearLayout>
+                </com.google.android.material.bottomnavigation.BottomNavigationView>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

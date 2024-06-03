@@ -1,28 +1,49 @@
 package com.example.foodorderingapp.ui.activityfragment.admin.refund;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.ui.adapter.RefundProgressAdapter;
-import com.example.foodorderingapp.data.model.OrderDetail;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.Refund;
+import com.example.foodorderingapp.data.model.entity.RefundItem;
+import com.example.foodorderingapp.databinding.ActivityRefundProgressBinding;
+import com.example.foodorderingapp.ui.adapter.RefundItemAdapter;
+import com.example.foodorderingapp.ui.viewmodel.admin.refund.RefundViewModel;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RefundProgressActivity extends AppCompatActivity {
-    private RecyclerView.Adapter adapter;
-    private RecyclerView recyclerViewList;
+    private RefundItemAdapter adapter;
+    private Map<String, RefundItem> refundItemMap;
+    private Map<String, OrderItem> orderItemMap;
     private FrameLayout btnBack;
     private TextView screenName;
+    private String orderId = "3";
+    private RefundViewModel viewModel;
+    private ActivityRefundProgressBinding binding;
+    private Context context;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_refund_progress);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_refund_progress);
+        binding.setLifecycleOwner(this);
+
+        // get order id through intent
+        if(getIntent().getExtras() != null){
+            orderId = getIntent().getExtras().getString("orderId");
+        }
 
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
@@ -37,24 +58,78 @@ public class RefundProgressActivity extends AppCompatActivity {
             }
         });
 
+        // init adapter
+        refundItemMap = new HashMap<>();
+        orderItemMap = new HashMap<>();
+        adapter = new RefundItemAdapter(orderItemMap, refundItemMap, this);
+        binding.recyclerViewRefundProgress.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewRefundProgress.setAdapter(adapter);
 
-        // set recyler list
-        recyclerViewRefundRequest();
+        viewModel = new RefundViewModel(orderId, this);
+        // observe change in refund live data
+        viewModel.getRefundLiveData().observe(this, new Observer<Refund>() {
+            @Override
+            public void onChanged(Refund refund) {
+                binding.setRefundVM(viewModel);
+                refundItemMap.clear();
+                refundItemMap.putAll(refund.getRefundItemMap());
+            }
+        });
+
+        // observe change in order live data
+        viewModel.getOrderLiveData().observe(this, order -> {
+            orderItemMap.clear();
+            orderItemMap.putAll(order.getOrderItem());
+            adapter.notifyDataSetChanged();
+        });
+
+        context = this;
+        // btn accept refund
+        binding.btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog(context, binding.btnAccept.getText().toString());
+            }
+        });
+
+        // btn refuse refund
+        binding.btnRefuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog(context, binding.btnRefuse.getText().toString());
+            }
+        });
+
+
     }
 
-    private void recyclerViewRefundRequest() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewList = findViewById(R.id.recyclerViewRefundProgress);
-        recyclerViewList.setLayoutManager(linearLayoutManager);
+    // Function to show alert dialog when click button
+    public void showAlertDialog(Context context, String btnName){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setTitle("");
+        alert.setMessage("Xác nhận " + btnName + "?");
 
-        ArrayList<OrderDetail> productList = new ArrayList<OrderDetail>();
+        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                // xử lý cập nhật trạng thái
+                viewModel.updateRefundStatus(btnName);
+//                binding.btnRefuse.setVisibility(View.GONE);
+//                if (btnName.equals("Chấp nhận hoàn tiền"))
+//                    binding.btnAccept.setText("Đã hoàn tiền");
+//                else
+//                    binding.btnAccept.setVisibility(View.GONE);
+            }
+        });
 
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3, ""));
-        productList.add(new OrderDetail("Trà sữa trân châu", 45000, "Lớn", "50% đường", 3, ""));
-
-        adapter = new RefundProgressAdapter(productList);
-        recyclerViewList.setAdapter(adapter);
+        alert.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
-
 
 }

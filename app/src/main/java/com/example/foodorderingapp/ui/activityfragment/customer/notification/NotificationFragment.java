@@ -9,6 +9,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.notification;
         import androidx.lifecycle.Observer;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
+        import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
         import android.util.Log;
         import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.notification;
         import com.example.foodorderingapp.data.model.entity.Order;
         import com.example.foodorderingapp.databinding.FragmentCartBinding;
         import com.example.foodorderingapp.databinding.FragmentNotificationBinding;
+        import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
         import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutActivity;
         import com.example.foodorderingapp.ui.adapter.CartAdapter;
         import com.example.foodorderingapp.ui.adapter.NotificationAdapter;
@@ -42,6 +44,7 @@ public class NotificationFragment extends Fragment {
     NotificationViewModel viewModel;
     ArrayList<Notification> notiList;
     NotificationAdapter adapter;
+    private MainActivity mainActivity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class NotificationFragment extends Fragment {
         screenName = view.findViewById(R.id.screen_name);
         screenName.setText("Thông báo");
 
+        // init main activity
+        mainActivity = (MainActivity) getActivity();
 
         // View model
         viewModel = new NotificationViewModel(userId, role);
@@ -73,21 +78,42 @@ public class NotificationFragment extends Fragment {
                 notiList.clear();
                 notiList.addAll(notifications);
                 adapter.notifyDataSetChanged();
+                binding.swipeRefreshLayout.setRefreshing(false);
+
+                if(notifications.isEmpty()){
+                    binding.noNotificationContainer.setVisibility(View.VISIBLE);
+                    binding.scrollview.setVisibility(View.GONE);
+                }
+                else{
+
+                    binding.noNotificationContainer.setVisibility(View.GONE);
+                    binding.scrollview.setVisibility(View.VISIBLE);
+                }
             }
         });
 
-//        String dateString = "06-03-2025";
-//
-//        // Define the date format of your input string
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-//
-//        // Parse the string to obtain a Date object
-//        Date date = null;
-//        try {
-//            date = dateFormat.parse(dateString);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
+//      observe change in unread noti count
+        viewModel.getUnreadNotiCountLiveData().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mainActivity.updateUnreadNotiQuantity(integer);
+            }
+        });
+
+        // Set the color scheme for the spinner
+        binding.swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.primary),
+                getResources().getColor(R.color.secondary),
+                getResources().getColor(R.color.primary)
+        );
+        // Set up the swipe refresh listener
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Trigger the reload in the ViewModel
+                viewModel.reloadData();
+            }
+        });
     }
 
 

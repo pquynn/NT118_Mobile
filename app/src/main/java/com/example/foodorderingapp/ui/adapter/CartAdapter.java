@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,17 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
@@ -35,11 +42,16 @@ import java.util.Map;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private CartViewModel cartViewModel;
     private Map<String, OrderItem> orderItemMap;
-    private boolean isDialogOpen = false;
+    private List<Product> productList;
+    private OnItemClickListener listener;
+    private Context context;
 
-    public CartAdapter(Map<String, OrderItem> orderItemMap, CartViewModel cartViewModel){
+    public CartAdapter(Map<String, OrderItem> orderItemMap, List<Product> productList, CartViewModel cartViewModel, OnItemClickListener listener, Context context){
         this.orderItemMap = orderItemMap;
         this.cartViewModel = cartViewModel;
+        this.productList = productList;
+        this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -56,6 +68,66 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
         holder.bind(orderItem);
+
+        // check if product is available
+        //1. get size of order item
+        String size = (orderItem.getSize() == null || orderItem.getSize().isEmpty()) ? "Mặc định" : orderItem.getSize();
+        String productId = orderItem.getIdProduct();
+
+        //2. get product
+        Product product = null;
+        for (Product p : productList) {
+            if (p.getId().equals(productId)) {
+                product = p;
+                break;
+            }
+        }
+
+        //3. check --> if unavailable --> disable button checkout
+        int grey = ContextCompat.getColor(context, R.color.transparent50_gray);
+        int dark = ContextCompat.getColor(context, R.color.dark_text);
+
+        holder.binding.btnEdit.setVisibility(View.VISIBLE);
+        holder.binding.clEditQuantity.setVisibility(View.VISIBLE);
+        holder.binding.clOutOfStock.setVisibility(View.INVISIBLE);
+        holder.binding.btnDelete.setVisibility(View.INVISIBLE);
+        holder.binding.txtProductCost.setTextColor(dark);
+        holder.binding.txtProductName.setTextColor(dark);
+        holder.binding.txtProductSize.setTextColor(dark);
+
+        int productQuantity = 0;
+
+        if (product != null) {
+            productQuantity = product.getProductSize().get(size).getOrDefault("QUANTITY", 0);
+            if (product == null || productQuantity == 0) {
+                // if product is out of stock --> change viewholder UI
+                cartViewModel.updateTotalPrice(orderItem.getQuantity() * orderItem.getPrice());
+                orderItem.setQuantity(0);
+                cartViewModel.setIsValidCheckout(false);
+                holder.binding.btnEdit.setVisibility(View.INVISIBLE);
+                holder.binding.clEditQuantity.setVisibility(View.INVISIBLE);
+                holder.binding.clOutOfStock.setVisibility(View.VISIBLE);
+                holder.binding.btnDelete.setVisibility(View.VISIBLE);
+                holder.binding.txtProductCost.setTextColor(grey);
+                holder.binding.txtProductName.setTextColor(grey);
+                holder.binding.txtProductSize.setTextColor(grey);
+
+            } else if (productQuantity < orderItem.getQuantity() && productQuantity > 0) {
+                // if product quantity is less than order item quantity --> update order item
+                orderItem.setQuantity(productQuantity);
+//                notifyDataSetChanged();
+                cartViewModel.updateOrderItemByOrderId(key);
+            }
+
+        }
+        //button delete click
+        holder.binding.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cartViewModel.deleteProductCart(key);
+            }
+        });
+
 
         //button decrease quanity
         holder.binding.btnDecrease.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +166,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isDialogOpen) {
-                    showDialog(view.getContext(), orderItem);
-                }
+                listener.onItemClick(key, orderItem);
             }
         });
 
@@ -124,63 +194,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         alert.show();
     }
 
-
-
-    // Function to show bottom dialog when button is clicked
-    public void showDialog(Context context, OrderItem orderItem) {
-        isDialogOpen = true; // Update dialog state
-        Dialog dialog = new Dialog(context); // Corrected line
-        BottomsheetEditCartBinding binding = BottomsheetEditCartBinding.inflate(LayoutInflater.from(context));
-        dialog.setContentView(binding.getRoot());
-
-        binding.setCartVM(cartViewModel); // Set the ViewModel if needed
-        binding.setOrderItem(orderItem);
-
-
-//        RadioGroup radioGroup = binding.radioGroup;
-//        // Iterate through radio buttons to find the one with matching text
-//        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-//            RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-//            if (radioButton.getText().toString().equals("Lớn")) {
-//                radioButton.setChecked(true);
-//                break;
-//            }
-//        }
-
-        // Radio checked event
-//        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                // Handle radio button selection here
-//                switch (checkedId) {
-//                    case R.id.rb_small:
-//                        // Handle small size selection
-//                        break;
-//                    case R.id.rb_medium:
-//                        // Handle medium size selection
-//                        break;
-//                    case R.id.rb_large:
-//                        // Handle large size selection
-//                        break;
-//                }
-//            }
-//        });
-
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                isDialogOpen = false; // Update dialog state when dismissed
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-
     @Override
     public int getItemCount() {
         return orderItemMap.size();
@@ -192,12 +205,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public ViewHolder(@NonNull ViewholderCartBinding binding){
             super(binding.getRoot());
             this.binding = binding;
+
         }
 
         void bind(OrderItem orderItem){
             binding.setOrderItem(orderItem);
             binding.executePendingBindings();
         }
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(String key, OrderItem orderItem);
     }
 }
 

@@ -19,8 +19,9 @@ import android.widget.Toast;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Product;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
 import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
 import com.example.foodorderingapp.data.model.entity.Category;
@@ -94,9 +95,9 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
         Intent intent;
         if (validCategories.contains(product.getIdCategory())) {
-            intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
+            intent = new Intent(getActivity(), ProductDetailActivity.class);
         } else {
-            intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
+            intent = new Intent(getActivity(), ProductDetailActivity.class);
         }
 //        Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm khi gộp 2 product lại
 //        intent = new Intent(getActivity(), ProductDetailDrink.class);

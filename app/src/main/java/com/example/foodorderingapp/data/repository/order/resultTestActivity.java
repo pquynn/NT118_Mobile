@@ -34,6 +34,7 @@ public class resultTestActivity extends AppCompatActivity {
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
 
+
 //        pointRepository.getTotalPoint("3", new PointRepository.userTotalPointCallback() {
 //            @Override
 //            public void loadTotalPointSuccess(int totalPoint) {
@@ -45,19 +46,55 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
+//
+//        productRepository = new ProductRepository();
+//        List<String> names = new ArrayList<>();
+//        names.add("Latte đá");
+//        names.add("Hi Tea Đào");
+//        names.add("CloudTea Trà Xanh Tây Bắc");
+//        productRepository.getProductListByNames(names, new IProductRepository.ProductListCallback() {
+//            @Override
+//            public void onProductListLoaded(List<Product> productList) {
+//                Log.d("firestore", "onProductListLoaded: " + productList);
+//            }
+//
+//            @Override
+//            public void onProductListLoadFailed(String errorMessage) {
+//
+//            }
+//        });
 
-        productRepository = new ProductRepository();
-        productRepository.getProductById("1", new IProductRepository.ProductCallback() {
-            @Override
-            public void onProductLoaded(Product product) {
+//        productRepository = new ProductRepository();
+//        List<String> names = new ArrayList<>();
+//        names.add("30");
+//        names.add("5");
+//        names.add("12");
+//        productRepository.getProductListByIds(names, new IProductRepository.ProductListCallback() {
+//            @Override
+//            public void onProductListLoaded(List<Product> productList) {
+//                Log.d("firestore", "onProductListLoaded: " + productList);
+//            }
+//
+//            @Override
+//            public void onProductListLoadFailed(String errorMessage) {
+//
+//            }
+//        });
 
-            }
 
-            @Override
-            public void onProductLoadFailed(String errorMessage) {
-
-            }
-        });
+//        productRepository.getProductById("12", new IProductRepository.ProductCallback() {
+//            @Override
+//            public void onProductLoaded(Product product) {
+//                Product a = product;
+//
+//                Log.d("firestore", "onProductLoaded: " + a.toString());
+//            }
+//
+//            @Override
+//            public void onProductLoadFailed(String errorMessage) {
+//
+//            }
+//        });
 //        notificationRepository.getNotificationByRecipientIdAndType("3", 0, new INotificationRepository.NotificationListCallback() {
 //            @Override
 //            public void onListLoaded(List<Notification> notificationList) {
@@ -69,11 +106,17 @@ public class resultTestActivity extends AppCompatActivity {
 //
 //            }
 //        });
-//        orderRepository.getOrderById("1", new IOrderRepository.OrderCallback() {
+//        orderRepository.getOrderById("4", new IOrderRepository.OrderCallback() {
 //            @Override
 //            public void onOrderLoaded(Order order) {
-//                Order a = order;
+//                Log.d("firestore", "get order from firestore: " + order.toString());
 //
+//                order.setTotalPrice(8);
+//                order.setTotalProduct(8);
+//                order.setOrderPrice(8);
+//                order.setRecipientName("a");
+//                order.setStatus("test");
+//                orderRepository.updateCartToOrder(order);
 //            }
 //            @Override
 //            public void onError(String errorMessage) {
@@ -123,33 +166,44 @@ public class resultTestActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+        OrderItem orderItem = new OrderItem();
+        String id = UUID.randomUUID().toString();
+//        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
+        orderItem.setIdProduct("16");
+        orderItem.setProductName("Mochi Kem Matcha");
+        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/2%2FMochi%20Kem%20Matcha.png?alt=media&token=cb7199be-fe57-46d7-9cfe-8fda1a6b1b45");
+        orderItem.setQuantity(1);
+        orderItem.setPrice(19000);
+        orderItem.setNote("");
+
 //         Create an instance of OrderItem
 //        OrderItem orderItem = new OrderItem();
 //        String id = UUID.randomUUID().toString();
 ////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
-//        orderItem.setIdProduct("12");
-//        orderItem.setProductName("Hi Tea Đào");
+//        orderItem.setIdProduct("15");
+//        orderItem.setProductName("Mochi Kem Chocolate");
 //        orderItem.setProductImage("https://firebasestorage.googleapis.com/v0/b/javajoy-mobileapp.appspot.com/o/1%2FHi%20Tea%20%C4%90%C3%A0o.png?alt=media&token=35bf18ac-c242-4b3c-ac55-065c5352dad1");
 //        orderItem.setQuantity(1);
-//        orderItem.setPrice(10000);
-//        orderItem.setNote("Ít đường");
+//        orderItem.setPrice(19000);
+//        orderItem.setNote("");
 //        orderItem.setSize("Vừa");
 //        ArrayList<String> topping = new ArrayList<>();
 //        topping.add("1");
 //        topping.add("5");
 //        orderItem.setTopping(topping);
-//        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
-//                @Override
-//                public void onOrderChanged() {
-//
-//                }
-//
-//                @Override
-//                public void onError(String errorMessage) {
-//
-//                }
-//            });
-//
+        orderRepository.addOrUpdateProductCart("4", id, orderItem, new IOrderRepository.OrderChangedCallback() {
+                @Override
+                public void onOrderChanged() {
+
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+////
 //        OrderItem orderItem1 = new OrderItem();
 //        String id1 = UUID.randomUUID().toString();
 ////        orderItem.setIdOrderItem("602447ac-2108-4d83-aca6-15349523d78d");
@@ -198,8 +252,8 @@ public class resultTestActivity extends AppCompatActivity {
 //        orderItem2.setNote("");
 //        orderItem2.setSize("Lớn");
 //        ArrayList<String> topping1 = new ArrayList<>();
-//        topping.add("1");
-//        orderItem2.setTopping(topping);
+//        topping1.add("1");
+//        orderItem2.setTopping(topping1);
 //        orderRepository.addOrUpdateProductCart("4", id2, orderItem2, new IOrderRepository.OrderChangedCallback() {
 //            @Override
 //            public void onOrderChanged() {

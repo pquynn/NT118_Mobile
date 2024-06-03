@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -32,7 +33,7 @@ public class ProductRepository implements IProductRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Product product = documentSnapshot.toObject(Product.class);
-                        Log.d("firestore", "getProductById: " + product.toString());
+//                        Log.d("firestore", "getProductById: " + product.toString());
                         callback.onProductLoaded(product);
 //                        Log.d("firebase", "getProductById" + product.toString());
                     } else {
@@ -142,6 +143,7 @@ public class ProductRepository implements IProductRepository {
                             if (document.exists()) {
                                 // Lấy thông tin chi tiết của sản phẩm từ document
                                 Product product = new Product();
+                                product.setId(productId);
                                 product.setIdCategory(document.getString("ID_CATEGORY"));
                                 product.setProductImage(document.getString("PRODUCT_IMAGE"));
                                 product.setProductInfo(document.getString("PRODUCT_INFO"));
@@ -174,8 +176,6 @@ public class ProductRepository implements IProductRepository {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-
-                        // Get the current quantity of the specified size
                         // Lấy số lượng hiện tại trong trường SIZE
                         Map<String, Object> sizeMap = (Map<String, Object>) document.get("SIZE");
                         if (sizeMap != null && sizeMap.containsKey(size)) {
@@ -183,15 +183,6 @@ public class ProductRepository implements IProductRepository {
                             if (sizeDetails != null && sizeDetails.containsKey("QUANTITY")) {
                                 Long currentQuantity = (Long) sizeDetails.get("QUANTITY");
                                 if (currentQuantity != null) {
-
-                                    // Calculate new quantity
-                                    long newQuantity = currentQuantity - quantityPurchased;
-
-                                    // Update the quantity in Firestore
-                                    sizeDetails.put("QUANTITY", newQuantity);
-                                    sizeMap.put(size, sizeDetails);
-
-                                    // Update the product document with new quantity
                                     // Tính lại số lượng
                                     long newQuantity = currentQuantity - quantityPurchased;
 
@@ -233,4 +224,88 @@ public class ProductRepository implements IProductRepository {
             }
         });
     }
+
+//    public void getProductListByIds(List<String> ids, ProductListCallback callback){
+//        db.collection("PRODUCT")
+//                .whereIn(FieldPath.documentId(), ids)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        List<Product> productList = new ArrayList<>();
+//                        for (DocumentSnapshot document : task.getResult()) {
+//                            Product product = document.toObject(Product.class);
+//                            productList.add(product);
+//                        }
+//                        // Do something with the productList, such as updating a LiveData
+//                        callback.onProductListLoaded(productList);
+//                    } else {
+//                        // Handle the error
+//                        Exception exception = task.getException();
+//                        // Log or display the error message
+//                        callback.onProductListLoadFailed("Error " + exception);
+//                    }
+//                });
+//    }
+public void getProductListByIds(List<String> ids, ProductListCallback callback){
+    if (ids == null || ids.isEmpty()) {
+        callback.onProductListLoadFailed("Names list is empty");
+        return;
+    }
+    db.collection("PRODUCT")
+            .whereIn(FieldPath.documentId(), ids)
+            .get()
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<Product> productList = new ArrayList<>();
+                    if (task.getResult() != null) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Product product = document.toObject(Product.class);
+                            if (product != null) {
+                                productList.add(product);
+                            }
+                        }
+                    }
+                    // Do something with the productList, such as updating a LiveData
+                    callback.onProductListLoaded(productList);
+                } else {
+                    // Handle the error
+                    Exception exception = task.getException();
+                    // Log or display the error message
+                    callback.onProductListLoadFailed("Error: " + (exception != null ? exception.getMessage() : "Unknown error"));
+                }
+            });
+}
+
+//    public void checkProductQuantity(List<String> ids, List<String> quantities, BooleanCallback callback){
+//        if (ids == null || ids.isEmpty()) {
+//            callback.onError("Names list is empty");
+//            return;
+//        }
+//        db.collection("PRODUCT")
+//                .whereIn(FieldPath.documentId(), ids)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        List<Product> productList = new ArrayList<>();
+//                        if (task.getResult() != null) {
+//                            for (DocumentSnapshot document : task.getResult()) {
+//                                Product product = document.toObject(Product.class);
+//                                if (product != null) {
+//                                    productList.add(product);
+//                                } else {
+//                                    callback.onError("error");
+//                                }
+//                            }
+//                        }
+//                        // Do something with the productList, such as updating a LiveData
+//                        callback.onSuccess(productList);
+//                    } else {
+//                        // Handle the error
+//                        Exception exception = task.getException();
+//                        // Log or display the error message
+//                        callback.onError("Error: " + (exception != null ? exception.getMessage() : "Unknown error"));
+//                    }
+//                });
+//    }
+
 }

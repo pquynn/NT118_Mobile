@@ -39,6 +39,15 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    packagingOptions {
+        exclude ("META-INF/DEPENDENCIES")
+        exclude ("META-INF/LICENSE")
+        exclude ("META-INF/LICENSE.txt")
+        exclude ("META-INF/NOTICE")
+        exclude ("META-INF/NOTICE.txt")
+        exclude ("META-INF/ASL2.0")
+    }
 }
 
 dependencies {
@@ -49,6 +58,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.recyclerview)
     implementation(libs.firebase.storage)
+    implementation(fileTree(mapOf(
+        "dir" to "zalopay",
+        "include" to listOf("*.aar", "*.jar")
+    )))
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.ext.junit)
@@ -56,7 +69,7 @@ dependencies {
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("org.mockito:mockito-core:3.12.4")
     // Firebase Android testing
-    androidTestImplementation ("com.google.firebase:firebase-firestore-testing:latest_version_here")
+//    androidTestImplementation ("com.google.firebase:firebase-firestore-testing:latest_version_here")
 
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
@@ -75,7 +88,6 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
 
-
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
@@ -83,13 +95,26 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging")
 
     implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:20.0.0")
 
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-messaging")
+    // import swipe refresh layout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    // momo payment mobile-sdk
+    implementation ("com.github.momo-wallet:mobile-sdk:1.0.7")
+
+    // zalo
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
+
+    // google credentical
+    implementation ("com.google.auth:google-auth-library-oauth2-http:1.1.0")
+    implementation ("com.google.api-client:google-api-client:1.33.0")
+    implementation ("com.android.volley:volley:1.2.1")
+    implementation ("com.google.code.gson:gson:2.8.6")
 }

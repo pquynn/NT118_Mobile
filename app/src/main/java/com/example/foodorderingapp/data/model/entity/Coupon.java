@@ -22,6 +22,8 @@ public class Coupon {
         this.quantity = quantity;
         this.description = description;
     }
+    public Coupon(){
+    }
 
     public Coupon(String couponName, Date validFrom, String description){
         this.couponName = couponName;
@@ -71,5 +73,39 @@ public class Coupon {
 
     public void setValidFrom(Date validFrom) {
         this.validFrom = validFrom;
+    }
+
+    public void setIdCoupon(String idCoupon) {
+        this.idCoupon = idCoupon;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    public void setDiscountValue(double discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public void setMinOrder(double minOrder) {
+        this.minOrder = minOrder;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "idCoupon='" + idCoupon + '\'' +
+                ", couponName='" + couponName + '\'' +
+                ", validFrom=" + validFrom +
+                ", validTo=" + validTo +
+                ", discountValue=" + discountValue +
+                ", minOrder=" + minOrder +
+                ", quantity=" + quantity +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

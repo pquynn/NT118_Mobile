@@ -7,20 +7,20 @@
             name="orderItem"
             type="com.example.foodorderingapp.data.model.entity.OrderItem" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/order_detail_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="105dp"
-        android:backgroundTint="@color/white">
+        android:minHeight="105dp">
 
         <ImageView
             android:id="@+id/img_product"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             app:imageUrl="@{orderItem.productImage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
             style="@style/bold_text_14sp"
             android:layout_width="wrap_content"
             android:layout_height="23dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:text="@{orderItem.productName}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
@@ -42,46 +42,44 @@
             style="@style/black_text_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            app:priceFormatted="@{orderItem.price}"
+            android:layout_marginStart="12dp"
             app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_name" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_name"
+            app:priceFormatted="@{orderItem.price}" />
 
         <TextView
             android:id="@+id/txt_topping"
             style="@style/black_text_12sp"
-            android:layout_width="255dp"
+            android:layout_width="245dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:singleLine="false"
-            android:text="@{orderItem.toppingString}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_size" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_size"
+            app:visibleIfNotEmpty="@{orderItem.toppingString}" />
 
         <TextView
             android:id="@+id/txt_product_size"
             style="@style/black_text_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@{orderItem.size}"
+            android:layout_marginStart="12dp"
             app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_cost" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_cost"
+            app:visibleIfNotEmpty="@{orderItem.size}" />
 
         <TextView
             android:id="@+id/txt_note"
             style="@style/black_text_12sp"
-            android:layout_width="255dp"
+            android:layout_width="245dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@{orderItem.note}"
+            android:layout_marginStart="12dp"
             android:ellipsize="end"
             android:maxLines="4"
             android:singleLine="false"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@{orderItem.note}"
             app:layout_constraintStart_toEndOf="@+id/img_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_topping" />
 
@@ -109,16 +107,16 @@
             app:layout_constraintEnd_toStartOf="@+id/txt_quantity"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/lbl_product_cost"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="4dp"-->
-<!--            android:fontFamily="@font/roboto_regular"-->
-<!--            android:text="đ"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/txt_product_cost"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/txt_product_name"-->
-<!--            tools:ignore="MissingConstraints" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/lbl_product_cost"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="4dp"-->
+        <!--            android:fontFamily="@font/roboto_regular"-->
+        <!--            android:text="đ"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/txt_product_cost"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/txt_product_name"-->
+        <!--            tools:ignore="MissingConstraints" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

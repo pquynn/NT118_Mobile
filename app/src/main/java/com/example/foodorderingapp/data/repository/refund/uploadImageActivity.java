@@ -135,6 +135,7 @@ public class uploadImageActivity extends AppCompatActivity {
             }
         });
 
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,10 +161,10 @@ public class uploadImageActivity extends AppCompatActivity {
 //                Glide.with(uploadImageActivity.this)
 //                        .load(refund.getRefundItemMap().get("5").getProofImage())
 //                        .into(imageView);
-                Uri uriVideo = Uri.parse(refund.getRefundItemMap().get("5").getProofVideo());
-
-                videoView.setVideoURI(uriVideo);
-                videoView.start();
+//                Uri uriVideo = Uri.parse(refund.getRefundItemMap().get("5").getProofVideo(videoUri.toString()));
+//
+//                videoView.setVideoURI(uriVideo);
+//                videoView.start();
 
             }
 

@@ -25,8 +25,8 @@ public interface IOrderRepository {
     // Update order status by id
     void updateOrderStatusById(String orderId, String status, OrderChangedCallback callback);
 
-    // Checkout (Update order, 'Gio hang' -> 'Cho xac nhan')
-    void checkout(Order order, OrderChangedCallback callback);
+    // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
+    void updateCartToOrder(Order order);
 
     // Add or update product in shopping cart by order id
     void addOrUpdateProductCart(String orderId, String orderItemId, OrderItem orderItem, OrderChangedCallback callback);
@@ -34,10 +34,19 @@ public interface IOrderRepository {
     // Delete product in shopping cart by order id
     void deleteProductCart(String orderId,  String orderItemId, OrderItemRemovedCallback callback);
 
+    // update order item map by order id
+    void updateOrderItemsByOrderId(String orderId, Map<String, OrderItem> orderItemMap);
 
+    // method to calculate product cart
+    void calculateTotalProductCart(String userId, IntegerCallback callbac);
 
     interface OrderCallback {
         void onOrderLoaded(Order order);
+        void onError(String errorMessage);
+    }
+
+    interface OrderUpdatedCallback {
+        void onOrderChanged(Order order);
         void onError(String errorMessage);
     }
 
@@ -61,5 +70,8 @@ public interface IOrderRepository {
         void onError(String errorMessage);
     }
 
-
+    interface IntegerCallback {
+        void onLoaded(int intNumb);
+        void onError(String errorMessage);
+    }
 }

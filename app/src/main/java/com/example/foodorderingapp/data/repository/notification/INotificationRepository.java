@@ -8,9 +8,15 @@ import java.util.List;
 
 public interface INotificationRepository {
     void getNotificationByRecipientIdAndType(String idRecipient, int recipientType, NotificationListCallback callback);
+    void calculateUnreadNoti(String idRecipient, IntegerCallback callback);
 
     interface NotificationListCallback {
         void onListLoaded(List<Notification> notificationList);
+        void onError(String errorMessage);
+    }
+
+    interface IntegerCallback {
+        void onLoad(int count);
         void onError(String errorMessage);
     }
 }

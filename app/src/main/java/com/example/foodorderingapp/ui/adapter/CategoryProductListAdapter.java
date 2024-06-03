@@ -16,8 +16,8 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.entity.Product;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
+//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;

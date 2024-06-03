@@ -48,23 +48,23 @@
                         app:layout_constraintTop_toTopOf="parent"></TextView>
 
                     <TextView
-                        style="@style/regular_text_16sp"
                         android:id="@+id/txt_recipient_name"
+                        style="@style/regular_text_16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="@{checkoutVM.userAddressLiveData.recipientName}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/order_info_heading" />
 
                     <TextView
-                        style="@style/regular_text_16sp"
                         android:id="@+id/txt_recipient_phone"
+                        style="@style/regular_text_16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="@{checkoutVM.userAddressLiveData.recipientPhone}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
@@ -72,13 +72,18 @@
                     <TextView
                         android:id="@+id/txt_full_address"
                         style="@style/regular_text_16sp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:singleLine="false"
                         android:text="@{checkoutVM.userAddressLiveData.allAddress}"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_recipient_phone" />
 
@@ -108,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginVertical="15dp"
+                        android:layout_marginVertical="10dp"
                         android:text="Sản phẩm"></TextView>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -123,7 +128,7 @@
                     android:id="@+id/payment_coupon_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -131,17 +136,17 @@
                         style="@style/Heading2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginTop="8dp"
                         android:text="Phương thức thanh toán"></TextView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="0dp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
                         android:weightSum="6">
 
                         <ImageView
@@ -182,16 +187,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="20dp">
+                        android:paddingHorizontal="10dp">
 
                         <ImageView
                             android:id="@+id/icon2"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            android:layout_weight="1"
                             android:layout_gravity="center"
+                            android:layout_weight="1"
                             app:srcCompat="@drawable/award" />
 
                         <TextView
@@ -204,13 +209,13 @@
                             android:paddingLeft="15dp"
                             app:pointFormatted="@{checkoutVM.pointTotalLiveData}" />
 
-    <!--                    <ImageView-->
-    <!--                        android:id="@+id/btn_see_detail2"-->
-    <!--                        android:layout_width="17dp"-->
-    <!--                        android:layout_height="17dp"-->
-    <!--                        android:layout_gravity="center"-->
-    <!--                        android:layout_weight="1"-->
-    <!--                        app:srcCompat="@drawable/circle" />-->
+                        <!--                    <ImageView-->
+                        <!--                        android:id="@+id/btn_see_detail2"-->
+                        <!--                        android:layout_width="17dp"-->
+                        <!--                        android:layout_height="17dp"-->
+                        <!--                        android:layout_gravity="center"-->
+                        <!--                        android:layout_weight="1"-->
+                        <!--                        app:srcCompat="@drawable/circle" />-->
 
                         <Switch
                             android:id="@+id/btn_choose_point"
@@ -230,31 +235,44 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="20dp">
+                        android:paddingHorizontal="10dp"
+                        android:weightSum="12">
 
                         <ImageView
                             android:id="@+id/icon3"
                             android:layout_width="0dp"
                             android:layout_height="32dp"
-                            android:layout_weight="1"
+                            android:layout_weight="2.5"
                             app:srcCompat="@drawable/percent" />
 
                         <TextView
                             android:id="@+id/coupon"
                             style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:paddingLeft="15dp"
+                            android:text="Giảm giá" />
+
+                        <TextView
+                            android:id="@+id/tv_selectedCoupon"
+                            style="@style/regular_text_16sp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="4"
+                            android:gravity="end"
                             android:paddingLeft="15dp"
-                            android:text="Giảm giá" />
+                            android:textColor="@color/primary"
+                            app:selectedCoupon="@{checkoutVM.discountValueLiveData.intValue()}" />
 
                         <ImageView
                             android:id="@+id/btn_see_coupons"
                             android:layout_width="17dp"
                             android:layout_height="17dp"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
+                            android:layout_weight="2.5"
                             app:srcCompat="@drawable/greater_than" />
                     </LinearLayout>
                 </LinearLayout>
@@ -266,28 +284,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingHorizontal="32dp"
-                    android:paddingTop="20dp">
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="5dp">
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="5dp"
-                        android:background="@drawable/straight_solid_line"
-                        android:layout_marginVertical="10dp"/>
+                        android:layout_marginVertical="10dp"
+                        android:background="@drawable/straight_solid_line" />
 
                     <!--    start:  first row-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="15dp"
-                        android:orientation="horizontal">
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
 
                         <TextView
                             android:id="@+id/total"
                             style="@style/regular_text_18sp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1.4"
                             android:text="Tổng cộng" />
 
                         <TextView
@@ -295,7 +314,7 @@
                             style="@style/regular_text_18sp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="1.6"
                             app:productNumbFormatted="@{checkoutVM.totalProductLiveData}" />
 
                         <TextView
@@ -303,18 +322,20 @@
                             style="@style/regular_text_18sp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:priceFormatted="@{checkoutVM.totalPrice}"
-                            android:textAlignment="textEnd" />
+                            android:layout_weight="2"
+                            android:textAlignment="textEnd"
+                            app:priceFormatted="@{checkoutVM.totalPrice}" />
                     </LinearLayout>
                     <!--    end:  first row-->
 
                     <!--    start:  second row-->
                     <LinearLayout
+                        android:id="@+id/ll_used_point"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="15dp"
-                        android:orientation="horizontal">
+                        android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
+                        app:visibleLinearLayout="@{checkoutVM.pointUsedLiveData}">
 
                         <TextView
                             android:id="@+id/choosen_point"
@@ -330,17 +351,19 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            app:priceFormatted="@{checkoutVM.pointUsedLiveData}"
-                            android:textAlignment="textEnd" />
+                            android:textAlignment="textEnd"
+                            app:priceFormatted="@{checkoutVM.pointUsedLiveData}" />
                     </LinearLayout>
                     <!--    end:  second row-->
 
                     <!--    start:  third row-->
                     <LinearLayout
+                        android:id="@+id/ll_coupon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="15dp"
-                        android:orientation="horizontal">
+                        android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
+                        app:visibleLinearLayout="@{checkoutVM.discountValueLiveData}">
 
                         <TextView
                             android:id="@+id/choosen_coupon"
@@ -356,8 +379,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            app:priceFormatted="@{checkoutVM.discountValueLiveData}"
-                            android:textAlignment="textEnd" />
+                            android:textAlignment="textEnd"
+                            app:priceFormatted="@{checkoutVM.discountValueLiveData}" />
                     </LinearLayout>
                     <!--    end:  third row-->
 
@@ -365,7 +388,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="15dp"
+                        android:layout_marginVertical="8dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -382,9 +405,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            app:priceFormatted="@{checkoutVM.orderPriceLiveData}"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/primary" />
+                            android:textColor="@color/primary"
+                            app:priceFormatted="@{checkoutVM.orderPriceLiveData}" />
                     </LinearLayout>
                     <!--    end:  fourth row-->
 

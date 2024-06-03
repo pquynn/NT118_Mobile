@@ -10,6 +10,9 @@
     <string name="large_size">Lớn</string>
     <string name="small_size">Nhỏ</string>
     <string name="medium_size">Vừa</string>
+    <string name="reason1">Gửi sai sản phẩm</string>
+    <string name="reason2">Khác với mô tả</string>
+    <string name="reason3">Hàng bể vỡ</string>
     <string name="present_home">
         <b> Java Joy Coffee\n</b>
         Giờ hoạt động: 7:30 - 21:30\n

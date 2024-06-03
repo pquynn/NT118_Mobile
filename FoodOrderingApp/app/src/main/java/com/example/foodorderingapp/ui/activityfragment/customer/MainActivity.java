@@ -10,6 +10,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.os.StrictMode;
+
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.ui.viewmodel.customer.navigation.BottomNavigationViewModel;

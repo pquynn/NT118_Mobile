@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="box">#F0F5FA</color>
+    <color name="dark_background">#1D4D4F</color>
+    <color name="dark_text">#181C2E</color>
+    <color name="label">#32343E</color>
+    <color name="light_blue">#1679AB</color>
+    <color name="light_text">#32343E</color>
+    <color name="lightgray">#A5A7B9</color>
+    <color name="lightgreen">#CCF9D7</color>
+    <color name="orange">#DD5746</color>
+    <color name="placeholder">#6B6E82</color>
+    <color name="primary">#0F9565</color>
+    <color name="primarylightgray">#ECF0F4</color>
+    <color name="red">#FF0000</color>
+    <color name="regular_text">#32343E</color>
+    <color name="search">#F6F6F6</color>
+    <color name="secondary">#3EBF84</color>
+    <color name="text">#A0A5BA</color>
+    <color name="text1">#676767</color>
+    <color name="text_home_search">#676767</color>
+    <color name="transparent">#00000000 </color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#F9A849</color>
+    <string name="app_name">JavaJoy</string>
+    <string name="btn_apply">Áp dụng</string>
+    <string name="description">"Loại đồ uống phổ biến có nguồn gốc từ Đài Loan, nổi tiếng với hương vị độc đáo và hấp dẫn. Nó bao gồm trà đen hoặc trà oolong pha chế kết hợp với sữa và đá, tạo ra một hỗn hợp mát lạnh và thơm ngon. Chân châu, là những viên nhỏ màu trắng, đen hoặc đa sắc, được làm từ bột bắp và có đặc điểm như đàn hồi và ngậy. Khi thưởng thức, việc ngậm nhấm chân châu kết hợp với hương vị đặc trưng của trà sẽ tạo ra trải nghiệm thú vị cho người uống. "</string>
+    <string name="descriptioncake">"Bao bọc bởi lớp vỏ Mochi dẻo thơm, bên trong là lớp kem lạnh cùng nhân phúc bồn tử ngọt ngào. Gọi 1 chiếc Mochi cho ngày thật tươi mát. Sản phẩm phải bảo quán mát và dùng ngon nhất trong 2h sau khi nhận hàng. "</string>
+    <string name="extend">Xem thêm</string>
+    <string name="gcm_defaultSenderId" translatable="false">778833360382</string>
+    <string name="google_api_key" translatable="false">AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q</string>
+    <string name="google_app_id" translatable="false">1:778833360382:android:a627e44973aa8fb1b4fcaf</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q</string>
+    <string name="google_storage_bucket" translatable="false">javajoy-mobileapp.appspot.com</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="large_size">Lớn</string>
+    <string name="medium_size">Vừa</string>
+    <string name="project_id" translatable="false">javajoy-mobileapp</string>
+    <string name="size">Size <font color="#FF0000">*</font></string>
+    <string name="small_size">Nhỏ</string>
+    <string name="topping">Topping <font color="#FF0000">*</font></string>
+    <style name="Base.Theme.FoodOrderingApp" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlNormal">@android:color/black</item>
+
+        <item name="radioButtonStyle">@style/MyRadioButtonStyle</item>
+        <item name="android:radioButtonStyle">@style/MyRadioButtonStyle</item>
+        <item name="checkboxStyle">@style/MyCheckBoxStyle</item>
+        <item name="android:checkboxStyle">@style/MyCheckBoxStyle</item>
+
+        <item name="colorPrimary">@color/primary</item>
+
+    </style>
+    <style name="Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="ButtonStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/rounder_component_button</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/roboto_light</item>
+        <item name="android:textColor">@color/lightgray</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/ic_custom_star</item>
+        <item name="android:minHeight">20dip</item>
+        <item name="android:maxHeight">50dip</item>
+    </style>
+    <style name="CustomRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/customer_dialog_star</item>
+    </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+    <style name="Heading1" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+    <style name="Heading2" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Heading3" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="MyCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
+    <style name="TextLabel" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextPlaceholder" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/placeholder</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="Theme.FoodOrderingApp" parent="Base.Theme.FoodOrderingApp"/>
+    <style name="black_text_12sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="black_text_14sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="black_text_16sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="black_text_18sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="bold_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="bold_text_16sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="bold_text_18sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="bold_text_20sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="btn_count" parent="TextAppearance.AppCompat.Button">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="buttonsearch">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+    <style name="light_text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="regular_text_16sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="regular_text_18sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="text_14sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="text_16sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="text_18sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="text_20sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="text_24sp" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/regular_text</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="text_text_14sp" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="top_nav" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

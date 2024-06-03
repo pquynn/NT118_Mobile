@@ -1,0 +1,12 @@
+[
+  {
+    "name": "admin_bottom_nav_graph",
+    "navigationXmlIds": [],
+    "deepLinks": []
+  },
+  {
+    "name": "customer_bottom_nav_graph",
+    "navigationXmlIds": [],
+    "deepLinks": []
+  }
+]

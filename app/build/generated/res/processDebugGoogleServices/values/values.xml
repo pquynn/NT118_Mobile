@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">778833360382</string>
+    <string name="google_api_key" translatable="false">AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q</string>
+    <string name="google_app_id" translatable="false">1:778833360382:android:a627e44973aa8fb1b4fcaf</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAZekm0P2ws6KkQiGGrCzV1iOuhBIrln8Q</string>
+    <string name="google_storage_bucket" translatable="false">javajoy-mobileapp.appspot.com</string>
+    <string name="project_id" translatable="false">javajoy-mobileapp</string>
+</resources>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".ui.activityfragment.customer.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- start header home -->
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/circle_bg_color"
+            app:layout_constraintBottom_toBottomOf="@+id/textHeader1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_menu"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="63dp"
+                tools:layout_editor_absoluteY="35dp"
+                android:importantForAccessibility="no" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="44dp"
+            android:text="DELIVERY TO"
+            android:textColor="@color/primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/frameLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText,MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textHeader1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Halal Lab Office"
+            android:textColor="@color/text_home_search"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textHeader"
+            app:layout_constraintTop_toBottomOf="@+id/textHeader"
+            tools:ignore="HardcodedText,MissingConstraints" />
+        <!-- end header home -->
+
+        <TextView
+            android:id="@+id/textBody"
+            style="@style/Heading3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Xin chào..."
+            app:layout_constraintBottom_toTopOf="@+id/frameLayoutSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            tools:ignore="HardcodedText" />
+
+        <!-- start button search -->
+
+        <ImageView
+            android:id="@+id/img_polygon"
+            android:layout_width="10dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="68dp"
+            app:layout_constraintStart_toEndOf="@+id/textHeader1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_polygon"
+            tools:ignore="MissingConstraints"
+            android:importantForAccessibility="no" />
+
+        <FrameLayout
+            android:id="@+id/frameLayoutSearch"
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/rounder_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textBody"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                app:srcCompat="@drawable/ic_search"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/textSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="55dp"
+                android:layout_marginEnd="30dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Tìm kiếm"
+                android:textColor="@color/text_home_search"
+                tools:ignore="HardcodedText" />
+        </FrameLayout>
+        <!-- end button search -->
+
+        <!--       START CATEGORY    -->
+        <TextView
+            android:id="@+id/textCategory"
+            style="@style/text_20sp"
+            android:layout_width="114dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="20dp"
+            android:text="Danh Mục"
+            app:layout_constraintStart_toStartOf="@+id/frameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayoutSearch"
+            tools:ignore="HardcodedText,MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textExtend1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="@string/extend"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textCategory"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/img_extend1"
+            android:layout_width="10dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textExtend1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toEndOf="@+id/textExtend1"
+            app:layout_constraintTop_toTopOf="@+id/textExtend1"
+            app:srcCompat="@drawable/ic_extend"
+            tools:ignore="MissingConstraints"
+            android:importantForAccessibility="no" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_homeCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/textStore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textCategory"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
+        <!--       END CATEGORY    -->
+
+        <!--        START STORE     -->
+        <TextView
+            android:id="@+id/textStore"
+            style="@style/text_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="Cửa hàng"
+            app:layout_constraintStart_toStartOf="@+id/frameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/textCategory"
+            tools:ignore="HardcodedText,MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textExtend2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="@string/extend"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textStore"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/img_extend"
+            android:layout_width="10dp"
+            android:layout_height="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textExtend2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toEndOf="@+id/textExtend2"
+            app:layout_constraintTop_toTopOf="@+id/textExtend2"
+            app:srcCompat="@drawable/ic_extend"
+            tools:ignore="MissingConstraints"
+            android:importantForAccessibility="no" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/frameLayoutSearch"
+            app:layout_constraintStart_toStartOf="@+id/textStore"
+            app:layout_constraintTop_toBottomOf="@+id/textStore">
+
+            <ImageView
+                android:id="@+id/img_posterStore"
+                android:layout_width="0dp"
+                android:layout_height="141dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/poster_store" />
+
+            <TextView
+                android:id="@+id/nameStore"
+                style="@style/text_20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Java Joy Coffee"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_posterStore"
+                tools:ignore="HardcodedText,MissingConstraints" />
+
+            <TextView
+                android:id="@+id/Category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cafe-Trà sữa-Trà-Bánh"
+                android:textColor="@color/text"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.004"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameStore"
+                tools:ignore="HardcodedText,MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/ic_star_green"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Category"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_star_green"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/text_ic_star"
+                style="@style/Heading3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
+                android:text="4.7"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_star_green"
+                app:layout_constraintStart_toEndOf="@+id/ic_star_green"
+                app:layout_constraintTop_toBottomOf="@+id/Category"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="HardcodedText,MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/ic_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="40dp"
+                android:importantForAccessibility="no"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_ic_star"
+                app:layout_constraintTop_toBottomOf="@+id/Category"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_clock"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/text_ic_clock"
+                style="@style/Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="20 min"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ic_clock"
+                app:layout_constraintTop_toBottomOf="@+id/Category"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="HardcodedText,MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt_ProductPopular"
+            style="@style/text_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Sản phẩm bán chạy nhất"
+            app:layout_constraintStart_toStartOf="@+id/textCategory"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_ProductPopular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintStart_toStartOf="@+id/rcv_homeCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ProductPopular"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txt_NewProduct"
+            style="@style/text_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Sản phẩm mới ra mắt"
+            app:layout_constraintStart_toStartOf="@+id/txt_ProductPopular"
+            app:layout_constraintTop_toBottomOf="@+id/rcv_ProductPopular"
+            tools:ignore="MissingConstraints" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_NewPopular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintStart_toStartOf="@+id/rcv_homeCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txt_NewProduct"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_address"
+    android:background="@color/white"
+    tools:context=".ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <include layout="@layout/header_with_btnback"></include>
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_recipient_name"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Họ tên người nhận" />
+
+                <EditText
+                    android:id="@+id/input_recipient_name"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:textColorHint="@color/text" />
+
+                <TextView
+                    android:id="@+id/txt_recipient_phone"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Số điện thoại" />
+
+                <EditText
+                    android:id="@+id/input_recipient_phone"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="phone"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColorHint="@color/text" />
+
+                <TextView
+                    android:id="@+id/txt_address_detail"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Số nhà" />
+
+                <EditText
+                    android:id="@+id/input_address_detail"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColorHint="@color/text" />
+
+                <TextView
+                    android:id="@+id/txt_ward"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Phường/Xã" />
+
+                <EditText
+                    android:id="@+id/input_ward"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColorHint="@color/text" />
+
+                <TextView
+                    android:id="@+id/txt_district"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Quận/Huyện" />
+
+                <EditText
+                    android:id="@+id/input_district"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColorHint="@color/text" />
+
+                <TextView
+                    android:id="@+id/txt_city"
+                    style="@style/TextLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Tỉnh/Thành phố" />
+
+                <EditText
+                    android:id="@+id/input_city"
+                    style="@style/TextPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/rounder_component_label"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColorHint="@color/text" />
+
+                <Button
+                    android:id="@+id/btn_add"
+                    style="@style/ButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:text="Lưu" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

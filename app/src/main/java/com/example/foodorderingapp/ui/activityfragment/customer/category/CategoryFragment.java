@@ -1,13 +1,10 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.category;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Product;
@@ -25,14 +21,12 @@ import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
 import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
 import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.CategoryList;
-import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.ui.adapter.CategoryProductListAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.category.CategoryViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CategoryFragment extends Fragment implements CategoryProductListAdapter.ProductClickListener{
@@ -104,6 +98,7 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         startActivity(intent);
     }
 
+    //Phương thức tìm vị trí danh mục trong danh sách
     private int getPositionOfCategory(Category category) {
         for (int i = 0; i < categoryListAdapter.getItemCount(); i++) {
             CategoryList categoryList = categoryListAdapter.getItem(i);

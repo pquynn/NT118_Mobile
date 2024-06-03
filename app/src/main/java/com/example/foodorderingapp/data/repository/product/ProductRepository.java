@@ -193,7 +193,7 @@ public class ProductRepository implements IProductRepository {
 
                                     // Update the product document with new quantity
                                     // Tính lại số lượng
-                                    long newQuantity = currentQuantity - quantityPurchased;
+//                                    long newQuantity = currentQuantity - quantityPurchased;
 
                                     // Cập nhật số lượng trong Firestore
                                     sizeDetails.put("QUANTITY", newQuantity);

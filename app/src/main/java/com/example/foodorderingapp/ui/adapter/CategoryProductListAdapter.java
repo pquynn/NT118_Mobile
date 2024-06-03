@@ -20,6 +20,7 @@ import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.Pr
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryProductListAdapter.CategoryProductListViewHolder> {
@@ -54,7 +55,7 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         }
         Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
         holder.tvName.setText(product.getProductName());
-        holder.tvPrice.setText(String.valueOf(product.getProductPrice()));
+        setPriceFormatted(holder.tvPrice, product.getProductPrice());
 
         //Xử lý sự kiện khi click vào sản phẩm
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +69,12 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
                 }
             }
         });
+    }
+
+    public static void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        textView.setText(formattedPrice);
     }
 
     @Override

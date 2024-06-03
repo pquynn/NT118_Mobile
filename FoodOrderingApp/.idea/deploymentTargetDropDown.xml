@@ -2,7 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AdminMainActivity">
+      <entry key="AddRefundProductActivity">
+        <State />
+      </entry>
+      <entry key="MainActivity">
+        <State />
+      </entry>
+      <entry key="activity_signup">
         <State />
       </entry>
       <entry key="app">

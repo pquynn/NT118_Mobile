@@ -9,7 +9,11 @@ import java.util.List;
 public interface INotificationRepository {
     void getNotificationByRecipientIdAndType(String idRecipient, int recipientType, NotificationListCallback callback);
     void calculateUnreadNoti(String idRecipient, IntegerCallback callback);
+    void createNotification(Notification notification);
 
+    void updateNotificationStatus(String status, String notificationId);
+
+    void updateNotification(Notification notification);
     interface NotificationListCallback {
         void onListLoaded(List<Notification> notificationList);
         void onError(String errorMessage);

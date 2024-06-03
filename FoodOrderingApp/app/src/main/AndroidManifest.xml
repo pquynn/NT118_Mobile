@@ -76,7 +76,7 @@
             android:name=".ui.activityfragment.customer.accountmanagement.am_point_history"
             android:exported="true" />
         <activity
-            android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo"
+            android:name=".ui.activityfragment.customer.accountmanagement.am_change_userinfo_name"
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.am_change_password"
@@ -126,7 +126,17 @@
             android:exported="true"></activity>
         <activity
             android:name=".ui.activityfragment.admin.refund.RefundProgressActivity"
-            android:exported="true"></activity> <!-- END: REFUND -->
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".ui.activityfragment.customer.refund.SendRefundSucessActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".ui.activityfragment.customer.refund.MediaFullScreenActivity"
+            android:exported="true" >
+        </activity>
+        <!-- END: REFUND -->
         <!-- START: ACCOUNT -->
         <activity
             android:name=".ui.activityfragment.customer.accountmanagement.AM_AddressActivity"

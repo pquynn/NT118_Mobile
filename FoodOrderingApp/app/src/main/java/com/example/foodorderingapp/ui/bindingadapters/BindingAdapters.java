@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 
 import java.text.DecimalFormat;
@@ -172,5 +173,4 @@ public class BindingAdapters {
             }
         }
     }
-
 }

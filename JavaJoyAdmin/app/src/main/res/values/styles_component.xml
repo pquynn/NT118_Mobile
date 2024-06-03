@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--button submit-->
+    <!-- sử dụng trong button submit
+         style:@style/ButtonStyle
+    -->
+    <style name="ButtonStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:background">@drawable/rounder_component_button</item>
+        <item name="backgroundTint">@color/state_list_button_colors</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--    style đánh giá sao-->
+    <style name="CustomRatingBarStyle" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/customer_dialog_star</item>
+    </style>
+
+    <style name="buttonsearch">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="MyCheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
+
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@drawable/state_list_controlbutton</item>
+        <item name="buttonTint">@drawable/state_list_controlbutton</item>
+    </style>
+</resources>

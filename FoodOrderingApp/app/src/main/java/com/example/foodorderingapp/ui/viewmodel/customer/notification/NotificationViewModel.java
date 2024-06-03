@@ -67,4 +67,8 @@ public class NotificationViewModel {
         loadNotification(recipientId, recipientType);
         loadUnreadNotiCount();
     }
+
+    public void updateNotificationStatus(String notiId){
+        notificationRepository.updateNotificationStatus("read", notiId);
+    }
 }

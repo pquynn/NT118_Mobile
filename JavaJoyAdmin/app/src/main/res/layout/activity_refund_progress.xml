@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="refundVM"
+            type="com.example.javajoyadmin.ui.viewmodel.admin.refund.RefundViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/activity_refund_progress"
+        android:background="@color/white"
+        tools:context=".ui.activityfragment.admin.refund.RefundProgressActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/header_with_btnback"></include>
+
+            <ScrollView
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <!-- start: refund information layout-->
+                    <LinearLayout
+                        android:id="@+id/ll_refund_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="12dp"
+                        android:paddingHorizontal="24dp"
+                        android:orientation="vertical">
+
+                        <!-- start: ll status-->
+                        <LinearLayout
+                            android:id="@+id/ll_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/lbl_status"
+                                style="@style/regular_text_16sp"
+                                android:textColor="@color/text1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Trạng thái" />
+
+                            <TextView
+                                android:id="@+id/txt_status"
+                                style="@style/bold_text_16sp"
+                                android:textColor="@color/primary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@{refundVM.refundLiveData.status}"
+                                android:textAlignment="textEnd"/>
+                        </LinearLayout>
+                        <!-- end: ll status-->
+
+
+                        <!-- start: ll instruction when accept refund-->
+                        <LinearLayout
+                            android:background="@drawable/rounded_grey_container"
+                            android:id="@+id/ll_instruction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="4dp"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="8dp"
+                            app:visiblerefundInstruction="@{refundVM.refundLiveData.status}"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginRight="10dp"
+                                app:srcCompat="@drawable/information" />
+
+                            <TextView
+                                android:id="@+id/txt_instruction"
+                                style="@style/text_14sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:refundInstruction="@{refundVM.refundLiveData.status}"
+                                />
+                        </LinearLayout>
+                        <!-- end: ll instruction when accept refund-->
+
+
+                        <!-- start: ll date request-->
+                        <LinearLayout
+                            android:id="@+id/ll_date_request"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/lbl_date_request"
+                                style="@style/regular_text_16sp"
+                                android:textColor="@color/text1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Ngày gửi yêu cầu" />
+
+                            <TextView
+                                android:id="@+id/txt_date_request"
+                                style="@style/regular_text_16sp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:dateFormatted="@{refundVM.refundLiveData.dateRequested}"
+                                android:textAlignment="textEnd"/>
+                        </LinearLayout>
+                        <!-- end: ll date request-->
+
+
+                        <!-- start: ll date progress-->
+                        <LinearLayout
+                            android:id="@+id/ll_date_progress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            app:visibleDateProgressByStatus="@{refundVM.refundLiveData.status}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/lbl_date_progress"
+                                style="@style/regular_text_16sp"
+                                android:textColor="@color/text1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Ngày xử lý hoàn tiền" />
+
+                            <TextView
+                                android:id="@+id/txt_date_progress"
+                                style="@style/regular_text_16sp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:dateFormatted="@{refundVM.refundLiveData.dateProcessed}"
+                                android:textAlignment="textEnd"/>
+                        </LinearLayout>
+                        <!-- end: ll date progress-->
+
+
+                        <!-- start: ll total refund value-->
+                        <LinearLayout
+                            android:id="@+id/ll_refund_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/lbl_refund_value"
+                                style="@style/regular_text_16sp"
+                                android:textColor="@color/text1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Số tiền hoàn lại" />
+
+                            <TextView
+                                android:id="@+id/txt_refund_value"
+                                style="@style/regular_text_16sp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:priceFormatted="@{refundVM.refundLiveData.totalMoney}"
+                                android:textAlignment="textEnd"/>
+                        </LinearLayout>
+                        <!-- end: ll total refund value-->
+
+
+                    </LinearLayout>
+                    <!-- end: refund information layout-->
+
+                    <TextView
+                        android:id="@+id/lbl_refund_item"
+                        style="@style/bold_text_18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Chi tiết sản phẩm hoàn tiền" />
+
+                    <!-- start: refund item-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/recyclerViewRefundProgress"/>
+                    <!-- end: refund item-->
+
+
+                    <!-- start: button-->
+                    <Button
+                        android:id="@+id/btn_accept"
+                        style="@style/ButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="5dp"
+                        app:visibleAcceptButtonByStatus="@{refundVM.refundLiveData.status}"
+                        android:text="Chấp nhận hoàn tiền" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_refuse"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:paddingVertical="16dp"
+                        android:text="Từ chối hoàn tiền"
+                        app:visibleRefuseButtonByStatus="@{refundVM.refundLiveData.status}"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="18sp"
+                        app:cornerRadius="10dp"
+                        app:strokeColor="@color/primary"
+                        app:strokeWidth="1.5dp" />
+                    <!-- end: button-->
+
+                </LinearLayout>
+            </ScrollView>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

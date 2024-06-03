@@ -27,6 +27,9 @@
             android:name=".ui.activityfragment.customer.accountmanagement.SelectLocation"
             android:exported="true" />
         <activity
+            android:name=".ui.activityfragment.customer.home.StoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".data.repository.order.resultTestActivity"
             android:exported="true" />
         <activity
@@ -134,7 +137,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDGGyK8delYa1bpENd_3lC-2yBiRaoRtFM" />
-            android:exported="true"></activity>
+           
     </application>
 
 </manifest>

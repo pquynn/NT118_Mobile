@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.HomeCategory;
+import com.example.foodorderingapp.data.model.entity.Category;
 
 import java.util.List;
 
 public class CategoryHomeAdapter extends RecyclerView.Adapter<CategoryHomeAdapter.ViewHolder> {
-    private List<HomeCategory> list;
+    private List<Category> list;
     Context mcontext;
 
-    public CategoryHomeAdapter(Context context, List<HomeCategory> homeCategory) {
-        this.mcontext = context;
+    public CategoryHomeAdapter(List<Category> homeCategory) {
         this.list = homeCategory;
     }
 
@@ -34,21 +34,26 @@ public class CategoryHomeAdapter extends RecyclerView.Adapter<CategoryHomeAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CategoryHomeAdapter.ViewHolder holder, int position) {
-        HomeCategory homeCategory = list.get(position);
+        Category homeCategory = list.get(position);
 
         holder.txtname.setText(homeCategory.getNameCategory());
 
         //Set màu cho danh mục All - xanh, còn lại trắng
-        if (position == 0) {
-            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.lightgreen, mcontext.getTheme()))); // Set green color for the first item
-        } else {
-            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.white, mcontext.getTheme()))); // Set white color for other items
-        }
+//        if (position == 0) {
+//            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.lightgreen, mcontext.getTheme()))); // Set green color for the first item
+//        } else {
+//            holder.frameLayout.setBackgroundTintList(ColorStateList.valueOf(mcontext.getResources().getColor(R.color.white, mcontext.getTheme()))); // Set white color for other items
+//        }
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.list = categoryList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

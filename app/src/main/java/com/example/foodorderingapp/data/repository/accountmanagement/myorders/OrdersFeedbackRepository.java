@@ -218,7 +218,7 @@ public class OrdersFeedbackRepository {
                 });
     }
 
-    public void getCommentsByProductID(String productID) {
+    public void getCommentsByProductID(String productID, commentListCallback callback) {
         db.collection("COMMENT")
                 .whereEqualTo("ID_PRODUCT", productID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -240,23 +240,51 @@ public class OrdersFeedbackRepository {
 //                                            documentSnapshot.getDate("CM_DATE")));
                                 }
                                 // Xử lý danh sách comment ở đây
-//                                for (Comment comment : listComment) {
-//                                    Log.d("CommentInfo", "ID_PRODUCT: " + comment.getIdProduct());
-//                                    Log.d("CommentInfo", "CONTENT: " + comment.getContent());
-//                                    Log.d("CommentInfo", "POINT: " + comment.getRatingBar());
-//                                    Log.d("CommentInfo", "CM_DATE: " + comment.getDate());
-//                                    Log.d("CommentInfo", "USER_NAME: " + comment.getNameUser());
-//                                    Log.d("CommentInfo", "USER_ID: " + comment.getIdUser());
-//                                }
+                                for (Comment comment : listComment) {
+                                    Log.d("CommentInfo", "ID_PRODUCT: " + comment.getIdProduct());
+                                    Log.d("CommentInfo", "CONTENT: " + comment.getContent());
+                                    Log.d("CommentInfo", "POINT: " + comment.getRatingBar());
+                                    Log.d("CommentInfo", "CM_DATE: " + comment.getDate());
+                                    Log.d("CommentInfo", "USER_NAME: " + comment.getNameUser());
+                                    Log.d("CommentInfo", "USER_ID: " + comment.getIdUser());
+                                }
+                                callback.loadListCommentSuccess(listComment);
                             } else {
                                 Log.d("COMMENT", "Danh sách comment trống"); // Thông báo nếu danh sách comment rỗng
+                                callback.loadlistCommentError(new Exception("Error load list comment"));
                             }
                         } else {
                             Log.d("COMMENT", "Lỗi khi lấy danh sách"); // Thông báo khi có lỗi xảy ra trong quá trình lấy danh sách comment
+                            callback.loadlistCommentError(new Exception("Error load list comment"));
                         }
                     }
                 });
     }
+
+    public void checkExistComments(String productID, checkCommentsCallback callback) {
+        db.collection("COMMENT")
+                .whereEqualTo("ID_PRODUCT", productID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            int commentSize = queryDocumentSnapshots.size();
+                            callback.loadCommentsSuccess(commentSize);
+                        } else {
+                            callback.loadCommentsSuccess(0); // No comments found
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.loadCommentError(e);
+                    }
+                });
+    }
+
+
 
 
     public ArrayList<OrderDetail> getOrderDetailList() {
@@ -294,5 +322,13 @@ public class OrdersFeedbackRepository {
     public interface userIDCallback{
         void loadUserIDSuccess(String userID);
         void loadUserIDError(Exception e);
+    }
+    public interface commentListCallback{
+        void loadListCommentSuccess(List<Comment> listComment);
+        void loadlistCommentError(Exception e);
+    }
+    public interface checkCommentsCallback{
+        void loadCommentsSuccess(int isExist);
+        void loadCommentError(Exception e);
     }
 }

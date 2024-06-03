@@ -1,29 +1,32 @@
 package com.example.foodorderingapp.data.model;
 
+import com.example.foodorderingapp.data.model.entity.Category;
+import com.example.foodorderingapp.data.model.entity.Product;
+
 import java.util.List;
 
 public class CategoryList {
-    private String nameCategory;
-    private List<ProductSearch> listProducts;
+    private Category category;
+    private List<Product> listProducts;
 
-    public CategoryList(String nameCategory, List<ProductSearch> listProducts) {
-        this.nameCategory = nameCategory;
+    public CategoryList(Category category, List<Product> listProducts) {
+        this.category= category;
         this.listProducts = listProducts;
     }
 
-    public String getNameCategory() {
-        return nameCategory;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setNameCategory(String nameCategory) {
-        this.nameCategory = nameCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public List<ProductSearch> getListProducts() {
+    public List<Product> getListProducts() {
         return listProducts;
     }
 
-    public void setListProducts(List<ProductSearch> listProducts) {
+    public void setListProducts(List<Product> listProducts) {
         this.listProducts = listProducts;
     }
 }

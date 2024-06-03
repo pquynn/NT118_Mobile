@@ -3,7 +3,6 @@ package com.example.foodorderingapp.data.model.entity;
 
 public class Category {
     private String id;
-
     private String imgCategory;
     private String nameCategory;
 

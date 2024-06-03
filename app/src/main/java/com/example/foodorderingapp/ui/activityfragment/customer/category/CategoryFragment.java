@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,9 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.foodorderingapp.data.repository.category.CategoryRepository;
-import com.example.foodorderingapp.data.repository.category.ICategoryRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
@@ -24,16 +26,20 @@ import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
 import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.CategoryList;
 import com.example.foodorderingapp.data.model.ProductSearch;
+import com.example.foodorderingapp.ui.adapter.CategoryProductListAdapter;
+import com.example.foodorderingapp.ui.viewmodel.customer.category.CategoryViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class CategoryFragment extends Fragment implements ICategoryRepository.CategoryListCallBack {
-
+public class CategoryFragment extends Fragment implements CategoryProductListAdapter.ProductClickListener{
     private RecyclerView rcvCategory, rcvListCategory;
     private CategoryListAdapter categoryListAdapter;
     private CategoryAdapter categoryAdapter;
-    private CategoryRepository categoryRepository;
+    CategoryViewModel categoryViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,78 +47,78 @@ public class CategoryFragment extends Fragment implements ICategoryRepository.Ca
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
         rcvCategory = view.findViewById(R.id.rcv_category);
+        rcvListCategory = view.findViewById(R.id.rcv_categoryList);
+
+        //Danh sách danh mục
         rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(getContext());
         rcvCategory.setAdapter(categoryAdapter);
+        //Load dữ liệu từ firestore
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        categoryViewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
+            categoryAdapter.setData(categoryList);
+        });
 
-        categoryRepository = new CategoryRepository(); // Khởi tạo repository
-        categoryRepository.getListCategory(this); // Gọi phương thức để lấy danh sách danh mục
-
-
-        rcvListCategory = view.findViewById(R.id.rcv_categoryList);
-        rcvListCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
-        categoryListAdapter = new CategoryListAdapter(getActivity(), getListCategory());
-        rcvListCategory.setAdapter(categoryListAdapter);
-
-        categoryListAdapter.setOnItemClickListener(new CategoryListAdapter.OnItemClickListener() {
+        //Xử lý điều hướng khi click danh mục
+        categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ProductSearch product) {
-                // Kiểm tra xem từ "bánh" có xuất hiện trong tên sản phẩm hay không
-                if (isCake(product.getName())) {
-                    Intent intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
-                    startActivity(intent);
+            public void onItemClick(Category category) {
+                // Xác định vị trí của danh mục được click trong danh sách
+                int position = getPositionOfCategory(category);
+
+                // Nếu vị trí hợp lệ (khác -1), cuộn đến vị trí tương ứng trong RecyclerView danh sách sản phẩm
+                if (position != -1) {
+                    scrollToCategoryPosition(position);
                 }
             }
-
-            private boolean isCake(String productName) {
-                // Kiểm tra xem từ "bánh" có xuất hiện trong tên sản phẩm hay không
-                return productName.toLowerCase().contains("bánh");
-            }
+        });
+        //Danh sách sản phẩm ứng với từng danh mục
+        rcvListCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
+        categoryListAdapter = new CategoryListAdapter(getActivity(), new ArrayList<>(), this::onProductClick);
+        rcvListCategory.setAdapter(categoryListAdapter);
+        //Load dữ liệu từ firestore
+        categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        categoryViewModel.getProductListLiveData().observe(getViewLifecycleOwner(), categoryLists -> {
+            categoryListAdapter.setData(categoryLists);
         });
 
         return view;
     }
-
-    //interface của danh sách danh mục
-    @SuppressLint("NotifyDataSetChanged")
+    //Xử lý sự kiện khi click vào sản phẩm
     @Override
-    public void onCategoryListLoaded(List<Category> categoryList) {
-        // Khi danh sách danh mục đã được tải thành công từ repository, cập nhật adapter
-        categoryAdapter.setData(categoryList);
-        categoryAdapter.notifyDataSetChanged();
+    public void onProductClick(Product product) {
+        // Xử lý sự kiện khi click vào sản phẩm
+        Log.d("ProductClick", "idCategory: " + product.getIdCategory());
+        Log.d("ProductClick", "Product ID: " + product.getId());
+        // Tạo Intent và truyền dữ liệu cần thiết
+        Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
+        Intent intent;
+        if (validCategories.contains(product.getIdCategory())) {
+            intent = new Intent(getActivity(), ProductDetailCakeActivity.class);
+        } else {
+            intent = new Intent(getActivity(), ProductDetailDrinkActivity.class);
+        }
+//        Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm khi gộp 2 product lại
+//        intent = new Intent(getActivity(), ProductDetailDrink.class);
+        intent.putExtra("productID", product.getId());
+        startActivity(intent);
     }
 
-    @Override
-    public void onCategoryListLoadFailed(Exception e) {
-        // Xử lý khi có lỗi xảy ra khi tải danh sách danh mục
-        Toast.makeText(getContext(), "Failed to load categories", Toast.LENGTH_SHORT).show();
-        Log.e("CategoryFragment", "Failed to load categories", e);
+    private int getPositionOfCategory(Category category) {
+        for (int i = 0; i < categoryListAdapter.getItemCount(); i++) {
+            CategoryList categoryList = categoryListAdapter.getItem(i);
+            if (categoryList != null && categoryList.getCategory().getId().equals(category.getId())) {
+                return i;
+            }
+        }
+        return -1; // Trả về -1 nếu không tìm thấy danh mục trong danh sách
     }
 
-    private List<CategoryList> getListCategory() {
-        List<CategoryList> list = new ArrayList<>();
-
-        List<ProductSearch> listProduct = new ArrayList<>();
-        listProduct.add(new ProductSearch(R.drawable.img4, "Trà chanh cam xả", "30.000đ"));
-        listProduct.add(new ProductSearch(R.drawable.img8, "Trà xanh matcha kem cheese", "30.000đ"));
-
-        listProduct.add(new ProductSearch(R.drawable.img1, "Trà sữa chân châu đường đen", "35.000đ"));
-        listProduct.add(new ProductSearch(R.drawable.img2, "Trà sữa truyền thống", "25.000đ"));
-
-        listProduct.add(new ProductSearch(R.drawable.img3, "Bạc xỉu", "20.000đ"));
-
-        listProduct.add(new ProductSearch(R.drawable.img5, "Bánh mochi socola ", "19.000đ"));
-        listProduct.add(new ProductSearch(R.drawable.img6, "Bánh mochi phúc bồn tử", "19.000đ"));
-        listProduct.add(new ProductSearch(R.drawable.img7, "Bánh Tirasumi Socola", "24.000đ"));
-
-        list.add(new CategoryList("Trà", listProduct));
-        list.add(new CategoryList("Trà sữa", listProduct));
-        list.add(new CategoryList("Cafe", listProduct));
-        list.add(new CategoryList("Bánh", listProduct));
-
-        return list;
+    // Phương thức này để cuộn đến vị trí của danh sách sản phẩm
+    private void scrollToCategoryPosition(int position) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) rcvListCategory.getLayoutManager();
+        if (layoutManager != null) {
+            layoutManager.scrollToPositionWithOffset(position, 0);
+        }
     }
 }

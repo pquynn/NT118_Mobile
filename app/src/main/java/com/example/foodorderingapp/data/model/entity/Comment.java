@@ -69,7 +69,7 @@ public class Comment {
         return ratingBar;
     }
     @PropertyName("POINT")
-    public void setRatingBar(int     ratingBar) {
+    public void setRatingBar(int ratingBar) {
         this.ratingBar = ratingBar;
     }
     @PropertyName("CONTENT")

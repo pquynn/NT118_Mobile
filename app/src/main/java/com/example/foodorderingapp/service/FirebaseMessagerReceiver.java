@@ -10,9 +10,11 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
+import com.example.foodorderingapp.ui.viewmodel.customer.navigation.BottomNavigationViewModel;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

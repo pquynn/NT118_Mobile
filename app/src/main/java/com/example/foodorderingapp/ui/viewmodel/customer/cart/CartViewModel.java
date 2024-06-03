@@ -36,6 +36,7 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
     private MutableLiveData<Product> productLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> cartItemCountLiveData = new MutableLiveData<>();
 //    private MutableLiveData<Map<String, Integer>> sizeListLiveData = new MutableLiveData<>();
     private List<Topping> toppings = new ArrayList<>();
     private MutableLiveData<Boolean> isValidCheckout = new MutableLiveData<>();
@@ -85,6 +86,15 @@ public class CartViewModel extends ViewModel {
 
     public void setIsValidCheckout(boolean isValidCheckout) {
         this.isValidCheckout.setValue(isValidCheckout);
+    }
+
+    public MutableLiveData<Product> getProductLiveData() {
+        return productLiveData;
+    }
+
+    public MutableLiveData<Integer> getCartItemCountLiveData() {
+        loadCartItemCount();
+        return cartItemCountLiveData;
     }
 
     // load method
@@ -247,6 +257,7 @@ public class CartViewModel extends ViewModel {
         loadCart(userId);
         loadToppingList();
         isValidCheckout.setValue(true);
+        loadCartItemCount();
     }
 
     
@@ -264,7 +275,7 @@ public class CartViewModel extends ViewModel {
                 new IOrderRepository.OrderChangedCallback() {
                     @Override
                     public void onOrderChanged() {
-
+                        loadCartItemCount();
                     }
 
                     @Override
@@ -322,7 +333,8 @@ public class CartViewModel extends ViewModel {
                                 orderRepository.deleteProductCart(orderId, orderItemId, new IOrderRepository.OrderItemRemovedCallback() {
                                     @Override
                                     public void onOrderItemRemoved(String id) {
-                                        loadCart(userId);
+                                        loadCart(userId);;
+                                        loadCartItemCount();
                                         dismissProgressDialog();
                                     }
 
@@ -372,6 +384,7 @@ public class CartViewModel extends ViewModel {
                 @Override
                 public void onOrderChanged() {
                     loadCart(userId);
+                    loadCartItemCount();
                     dismissProgressDialog();
                 }
 
@@ -381,5 +394,23 @@ public class CartViewModel extends ViewModel {
                 }
             });
         }
+    }
+
+    //method to load cart item count live data
+    public void loadCartItemCount(){
+        orderRepository.calculateTotalProductCart(userId, new IOrderRepository.IntegerCallback() {
+            @Override
+            public void onLoaded(int intNumb) {
+                cartItemCountLiveData.setValue(intNumb);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+            }
+        });
+    }
+
+    public void setCartItemCountLiveData(int count){
+        cartItemCountLiveData.setValue(count);
     }
 }

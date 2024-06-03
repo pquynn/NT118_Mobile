@@ -1,35 +1,24 @@
 package com.example.foodorderingapp.ui.activityfragment.customer;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.StrictMode;
-import android.util.Log;
-
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.SendNotification;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.foodorderingapp.data.repository.order.OrderRepository;
+import com.example.foodorderingapp.ui.viewmodel.customer.navigation.BottomNavigationViewModel;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-
-    String token = "";
+    private BottomNavigationViewModel viewModel;
+    private String userId = "3";
+    private int productCartQuantity = 0;
+    private BadgeDrawable cartBadge, notiBadge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,40 +27,69 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragment_area);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("fcm", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-                        // Get new FCM registration token
-                        token = task.getResult();
-                        // Log and toast
-                        Log.d("fcm", token);
-                    }
-                });
+        //init viewmodel
+        viewModel = new BottomNavigationViewModel(userId);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-//        sendNoti();
-    }
-
-    public void sendNoti(){
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        // Set badge for cart fragment
+        cartBadge = bottomNavigationView.getOrCreateBadge(R.id.cartFragment);
+        notiBadge = bottomNavigationView.getOrCreateBadge(R.id.notificationFragment);
+        //observe change in cart item
+        viewModel.getProductCartQuantityLiveData().observe(this, new Observer<Integer>() {
             @Override
-            public void run() {
-                SendNotification notificationSender =
-                        new SendNotification(token, "push noti from server", "aaaaaa",
-                                getApplicationContext());
-                notificationSender.SendNotifications();
-
+            public void onChanged(Integer integer) {
+                setBadge(cartBadge, integer);
             }
-        } , 300);
+        });
+
+        //observe change in noti item
+        viewModel.getUnreadNotiCountLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                setBadge(notiBadge, integer);
+            }
+        });
+        // Observe changes to the cart item count
+//        viewModel.getProductCartQuantityLiveData().observe(this, count -> {
+//            if (count != null && count > 0) {
+//                cartBadge.setVisible(true);
+//                cartBadge.setNumber(count);
+//            } else {
+//                cartBadge.clearNumber();
+//                cartBadge.setVisible(false);
+//            }
+//        });
+//
+//        // Observe changes to the notification count
+//        viewModel.getUnreadNotiCountLiveData().observe(this, count -> {
+//            if (count != null && count > 0) {
+//                notiBadge.setVisible(true);
+//                notiBadge.setNumber(count);
+//            } else {
+//                notiBadge.clearNumber();
+//                notiBadge.setVisible(false);
+//            }
+//        });
+
     }
 
+    public void updateProductCartQuantity(int count){
+        viewModel.setProductCartQuantityLiveData(count);
+    }
+
+    public void updateUnreadNotiQuantity(int count){
+        viewModel.getUnreadNotiCountLiveData().setValue(count);
+    }
+
+    // method to set badge number in bottom navigation
+    public void setBadge(BadgeDrawable badgeDrawable, int count){
+        int primary = ContextCompat.getColor(this, R.color.primary);
+        badgeDrawable.setBackgroundColor(primary);
+        if (count > 0) {
+            badgeDrawable.setVisible(true);
+            badgeDrawable.setNumber(count);
+        }
+        else {
+            badgeDrawable.setVisible(false);
+        }
+    }
 }

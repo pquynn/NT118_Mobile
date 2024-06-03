@@ -282,5 +282,4 @@ public class CheckoutActivity extends AppCompatActivity {
         ZaloPaySDK.getInstance().onResult(intent);
     }
 
-
 }

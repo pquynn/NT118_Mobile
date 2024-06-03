@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rcv_homeCategory;
     RecyclerView rcv_ProductPopular;
     HomeViewModel viewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -119,6 +120,8 @@ public class HomeFragment extends Fragment {
 //                intent = new Intent(getActivity(), ProductDetailDrink.class);
                 intent.putExtra("productID", product.getId());
                 startActivity(intent);
+
+
             });
             rcv_homeCategory.setHasFixedSize(true);
             rcv_ProductPopular.setAdapter(productPopularHomeAdapter);

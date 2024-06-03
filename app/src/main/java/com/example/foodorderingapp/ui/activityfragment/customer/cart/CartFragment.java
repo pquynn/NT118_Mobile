@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.cart;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,7 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutActivity;
 import com.example.foodorderingapp.ui.adapter.CartAdapter;
 import com.example.foodorderingapp.data.model.entity.Order;
@@ -36,6 +38,7 @@ import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.databinding.FragmentCartBinding;
 import com.example.foodorderingapp.ui.adapter.CartToppingAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
+import com.example.foodorderingapp.ui.viewmodel.customer.navigation.BottomNavigationViewModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -46,7 +49,7 @@ import java.util.Map;
 public class CartFragment extends Fragment  implements CartAdapter.OnItemClickListener, CartToppingAdapter.OnCheckedChangeListener {
     TextView screenname;
     private Map<String, OrderItem> orderItemMap;
-    private String userId ="1";
+    private String userId ="3";
     private FragmentCartBinding binding;
     private BottomsheetEditCartBinding bindingBottomSheet;
     private CartViewModel viewModel;
@@ -61,6 +64,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
     private Product tempProduct;
     private String tempSize = "";
     private CartToppingAdapter cartToppingAdapter;
+    private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +81,8 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         screenname = view.findViewById(R.id.screen_name);
         screenname.setText("Giỏ hàng");
 
+        // init main activity
+        mainActivity = (MainActivity) getActivity();
 
         //button checkout
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +93,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
             }
         });
 
-        // View model
+        // init cart View model
         viewModel = new CartViewModel(userId, getActivity());
 
         //Adapter
@@ -116,6 +122,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
 
                 //observe productlist when order change
                 viewModel.loadProductList();
+                viewModel.loadCartItemCount();
 
                 // update order item map
                 orderItemMap.clear();
@@ -134,6 +141,16 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
                     binding.emptyCartContainer.setVisibility(View.GONE);
                     binding.linearLayout4.setVisibility(View.VISIBLE);
                     binding.linearLayout5.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        BottomNavigationViewModel navigationViewModel = new BottomNavigationViewModel(userId);
+        viewModel.getCartItemCountLiveData().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer != null){
+                    mainActivity.updateProductCartQuantity(integer);
                 }
             }
         });

@@ -240,4 +240,33 @@ public class OrderRepository implements IOrderRepository {
                 .addOnFailureListener(e -> System.err.println("Error updating order items: " + e.getMessage()));
     }
 
+    // method to get total product cart
+
+
+    // method to calculate product cart item count
+    public void calculateTotalProductCart(String userId, IntegerCallback callback){
+        Query query = collectionRef
+                .whereEqualTo("ID_USER", userId)
+                .whereEqualTo("STATUS", "Giỏ hàng");
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (!queryDocumentSnapshots.isEmpty()) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                Order order = documentSnapshot.toObject(Order.class);
+                int quantity = 0;
+                for(Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()){
+                    quantity += entry.getValue().getQuantity();
+                }
+                callback.onLoaded(quantity);
+            }
+            else
+                callback.onLoaded(0);
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get order: " + e.getMessage();
+            Log.e("FirestoreOrderRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
+    }
+
+
 }

@@ -37,6 +37,8 @@ public interface IOrderRepository {
     // update order item map by order id
     void updateOrderItemsByOrderId(String orderId, Map<String, OrderItem> orderItemMap);
 
+    // method to calculate product cart
+    void calculateTotalProductCart(String userId, IntegerCallback callbac);
 
     interface OrderCallback {
         void onOrderLoaded(Order order);
@@ -68,5 +70,8 @@ public interface IOrderRepository {
         void onError(String errorMessage);
     }
 
-
+    interface IntegerCallback {
+        void onLoaded(int intNumb);
+        void onError(String errorMessage);
+    }
 }

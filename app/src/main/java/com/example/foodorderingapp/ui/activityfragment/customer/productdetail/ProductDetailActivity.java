@@ -29,6 +29,7 @@ import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrdersFeedbackRepository;
 import com.example.foodorderingapp.databinding.ActivityProductDetailBinding;
 import com.example.foodorderingapp.databinding.ActivityRefundViewBinding;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.adapter.CartToppingAdapter;
 import com.example.foodorderingapp.ui.adapter.RefundItemAdapter;
 import com.example.foodorderingapp.ui.adapter.ToppingAdapter;
@@ -52,8 +53,8 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
     private List<Topping> toppings;
     private int oldSizePrice = 0, newSizePrice = 0;
     private List<String> toppingNames, toppingSelected, tempCheckedTopping;
-
     private CommentDialogFragment commentDialogFragment = null;
+    private MainActivity mainActivity;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,6 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
         if (getIntent() != null && getIntent().hasExtra("productID")) {
             productId = getIntent().getStringExtra("productID");
         }
-
 
         // Lưu trạng thái ban đầu của nội dung
         originalMaxLines = binding.contentTextView.getMaxLines();

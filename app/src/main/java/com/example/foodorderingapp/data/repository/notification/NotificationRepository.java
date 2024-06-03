@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -11,6 +12,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NotificationRepository implements INotificationRepository{
     private FirebaseFirestore db;
@@ -51,5 +53,31 @@ public class NotificationRepository implements INotificationRepository{
             callback.onError(errorMessage);
         });
 
+    }
+
+    // method to calculate unread notification of user
+    public void calculateUnreadNoti(String idRecipient, IntegerCallback callback){
+        Query query = collectionRef
+                .whereEqualTo("ID_RECIPIENT", idRecipient)
+                .whereEqualTo("STATUS", "unread");
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            int unreadCount = 0;
+            if (!queryDocumentSnapshots.isEmpty()) {
+                // create an order list
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+//                    Notification notification = documentSnapshot.toObject(Notification.class);
+                    unreadCount++;
+                }
+                // callback
+                callback.onLoad(unreadCount);
+            } else {
+                callback.onLoad(0);
+            }
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get noti: " + e.getMessage();
+            Log.e("FirestorenotiRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
     }
 }

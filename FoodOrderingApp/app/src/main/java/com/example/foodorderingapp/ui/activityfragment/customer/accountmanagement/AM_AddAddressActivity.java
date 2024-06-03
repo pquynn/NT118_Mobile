@@ -182,10 +182,10 @@ public class AM_AddAddressActivity extends AppCompatActivity {
         );
 
         // Nút chuyển qua trang chọn địa chỉ
-//        btn_getAddress.setOnClickListener(v -> {
-//            Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
-//            activityResultLauncher.launch(intentNew);
-//        });
+        btn_getAddress.setOnClickListener(v -> {
+            Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
+            activityResultLauncher.launch(intentNew);
+        });
     }
 
 }

@@ -143,7 +143,6 @@ public class am_order_detail extends AppCompatActivity {
                 txt_Payment.setText(order.getPayment());
 
                 setPriceFormatted(txt_orderTotal, order.getTotalPrice());
-                setPriceFormatted(txt_orderPrice, order.getOrderPrice());
                 if(order.getPoint()>0){
                     ll_orderPoint.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderPoint, order.getPoint());

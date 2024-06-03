@@ -356,10 +356,6 @@ public class OrdersFeedbackRepository {
         void loadUserIDSuccess(String userID);
         void loadUserIDError(Exception e);
     }
-    public interface commentListCallback{
-        void loadListCommentSuccess(List<Comment> listComment);
-        void loadlistCommentError(Exception e);
-    }
     public interface checkCommentsCallback{
         void loadCommentsSuccess(int isExist);
         void loadCommentError(Exception e);

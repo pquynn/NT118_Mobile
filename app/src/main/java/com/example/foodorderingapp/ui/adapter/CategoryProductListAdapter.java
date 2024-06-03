@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,7 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         setPriceFormatted(holder.tvPrice, product.getProductPrice());
 
         //Xử lý sự kiện khi click vào sản phẩm
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
@@ -90,12 +91,14 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         private ShapeableImageView imgProduct;
         private TextView tvName;
         private TextView tvPrice;
+        private FrameLayout addToCart;
         public CategoryProductListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgProduct = itemView.findViewById(R.id.img_product);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPrice = itemView.findViewById(R.id.tv_price);
+            addToCart = itemView.findViewById(R.id.add_to_cart);
         }
     }
 

@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
         <FrameLayout
-            android:id="@+id/img_increase"
+            android:id="@+id/img_addtocart"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"

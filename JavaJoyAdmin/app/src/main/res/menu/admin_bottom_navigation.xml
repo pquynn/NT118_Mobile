@@ -19,6 +19,6 @@
 
     <item
         android:title=""
-        android:id="@+id/accoutFragment"
+        android:id="@+id/amFragment"
         android:icon="@drawable/account"/>
 </menu>

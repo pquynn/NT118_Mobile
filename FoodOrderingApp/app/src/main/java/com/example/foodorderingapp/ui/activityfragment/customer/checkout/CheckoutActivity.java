@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -24,9 +28,16 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.SelectLocation;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.FirebaseApp;
 
 import java.util.HashMap;
@@ -62,6 +73,36 @@ public class CheckoutActivity extends AppCompatActivity {
         // init environment for zalopay and momo
         viewModel.initializeEnvironment();
 
+        viewModel.getUserAddressLiveData().observe(this, new Observer<UserAddress>() {
+            @Override
+            public void onChanged(UserAddress userAddress) {
+                String location = userAddress.getAddressDetail()
+                        + "," + userAddress.getWard()
+                        + "," + userAddress.getDistrict()
+                        + "," + userAddress.getCity();
+
+                List<Address> addressList = null;
+
+                Geocoder geocoder = new Geocoder(CheckoutActivity.this);
+                try {
+                    addressList = geocoder.getFromLocationName(String.valueOf(location), 1);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                Address address = addressList.get(0); // Lấy địa chỉ đầu tiên
+
+                // Tính khoảng cách giữa 2 điểm
+                double distance = Math.sqrt(Math.pow(address.getLatitude() - 10.8700122, 2) + Math.pow(address.getLongitude() - 106.802871, 2));
+
+                double deliverycost = 0;
+
+                if (distance >= 0.03) { // Bé hơn 0.03 thì free ship
+                    deliverycost = distance * 100;
+                }
+
+            }
+        });
 
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
@@ -228,6 +269,7 @@ public class CheckoutActivity extends AppCompatActivity {
             if (data != null && data.hasExtra("addressId")) {
                 String addressId = data.getStringExtra("addressId");
                 viewModel.loadUserAddress(addressId);
+
             }
         }
         //GET DATA FROM PAYMENT METHOD ACTIVITY

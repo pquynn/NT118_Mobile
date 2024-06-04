@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -164,12 +165,12 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                         @Override
                         public void onMapReady(@NonNull GoogleMap googleMap) {
                             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                            myMap.clear();
 
                             currentLocation = new Location("");
                             currentLocation.setLatitude(address.getLatitude());
                             currentLocation.setLongitude(address.getLongitude());
 
-                            myMap.clear();
                             myMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí của bạn"));
                             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
                         }

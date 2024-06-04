@@ -21,6 +21,15 @@
         android:theme="@style/Theme.JavaJoyAdmin"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activityfragment.admin.accountmanagement.am_change_password"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activityfragment.admin.accountmanagement.am_change_userinfo_phone"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activityfragment.admin.accountmanagement.am_change_userinfo_name"
+            android:exported="false" />
+        <activity
             android:name=".ui.activityfragment.admin.AdminMainActivity"
             android:exported="true">
             <intent-filter>
@@ -49,12 +58,10 @@
             android:exported="true" />
         <activity
             android:name=".ui.activityfragment.admin.refund.RefundProgressActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".ui.activityfragment.admin.refund.MediaFullScreenActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true" />
 
         <service
             android:name=".service.FirebaseMessagerReceiver"

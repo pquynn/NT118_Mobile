@@ -11,10 +11,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderRepository implements IOrderRepository {
     private FirebaseFirestore db;
@@ -74,9 +76,18 @@ public class OrderRepository implements IOrderRepository {
     public void getOrderListByStatusAndUserId(String userId, String status, OrderListCallback callback){
         Log.d("GetUserId", userId );
         Log.d("GetStatus", status);
-        Query query = collectionRef
-                .whereEqualTo("ID_USER", userId)
-                .whereEqualTo("STATUS", status);
+        Query query;
+        if (Objects.equals(status, "Chờ xác nhận") || Objects.equals(status, "Đã xác nhận")) {
+            query = collectionRef
+                    .whereIn("STATUS", Arrays.asList("Chờ xác nhận", "Đã xác nhận"))
+                    .whereEqualTo("ID_USER", userId)
+                    .orderBy("CREATE_ON", Query.Direction.DESCENDING); // Hóa đơn mới nhất đứng đầu danh sách
+        } else {
+            query = collectionRef
+                    .whereEqualTo("STATUS", status)
+                    .whereEqualTo("ID_USER", userId)
+                    .orderBy("CREATE_ON", Query.Direction.DESCENDING); // Hóa đơn mới nhất đứng đầu danh sách
+        }
 
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {

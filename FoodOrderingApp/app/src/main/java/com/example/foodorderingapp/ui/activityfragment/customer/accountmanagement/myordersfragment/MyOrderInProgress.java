@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.ui.AdminOrderVM;
 import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
 import com.example.foodorderingapp.data.model.OrderItem;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.MyOrdersVM;
@@ -86,15 +87,15 @@ public class MyOrderInProgress extends Fragment {
             }
         }).get(MyOrdersVM.class);
 
-        viewModel2 = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(MyOrdersVM.class)) {
-                    return (T) new MyOrdersVM(userId, "Đã xác nhận");
-                }
-                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
-            }
-        }).get(MyOrdersVM.class);
+//        viewModel2 = new ViewModelProvider(this, new ViewModelProvider.Factory(){
+//            @Override
+//            public <T extends ViewModel> T create(Class<T> modelClass) {
+//                if (modelClass.isAssignableFrom(MyOrdersVM.class)) {
+//                    return (T) new MyOrdersVM(userId, "Đã xác nhận");
+//                }
+//                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+//            }
+//        }).get(MyOrdersVM.class);
 
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -110,19 +111,19 @@ public class MyOrderInProgress extends Fragment {
             }
         });
 
-        viewModel2.getOrderListLiveData2().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
-            @Override
-            public void onChanged(List<Order> orders) {
-                Log.d("MyOrderInProgress", "Received data from viewModel2: " + orders.size() + " orders");
-                updateOrderList(orders);
-            }
-        });
+//        viewModel2.getOrderListLiveData2().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
+//            @Override
+//            public void onChanged(List<Order> orders) {
+//                Log.d("MyOrderInProgress", "Received data from viewModel2: " + orders.size() + " orders");
+//                updateOrderList(orders);
+//            }
+//        });
 
     }
     private void updateOrderList(List<Order> orders) {
         for (Order order : orders) {
             if (order != null) {
-                listOrderItem.add(new OrderItem(order.getId(), order.getTotalPrice(), order.getTotalProduct()));
+                listOrderItem.add(new OrderItem(order.getId(), (int)order.getOrderPrice(), order.getTotalProduct()));
             }
         }
         Adapter.notifyDataSetChanged();

@@ -77,7 +77,7 @@ public class AM_AddAddressActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_progress, null);
         builder.setView(dialogView);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         progressDialog = builder.create();
         progressDialog.getWindow().setLayout(50,50);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

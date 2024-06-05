@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class activity_login extends AppCompatActivity {
     private AuthRepository authRepository = new AuthRepository();
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
+    private static final String KEY_TOKEN = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class activity_login extends AppCompatActivity {
         inputPassword = findViewById(R.id.editTextPassword); // Mật khẩu
         btnLogin = findViewById(R.id.btnLogin); // Nút đăng nhập
         btnForgetPass = findViewById(R.id.btnForgetPassword); // Nút quên mật khẩu
-        btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
+//        btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
         imgBtnVisibility = findViewById(R.id.imgBtnVisibility); // Nút xem mật khẩu
         progressBar = findViewById(R.id.progressBar);
 
@@ -95,9 +97,9 @@ public class activity_login extends AppCompatActivity {
 
 //                    new PasswordEncryptionTask().execute(password);
 
-                    authRepository.signIn(phone, password, new AuthRepository.AuthCallback() {
+                    authRepository.signIn(phone, password, new AuthRepository.SignInCallback() {
                         @Override
-                        public void onLoginSuccess(String loginId) {
+                        public void onLoginSuccess(String loginId, String token) {
                             // Trường hợp đăng nhập thành công
                             Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
@@ -109,13 +111,13 @@ public class activity_login extends AppCompatActivity {
 
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString(KEY_USER_ID, userID);
+                                    editor.putString(KEY_TOKEN, token);
                                     editor.apply();
 
                                     Intent intent = new Intent(activity_login.this, AdminMainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-
                                 @Override
                                 public void onFailure(Exception e) {
                                     Toast.makeText(getApplicationContext(), "Đã xảy ra lỗi trong quá trình đăng nhập!", Toast.LENGTH_SHORT).show();
@@ -145,14 +147,14 @@ public class activity_login extends AppCompatActivity {
         });
 
         // Xử lý nút tạo tài khoản mới
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Xử lý khi nút được nhấn
-                Intent intent = new Intent(activity_login.this, activity_signup.class);
-                startActivity(intent);
-            }
-        });
+//        btnSignUp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Xử lý khi nút được nhấn
+//                Intent intent = new Intent(activity_login.this, activity_signup.class);
+//                startActivity(intent);
+//            }
+//        });
 
         // Biến kiểm tra trạng thái xem mật khẩu
         final boolean[] passwordVisible = {false};

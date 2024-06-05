@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ProductDetailViewModel extends ViewModel {
-    private String productId = "", userId;
+    private String productId = "";
     private Context context;
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -50,9 +50,8 @@ public class ProductDetailViewModel extends ViewModel {
     private MutableLiveData<Double> averagePointLiveData;
     private List<Topping> toppings = new ArrayList<>();
 
-    public ProductDetailViewModel(String productId, String userId, Context context, Activity activity) {
+    public ProductDetailViewModel(String productId, Context context, Activity activity) {
         this.productId = productId;
-        this.userId = userId;
         this.context = context;
         this.activity = activity;
         productRepository = new ProductRepository();
@@ -198,7 +197,7 @@ public class ProductDetailViewModel extends ViewModel {
     }
 
     // method to solve add to cart
-    public void addToCart(){
+    public void addToCart(String userId){
         showProgressDialog("Đang xử lý...");
         OrderItem orderItem = productCartLiveData.getValue();
         if (orderItem == null) {

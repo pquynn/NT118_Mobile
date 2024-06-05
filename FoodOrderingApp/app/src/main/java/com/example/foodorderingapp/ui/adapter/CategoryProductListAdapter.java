@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,9 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.entity.Product;
-//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryProductListAdapter.CategoryProductListViewHolder> {
@@ -54,10 +54,10 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         }
         Glide.with(context).load(product.getProductImage()).into(holder.imgProduct);
         holder.tvName.setText(product.getProductName());
-        holder.tvPrice.setText(String.valueOf(product.getProductPrice()));
+        setPriceFormatted(holder.tvPrice, product.getProductPrice());
 
         //Xử lý sự kiện khi click vào sản phẩm
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
@@ -68,6 +68,12 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
                 }
             }
         });
+    }
+
+    public static void setPriceFormatted(TextView textView, int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        textView.setText(formattedPrice);
     }
 
     @Override
@@ -83,12 +89,14 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         private ShapeableImageView imgProduct;
         private TextView tvName;
         private TextView tvPrice;
+        private FrameLayout addToCart;
         public CategoryProductListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgProduct = itemView.findViewById(R.id.img_product);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPrice = itemView.findViewById(R.id.tv_price);
+            addToCart = itemView.findViewById(R.id.add_to_cart);
         }
     }
 

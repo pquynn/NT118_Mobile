@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.am_order_detail;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment.MyOrderRefunded;
 
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 public class SendRefundSucessActivity extends AppCompatActivity {
     private TextView screenName;
     private Button btnReview;
-    private String orderId = "", refundId = "";
+    private String orderId = "", userId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,7 @@ public class SendRefundSucessActivity extends AppCompatActivity {
 
         if(getIntent().getExtras() != null){
             orderId = getIntent().getExtras().getString("orderId");
+            userId = getIntent().getExtras().getString("userId");
         }
 
         btnReview = findViewById(R.id.btn_review);
@@ -38,6 +40,7 @@ public class SendRefundSucessActivity extends AppCompatActivity {
                 bundle.putString("orderId", orderId);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -49,9 +52,11 @@ public class SendRefundSucessActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("orderId", orderId);
                 intent.putExtras(bundle);
+                finish();
                 startActivity(intent);
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 }

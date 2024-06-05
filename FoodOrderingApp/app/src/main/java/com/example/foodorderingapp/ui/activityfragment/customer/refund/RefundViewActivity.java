@@ -27,7 +27,7 @@ public class RefundViewActivity extends AppCompatActivity {
     private Map<String, OrderItem> orderItemMap;
     private FrameLayout btnBack;
     private TextView screenName;
-    private String orderId = "3", userId = "";
+    private String orderId = "3";
     private RefundViewModel viewModel;
     private ActivityRefundViewBinding binding;
 

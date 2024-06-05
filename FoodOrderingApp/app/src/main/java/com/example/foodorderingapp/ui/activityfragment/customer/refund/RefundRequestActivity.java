@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -47,6 +48,10 @@ public class RefundRequestActivity extends AppCompatActivity {
     private Context context;
     private ActivityResultLauncher<Intent> selectImgLauncher;
     private ActivityResultLauncher<Intent> selectVideoLauncher;
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

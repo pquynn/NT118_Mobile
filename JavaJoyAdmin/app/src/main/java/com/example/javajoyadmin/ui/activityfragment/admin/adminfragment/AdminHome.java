@@ -1,9 +1,14 @@
 package com.example.javajoyadmin.ui.activityfragment.admin.adminfragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +16,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.javajoyadmin.R;
+import com.example.javajoyadmin.ui.activityfragment.admin.AdminMainActivity;
+import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.viewmodel.admin.home.AdminHomeVM;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -53,6 +61,10 @@ public class AdminHome extends Fragment {
     private ProgressBar progressBar;
     private LineChart lineChart;
     private List<String> xValues;
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
 
     private static String formatNumber(double temp) {
         DecimalFormat formatter = new DecimalFormat("#,###,###,##0.0");
@@ -61,6 +73,16 @@ public class AdminHome extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            getActivity().finish();
+            Intent intent = new Intent(getContext(), activity_login.class);
+            startActivity(intent);
+        }
+
         View view = inflater.inflate(R.layout.fragment_admin_home, container, false);
 
         init(view);

@@ -35,6 +35,7 @@ public class activity_login extends AppCompatActivity {
     private AuthRepository authRepository = new AuthRepository();
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
+    private static final String KEY_TOKEN = "token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +98,9 @@ public class activity_login extends AppCompatActivity {
 
 //                    new PasswordEncryptionTask().execute(password);
 
-                    authRepository.signIn(phone, password, new AuthRepository.AuthCallback() {
+                    authRepository.signIn(phone, password, new AuthRepository.SignInCallback() {
                         @Override
-                        public void onLoginSuccess(String loginId) {
+                        public void onLoginSuccess(String loginId, String token) {
                             // Trường hợp đăng nhập thành công
                             Toast.makeText(getApplicationContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
@@ -111,6 +112,7 @@ public class activity_login extends AppCompatActivity {
 
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString(KEY_USER_ID, userID);
+                                    editor.putString(KEY_TOKEN, token);
                                     editor.apply();
 
                                     Intent intent = new Intent(activity_login.this, MainActivity.class);

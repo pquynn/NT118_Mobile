@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.javajoyadmin.data.model.entity.User;
 import com.example.javajoyadmin.data.repository.accountmanagement.UserInfoRepository;
+import com.example.javajoyadmin.data.repository.authentication.AuthRepository;
 
 public class UserInfoVM extends ViewModel {
     UserInfoRepository repository = new UserInfoRepository();

@@ -1,6 +1,7 @@
 package com.example.javajoyadmin.ui.activityfragment.admin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.example.javajoyadmin.R;
 import com.example.javajoyadmin.data.model.entity.Order;
 import com.example.javajoyadmin.data.model.entity.OrderItem;
 import com.example.javajoyadmin.ui.activityfragment.admin.refund.RefundProgressActivity;
+import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderDetailVM;
 import com.example.javajoyadmin.ui.adapter.OrderDetailAdapter;
 
@@ -38,6 +40,11 @@ public class activity_adminOrderDetail extends AppCompatActivity {
     private Button btnConfirm, btnDelivering, btnDelivered, btnRefund;
     private String orderID, orderStatus;
 
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
+
     private static String formatNumber(double temp) {
         DecimalFormat formatter = new DecimalFormat("#,###,###,##0.0");
         return formatter.format(temp);
@@ -45,6 +52,16 @@ public class activity_adminOrderDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_order_detail);

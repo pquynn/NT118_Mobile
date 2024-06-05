@@ -4,6 +4,7 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.adapter.FeedbackItemAdapter;
 import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.OrderFeedbackListVM;
@@ -37,13 +39,25 @@ public class am_feedback_list extends AppCompatActivity {
     private OrderFeedbackListVM viewModel;
     ArrayList<OrderItem> productList = new ArrayList<>();
     String orderId = "", orderStatus = "", userID = "";
-
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     TextView txt_orderId, txt_orderStatus;
     Context context = this;
     FrameLayout btnBack;
     AlertDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userID = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userID == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_feedback_list);
         TextView headerName = findViewById(R.id.screen_name);

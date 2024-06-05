@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.adapter.PointAdapter;
 import com.example.foodorderingapp.data.model.entity.UserPoint;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.PointVM;
@@ -31,7 +33,10 @@ public class am_point_history extends AppCompatActivity {
     private RecyclerView.Adapter PointAdapter;
     private RecyclerView recyclerViewList;
     private ArrayList<UserPoint> listPoint;
-    private String userId = "";
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     private PointVM viewModel;
     private TextView tvTotalPoint;
     private FrameLayout btnBack;
@@ -39,6 +44,16 @@ public class am_point_history extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_point_history);
 

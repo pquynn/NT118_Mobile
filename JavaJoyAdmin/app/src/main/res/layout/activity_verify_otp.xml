@@ -77,7 +77,7 @@
                 <EditText
                     android:id="@+id/editTextFirstCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -87,14 +87,13 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/editTextSecondCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -104,14 +103,13 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/editTextThirdCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -121,14 +119,13 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/editTextFourthCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -137,14 +134,13 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/editTextFifthCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -153,14 +149,13 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/editTextSixthCode"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -169,7 +164,6 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="20dp"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

@@ -15,6 +15,7 @@ import com.example.javajoyadmin.data.model.entity.Notification;
 import com.example.javajoyadmin.data.model.entity.Order;
 import com.example.javajoyadmin.data.model.entity.Product;
 import com.example.javajoyadmin.data.model.entity.Refund;
+import com.example.javajoyadmin.data.repository.authentication.AuthRepository;
 import com.example.javajoyadmin.data.repository.notification.INotificationRepository;
 import com.example.javajoyadmin.data.repository.notification.NotificationRepository;
 import com.example.javajoyadmin.data.repository.order.IOrderRepository;
@@ -31,7 +32,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class RefundViewModel extends ViewModel {
-    private String orderId, token;
+    private String orderId;
     private ProgressDialog progressDialog; // Declare ProgressDialog
     private Context context; // Context variable
 
@@ -42,7 +43,7 @@ public class RefundViewModel extends ViewModel {
     private OrderRepository orderRepository;
     private RefundRepository refundRepository;
     private NotificationRepository notificationRepository;
-
+    private AuthRepository authRepository;
 
     // Constructor
     public RefundViewModel(String orderId, Context context) {
@@ -51,6 +52,7 @@ public class RefundViewModel extends ViewModel {
         orderRepository = new OrderRepository();
         refundRepository = new RefundRepository();
         notificationRepository = new NotificationRepository();
+        authRepository = new AuthRepository();
     }
 
     // Getter
@@ -152,67 +154,75 @@ public class RefundViewModel extends ViewModel {
     private String title = "", body = "";
     private boolean isExist = false;
     public void sendNotification(String status){
-        // lấy token customer
-        token = "er3mlvf7SU-9K5quQG87nu:APA91bGbjA5K8DXj5-6zOmESHsoM2jVYSwpdwiEPHhgKJH48FpTFJQzJOQ6Ike4kyBXfpNS4SsgwrMhmAPY4AH4ktr0Tweral2KjkO-JsQr2e8YFosiUBXmfPpxNnGZ1wc_SzRvKK2FL";
-
-        if(status.equals("Chờ hoàn tiền")){
-            title = "Yêu cầu hoàn tiền được chấp nhận";
-            body = "JavaJoy đã chấp nhận yêu cầu hoàn tiền của bạn cho đơn hàng " + orderId;
-        }
-        else if(status.equals("Từ chối hoàn tiền")){
-            title = "Yêu cầu hoàn tiền bị từ chối";
-            body = "JavaJoy đã từ chối yêu cầu hoàn tiền của bạn cho đơn hàng " + orderId;
-        }
-        else  if(status.equals("Đã hoàn tiền")){
-            isExist = true;
-            title = "Bạn đã được hoàn lại tiền";
-            body = "JavaJoy đã hoàn lại tiền cho đơn hàng " + orderId + ". Hãy kiểm tra lại";
-        }
-
-        // send notification
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        authRepository.getUserTokenByUserId(orderLiveData.getValue().getIdUser(), new AuthRepository.TokenCallback() {
             @Override
-            public void run() {
-                SendNotification notificationSender =
-                        new SendNotification(token, title, body, orderId, context);
-                notificationSender.SendNotifications();
-            }
-        } , 100);
+            public void onSuccess(String token) {
+                if(status.equals("Chờ hoàn tiền")){
+                    title = "Yêu cầu hoàn tiền được chấp nhận";
+                    body = "JavaJoy đã chấp nhận yêu cầu hoàn tiền của bạn cho đơn hàng " + orderId;
+                }
+                else if(status.equals("Từ chối hoàn tiền")){
+                    title = "Yêu cầu hoàn tiền bị từ chối";
+                    body = "JavaJoy đã từ chối yêu cầu hoàn tiền của bạn cho đơn hàng " + orderId;
+                }
+                else  if(status.equals("Đã hoàn tiền")){
+                    isExist = true;
+                    title = "Bạn đã được hoàn lại tiền";
+                    body = "JavaJoy đã hoàn lại tiền cho đơn hàng " + orderId + ". Hãy kiểm tra lại";
+                }
 
-        if(!isExist){
-            // create notification in firestore
-            Notification notification = new Notification();
-            notification.setId(UUID.randomUUID().toString());
-            notification.setIdRecipient(orderLiveData.getValue().getIdUser());
-            notification.setRecipientType(0);
-            notification.setIdOrder(orderId);
-            notification.setStatus("unread");
-            notification.setDate(new Date());
-            notification.setTitle(title);
-            notification.setContent(body);
-            notificationRepository.createNotification(notification);
-        }
-        else {
-            notificationRepository.getNotificationByOrderIdAndTitle(
-                    orderId,
-                    "Yêu cầu hoàn tiền được chấp nhận",
-                    new INotificationRepository.NotificationCallback() {
-                        @Override
-                        public void onLoaded(Notification notification) {
-                            notification.setStatus("unread");
-                            notification.setDate(new Date());
-                            notification.setTitle(title);
-                            notification.setContent(body);
-                            notificationRepository.updateNotification(notification);
-                        }
-
-                        @Override
-                        public void onError(String errorMessage) {
-                            Log.d("fcm", errorMessage);
-                        }
+                // send notification
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification notificationSender =
+                                new SendNotification(token, title, body, orderId, context);
+                        notificationSender.SendNotifications();
                     }
-            );
-        }
+                } , 100);
+
+                if(!isExist){
+                    // create notification in firestore
+                    Notification notification = new Notification();
+                    notification.setId(UUID.randomUUID().toString());
+                    notification.setIdRecipient(orderLiveData.getValue().getIdUser());
+                    notification.setRecipientType(0);
+                    notification.setIdOrder(orderId);
+                    notification.setStatus("unread");
+                    notification.setDate(new Date());
+                    notification.setTitle(title);
+                    notification.setContent(body);
+                    notificationRepository.createNotification(notification);
+                }
+                else {
+                    notificationRepository.getNotificationByOrderIdAndTitle(
+                            orderId,
+                            "Yêu cầu hoàn tiền được chấp nhận",
+                            new INotificationRepository.NotificationCallback() {
+                                @Override
+                                public void onLoaded(Notification notification) {
+                                    notification.setStatus("unread");
+                                    notification.setDate(new Date());
+                                    notification.setTitle(title);
+                                    notification.setContent(body);
+                                    notificationRepository.updateNotification(notification);
+                                }
+
+                                @Override
+                                public void onError(String errorMessage) {
+                                    Log.d("fcm", errorMessage);
+                                }
+                            }
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+
     }
 }

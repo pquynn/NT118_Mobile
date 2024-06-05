@@ -30,6 +30,7 @@ import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.example.foodorderingapp.data.model.entity.UserPoint;
 import com.example.foodorderingapp.data.repository.accountmanagement.PointRepository;
 import com.example.foodorderingapp.data.repository.accountmanagement.UserInfoRepository;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.data.repository.coupon.CouponRepository;
 import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
@@ -92,7 +93,7 @@ public class CheckoutViewModel extends ViewModel {
     private CouponRepository couponRepository;
     private ProductRepository productRepository;
     private NotificationRepository notificationRepository;
-
+    private AuthRepository authRepository;
     // momo
     private MutableLiveData<Boolean> paymentRequestResult = new MutableLiveData<>();
     private String amount = "1000";
@@ -115,6 +116,7 @@ public class CheckoutViewModel extends ViewModel {
         couponRepository = new CouponRepository();
         productRepository = new ProductRepository();
         notificationRepository = new NotificationRepository();
+        authRepository = new AuthRepository();
 
         loadDefaultUserAddress(userId);
         pointUsedLiveData.setValue(0);
@@ -129,6 +131,8 @@ public class CheckoutViewModel extends ViewModel {
         loadOrder();
         return orderLiveData;
     }
+
+
 
     public MutableLiveData<Integer> getTotalPrice() {
         totalPrice.setValue(calculateTotalPrice(orderLiveData.getValue().getOrderItem()));
@@ -388,15 +392,6 @@ public class CheckoutViewModel extends ViewModel {
         orderRepository.updateCartToOrder(order);
         // send notificaiton to admin
         sendNotification();
-
-        // Assuming the process is successful:
-        dismissProgressDialog();
-        Intent intent = new Intent(context, BuySuccessActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("orderId", orderLiveData.getValue().getId());
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-        activity.finish();
     }
 
     // method to show alert if product quantity is unavailable
@@ -666,35 +661,52 @@ public class CheckoutViewModel extends ViewModel {
 
     // method to send notification
     public void sendNotification(){
-        // lấy token admin
-        token = "e6x9kl1gR42feGKCrduNYu:APA91bH19xySfpN6qTGhPHpSLOa0ql78UKyw_GDizxxdMnhCyNJo5FvTe32hHs-1xxXIglqjO1uj5YUM0iOW41RUyFPoipzt7h1KMGUh1n9W830a0ojwj567FpCR3vn2T_A3pA-MhMxK";
-        String orderId = orderLiveData.getValue().getId();
-        String title = "Bạn có đơn hàng mới";
-        String body = "Đơn hàng " + orderId + " đang chờ bạn xác nhận";
-
-        // send notification
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        authRepository.getAdminInfo(new AuthRepository.AdminInfoCallback() {
             @Override
-            public void run() {
-                SendNotification notificationSender =
-                        new SendNotification(token, title, body, context);
-                notificationSender.SendNotifications();
+            public void onSuccess(String userId, String token) {
+                String orderId = orderLiveData.getValue().getId();
+                String title = "Bạn có đơn hàng mới";
+                String body = "Đơn hàng " + orderId + " đang chờ bạn xác nhận";
+
+                // send notification
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification notificationSender =
+                                new SendNotification(token, title, body, context);
+                        notificationSender.SendNotifications();
+
+                    }
+                } , 20);
+
+                // create notification in firestore
+                Notification notification = new Notification();
+                notification.setId(UUID.randomUUID().toString());
+                notification.setIdRecipient(userId);
+                notification.setRecipientType(1);
+                notification.setIdOrder(orderId);
+                notification.setStatus("unread");
+                notification.setDate(new Date());
+                notification.setTitle(title);
+                notification.setContent(body);
+                notificationRepository.createNotification(notification);
+
+                // Assuming the process is successful:
+                dismissProgressDialog();
+                Intent intent = new Intent(context, BuySuccessActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+                activity.finish();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
 
             }
-        } , 20);
-
-        // create notification in firestore
-        Notification notification = new Notification();
-        notification.setId(UUID.randomUUID().toString());
-        notification.setIdRecipient("4"); //todo: có tìm thông tin admin không???
-        notification.setRecipientType(1);
-        notification.setIdOrder(orderId);
-        notification.setStatus("unread");
-        notification.setDate(new Date());
-        notification.setTitle(title);
-        notification.setContent(body);
-        notificationRepository.createNotification(notification);
+        });
     }
 
 }

@@ -1,7 +1,10 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.home;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,6 +55,10 @@ public class HomeFragment extends Fragment {
     RecyclerView rcv_homeCategory;
     RecyclerView rcv_ProductPopular;
     HomeViewModel viewModel;
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +68,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // get user id from shared preferences
+        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+
+        //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
+        //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị r
+        if (userId == null) {
+        }
+        else{
+
+        }
+
         // Xử lý khi click vào frameLayoutSearch
         FrameLayout frameSearch = view.findViewById(R.id.frameLayoutSearch);
         frameSearch.setOnClickListener(new View.OnClickListener() {

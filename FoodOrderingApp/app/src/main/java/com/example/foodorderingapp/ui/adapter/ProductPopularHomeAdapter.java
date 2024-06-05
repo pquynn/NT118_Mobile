@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,7 +53,6 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.txtName.setText(product.getProductName());
-//        holder.txtPrice.setText(String.valueOf(product.getProductPrice()));
         setPriceFormatted(holder.txtPrice, product.getProductPrice());
         String productImage = product.getProductImage();
         if (productImage != null && !productImage.isEmpty()) {
@@ -61,7 +61,8 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
                     .into(holder.imgProduct);
         }
 
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
+        holder.imgProduct.setOnClickListener(v -> listener.onItemClick(product));
+//        holder.addToCart.setOnClickListener(v -> listener.onItemClick(product));
     }
 
     //set format giá
@@ -79,6 +80,7 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
         private ConstraintLayout constraintLayout;
         private ImageView imgProduct;
         private TextView txtName, txtPrice;
+        private FrameLayout addToCart;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -86,6 +88,7 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
             imgProduct = itemView.findViewById(R.id.img_product);
             txtName = itemView.findViewById(R.id.txt_name);
             txtPrice = itemView.findViewById(R.id.txt_price);
+            addToCart = itemView.findViewById(R.id.img_addtocart);
         }
     }
 }

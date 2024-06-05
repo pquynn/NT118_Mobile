@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 
@@ -20,60 +21,49 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationViewModel viewModel;
-    private String userId = "3";
+    private String userId="";
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     private int productCartQuantity = 0;
     private BadgeDrawable cartBadge, notiBadge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavController navController = Navigation.findNavController(this, R.id.fragment_area);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        //init viewmodel
-        viewModel = new BottomNavigationViewModel(userId);
 
-        // Set badge for cart fragment
-        cartBadge = bottomNavigationView.getOrCreateBadge(R.id.cartFragment);
-        notiBadge = bottomNavigationView.getOrCreateBadge(R.id.notificationFragment);
-        //observe change in cart item
-        viewModel.getProductCartQuantityLiveData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                setBadge(cartBadge, integer);
-            }
-        });
+        // if user is login --> show badge
+//        if (userId != null) {
+            //init viewmodel
+            viewModel = new BottomNavigationViewModel(userId);
 
-        //observe change in noti item
-        viewModel.getUnreadNotiCountLiveData().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                setBadge(notiBadge, integer);
-            }
-        });
-        // Observe changes to the cart item count
-//        viewModel.getProductCartQuantityLiveData().observe(this, count -> {
-//            if (count != null && count > 0) {
-//                cartBadge.setVisible(true);
-//                cartBadge.setNumber(count);
-//            } else {
-//                cartBadge.clearNumber();
-//                cartBadge.setVisible(false);
-//            }
-//        });
-//
-//        // Observe changes to the notification count
-//        viewModel.getUnreadNotiCountLiveData().observe(this, count -> {
-//            if (count != null && count > 0) {
-//                notiBadge.setVisible(true);
-//                notiBadge.setNumber(count);
-//            } else {
-//                notiBadge.clearNumber();
-//                notiBadge.setVisible(false);
-//            }
-//        });
+            // Set badge for cart fragment
+            cartBadge = bottomNavigationView.getOrCreateBadge(R.id.cartFragment);
+            notiBadge = bottomNavigationView.getOrCreateBadge(R.id.notificationFragment);
+            //observe change in cart item
+            viewModel.getProductCartQuantityLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    setBadge(cartBadge, integer);
+                }
+            });
 
+            //observe change in noti item
+            viewModel.getUnreadNotiCountLiveData().observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    setBadge(notiBadge, integer);
+                }
+            });
+//        }
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

@@ -40,7 +40,7 @@ import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserI
 import java.util.ArrayList;
 
 public class AccountNavigationFragment extends Fragment {
-
+    private String userId;
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
@@ -57,7 +57,6 @@ public class AccountNavigationFragment extends Fragment {
     }
     LinearLayout llAM_userInfo, llAM_userpoint, llAM_userAddress, llAM_userOrders, llAM_faqs;
     UserInfoVM viewModel;
-    String userId;
     TextView tvNameAcc;
 
     private final ActivityResultLauncher<Intent> editNameLauncher = registerForActivityResult(
@@ -75,6 +74,16 @@ public class AccountNavigationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            getActivity().finish();
+            Intent intent = new Intent(getContext(), activity_login.class);
+            startActivity(intent);
+        }
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_am_navigation, container, false);
     }
@@ -99,14 +108,6 @@ public class AccountNavigationFragment extends Fragment {
         progressDialog.getWindow().setLayout(50,50);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        userId = "3";
-
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            if(intent.hasExtra("user_id")){
-//                userId = intent.getStringExtra("user_id");
-//            }
-//        }
         llAM_userInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +139,7 @@ public class AccountNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(requireContext(), am_my_orders.class);
-                myIntent.putExtra("user_id", userId);
+//                myIntent.putExtra("user_id", userId);
                 startActivity(myIntent);
             }
         });
@@ -176,6 +177,10 @@ public class AccountNavigationFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.commit();
+                    // open login activity
+                    Intent intent = new Intent(requireContext(), activity_login.class);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });

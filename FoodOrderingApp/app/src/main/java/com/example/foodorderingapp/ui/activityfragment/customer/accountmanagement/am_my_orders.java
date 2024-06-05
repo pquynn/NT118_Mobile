@@ -2,6 +2,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment.MyOrderCancelled;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment.MyOrderCompleted;
 import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.myordersfragment.MyOrderDelivering;
@@ -23,16 +25,28 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class am_my_orders extends AppCompatActivity {
-
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private MyOrdersViewPagerAdapter ViewPagerAdapter;
     FrameLayout btnBack;
-    String userId = "";
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_my_orders);
 
@@ -47,18 +61,9 @@ public class am_my_orders extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            if(intent.hasExtra("user_id")){
-                userId = intent.getStringExtra("user_id");
-            }
-        }
-        Log.d("user id in AM: ", "user id: " + userId);
-
 
         viewPager = findViewById(R.id.my_orders_viewpager);
         tabLayout = findViewById(R.id.my_orders_menu);
-
         ViewPagerAdapter = new MyOrdersViewPagerAdapter(this, userId);
         viewPager.setAdapter(ViewPagerAdapter);
 
@@ -81,9 +86,5 @@ public class am_my_orders extends AppCompatActivity {
                     break;
             }
         }).attach();
-
-
-
-
     }
 }

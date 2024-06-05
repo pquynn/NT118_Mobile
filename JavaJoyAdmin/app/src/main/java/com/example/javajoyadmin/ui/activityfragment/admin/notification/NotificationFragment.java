@@ -1,5 +1,9 @@
 package com.example.javajoyadmin.ui.activityfragment.admin.notification;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.javajoyadmin.R;
 import com.example.javajoyadmin.databinding.FragmentNotificationBinding;
+import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.adapter.NotificationAdapter;
 import com.example.javajoyadmin.data.model.entity.Notification;
 import com.example.javajoyadmin.ui.viewmodel.admin.notification.NotificationViewModel;
@@ -24,7 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationFragment extends Fragment {
-    String userId = "4";
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     int role = 1;
     TextView screenName;
     FragmentNotificationBinding binding;
@@ -34,6 +42,16 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            getActivity().finish();
+            Intent intent = new Intent(getContext(), activity_login.class);
+            startActivity(intent);
+        }
+
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

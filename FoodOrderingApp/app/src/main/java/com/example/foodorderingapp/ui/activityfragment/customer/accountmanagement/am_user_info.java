@@ -3,6 +3,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserInfoVM;
 
 public class am_user_info extends AppCompatActivity {
@@ -23,7 +25,10 @@ public class am_user_info extends AppCompatActivity {
     TextView tvNameAcc, tvName, tvPhone;
 
     LinearLayout llAM_userInfo_phone, llAM_userInfo_name, llAM_userInfo_password;
-    String userId = "";
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     private UserInfoVM viewModel;
 
     private FrameLayout btnBack;
@@ -31,6 +36,16 @@ public class am_user_info extends AppCompatActivity {
     private static final int EDIT_NAME_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_user_info);
 

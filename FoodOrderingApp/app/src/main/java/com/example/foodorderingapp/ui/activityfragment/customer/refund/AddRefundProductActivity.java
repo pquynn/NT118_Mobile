@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class AddRefundProductActivity extends AppCompatActivity {
     private RefundProductAdapter adapter;
-    private String orderId = "2";
+    private String orderId = "";
     private Map<String, OrderItem> orderItemMap;
     private AddRefundProductViewModel viewModel;
     private ActivityChooseRefundprodBinding binding;

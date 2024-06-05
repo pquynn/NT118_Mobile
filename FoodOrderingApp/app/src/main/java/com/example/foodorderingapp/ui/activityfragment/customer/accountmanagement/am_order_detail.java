@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +25,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.SendNotification;
+import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.User;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
+import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
+import com.example.foodorderingapp.ui.activityfragment.customer.refund.AddRefundProductActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.refund.RefundViewActivity;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.MyOrderDetailVM;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class am_order_detail extends AppCompatActivity {
@@ -52,9 +63,24 @@ public class am_order_detail extends AppCompatActivity {
     AlertDialog progressDialog;
     FrameLayout btnBack;
     OrderRepository orderRepository = new OrderRepository();
+    private String userId, token;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_order_detail);
 
@@ -116,7 +142,7 @@ public class am_order_detail extends AppCompatActivity {
 
 
         //
-        viewModel = new MyOrderDetailVM(orderId, this);
+        viewModel = new MyOrderDetailVM(orderId, this, this);
 
         recyclerViewOrderDetail();
         txt_orderStatus.setText("");
@@ -143,11 +169,12 @@ public class am_order_detail extends AppCompatActivity {
                 txt_Payment.setText(order.getPayment());
 
                 setPriceFormatted(txt_orderTotal, order.getTotalPrice());
-                if(order.getPoint()>0){
+                setPriceFormatted(txt_orderPrice, (int)order.getOrderPrice());
+                if(order.getPoint()<0){
                     ll_orderPoint.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderPoint, order.getPoint());
                 }
-                if(order.getDiscountValue() > 0){
+                if(order.getDiscountValue() < 0){
                     ll_orderDiscount.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderDiscount, order.getDiscountValue());
                 }
@@ -177,7 +204,8 @@ public class am_order_detail extends AppCompatActivity {
                                     @Override
                                     public void onOrderChanged() {
                                         Toast.makeText(context, "Đã hủy đơn hàng!", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                        // send notification to admin
+                                        viewModel.sendNotification();
                                     }
 
                                     @Override
@@ -192,6 +220,27 @@ public class am_order_detail extends AppCompatActivity {
                         .show();
             }
         });
+
+        btnRefund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi nút được nhấn
+                if(viewModel.getOrderStatusLiveDate().getValue().equals("Đã giao")){
+                    Intent intent = new Intent(getApplicationContext(), AddRefundProductActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else if(viewModel.getOrderStatusLiveDate().getValue().equals("Hoàn tiền")){
+                    Intent intent = new Intent(getApplicationContext(), RefundViewActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+        });
     }
     private void SetVisibilityButton(String status){
         btnCancel.setVisibility(View.GONE);
@@ -204,6 +253,11 @@ public class am_order_detail extends AppCompatActivity {
                 break;
             case "Đã giao": //completed
                 btnFeedback.setVisibility(View.VISIBLE);
+                btnRefund.setText("Gửi yêu cầu hoàn tiền");
+                btnRefund.setVisibility(View.VISIBLE);
+                break;
+            case "Hoàn tiền": //refund
+                btnRefund.setText("Xem chi tiết hoàn tiền");
                 btnRefund.setVisibility(View.VISIBLE);
                 break;
         }
@@ -237,4 +291,5 @@ public class am_order_detail extends AppCompatActivity {
         String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
         textView.setText(formattedPrice);
     }
+
 }

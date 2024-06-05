@@ -94,7 +94,7 @@ public class am_change_password extends AppCompatActivity {
                             String oldPassword = md5(String.valueOf(input_old_password.getText()));
                             Log.d("check oldpass", "Old password" + oldPassword);
                             progressDialog.show();
-                            repository.signIn(phone, oldPassword, new AuthRepository.AuthCallback() {
+                            repository.validateUser(phone, oldPassword, new AuthRepository.AuthCallback() {
                                 @Override
                                 public void onLoginSuccess(String data) {
                                     if(notice_password.getVisibility() == View.VISIBLE){

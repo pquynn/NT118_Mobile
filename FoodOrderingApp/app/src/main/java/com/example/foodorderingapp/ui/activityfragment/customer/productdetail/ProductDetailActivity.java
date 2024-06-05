@@ -1,6 +1,8 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.productdetail;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrdersFeedbackRepository;
 import com.example.foodorderingapp.databinding.ActivityProductDetailBinding;
 import com.example.foodorderingapp.databinding.ActivityRefundViewBinding;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.adapter.CartToppingAdapter;
 import com.example.foodorderingapp.ui.adapter.RefundItemAdapter;
@@ -47,7 +50,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
     private CharSequence originalText;
     private int originalMaxLines;
     private ProductDetailViewModel viewModel;
-    private String productId = "", userId = "1";
+    private String productId = "";
     private Context context;
     private ToppingAdapter adapter;
     private List<Topping> toppings;
@@ -55,8 +58,15 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
     private List<String> toppingNames, toppingSelected, tempCheckedTopping;
     private CommentDialogFragment commentDialogFragment = null;
     private MainActivity mainActivity;
-
+    private String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail);
         binding.setLifecycleOwner(this);
@@ -101,7 +111,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
         });
 
         // init viewmodel
-        viewModel = new ProductDetailViewModel(productId, userId, this, this);
+        viewModel = new ProductDetailViewModel(productId, this, this);
 
         // init collection
         toppings = viewModel.getToppings();
@@ -357,10 +367,18 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
         binding.btnAddtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo: add to cart
-                String note = binding.editTextDifferent.getText().toString();
-                viewModel.getProductCartLiveData().getValue().setNote(note);
-                viewModel.addToCart();
+                if (userId == null) {
+                    // User ID not found, handle this case
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), activity_login.class);
+                    startActivity(intent);
+                }
+                else{
+                    //todo: add to cart
+                    String note = binding.editTextDifferent.getText().toString();
+                    viewModel.getProductCartLiveData().getValue().setNote(note);
+                    viewModel.addToCart(userId);
+                }
             }
         });
         //end: button add to cart event

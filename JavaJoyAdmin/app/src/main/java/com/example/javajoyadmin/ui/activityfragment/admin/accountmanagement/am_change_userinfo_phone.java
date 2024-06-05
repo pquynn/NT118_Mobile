@@ -1,6 +1,7 @@
 package com.example.javajoyadmin.ui.activityfragment.admin.accountmanagement;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,13 +24,17 @@ import androidx.lifecycle.Observer;
 import com.example.javajoyadmin.R;
 import com.example.javajoyadmin.data.model.entity.User;
 import com.example.javajoyadmin.data.repository.authentication.AuthRepository;
+import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.activityfragment.authentication.activity_verifyOTP;
 import com.example.javajoyadmin.ui.viewmodel.admin.accountmanagement.UserInfoVM;
 
 import java.util.Objects;
 
 public class am_change_userinfo_phone extends AppCompatActivity {
-    String userId = "";
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     private UserInfoVM viewModel;
     private AuthRepository authRepository = new AuthRepository();
     private String userPhone;
@@ -39,6 +44,16 @@ public class am_change_userinfo_phone extends AppCompatActivity {
     AlertDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_change_userinfo_phone);
 

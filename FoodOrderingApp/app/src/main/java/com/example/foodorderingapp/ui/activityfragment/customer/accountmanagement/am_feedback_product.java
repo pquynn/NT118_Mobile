@@ -3,6 +3,7 @@ package com.example.foodorderingapp.ui.activityfragment.customer.accountmanageme
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrderCommentVM;
 import com.example.foodorderingapp.data.repository.accountmanagement.myorders.OrdersFeedbackRepository;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.OrderFeedbackListVM;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.UserInfoVM;
 
@@ -38,6 +40,9 @@ public class am_feedback_product extends AppCompatActivity {
     OrderCommentVM viewModel;
     OrdersFeedbackRepository repository = new OrdersFeedbackRepository();
     String userID = "", productID = "", commentID = "";
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     Comment comment_ = new Comment();
     Context context = this;
     TextView tv_cmtProductName;
@@ -49,6 +54,16 @@ public class am_feedback_product extends AppCompatActivity {
     AlertDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userID = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userID== null) {
+            // User ID not found, handle this case
+            finish();
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_am_feedback_product);
 

@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,27 +61,125 @@ public class AuthRepository {
                 });
     }
 
-    public void signIn(String phone, String password, AuthCallback callback) {
-        reference.whereEqualTo("PHONE", phone).whereEqualTo("PASSWORD", password).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                    QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
-                    loginInfo = new Login(document.getId(), document.getString("PHONE"), document.getString("PASSWORD"));
+    private String token = "";
+    public void signIn(String phone, String password, SignInCallback callback) {
+        reference.whereEqualTo("PHONE", phone)
+                .whereEqualTo("PASSWORD", password)
+                .limit(1).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
 
-                    // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
-                    if (callback != null) {
-                        callback.onLoginSuccess(document.getId());
+                            // check user role
+                            reference_user.whereEqualTo("PHONE", phone)
+                                    .whereEqualTo("ROLE", 1)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                DocumentSnapshot userDocument = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                                                FirebaseMessaging.getInstance().getToken()
+                                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<String> task) {
+                                                                if (!task.isSuccessful()) {
+                                                                    Log.w("fcm", "Fetching FCM registration token failed", task.getException());
+                                                                    if (callback != null) {
+                                                                        callback.onLoginFailure(new Exception("Fetching FCM token failed!"));
+                                                                    }
+                                                                    return;
+                                                                }
+                                                                // Get new FCM registration token
+                                                                String token = task.getResult();
+                                                                updateToken(document.getId(), token);
+
+                                                                // Call the callback with the ID and token only after the token is fetched
+                                                                if (callback != null) {
+                                                                    callback.onLoginSuccess(userDocument.getId(), token);
+                                                                }
+                                                            }
+                                                        });
+
+                                            } else {
+                                                // No matching admin
+                                                if (callback != null) {
+                                                    callback.onLoginFailure(new Exception("No matching admin info found or task failed!"));
+                                                }
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // No matching login info found or task failed
+                            if (callback != null) {
+                                callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
+                            }
+                        }
                     }
-                } else {
-                    // Không tìm thấy hoặc có lỗi xảy ra
-                    if (callback != null) {
-                        callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
-                    }
-                }
-            }
-        });
+                });
     }
+
+
+    private void updateToken(String idLogin, String token) {
+        reference.document(idLogin).update("TOKEN", token)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        // Cập nhật thành công token
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xảy ra lỗi khi cố gắng cập nhật token
+                        Log.e("updateToken", "Failed!");
+                    }
+                });
+    }
+
+    public void logOut(String userID) {
+        reference_user.document(userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            updateToken(task.getResult().getString("ID_LOGIN"), "");
+                        } else {
+                            Log.w("logOut", "Failed!");
+                        }
+                    }
+
+                });
+    }
+
+    public void validateUser(String phone, String password, AuthCallback callback) {
+        reference.whereEqualTo("PHONE", phone)
+                .whereEqualTo("PASSWORD", password)
+                .limit(1).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                            // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
+                            if (callback != null) {
+                                callback.onLoginSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm thấy hoặc có lỗi xảy ra
+                            if (callback != null) {
+                                callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
+                            }
+                        }
+                    }
+                });
+    }
+
 
     public void checkPhoneNumber(String phone, AuthCallback callback) {
         Log.d("PHONE", phone);
@@ -283,6 +382,31 @@ public class AuthRepository {
                 });
     }
 
+    public void getUserTokenByUserId(String userId, TokenCallback callback){
+        reference_user.document(userId)
+                .get()
+                .addOnCompleteListener(documentSnapshot -> {
+                    if (documentSnapshot.getResult().exists()) {
+                        reference.document(documentSnapshot.getResult().get("ID_LOGIN").toString())
+                                .get().addOnSuccessListener(documentSnapshot1 -> {
+                                    if (documentSnapshot1.exists()) {
+                                        callback.onSuccess(documentSnapshot1.get("TOKEN").toString());
+                                    } else {
+                                        callback.onFailure(new Exception("can not find login document"));
+                                    }
+                                }).addOnFailureListener(e -> {
+                                    callback.onFailure(new Exception("Fail to get token"));
+                                });
+                    } else {
+                        callback.onFailure(new Exception("Can not find admin"));
+                    }
+                });
+    }
+ 
+    public interface AdminInfoCallback {
+        void onSuccess(String userId, String token);
+        void onFailure(Exception e);
+    }
 
     public String getVerificationCode() {
         return verificationCode;
@@ -321,6 +445,16 @@ public class AuthRepository {
     public interface AuthCallbackGetUserID {
         void onSuccess(String userID);
 
+        void onFailure(Exception e);
+    }
+
+    public interface SignInCallback{
+        void onLoginSuccess(String loginId, String token);
+        void onLoginFailure(Exception e);
+    }
+
+    public interface TokenCallback{
+        void onSuccess(String token);
         void onFailure(Exception e);
     }
 }

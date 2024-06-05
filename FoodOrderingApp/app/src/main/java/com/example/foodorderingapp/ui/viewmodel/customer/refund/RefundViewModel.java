@@ -18,6 +18,7 @@ import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.Refund;
 import com.example.foodorderingapp.data.model.entity.RefundItem;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
@@ -52,6 +53,7 @@ public class RefundViewModel extends ViewModel {
     private OrderRepository orderRepository;
     private RefundRepository refundRepository;
     private NotificationRepository notificationRepository;
+    private AuthRepository authRepository;
     // Constructor
     public RefundViewModel(String orderId, Context context, Activity activity) {
         this.orderId = orderId;
@@ -60,6 +62,7 @@ public class RefundViewModel extends ViewModel {
         this.orderRepository = new OrderRepository();
         refundRepository = new RefundRepository();
         notificationRepository = new NotificationRepository();
+        authRepository = new AuthRepository();
         loadOrder();
     }
 
@@ -196,20 +199,12 @@ public class RefundViewModel extends ViewModel {
             @Override
             public void onRefundLoaded(Refund refund) {
                 // update order status to 'hoan tien' when create refund successfully
-                dismissProgressDialog();
                 orderRepository.updateOrderStatusById(orderId, "Hoàn tiền", new IOrderRepository.OrderChangedCallback() {
                     @Override
                     public void onOrderChanged() {
-                        // send notification to admin
+                        // send notification to admin and open successfull activity
+                        dismissProgressDialog();
                         sendNotification();
-
-                        // start activity send successfully
-                        Intent intent = new Intent(context, SendRefundSucessActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                        activity.finish();
                     }
 
                     @Override
@@ -246,32 +241,52 @@ public class RefundViewModel extends ViewModel {
 
     // method to send notification
     public void sendNotification(){
-        // lấy token admin
-        token = "e6x9kl1gR42feGKCrduNYu:APA91bH19xySfpN6qTGhPHpSLOa0ql78UKyw_GDizxxdMnhCyNJo5FvTe32hHs-1xxXIglqjO1uj5YUM0iOW41RUyFPoipzt7h1KMGUh1n9W830a0ojwj567FpCR3vn2T_A3pA-MhMxK";
-        String title = "Bạn có yêu cầu hoàn tiên!!!";
-        String body = "Khách hàng của đơn hàng " + orderId + " vừa gửi yêu cầu hoàn tiền đến bạn, hãy vào kiểm tra";
-
-        // send notification
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        // lấy thông tin admin
+        authRepository.getAdminInfo(new AuthRepository.AdminInfoCallback() {
             @Override
-            public void run() {
-                SendNotification notificationSender =
-                        new SendNotification(token, title, body, context);
-                notificationSender.SendNotifications();
-            }
-        } , 20);
+            public void onSuccess(String userId, String token) {
+                String title = "Bạn có yêu cầu hoàn tiên!!!";
+                String body = "Khách hàng của đơn hàng " + orderId + " vừa gửi yêu cầu hoàn tiền đến bạn, hãy vào kiểm tra";
 
-        // create notification in firestore
-        Notification notification = new Notification();
-        notification.setId(UUID.randomUUID().toString());
-        notification.setIdRecipient("4"); //todo: có tìm thông tin admin không???
-        notification.setRecipientType(1);
-        notification.setIdOrder(orderId);
-        notification.setStatus("unread");
-        notification.setDate(new Date());
-        notification.setTitle(title);
-        notification.setContent(body);
-        notificationRepository.createNotification(notification);
+                // send notification
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification notificationSender =
+                                new SendNotification(token, title, body, context);
+                        notificationSender.SendNotifications();
+                    }
+                } , 20);
+
+                // create notification in firestore
+                Notification notification = new Notification();
+                notification.setId(UUID.randomUUID().toString());
+                notification.setIdRecipient(userId);
+                notification.setRecipientType(1);
+                notification.setIdOrder(orderId);
+                notification.setStatus("unread");
+                notification.setDate(new Date());
+                notification.setTitle(title);
+                notification.setContent(body);
+                notificationRepository.createNotification(notification);
+
+                // start activity send successfully
+                Intent intent = new Intent(context, SendRefundSucessActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", orderId);
+                bundle.putString("userId", userId);
+                intent.putExtras(bundle);
+                activity.finish();
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+
+
     }
 }

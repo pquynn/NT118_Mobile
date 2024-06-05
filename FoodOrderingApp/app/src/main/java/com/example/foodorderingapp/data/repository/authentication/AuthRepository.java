@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.foodorderingapp.data.model.entity.Login;
+import com.example.foodorderingapp.data.model.entity.Order;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,7 +62,9 @@ public class AuthRepository {
                 });
     }
 
-    public void signIn(String phone, String password, AuthCallback callback) {
+
+    private String token = "";
+    public void signIn(String phone, String password, SignInCallback callback) {
         reference.whereEqualTo("PHONE", phone)
                 .whereEqualTo("PASSWORD", password)
                 .limit(1).get()
@@ -80,13 +83,14 @@ public class AuthRepository {
                                                 return;
                                             }
                                             // Get new FCM registration token
-                                            updateToken(document.getId(), task.getResult());
+                                            token = task.getResult();
+                                            updateToken(document.getId(), token);
                                         }
                                     });
 
                             // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
                             if (callback != null) {
-                                callback.onLoginSuccess(document.getId());
+                                callback.onLoginSuccess(document.getId(), token);
                             }
                         } else {
                             // Không tìm thấy hoặc có lỗi xảy ra
@@ -114,6 +118,7 @@ public class AuthRepository {
                     }
                 });
     }
+
 
     public void logOut(String userID) {
         reference_user.document(userID)
@@ -332,6 +337,66 @@ public class AuthRepository {
                 });
     }
 
+    public void validateUser(String phone, String password, AuthCallback callback) {
+        reference.whereEqualTo("PHONE", phone)
+                .whereEqualTo("PASSWORD", password)
+                .limit(1).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                            // Dữ liệu trùng khớp, gọi callback với ID của đăng nhập
+                            if (callback != null) {
+                                callback.onLoginSuccess(document.getId());
+                            }
+                        } else {
+                            // Không tìm thấy hoặc có lỗi xảy ra
+                            if (callback != null) {
+                                callback.onLoginFailure(new Exception("No matching login info found or task failed!"));
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void getAdminInfo(AdminInfoCallback callback) {
+        reference_user.whereEqualTo("ROLE", 1)
+                .limit(1).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                            String idLogin = document.getString("ID_LOGIN");
+                            if (idLogin != null && !idLogin.isEmpty()) {
+                                reference.document(idLogin)
+                                        .get().addOnSuccessListener(documentSnapshot -> {
+                                            if (documentSnapshot.exists()) {
+                                                String token = documentSnapshot.getString("TOKEN");
+                                                if (token != null && !token.isEmpty()) {
+                                                    callback.onSuccess(document.getId(), token);
+                                                } else {
+                                                    callback.onFailure(new Exception("Token is empty or null"));
+                                                }
+                                            } else {
+                                                callback.onFailure(new Exception("Can not find login document"));
+                                            }
+                                        }).addOnFailureListener(e -> {
+                                            callback.onFailure(new Exception("Fail to get token", e));
+                                        });
+                            } else {
+                                callback.onFailure(new Exception("ID_LOGIN is empty or null"));
+                            }
+                        } else {
+                            callback.onFailure(new Exception("Can not find admin"));
+                        }
+                    }
+                });
+    }
+
 
     public String getVerificationCode() {
         return verificationCode;
@@ -358,6 +423,16 @@ public class AuthRepository {
     public interface AuthCallbackGetUserID {
         void onSuccess(String userID);
 
+        void onFailure(Exception e);
+    }
+
+    public interface SignInCallback{
+        void onLoginSuccess(String loginId, String token);
+        void onLoginFailure(Exception e);
+    }
+
+    public interface AdminInfoCallback {
+        void onSuccess(String userId, String token);
         void onFailure(Exception e);
     }
 }

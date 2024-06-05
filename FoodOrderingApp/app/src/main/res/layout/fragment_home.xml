@@ -65,7 +65,7 @@
         <!-- end header home -->
 
         <TextView
-            android:id="@+id/textBody"
+            android:id="@+id/txt_welcome"
             style="@style/Heading3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textBody"
+            app:layout_constraintTop_toBottomOf="@+id/txt_welcome"
             tools:ignore="MissingConstraints">
 
             <ImageView

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -24,6 +25,8 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.data.model.entity.UserAddress;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.adapter.OrderDetailAdapter;
 import com.example.foodorderingapp.databinding.ActivityCheckoutBinding;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
@@ -41,7 +44,7 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView screenName;
     FrameLayout btnBack;
     private Map<String, OrderItem> orderItemMap;
-    private String userId = "3", orderId = "4", couponId = "";
+    private String orderId = "4", couponId = "";
     private ActivityCheckoutBinding binding;
     private CheckoutViewModel viewModel;
     private OrderDetailAdapter adapter;
@@ -50,9 +53,22 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final int PAYMENT_REQUEST_CODE = 3;
     private Coupon selectedCoupon;
     private Context context;
-
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // get user id from shared preferences
+        sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            // User ID not found, handle this case
+            Intent intent = new Intent(this, activity_login.class);
+            startActivity(intent);
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
@@ -88,6 +104,14 @@ public class CheckoutActivity extends AppCompatActivity {
                     couponId = coupon.getIdCoupon();
             }
         });
+
+        viewModel.getUserAddressLiveData().observe(this, new Observer<UserAddress>() {
+            @Override
+            public void onChanged(UserAddress userAddress) {
+                String location = userAddress.getAddressDetail();// giả sử
+            }
+        });
+
 
         // set button back click eventa
         btnBack = findViewById(R.id.btn_back);
@@ -138,6 +162,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         });
 
+
         //start: button buy click event
         context = this;
         binding.btnBuy.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +184,7 @@ public class CheckoutActivity extends AppCompatActivity {
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
     }
+
 
     //method to show alert dialog when click btn back
     public void showBackToCartAlert(Context context){

@@ -1,6 +1,7 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.checkout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutAddressActivity extends AppCompatActivity implements CheckoutAddressAdapter.OnItemClickListener {
-    private String userId, addressId;
+    private String addressId;
     private UserAddress selectedAddress;
     private List<UserAddress> userAddressList;
     private CheckoutAddressAdapter adapter;
@@ -32,7 +33,10 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
     private CheckoutAddressViewModel viewModel;
     private FrameLayout btnBack;
     private TextView screenName;
-
+    String userId;
+    private SharedPreferences sharedPreferences;
+    private static final String SHARE_PREF_NAME = "sharePrefName";
+    private static final String KEY_USER_ID = "userID";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

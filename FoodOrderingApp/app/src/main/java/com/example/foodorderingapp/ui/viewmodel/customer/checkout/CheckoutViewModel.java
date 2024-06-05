@@ -85,6 +85,7 @@ public class CheckoutViewModel extends ViewModel {
     private MutableLiveData<String> paymentMethodLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> iconPaymentLiveData = new MutableLiveData<>();
     private MutableLiveData<Coupon> couponLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> deliveryCostLiveData = new MutableLiveData<>();
 
     // REPOSITORY
     private OrderRepository orderRepository;
@@ -119,6 +120,7 @@ public class CheckoutViewModel extends ViewModel {
         authRepository = new AuthRepository();
 
         loadDefaultUserAddress(userId);
+        deliveryCostLiveData.setValue(0);
         pointUsedLiveData.setValue(0);
         discountValueLiveData.setValue(0);
         paymentMethodLiveData.setValue("Thanh toán khi nhận hàng");
@@ -131,8 +133,6 @@ public class CheckoutViewModel extends ViewModel {
         loadOrder();
         return orderLiveData;
     }
-
-
 
     public MutableLiveData<Integer> getTotalPrice() {
         totalPrice.setValue(calculateTotalPrice(orderLiveData.getValue().getOrderItem()));
@@ -164,6 +164,10 @@ public class CheckoutViewModel extends ViewModel {
     public MutableLiveData<Integer> getOrderPriceLiveData() {
         orderPriceLiveData.setValue(calculateOrderPrice());
         return orderPriceLiveData;
+    }
+
+    public MutableLiveData<Integer> getDeliveryCostLiveData() {
+        return deliveryCostLiveData;
     }
 
     public MutableLiveData<Integer> getDiscountValueLiveData() {
@@ -347,7 +351,7 @@ public class CheckoutViewModel extends ViewModel {
         order.setPoint(pointUsedLiveData.getValue());
         order.setDiscountValue(discountValueLiveData.getValue());
         order.setPayment(paymentMethodLiveData.getValue());
-        order.setDeliveryCost(0);
+        order.setDeliveryCost(deliveryCostLiveData.getValue());
         order.setCreateOn(now);
         order.setStatus("Chờ xác nhận");
 
@@ -631,19 +635,29 @@ public class CheckoutViewModel extends ViewModel {
         int discountValueInteger = (int) discountValue;
 
         discountValueLiveData.setValue(discountValueInteger);
+        orderPriceLiveData.setValue(calculateOrderPrice());
     }
 
 
     // calculate order price
-    public int calculateOrderPrice(){
+    public int calculateOrderPrice() {
         int orderPrice = 0;
 
-        orderPrice = totalPrice.getValue()
-                + pointUsedLiveData.getValue()
-                + discountValueLiveData.getValue();
-        //todo: if have delivery cost --> add to orderPrice
+        Integer totalPriceValue = totalPrice.getValue();
+        Integer deliveryCostValue = deliveryCostLiveData.getValue();
+        Integer pointUsedValue = pointUsedLiveData.getValue();
+        Integer discountValue = discountValueLiveData.getValue();
+
+        // Use default values if any of the LiveData values are null
+        orderPrice = (totalPriceValue != null ? totalPriceValue : 0)
+                + (deliveryCostValue != null ? deliveryCostValue : 0)
+                + (pointUsedValue != null ? pointUsedValue : 0)
+                + (discountValue != null ? discountValue : 0);
+
+        // todo: if have delivery cost --> add to orderPrice
         return orderPrice;
     }
+
 
     // Method to dismiss progress dialog
     public void dismissProgressDialog() {

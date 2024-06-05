@@ -73,9 +73,6 @@ public class CheckoutActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getString(KEY_USER_ID, null);
         if (userId == null) {
-            // User ID not found, handle this case
-            Intent intent = new Intent(this, activity_login.class);
-            startActivity(intent);
             finish();
         }
 
@@ -88,37 +85,6 @@ public class CheckoutActivity extends AppCompatActivity {
         // init environment for zalopay and momo
         viewModel.initializeEnvironment();
 
-        viewModel.getUserAddressLiveData().observe(this, new Observer<UserAddress>() {
-            @Override
-            public void onChanged(UserAddress userAddress) {
-                String location = userAddress.getAddressDetail()
-                        + "," + userAddress.getWard()
-                        + "," + userAddress.getDistrict()
-                        + "," + userAddress.getCity();
-
-                List<Address> addressList = null;
-
-                Geocoder geocoder = new Geocoder(CheckoutActivity.this);
-                try {
-                    addressList = geocoder.getFromLocationName(String.valueOf(location), 1);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
-                Address address = addressList.get(0); // Lấy địa chỉ đầu tiên
-
-                // Tính khoảng cách giữa 2 điểm
-                double distance = Math.sqrt(Math.pow(address.getLatitude() - 10.8700122, 2) + Math.pow(address.getLongitude() - 106.802871, 2));
-
-                double deliverycost = 0;
-
-                if (distance >= 0.03) { // Bé hơn 0.03 thì free ship
-                    deliverycost = distance * 100;
-                }
-
-            }
-        });
-
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Xác nhận đơn hàng");
@@ -128,7 +94,6 @@ public class CheckoutActivity extends AppCompatActivity {
         adapter = new OrderDetailAdapter(orderItemMap);
         binding.recyclerViewOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewOrderDetail.setAdapter(adapter);
-
 
         viewModel.getOrderLiveData().observe(this, order -> {
             binding.setCheckoutVM(viewModel);
@@ -145,13 +110,21 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
+        // Trung: observe user address to calculate delivery cost
+        // Observe user address to calculate delivery cost
         viewModel.getUserAddressLiveData().observe(this, new Observer<UserAddress>() {
             @Override
             public void onChanged(UserAddress userAddress) {
-                String location = userAddress.getAddressDetail();// giả sử
+                calculateDeliveryCost(userAddress);
             }
         });
-
+        // observe if delivery cost is change --> update order price
+        viewModel.getDeliveryCostLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                viewModel.getOrderPriceLiveData().setValue(viewModel.calculateOrderPrice());
+            }
+        });
 
         // set button back click eventa
         btnBack = findViewById(R.id.btn_back);
@@ -201,7 +174,6 @@ public class CheckoutActivity extends AppCompatActivity {
             });
 
         });
-
 
         //start: button buy click event
         context = this;
@@ -268,6 +240,47 @@ public class CheckoutActivity extends AppCompatActivity {
         });
         alert.show();
     }
+
+    //start: calculate delivery cost
+    private void calculateDeliveryCost(UserAddress userAddress) {
+        String location = userAddress.getAddressDetail() + "," + userAddress.getWard() + "," + userAddress.getDistrict() + "," + userAddress.getCity();
+        new Thread(() -> {
+            Geocoder geocoder = new Geocoder(CheckoutActivity.this);
+            List<Address> addressList = null;
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(CheckoutActivity.this, "Failed to get location", Toast.LENGTH_SHORT).show());
+                return;
+            }
+            if (addressList != null && !addressList.isEmpty()) {
+                Address address = addressList.get(0); // Get the first address
+                // Calculate distance between two points
+                double distance = haversine(10.8700122, 106.802871, address.getLatitude(), address.getLongitude());
+
+                // Calculate delivery cost
+                double deliveryCost = (distance >= 1) ? (distance * 10000) : 0;
+
+                runOnUiThread(() -> viewModel.getDeliveryCostLiveData().setValue((int) deliveryCost));
+            } else {
+                runOnUiThread(() -> Toast.makeText(CheckoutActivity.this, "Address not found", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+    private static final double EARTH_RADIUS = 6371.0; // Đơn vị đo: km
+
+    public static double haversine(double latA, double lonA, double latB, double lonB) {
+        double dLat = Math.toRadians(latB - latA);
+        double dLon = Math.toRadians(lonB - lonA);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(latA)) * Math.cos(Math.toRadians(latB)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS * c;
+    }
+    //end: calculate delivery cost
+
 
     // method to get result from activity through intent (activity2 -> activity1)
     @Override

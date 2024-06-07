@@ -88,7 +88,7 @@ public class MyOrderCancelled extends Fragment {
             public void onChanged(List<Order> orders) {
                 for(Order i : orders){
                     if(i!=null){
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                        listOrderItem.add(new OrderItem(i.getId(), (int)i.getOrderPrice(), i.getTotalProduct()));
                     }
                 }
                 Adapter = new OrderItemAdapter(listOrderItem);

@@ -4,12 +4,16 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -32,6 +36,7 @@ public class am_user_info extends AppCompatActivity {
     private UserInfoVM viewModel;
 
     private FrameLayout btnBack;
+    AlertDialog progressDialog;
 
     private static final int EDIT_NAME_REQUEST_CODE = 1;
     @Override
@@ -64,6 +69,16 @@ public class am_user_info extends AppCompatActivity {
             }
         });
 
+        // Tạo AlertDialog với ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(true);
+        progressDialog = builder.create();
+        progressDialog.getWindow().setLayout(50,50);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         Intent intent = getIntent();
         if (intent != null) {
             if(intent.hasExtra("user_id")){
@@ -77,6 +92,7 @@ public class am_user_info extends AppCompatActivity {
         tvNameAcc = findViewById(R.id.textView_name_acc);
         tvName = findViewById(R.id.textView_name);
         tvPhone = findViewById(R.id.textView_phone);
+        progressDialog.show();
 
         viewModel.getUserInfoLiveData().observe(this, new Observer<User>() {
             @Override
@@ -84,6 +100,7 @@ public class am_user_info extends AppCompatActivity {
                 tvNameAcc.setText(user.getUserName());
                 tvName.setText(user.getUserName());
                 tvPhone.setText(user.getPhone());
+                progressDialog.dismiss();
             }
         });
 

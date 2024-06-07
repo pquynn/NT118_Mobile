@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/txt_orderDT_ID"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:background="@color/white"
@@ -53,12 +53,42 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_orderDTStatus"
+            android:id="@+id/ll_orderDTDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:gravity="left"
             app:layout_constraintTop_toBottomOf="@id/ll_orderInfo">
+
+            <TextView
+                android:id="@+id/lbl_order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Ngày đặt:"
+                android:textColor="@color/lightgray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_order_id" />
+
+            <TextView
+                android:id="@+id/txt_orderDT_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/lightgray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_orderDTStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:gravity="left"
+            app:layout_constraintTop_toBottomOf="@id/ll_orderDTDate">
 
             <TextView
                 android:id="@+id/lbl_order_status"
@@ -81,6 +111,7 @@
                 android:textColor="@color/secondary"
                 android:textSize="18sp" />
         </LinearLayout>
+
 
 
         <LinearLayout
@@ -141,7 +172,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/allrounded_bg"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -227,6 +258,43 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_orderDTDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_totalPrice"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="left"
+                android:text="Chi phí vận chuyển"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_orderDT_delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/ll_orderDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -237,7 +305,7 @@
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_totalPrice"
+            app:layout_constraintTop_toBottomOf="@id/ll_orderDTDelivery"
             tools:ignore="MissingConstraints">
 
             <TextView

@@ -42,6 +42,7 @@ import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.MyOrd
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutViewModel;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,9 +56,9 @@ public class am_order_detail extends AppCompatActivity {
     MyOrderDetailVM viewModel;
     Map<String, OrderItem> orderItemMap;
     Button btnCancel, btnFeedback, btnRefund;
-    TextView txt_orderId, txt_orderStatus;
+    TextView txt_orderId, txt_orderStatus, txt_orderDT_date;
     TextView txt_cusName, txt_cusPhone, txt_cusAddress, txt_Payment;
-    TextView txt_orderTotal, txt_orderDiscount, txt_orderPoint, txt_orderPrice;
+    TextView txt_orderTotal, txt_orderDiscount, txt_orderPoint, txt_orderPrice, txt_orderDT_delivery;
     LinearLayout ll_orderDiscount, ll_orderPoint;
     String orderId = "", orderStatus = "";
     AlertDialog progressDialog;
@@ -101,13 +102,14 @@ public class am_order_detail extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_progress, null);
         builder.setView(dialogView);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         progressDialog = builder.create();
         progressDialog.getWindow().setLayout(50,50);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         txt_orderId = findViewById(R.id.txt_orderDT_ID);
         txt_orderStatus = findViewById(R.id.txt_orderDT_status);
+        txt_orderDT_date = findViewById(R.id.txt_orderDT_date);
 
         txt_cusName = findViewById(R.id.txtDT_cusName);
         txt_cusPhone = findViewById(R.id.txtDT_cusPhone);
@@ -118,6 +120,7 @@ public class am_order_detail extends AppCompatActivity {
         txt_orderDiscount = findViewById(R.id.txt_orderDT_discount);
         txt_orderPoint = findViewById(R.id.txt_order_discount_point);
         txt_orderPrice = findViewById(R.id.txt_orderDT_price);
+        txt_orderDT_delivery = findViewById(R.id.txt_orderDT_delivery);
 
         ll_orderDiscount = findViewById(R.id.ll_orderDiscount);
         ll_orderDiscount.setVisibility(View.GONE);
@@ -167,14 +170,19 @@ public class am_order_detail extends AppCompatActivity {
                 txt_cusName.setText(order.getRecipientName());
                 txt_cusPhone.setText(order.getRecipientPhone());
                 txt_Payment.setText(order.getPayment());
+                Date orderDate = order.getCreateOn();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM/yyyy");
+                String orderDateStr = sdf.format(orderDate);
+                txt_orderDT_date.setText(orderDateStr);
 
                 setPriceFormatted(txt_orderTotal, order.getTotalPrice());
                 setPriceFormatted(txt_orderPrice, (int)order.getOrderPrice());
-                if(order.getPoint()<0){
+                setPriceFormatted(txt_orderDT_delivery, order.getDeliveryCost());
+                if(order.getPoint()<=0){
                     ll_orderPoint.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderPoint, order.getPoint());
                 }
-                if(order.getDiscountValue() < 0){
+                if(order.getDiscountValue() <= 0){
                     ll_orderDiscount.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderDiscount, order.getDiscountValue());
                 }

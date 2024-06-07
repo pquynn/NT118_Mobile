@@ -57,7 +57,30 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         setPriceFormatted(holder.tvPrice, product.getProductPrice());
 
         //Xử lý sự kiện khi click vào sản phẩm
-        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+//        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
+//                if (mListener != null) {
+//                    mListener.onProductClick(product);
+//                } else {
+//                    Log.d("Listerer Error", "Error");
+//                }
+//            }
+//        });
+
+        holder.imgProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
+                if (mListener != null) {
+                    mListener.onProductClick(product);
+                } else {
+                    Log.d("Listerer Error", "Error");
+                }
+            }
+        });
+        holder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Gọi listener và chuyển dữ liệu sản phẩm khi click vào

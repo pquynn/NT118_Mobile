@@ -19,7 +19,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="44dp"
             android:background="@drawable/circle_bg_color"
-            app:layout_constraintBottom_toBottomOf="@+id/textHeader1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
@@ -36,33 +35,33 @@
                 android:importantForAccessibility="no" />
         </FrameLayout>
 
+        <!--        <TextView-->
+<!--            android:id="@+id/textHeader1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Halal Lab Office"-->
+<!--            android:textColor="@color/text_home_search"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textHeader"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textHeader"-->
+<!--            tools:ignore="HardcodedText,MissingConstraints" />-->
+        <!-- end header home -->
+
         <TextView
             android:id="@+id/textHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="44dp"
-            android:text="DELIVERY TO"
+            android:layout_marginTop="53dp"
+            android:text="JavaJoy Coffee"
             android:textColor="@color/primary"
-            android:textSize="12sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/frameLayout"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText,MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textHeader1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Halal Lab Office"
-            android:textColor="@color/text_home_search"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/textHeader"
-            app:layout_constraintTop_toBottomOf="@+id/textHeader"
-            tools:ignore="HardcodedText,MissingConstraints" />
-        <!-- end header home -->
 
         <TextView
             android:id="@+id/txt_welcome"
@@ -72,24 +71,65 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:text="Xin chào..."
-            app:layout_constraintBottom_toTopOf="@+id/frameLayoutSearch"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout"
             tools:ignore="HardcodedText" />
 
-        <!-- start button search -->
+        <LinearLayout
+            android:id="@+id/login_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/badge_container"
+            android:backgroundTint="@color/lightgreen"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_welcome"
+            tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/img_polygon"
-            android:layout_width="10dp"
-            android:layout_height="7dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="68dp"
-            app:layout_constraintStart_toEndOf="@+id/textHeader1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_polygon"
-            tools:ignore="MissingConstraints"
-            android:importantForAccessibility="no" />
+            <TextView
+                style="@style/Heading3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đăng nhập"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Sử dụng app để tích điểm và sử dụng những ưu đãi chỉ dành riêng cho thành viên nhé!"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/btn_Login"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="ĐĂNG NHẬP"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginEnd="90dp"
+                android:padding="4dp"/>
+        </LinearLayout>
+
+        <!-- start button search -->
+<!--        <ImageView-->
+<!--            android:id="@+id/img_polygon"-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="7dp"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:layout_marginTop="68dp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/textHeader1"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:srcCompat="@drawable/ic_polygon"-->
+<!--            tools:ignore="MissingConstraints"-->
+<!--            android:importantForAccessibility="no" />-->
 
         <FrameLayout
             android:id="@+id/frameLayoutSearch"
@@ -102,7 +142,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_welcome"
+            app:layout_constraintTop_toBottomOf="@+id/login_container"
             tools:ignore="MissingConstraints">
 
             <ImageView
@@ -132,7 +172,7 @@
         <!--       START CATEGORY    -->
         <TextView
             android:id="@+id/textCategory"
-            style="@style/text_20sp"
+            style="@style/Heading3"
             android:layout_width="114dp"
             android:layout_height="26dp"
             android:layout_marginTop="20dp"
@@ -181,7 +221,7 @@
         <!--        START STORE     -->
         <TextView
             android:id="@+id/textStore"
-            style="@style/text_20sp"
+            style="@style/Heading3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
@@ -316,7 +356,7 @@
 
         <TextView
             android:id="@+id/txt_ProductPopular"
-            style="@style/text_20sp"
+            style="@style/Heading3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"

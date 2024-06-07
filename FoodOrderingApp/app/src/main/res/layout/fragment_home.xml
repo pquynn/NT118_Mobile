@@ -283,7 +283,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Java Joy Coffee"
+                android:text="JavaJoy Coffee"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_posterStore"
                 tools:ignore="HardcodedText,MissingConstraints" />
@@ -292,7 +292,7 @@
                 android:id="@+id/Category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cafe-Trà sữa-Trà-Bánh"
+                android:text="Nước uống - Bánh"
                 android:textColor="@color/text"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -107,9 +107,4 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
         viewModel.getSelectedAddressLiveData().setValue(address);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        viewModel.loadUserAddressList(userId);
-    }
 }

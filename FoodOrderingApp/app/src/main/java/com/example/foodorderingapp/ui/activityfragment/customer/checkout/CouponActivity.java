@@ -118,9 +118,4 @@ public class CouponActivity extends AppCompatActivity implements CouponAdapter.O
                 -1 * (int)(orderPrice * viewModel.getCouponLiveData().getValue().getDiscountValue()/100.0));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        viewModel.loadCouponList(orderPrice);
-    }
 }

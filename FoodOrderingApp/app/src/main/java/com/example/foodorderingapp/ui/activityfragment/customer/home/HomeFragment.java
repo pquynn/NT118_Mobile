@@ -23,12 +23,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
+import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
@@ -73,12 +76,25 @@ public class HomeFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getString(KEY_USER_ID, null);
 
+        LinearLayout loginContainer = view.findViewById(R.id.login_container);
+        Button btnLogin = view.findViewById(R.id.btn_Login);
+        TextView txtWelcome = view.findViewById(R.id.txt_welcome);
         //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
-        //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị r
+        //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS r
         if (userId == null) {
+            txtWelcome.setText("Chào bạn mới!");
+            loginContainer.setVisibility(View.VISIBLE);
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), activity_login.class);
+                    startActivity(intent);
+                }
+            });
         }
         else{
-
+            txtWelcome.setText("Chào mừng bạn quay trở lại!");
+            loginContainer.setVisibility(View.GONE);
         }
 
         // Xử lý khi click vào frameLayoutSearch
@@ -129,19 +145,11 @@ public class HomeFragment extends Fragment {
             ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), product -> {
                 Log.d("ProductClick", "idCategory: " + product.getIdCategory());
                 Log.d("ProductClick", "Product ID: " + product.getId());
-                Set<String> validCategories = new HashSet<>(Arrays.asList("2", "4"));
                 Intent intent;
-                if (validCategories.contains(product.getIdCategory())) {
-                    intent = new Intent(getActivity(), ProductDetailActivity.class);
-                } else {
-                    intent = new Intent(getActivity(), ProductDetailActivity.class);
-                }
                 //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
-//                intent = new Intent(getActivity(), ProductDetailDrink.class);
+                intent = new Intent(getActivity(), ProductDetailActivity.class);
                 intent.putExtra("productID", product.getId());
                 startActivity(intent);
-
-
             });
             rcv_homeCategory.setHasFixedSize(true);
             rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
@@ -159,7 +167,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onChanged(List<Comment> commentList) {
                     double averageScore = viewModel.calculateAverageScore(commentList);
-                    averagePoint.setText(String.format(Locale.getDefault(), "%.1f", averageScore));
+                    averagePoint.setText(String.format(Locale.US, "%.1f", averageScore));
                 }
             });
         }

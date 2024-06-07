@@ -15,6 +15,8 @@ public interface INotificationRepository {
 
     void updateNotification(Notification notification);
 
+    void calculateUnreadNoti(String idRecipient, IntegerCallback callback);
+
     void getNotificationByOrderIdAndTitle(String orderId, String title, NotificationCallback callback);
 
     interface NotificationListCallback {
@@ -24,6 +26,11 @@ public interface INotificationRepository {
 
     interface NotificationCallback {
         void onLoaded(Notification notification);
+        void onError(String errorMessage);
+    }
+
+    interface IntegerCallback {
+        void onLoad(int count);
         void onError(String errorMessage);
     }
 }

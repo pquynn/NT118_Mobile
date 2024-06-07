@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -31,6 +32,7 @@ public class AddRefundProductActivity extends AppCompatActivity {
     private Map<String, OrderItem> orderItemMap;
     private AddRefundProductViewModel viewModel;
     private ActivityChooseRefundprodBinding binding;
+    private static final int REFUNDREQUEST_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,8 @@ public class AddRefundProductActivity extends AppCompatActivity {
                 bundle.putStringArrayList("selectedOrderItemId", new ArrayList<>(viewModel.getSelectedOrderItemId().getValue()));
                 bundle.putIntegerArrayList("selectedQuantity", new ArrayList<>(viewModel.getSelectedQuantity().getValue()));
                 intent.putExtras(bundle);
-                startActivity(intent);
+//                startActivity(intent);
+                startActivityForResult(intent, REFUNDREQUEST_REQUEST_CODE);
             }
         });
     }
@@ -95,5 +98,20 @@ public class AddRefundProductActivity extends AppCompatActivity {
         }
         viewModel.getSelectedQuantity().setValue(selectedQuantity);
         viewModel.getSelectedOrderItemId().setValue(selectedId);
+    }
+
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //GET DATA FROM COUPON ACTIVITY
+        if (requestCode == REFUNDREQUEST_REQUEST_CODE && resultCode == RESULT_OK) {
+
+        }
+        else {
+            finish();
+        }
+
     }
 }

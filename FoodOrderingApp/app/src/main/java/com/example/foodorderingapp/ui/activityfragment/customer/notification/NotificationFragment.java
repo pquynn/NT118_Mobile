@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.notification;
 
+        import static android.app.Activity.RESULT_OK;
         import static android.content.Context.MODE_PRIVATE;
 
         import android.content.Intent;
@@ -10,6 +11,8 @@ package com.example.foodorderingapp.ui.activityfragment.customer.notification;
         import androidx.annotation.Nullable;
         import androidx.fragment.app.Fragment;
         import androidx.lifecycle.Observer;
+        import androidx.navigation.NavController;
+        import androidx.navigation.Navigation;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
         import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -52,18 +55,18 @@ public class NotificationFragment extends Fragment {
     ArrayList<Notification> notiList;
     NotificationAdapter adapter;
     private MainActivity mainActivity;
+    private static final int LOGIN_REQUEST_CODE = 2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //todo: code trong chatgpt để xử lý chuyển trang, ko nên finish activity mà handle activity result
         // get user id from shared preferences
         sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getString(KEY_USER_ID, null);
         if (userId == null) {
             // User ID not found, handle this case
-            getActivity().finish();
             Intent intent = new Intent(getContext(), activity_login.class);
-            startActivity(intent);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            return null;
         }
 
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
@@ -80,6 +83,7 @@ public class NotificationFragment extends Fragment {
 
         // init main activity
         mainActivity = (MainActivity) getActivity();
+//        mainActivity.reloadBadge();
 
         // View model
         viewModel = new NotificationViewModel(userId, role);
@@ -113,7 +117,8 @@ public class NotificationFragment extends Fragment {
         viewModel.getUnreadNotiCountLiveData().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                mainActivity.updateUnreadNotiQuantity(integer);
+//                mainActivity.updateUnreadNotiQuantity(integer);
+                mainActivity.reloadBadge();
             }
         });
 
@@ -133,5 +138,29 @@ public class NotificationFragment extends Fragment {
         });
     }
 
+    //receive result from login activity
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+            if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+            if(data != null && data.hasExtra("isLogin")){
+                if(!data.getBooleanExtra("isLogin", false)){
+                    navController.navigateUp(); // This will navigate back to the previous fragment
+                }
+                else {
+                    navController.navigate(R.id.notificationFragment);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.reloadData();
+    }
 }

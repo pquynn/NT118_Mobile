@@ -23,9 +23,12 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.UUID;
 
 public class FirebaseMessagerReceiver extends FirebaseMessagingService {
+    private MainActivity mainActivity;
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
+//        mainActivity = new MainActivity();
         if (message.getNotification() != null) {
+//            mainActivity.reloadBadge();
             showNotification(
                     message.getNotification().getTitle(),
                     message.getNotification().getBody());

@@ -6,6 +6,7 @@
         <variable name="cartVM" type="com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel"/>
     </data>
     <FrameLayout
+        android:id="@+id/fragment_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activityfragment.customer.cart.CartFragment">

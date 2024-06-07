@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -27,6 +28,7 @@ import com.example.javajoyadmin.ui.activityfragment.admin.AdminMainActivity;
 import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.viewmodel.admin.home.AdminHomeVM;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -167,39 +169,125 @@ public class AdminHome extends Fragment {
         lineChart = view.findViewById(R.id.lineChart);
     }
 
-    private void initLineChart() {
+//    private void initLineChart() {
+//
+//        int white = ContextCompat.getColor(getContext(), R.color.white);
+//        xValues = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"); // Danh sách tháng
+//
+//        XAxis xAxis = lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setTextSize(14f); // Đặt kích thước chữ cho trục x
+//        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
+//        xAxis.setLabelCount(xValues.size());
+//        xAxis.setGridColor(white);
+//        xAxis.setGranularity(1f);
+//
+//        YAxis yAxis = lineChart.getAxisLeft();
+//        yAxis.setAxisMinimum(0f);
+//        yAxis.setAxisMaximum(0f);
+//        yAxis.setAxisLineWidth(2f);
+//        yAxis.setAxisLineColor(Color.BLACK);
+//        yAxis.setLabelCount(10);
+//        yAxis.setGridColor(white);
+//        yAxis.setTextSize(14f); // Đặt kích thước chữ cho trục y
+//        yAxis.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
+//
+//        // Right Y-axis settings
+//        lineChart.getAxisRight().setEnabled(false); // Disable the right Y-axis
+//
+//        List<Entry> data = new ArrayList<>(); // Dữ liệu khởi tạo cho giá trị cột Y
+//        for (int i = 0; i < 12; i++)
+//            data.add(new Entry(i, 0));
+//
+//        LineDataSet dataSet1 = new LineDataSet(data, "Số hóa đơn năm " + String.valueOf(lineChartYear.getYear() + 1900));
+//        dataSet1.setColor(Color.BLUE);
+//        dataSet1.setValueTextSize(16f); // Đặt kích thước chữ cho thông tin
+//
+//        LineData lineData = new LineData(dataSet1);
+//
+//        lineChart.setData(lineData);
+//
+//        lineChart.invalidate();
+//    }
+
+    private void initLineChart(){
+        int white = ContextCompat.getColor(getContext(), R.color.white);
+        int black = ContextCompat.getColor(getContext(), R.color.black);
+        int primary = ContextCompat.getColor(getContext(), R.color.primary);
+        int lightGray = ContextCompat.getColor(getContext(), R.color.lightgray);
+
         xValues = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"); // Danh sách tháng
 
+// X-axis settings
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(14f); // Đặt kích thước chữ cho trục x
+        xAxis.setTextSize(14f); // Set text size for X-axis
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
         xAxis.setLabelCount(xValues.size());
-
+        xAxis.setGridColor(lightGray); // Set grid color for X-axis
         xAxis.setGranularity(1f);
+        xAxis.setTextColor(black); // Set text color for X-axis
 
+// Y-axis settings
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(0f);
+        yAxis.setAxisMaximum(100f); // Assuming 100 is a reasonable max value, adjust accordingly
         yAxis.setAxisLineWidth(2f);
-        yAxis.setAxisLineColor(Color.BLACK);
+        yAxis.setAxisLineColor(black);
         yAxis.setLabelCount(10);
-        yAxis.setTextSize(14f); // Đặt kích thước chữ cho trục y
-        yAxis.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
+        yAxis.setGridColor(lightGray); // Set grid color for Y-axis
+        yAxis.setTextSize(14f); // Set text size for Y-axis
+        yAxis.setTextColor(black); // Set text color for Y-axis
+        yAxis.setValueFormatter(new IntegerValueFormatter()); // Use IntegerValueFormatter for integer formatting
 
-        List<Entry> data = new ArrayList<>(); // Dữ liệu khởi tạo cho giá trị cột Y
-        for (int i = 0; i < 12; i++)
+// Right Y-axis settings
+        lineChart.getAxisRight().setEnabled(false); // Disable the right Y-axis
+
+// Data preparation
+        List<Entry> data = new ArrayList<>(); // Initialize data for Y-axis values
+        for (int i = 0; i < 12; i++) {
             data.add(new Entry(i, 0));
+        }
 
         LineDataSet dataSet1 = new LineDataSet(data, "Số hóa đơn năm " + String.valueOf(lineChartYear.getYear() + 1900));
-        dataSet1.setColor(Color.BLUE);
-        dataSet1.setValueTextSize(16f); // Đặt kích thước chữ cho thông tin
+        dataSet1.setColor(primary);
+        dataSet1.setValueTextSize(16f); // Set text size for data values
+        dataSet1.setValueTextColor(black); // Set text color for data values
+        dataSet1.setLineWidth(2f); // Set line width
+        dataSet1.setCircleColor(primary); // Set circle color
+        dataSet1.setCircleRadius(5f); // Set circle radius
+        dataSet1.setDrawCircleHole(false); // Disable hole in the circle
+
+// Highlight settings
+        dataSet1.setHighlightEnabled(true);
+        dataSet1.setHighLightColor(primary);
+        dataSet1.setDrawHighlightIndicators(true);
+        dataSet1.setDrawValues(false); // Disable values on data points
 
         LineData lineData = new LineData(dataSet1);
 
+// General chart settings
         lineChart.setData(lineData);
+        lineChart.getDescription().setEnabled(false); // Disable description label
+        lineChart.setDrawGridBackground(false); // Disable grid background
+        lineChart.setNoDataText("No data available"); // Text when no data is available
+        lineChart.setTouchEnabled(true); // Enable touch gestures
+        lineChart.setDragEnabled(true); // Enable dragging
+        lineChart.setScaleEnabled(true); // Enable scaling
+        lineChart.setPinchZoom(true); // Pinch to zoom
+        lineChart.setBackgroundColor(white); // Set chart background color
 
-        lineChart.invalidate();
+// Legend settings
+        Legend legend = lineChart.getLegend();
+        legend.setForm(Legend.LegendForm.LINE);
+        legend.setTextSize(14f);
+        legend.setTextColor(black);
+
+// Animation
+        lineChart.animateX(1000); // Animate chart horizontally for 1000 milliseconds
+
+        lineChart.invalidate(); // Refresh the chart
+
     }
 
     private void updateDateLineChart(int[] data) {

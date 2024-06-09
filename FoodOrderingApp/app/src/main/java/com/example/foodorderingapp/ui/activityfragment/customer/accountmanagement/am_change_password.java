@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class am_change_password extends AppCompatActivity {
     EditText input_old_password, input_new_password;
     Button btn_savechange_password;
     TextView notice_password, forgot_oldpassword;
+    ImageButton imgBtnVisibilityOld, imgBtnVisibilityNew;
     String userId = "";
     UserInfoVM viewModel;
     AlertDialog progressDialog;
@@ -52,6 +55,8 @@ public class am_change_password extends AppCompatActivity {
         input_new_password = findViewById(R.id.input_new_password);
         notice_password = findViewById(R.id.notice_password);
         forgot_oldpassword = findViewById(R.id.forgot_oldpassword);
+        imgBtnVisibilityOld = findViewById(R.id.imgBtnVisibilityOld);
+        imgBtnVisibilityNew = findViewById(R.id.imgBtnVisibilityNew);
         notice_password.setVisibility(View.GONE);
 
         // Tạo AlertDialog với ProgressBar
@@ -87,10 +92,10 @@ public class am_change_password extends AppCompatActivity {
                 String phone = user.getPhone();
                 progressDialog.dismiss();
 
-                input_new_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                input_old_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if(hasFocus){
+                        if(!hasFocus){
                             String oldPassword = md5(String.valueOf(input_old_password.getText()));
                             Log.d("check oldpass", "Old password" + oldPassword);
                             progressDialog.show();
@@ -159,6 +164,59 @@ public class am_change_password extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), activity_forgetpassword.class);
                 startActivity(intent);
+            }
+        });
+
+        final boolean[] passwordVisible = {false};
+        imgBtnVisibilityOld.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Thay đổi kiểu hiển thị của EditText
+                if (passwordVisible[0]) {
+                    // Nếu mật khẩu đang hiển thị, ẩn nó
+                    input_old_password.setInputType(InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    passwordVisible[0] = false;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
+                    imgBtnVisibilityOld.setImageResource(R.drawable.visibility);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    input_old_password.setSelection(input_old_password.getText().length());
+
+                } else {
+                    // Nếu mật khẩu đang ẩn, hiển thị nó
+                    input_old_password.setInputType(InputType.TYPE_CLASS_TEXT);
+                    passwordVisible[0] = true;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
+                    imgBtnVisibilityOld.setImageResource(R.drawable.visibility_off);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    input_old_password.setSelection(input_old_password.getText().length());
+                }
+            }
+        });
+
+        imgBtnVisibilityNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Thay đổi kiểu hiển thị của EditText
+                if (passwordVisible[0]) {
+                    // Nếu mật khẩu đang hiển thị, ẩn nó
+                    input_new_password.setInputType(InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    passwordVisible[0] = false;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
+                    imgBtnVisibilityNew.setImageResource(R.drawable.visibility);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    input_new_password.setSelection(input_new_password.getText().length());
+
+                } else {
+                    // Nếu mật khẩu đang ẩn, hiển thị nó
+                    input_new_password.setInputType(InputType.TYPE_CLASS_TEXT);
+                    passwordVisible[0] = true;
+                    // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
+                    imgBtnVisibilityNew.setImageResource(R.drawable.visibility_off);
+                    // Di chuyển con trỏ về cuối chuỗi
+                    input_new_password.setSelection(input_new_password.getText().length());
+                }
             }
         });
 

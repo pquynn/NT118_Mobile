@@ -104,7 +104,6 @@ public class am_point_history extends AppCompatActivity {
                     listPoint.add(i);
 
                 }
-                Collections.reverse(listPoint);
                 PointAdapter = new PointAdapter(listPoint);
                 recyclerViewList.setAdapter(PointAdapter);
                 progressDialog.dismiss();

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.foodorderingapp.data.model.SendNotification;
 import com.example.foodorderingapp.data.model.entity.Notification;
 import com.example.foodorderingapp.data.model.entity.Order;
+import com.example.foodorderingapp.data.model.entity.OrderItem;
 import com.example.foodorderingapp.data.model.entity.User;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.example.foodorderingapp.data.repository.accountmanagement.UserInfoRepository;
@@ -19,14 +20,16 @@ import com.example.foodorderingapp.data.repository.authentication.AuthRepository
 import com.example.foodorderingapp.data.repository.notification.NotificationRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
+import com.example.foodorderingapp.data.repository.product.ProductRepository;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 public class MyOrderDetailVM extends ViewModel {
     private OrderRepository orderRepository;
     private OrdersFeedbackRepository ordersFeedbackRepository;
-
+    private ProductRepository productRepository;
     private NotificationRepository notificationRepository = new NotificationRepository();
     private AuthRepository authRepository = new AuthRepository();
     private Context context;
@@ -43,6 +46,7 @@ public class MyOrderDetailVM extends ViewModel {
         this.activity = activity;
 
         ordersFeedbackRepository = new OrdersFeedbackRepository();
+        productRepository = new ProductRepository();
         orderRepository = new OrderRepository();
         //loadOrderStatus(orderId);
         loadOrderDetail(orderId);
@@ -56,6 +60,25 @@ public class MyOrderDetailVM extends ViewModel {
     public MutableLiveData<Order> getOrderMutableLiveData(){
         loadOrderDetail(orderId);
         return orderMutableLiveData;
+    }
+
+    public void SetProductQuantity(String orderId){
+        loadOrderDetail(orderId);
+        Order order = orderMutableLiveData.getValue();
+
+        // update product quantity
+        for(Map.Entry<String, OrderItem> orderItemEntry : order.getOrderItem().entrySet()){
+            String size;
+            if(orderItemEntry.getValue().getSize() == null || orderItemEntry.getValue().getSize().isEmpty()){
+                size = "Mặc định";
+            }
+            else
+                size = orderItemEntry.getValue().getSize();
+            productRepository.updateProductQuantityCancel(
+                    orderItemEntry.getValue().getIdProduct(),
+                    size,
+                    orderItemEntry.getValue().getQuantity());
+        }
     }
     private void loadOrderStatus(String orderId) {
         ordersFeedbackRepository.getOrderStatus(orderId, new OrdersFeedbackRepository.orderStatusCallback() {
@@ -84,6 +107,7 @@ public class MyOrderDetailVM extends ViewModel {
             }
         });
     }
+
 
 
     // method to send notification

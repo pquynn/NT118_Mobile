@@ -373,24 +373,24 @@ public class CheckoutViewModel extends ViewModel {
         if(discountValueLiveData.getValue() < 0 && discountValueLiveData.getValue() != null)
             couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
 
-        // update user point (minus current point and add reward point)
-        if(pointUsedLiveData.getValue() != 0){
-            UserPoint minusPoint = new UserPoint();
-            String id = UUID.randomUUID().toString();
-            minusPoint.setId(id);
-            minusPoint.setPoint(pointUsedLiveData.getValue());
-            minusPoint.setPointDate(now);
-            minusPoint.setUserId(userId);
-            pointRepository.AddPoint(minusPoint);
-        }
-
-        UserPoint plusPoint = new UserPoint();
-        String id1 = UUID.randomUUID().toString();
-        plusPoint.setId(id1);
-        plusPoint.setPoint((int)order.getOrderPrice() / 1000);
-        plusPoint.setPointDate(now);
-        plusPoint.setUserId(userId);
-        pointRepository.AddPoint(plusPoint);
+//        // update user point (minus current point and add reward point)
+//        if(pointUsedLiveData.getValue() != 0){
+//            UserPoint minusPoint = new UserPoint();
+//            String id = UUID.randomUUID().toString();
+//            minusPoint.setId(id);
+//            minusPoint.setPoint(pointUsedLiveData.getValue());
+//            minusPoint.setPointDate(now);
+//            minusPoint.setUserId(userId);
+//            pointRepository.AddPoint(minusPoint);
+//        }
+//
+//        UserPoint plusPoint = new UserPoint();
+//        String id1 = UUID.randomUUID().toString();
+//        plusPoint.setId(id1);
+//        plusPoint.setPoint((int)order.getOrderPrice() / 1000);
+//        plusPoint.setPointDate(now);
+//        plusPoint.setUserId(userId);
+//        pointRepository.AddPoint(plusPoint);
 
         // update cart to order status "chờ xác nhận" in firestore
         orderRepository.updateCartToOrder(order);

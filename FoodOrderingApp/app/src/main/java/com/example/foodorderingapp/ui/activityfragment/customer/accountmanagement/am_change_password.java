@@ -87,10 +87,10 @@ public class am_change_password extends AppCompatActivity {
                 String phone = user.getPhone();
                 progressDialog.dismiss();
 
-                input_new_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                input_old_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if(hasFocus){
+                        if(!hasFocus){
                             String oldPassword = md5(String.valueOf(input_old_password.getText()));
                             Log.d("check oldpass", "Old password" + oldPassword);
                             progressDialog.show();

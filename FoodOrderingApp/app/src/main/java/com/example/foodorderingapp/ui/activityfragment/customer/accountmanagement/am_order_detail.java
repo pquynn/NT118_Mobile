@@ -178,11 +178,11 @@ public class am_order_detail extends AppCompatActivity {
                 setPriceFormatted(txt_orderTotal, order.getTotalPrice());
                 setPriceFormatted(txt_orderPrice, (int)order.getOrderPrice());
                 setPriceFormatted(txt_orderDT_delivery, order.getDeliveryCost());
-                if(order.getPoint()<=0){
+                if(order.getPoint()<0){
                     ll_orderPoint.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderPoint, order.getPoint());
                 }
-                if(order.getDiscountValue() <= 0){
+                if(order.getDiscountValue() < 0){
                     ll_orderDiscount.setVisibility(View.VISIBLE);
                     setPriceFormatted(txt_orderDiscount, order.getDiscountValue());
                 }
@@ -208,6 +208,7 @@ public class am_order_detail extends AppCompatActivity {
                         .setPositiveButton("Xác nhận hủy", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                viewModel.SetProductQuantity(orderId);
                                 orderRepository.updateOrderStatusById(orderId, "Đã hủy", new IOrderRepository.OrderChangedCallback() {
                                     @Override
                                     public void onOrderChanged() {

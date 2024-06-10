@@ -163,6 +163,7 @@ public class AdminHome extends Fragment {
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(10);
         yAxis.setTextSize(14f); // Đặt kích thước chữ cho trục y
+        yAxis.setGranularity(1f); // Đảm bảo mỗi nhãn trên trục Y là một giá trị duy nhất
         yAxis.setValueFormatter(new IntegerValueFormatter()); // Sử dụng IntegerValueFormatter để định dạng số nguyên
 
         List<Entry> data = new ArrayList<>(); // Dữ liệu khởi tạo cho giá trị cột Y
@@ -171,7 +172,7 @@ public class AdminHome extends Fragment {
 
         LineDataSet dataSet1 = new LineDataSet(data, "Số hóa đơn năm " + String.valueOf(lineChartYear.getYear() + 1900));
         dataSet1.setColor(Color.BLUE);
-        dataSet1.setValueTextSize(16f); // Đặt kích thước chữ cho thông tin
+        dataSet1.setValueTextSize(26f); // Đặt kích thước chữ cho thông tin
 
         LineData lineData = new LineData(dataSet1);
 

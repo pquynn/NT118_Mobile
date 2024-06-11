@@ -26,13 +26,15 @@ import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderDetailVM;
 import com.example.javajoyadmin.ui.adapter.OrderDetailAdapter;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class activity_adminOrderDetail extends AppCompatActivity {
 
     private Map<String, OrderItem> orderItemMap;
-    private TextView txtStatus, txtCustomerName, txtCustomerPhonne, txtAddress, txtPayment, txtViewTotalProduct, txtTotalProduct, txtCoupon, txtIntoPrice, txtPoint;
+    private TextView txtOrderID, txtOrderDate, txtStatus, txtCustomerName, txtCustomerPhonne, txtAddress, txtPayment, txtViewTotalProduct, txtTotalProduct, txtDeliveryCost, txtCoupon, txtIntoPrice, txtPoint;
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerViewList;
     private AdminOrderDetailVM adminOrderDetailVM;
@@ -95,6 +97,8 @@ public class activity_adminOrderDetail extends AppCompatActivity {
         adapter = new OrderDetailAdapter(orderItemMap);
         recyclerViewList.setAdapter(adapter);
 
+        txtOrderID = findViewById(R.id.txt_orderDT_ID);
+        txtOrderDate = findViewById(R.id.txt_orderDT_date);
         txtStatus = findViewById(R.id.txtStatus);
         txtCustomerName = findViewById(R.id.txtCustomerName);
         txtCustomerPhonne = findViewById(R.id.txtCustomerPhonne);
@@ -102,6 +106,7 @@ public class activity_adminOrderDetail extends AppCompatActivity {
         txtPayment = findViewById(R.id.txtPayment);
         txtViewTotalProduct = findViewById(R.id.txtViewTotalProduct);
         txtTotalProduct = findViewById(R.id.txtTotalPrice);
+        txtDeliveryCost = findViewById(R.id.txtDeliveryCost);
         txtCoupon = findViewById(R.id.txtCoupon);
         txtIntoPrice = findViewById(R.id.txtIntoPrice);
         txtPoint = findViewById(R.id.txtPoint);
@@ -126,6 +131,13 @@ public class activity_adminOrderDetail extends AppCompatActivity {
                 orderStatus = order.getStatus();
 
                 // Gán dữ liệu cho giao diện
+                txtOrderID.setText(order.getId());
+
+                Date orderDate = order.getCreateOn();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM/yyyy");
+                String orderDateStr = sdf.format(orderDate);
+                txtOrderDate.setText(orderDateStr);
+
                 txtStatus.setText(orderStatus);
                 txtCustomerName.setText(order.getRecipientName());
                 txtCustomerPhonne.setText(order.getRecipientPhone());
@@ -133,6 +145,7 @@ public class activity_adminOrderDetail extends AppCompatActivity {
                 txtPayment.setText(order.getPayment());
                 txtViewTotalProduct.setText("TỔNG CỘNG(" + order.getTotalProduct() + " MÓN)");
                 txtTotalProduct.setText(formatNumber(order.getTotalPrice()) + " Đ");
+                txtDeliveryCost.setText(formatNumber(order.getDeliveryCost()) + " Đ");
                 txtCoupon.setText(formatNumber(order.getDiscountValue()) + " Đ");
                 txtPoint.setText(formatNumber(order.getPoint()));
                 txtIntoPrice.setText(formatNumber(order.getOrderPrice()) + " Đ");

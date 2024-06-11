@@ -14,7 +14,12 @@ import java.util.List;
 public class AdminOrderVM extends ViewModel {
     OrderRepository repository = new OrderRepository();
     MutableLiveData<List<Order>> orderListLiveData = new MutableLiveData<>();
-    public AdminOrderVM (String orderStatus){
+    String orderStatus;
+    public AdminOrderVM (String status){
+        orderStatus = status;
+    }
+
+    private void getOrderList(){
         repository.getOrderListByStatus(orderStatus, new IOrderRepository.OrderListCallback() {
             @Override
             public void onOrderListLoaded(List<Order> orderList) {
@@ -29,6 +34,7 @@ public class AdminOrderVM extends ViewModel {
     }
 
     public MutableLiveData<List<Order>> getOrderListLiveData(){
+        getOrderList();
         return orderListLiveData;
     }
 }

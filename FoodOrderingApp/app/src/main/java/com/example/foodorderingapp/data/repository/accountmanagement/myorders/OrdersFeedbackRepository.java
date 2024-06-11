@@ -10,6 +10,8 @@ import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.OrderDetail;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.UserPoint;
+import com.example.foodorderingapp.data.repository.accountmanagement.PointRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -153,6 +155,8 @@ public class OrdersFeedbackRepository {
             commentGet.getDate()
         );
 
+        // String userId, int point, Date pointDate) {
+
 //        db.collection("COMMENT")
 //                .add(commentData)
 //                .addOnSuccessListener(documentReference -> {
@@ -164,7 +168,11 @@ public class OrdersFeedbackRepository {
 //                    Log.e("AddComment", "Lỗi khi thêm bình luận vào bộ sưu tập COMMENTS", e);
 //                });
         db.collection("COMMENT").add(comment)
-                .addOnSuccessListener(documentReference -> callback.loadCommentSuccess(comment))
+                .addOnSuccessListener(documentReference -> {
+                    callback.loadCommentSuccess(comment);
+                    PointRepository pointRepository = new PointRepository();
+                    pointRepository.AddPoint(new UserPoint(commentGet.getIdUser(), 200, new Date()));
+                })
                 .addOnFailureListener(e -> callback.loadCommentError(new Exception("Add comment Error")));
     }
 

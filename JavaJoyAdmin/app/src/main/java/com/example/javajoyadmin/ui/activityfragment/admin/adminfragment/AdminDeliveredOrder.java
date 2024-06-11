@@ -100,19 +100,41 @@ public class AdminDeliveredOrder extends Fragment {
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
-        listOrderItem = new ArrayList<>();
 
-        adminOrderVM.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
+        listOrderItem = new ArrayList<>();
+        Adapter = new AdminOrderItemAdapter(listOrderItem);
+        recyclerViewList.setAdapter(Adapter);
+    }
+
+    public void LoadListOrder() {
+        // Loại bỏ Observer cũ
+        adminOrderVM.getOrderListLiveData().removeObservers(this);
+
+
+        // Thiết lập observer để nhận dữ liệu mới
+        adminOrderVM.getOrderListLiveData().observe(this, new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
+                // Cập nhật lại listOrderItem với dữ liệu mới
+
+                // Xóa dữ liệu cũ trong listOrderItem
+                listOrderItem.clear();
+                Adapter.notifyDataSetChanged(); // Thông báo adapter để cập nhật giao diện
+
                 for (Order i : orders) {
                     if (i != null) {
                         listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
                     }
                 }
-                Adapter = new AdminOrderItemAdapter(listOrderItem);
-                recyclerViewList.setAdapter(Adapter);
+                // Thông báo adapter để cập nhật giao diện với dữ liệu mới
+                Adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadListOrder();
     }
 }

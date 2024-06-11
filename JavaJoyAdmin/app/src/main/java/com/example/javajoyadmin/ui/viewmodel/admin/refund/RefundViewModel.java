@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -124,6 +125,7 @@ public class RefundViewModel extends ViewModel {
                     public void onRefundChanged() {
                         refundLiveData.getValue().setStatus(status);
                         dismissProgressDialog();
+                        Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
                         sendNotification(status);
                     }
 

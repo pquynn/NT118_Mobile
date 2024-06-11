@@ -15,8 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 
 public class activity_signup extends AppCompatActivity {
 
@@ -46,6 +46,21 @@ public class activity_signup extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back); // Nút quay lại
         btnSignUp = findViewById(R.id.btnSignUp); // Nút đăng ký
         progressBar = findViewById(R.id.progressBar);
+
+        // Xử lý khi sau người dùng nhập tên(Con trỏ chuyển qua phần nhập dữ liệu khác)
+        inputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // Khi EditText không còn trong trạng thái focus
+                    String name = inputName.getText().toString().trim();
+                    if (name.isEmpty()) {
+                        // Thông báp khi nhập thiếu tên người dùng
+                        Toast.makeText(getApplicationContext(), "Vui lòng nhập tên!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
         // Xử lý khi sau người dùng nhập số điện thoại(Con trỏ chuyển qua phần nhập dữ liệu khác)
         inputPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -85,6 +100,9 @@ public class activity_signup extends AppCompatActivity {
                     if (phone.length() != 10 || !phone.startsWith("0")) {
                         // Thông báp khi nhập thiếu số điện thoại
                         Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra số điện thoại!", Toast.LENGTH_SHORT).show();
+                    } else if (name.isEmpty()) {
+                        // Thông báp khi nhập thiếu tên người dùng
+                        Toast.makeText(getApplicationContext(), "Vui lòng nhập tên!", Toast.LENGTH_SHORT).show();
                     } else {
                         authRepository.checkPhoneNumber(phone, new AuthRepository.AuthCallback() {
                             @Override

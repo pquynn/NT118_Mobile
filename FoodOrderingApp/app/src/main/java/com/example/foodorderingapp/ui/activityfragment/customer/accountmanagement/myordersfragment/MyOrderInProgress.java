@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Order;
-import com.example.foodorderingapp.ui.AdminOrderVM;
 import com.example.foodorderingapp.ui.adapter.OrderItemAdapter;
 import com.example.foodorderingapp.data.model.OrderItem;
 import com.example.foodorderingapp.ui.viewmodel.customer.accountmanagement.MyOrdersVM;

@@ -206,7 +206,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                finish();
+                turnBack();
             }
         });
 
@@ -362,4 +362,10 @@ public class CheckoutActivity extends AppCompatActivity {
         ZaloPaySDK.getInstance().onResult(intent);
     }
 
+    protected void turnBack(){
+        // Create an intent to hold the coupon data
+        Intent resultIntent = new Intent();
+        setResult(RESULT_OK, resultIntent);
+        finish();
+    }
 }

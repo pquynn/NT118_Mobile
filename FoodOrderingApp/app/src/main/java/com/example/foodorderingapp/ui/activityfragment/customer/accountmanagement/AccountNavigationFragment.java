@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
@@ -26,6 +27,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodorderingapp.data.model.entity.User;
@@ -48,7 +51,7 @@ public class AccountNavigationFragment extends Fragment {
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
     private ArrayList<OrderItem> listOrderItem;
-
+    private MainActivity activity;
     AlertDialog progressDialog;
 
 
@@ -68,6 +71,7 @@ public class AccountNavigationFragment extends Fragment {
                         String updatedName = data.getStringExtra("updatedName");
                         tvNameAcc.setText(updatedName);
                     }
+                    activity.reloadBadge();
                 }
             }
     );
@@ -79,9 +83,9 @@ public class AccountNavigationFragment extends Fragment {
         userId = sharedPreferences.getString(KEY_USER_ID, null);
         if (userId == null) {
             // User ID not found, handle this case
-            getActivity().finish();
             Intent intent = new Intent(getContext(), activity_login.class);
-            startActivity(intent);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            return null;
         }
 
         // Inflate the layout for this fragment
@@ -89,6 +93,9 @@ public class AccountNavigationFragment extends Fragment {
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        activity = (MainActivity) getActivity();
+//        activity.reloadBadge();
 
         btnLogout = view.findViewById(R.id.btn_log_out);
 
@@ -161,6 +168,7 @@ public class AccountNavigationFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 tvNameAcc.setText(user.getUserName());
+                activity.reloadBadge();
                 progressDialog.dismiss();
             }
         });
@@ -178,11 +186,38 @@ public class AccountNavigationFragment extends Fragment {
                     editor.clear();
                     editor.commit();
                     // open login activity
+
+                    //reset badge
+                    activity.reloadBadge();
+
                     Intent intent = new Intent(requireContext(), activity_login.class);
-                    startActivity(intent);
-                    getActivity().finish();
+                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
+//                    getActivity().finish();
                 }
             }
         });
+    }
+
+    //receive result from login activity
+    // method to get result from activity through intent (activity2 -> activity1)
+
+    private static final int LOGIN_REQUEST_CODE = 2;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+            if(data != null && data.hasExtra("isLogin")){
+                if(!data.getBooleanExtra("isLogin", false)){
+                    navController.navigateUp(); // This will navigate back to the previous fragment
+                }
+                else {
+                    navController.navigate(R.id.accountFragment);
+
+                }
+            }
+        }
+
     }
 }

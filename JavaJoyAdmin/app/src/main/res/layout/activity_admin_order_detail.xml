@@ -374,6 +374,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
                                 android:gravity="end"
+                                android:textAlignment="textEnd"
                                 android:text="0"
                                 android:textSize="16sp"/>
                         </TableRow>
@@ -387,7 +388,7 @@
 
                             <TextView
                                 android:id="@+id/txtViewIntoPrice"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_regular"
@@ -396,7 +397,7 @@
 
                             <TextView
                                 android:id="@+id/txtIntoPrice"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_bold"

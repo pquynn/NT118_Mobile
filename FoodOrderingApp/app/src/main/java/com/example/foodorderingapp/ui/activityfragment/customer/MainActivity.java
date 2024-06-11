@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         // if user is login --> show badge
 //        if (userId != null) {
             //init viewmodel
-            viewModel = new BottomNavigationViewModel(userId);
+            viewModel = new BottomNavigationViewModel();
 
             // Set badge for cart fragment
             cartBadge = bottomNavigationView.getOrCreateBadge(R.id.cartFragment);
             notiBadge = bottomNavigationView.getOrCreateBadge(R.id.notificationFragment);
             //observe change in cart item
-            viewModel.getProductCartQuantityLiveData().observe(this, new Observer<Integer>() {
+            viewModel.getProductCartQuantityLiveData(userId).observe(this, new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer integer) {
                     setBadge(cartBadge, integer);
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             //observe change in noti item
-            viewModel.getUnreadNotiCountLiveData().observe(this, new Observer<Integer>() {
+            viewModel.getUnreadNotiCountLiveData(userId).observe(this, new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer integer) {
                     setBadge(notiBadge, integer);
@@ -69,12 +69,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void reloadBadge(){
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        viewModel.loadProductCartQuantity(userId);
+        viewModel.loadUnreadNotiCount(userId);
+
+    }
+
     public void updateProductCartQuantity(int count){
         viewModel.setProductCartQuantityLiveData(count);
     }
 
     public void updateUnreadNotiQuantity(int count){
-        viewModel.getUnreadNotiCountLiveData().setValue(count);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        viewModel.getUnreadNotiCountLiveData(userId).setValue(count);
     }
 
     // method to set badge number in bottom navigation
@@ -88,5 +96,11 @@ public class MainActivity extends AppCompatActivity {
         else {
             badgeDrawable.setVisible(false);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadBadge();
     }
 }

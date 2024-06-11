@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.cart;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.Activity;
@@ -17,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -30,12 +33,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
 import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.checkout.CheckoutAddressActivity;
 import com.example.foodorderingapp.ui.adapter.CartAdapter;
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
@@ -49,6 +54,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import vn.momo.momo_partner.AppMoMoLib;
 
 public class CartFragment extends Fragment  implements CartAdapter.OnItemClickListener, CartToppingAdapter.OnCheckedChangeListener {
     TextView screenname;
@@ -68,11 +75,13 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
     private String tempSize = "";
     private CartToppingAdapter cartToppingAdapter;
     private MainActivity mainActivity;
-
+    private static final int CHECKOUT_REQUEST_CODE = 1;
+    private static final int LOGIN_REQUEST_CODE = 2;
     private String userId;
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,8 +92,8 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         if (userId == null) {
             // User ID not found, handle this case
             Intent intent = new Intent(getContext(), activity_login.class);
-            getActivity().finish();
-            startActivity(intent);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            return null;
         }
 
         binding = FragmentCartBinding.inflate(inflater, container, false);
@@ -107,7 +116,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckoutActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, CHECKOUT_REQUEST_CODE);
             }
         });
 
@@ -163,12 +172,13 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
             }
         });
 
-        BottomNavigationViewModel navigationViewModel = new BottomNavigationViewModel(userId);
+        BottomNavigationViewModel navigationViewModel = new BottomNavigationViewModel();
         viewModel.getCartItemCountLiveData().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 if(integer != null){
-                    mainActivity.updateProductCartQuantity(integer);
+//                  mainActivity.updateProductCartQuantity(integer);
+                    mainActivity.reloadBadge();
                 }
             }
         });
@@ -301,6 +311,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         return formattedPrice;
     }
 
+    // METHOD TO LOAD BOTTOM SHEET
     public void loadBottomSheetUI(Dialog dialog, OrderItem orderItem){
         bindingBottomSheet.setCartVM(viewModel); // Set the ViewModel if needed
         bindingBottomSheet.setOrderItem(orderItem);
@@ -389,6 +400,7 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         });
     }
 
+    // METHOD LISTEN CHECKBOX CHECKED EVENT
     @Override
     public void onItemCheckedChanged(boolean isChecked, Topping topping) {
         Log.d("firestore", "old tempCheckedTopping: " + tempCheckedTopping.toString());
@@ -402,6 +414,36 @@ public class CartFragment extends Fragment  implements CartAdapter.OnItemClickLi
         }
         Log.d("firestore", "new tempCheckedTopping: " + tempCheckedTopping.toString());
         bindingBottomSheet.btnConfirm.setText(setPriceFormatted(tempOrderItemPrice));
+    }
+
+    //receive result from login activity
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //GET DATA FROM COUPON ACTIVITY
+        if (requestCode == CHECKOUT_REQUEST_CODE && resultCode == RESULT_OK) {
+            viewModel.reloadData();
+        }
+        else if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+            if(data != null && data.hasExtra("isLogin")){
+                if(!data.getBooleanExtra("isLogin", false)){
+                    navController.popBackStack(); // This will navigate back to the previous fragment
+                }
+                else {
+                    navController.navigate(R.id.cartFragment);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.reloadData();
     }
 }
 

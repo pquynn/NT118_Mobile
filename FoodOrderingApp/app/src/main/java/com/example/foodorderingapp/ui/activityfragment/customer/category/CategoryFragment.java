@@ -1,8 +1,11 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.category;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryAdapter;
 import com.example.foodorderingapp.ui.adapter.CategoryListAdapter;
@@ -33,11 +37,14 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
     private CategoryListAdapter categoryListAdapter;
     private CategoryAdapter categoryAdapter;
     CategoryViewModel categoryViewModel;
+    private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
+    private MainActivity mainActivity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
+        mainActivity = (MainActivity) getActivity();
 
         rcvCategory = view.findViewById(R.id.rcv_category);
         rcvListCategory = view.findViewById(R.id.rcv_categoryList);
@@ -87,7 +94,7 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm khi gộp 2 product lại
         intent = new Intent(getActivity(), ProductDetailActivity.class);
         intent.putExtra("productID", product.getId());
-        startActivity(intent);
+        startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
     }
 
     //Phương thức tìm vị trí danh mục trong danh sách
@@ -107,5 +114,22 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         if (layoutManager != null) {
             layoutManager.scrollToPositionWithOffset(position, 0);
         }
+    }
+
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //GET DATA FROM COUPON ACTIVITY
+        if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("addToCart")) {
+                // if product is add to cart --> change badge
+//                if(data.getBooleanExtra("addToCart", false)){
+                    mainActivity.reloadBadge();
+//                }
+            }
+        }
+
     }
 }

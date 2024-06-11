@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.authentication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,16 +13,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.example.foodorderingapp.data.repository.admin.AdminHomeRepository;
-import com.example.foodorderingapp.data.repository.admin.AdminOrderRepository;
 import com.example.foodorderingapp.data.repository.authentication.AuthRepository;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.AccountNavigationFragment;
+import com.example.foodorderingapp.ui.activityfragment.customer.cart.CartFragment;
+import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -36,7 +38,6 @@ public class activity_login extends AppCompatActivity {
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
     private static final String KEY_TOKEN = "token";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +116,10 @@ public class activity_login extends AppCompatActivity {
                                     editor.putString(KEY_TOKEN, token);
                                     editor.apply();
 
-                                    Intent intent = new Intent(activity_login.this, MainActivity.class);
-                                    startActivity(intent);
+                                    //back to previous activity
+                                    Intent intent = new Intent();
+                                    intent.putExtra("isLogin", true);
+                                    setResult(RESULT_OK, intent);
                                     finish();
                                 }
 
@@ -187,6 +190,18 @@ public class activity_login extends AppCompatActivity {
                 }
             }
         });
+
+        //on back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent();
+                intent.putExtra("isLogin", false);
+                setResult(RESULT_OK, intent);
+                finish(); // Close the CouponActivity
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 //    private class PasswordEncryptionTask extends AsyncTask<String, Void, String> {

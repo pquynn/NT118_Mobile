@@ -114,4 +114,30 @@ public class NotificationRepository implements INotificationRepository{
 
     // method to delete notification when expire???
 
+    // method to calculate unread notification of user
+    public void calculateUnreadNoti(String idRecipient, IntegerCallback callback){
+        Query query = collectionRef
+                .whereEqualTo("ID_RECIPIENT", idRecipient)
+                .whereEqualTo("STATUS", "unread");
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            int unreadCount = 0;
+            if (!queryDocumentSnapshots.isEmpty()) {
+                // create an order list
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+//                    Notification notification = documentSnapshot.toObject(Notification.class);
+                    unreadCount++;
+                }
+                // callback
+                callback.onLoad(unreadCount);
+            } else {
+                callback.onLoad(0);
+            }
+        }).addOnFailureListener(e -> {
+            String errorMessage = "Failed to get noti: " + e.getMessage();
+            Log.e("FirestorenotiRepository", errorMessage);
+            callback.onError(errorMessage);
+        });
+    }
+
 }

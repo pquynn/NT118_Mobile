@@ -5,7 +5,7 @@
     <data>
         <!--        <variable-->
         <!--            name="checkoutVM"-->
-        <!--            type="com.example.foodorderingapp.ui.viewmodel.admin.refund.RefundViewModel" />-->
+        <!--            type="com.example.foodorderingapp.ui.viewmodel.customer.refund.RefundDetailViewModel" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

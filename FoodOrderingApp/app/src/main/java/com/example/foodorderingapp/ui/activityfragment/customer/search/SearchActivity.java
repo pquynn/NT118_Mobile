@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
@@ -18,6 +19,7 @@ import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 import com.example.foodorderingapp.ui.adapter.SearchAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.search.SearchViewModel;
@@ -32,6 +34,8 @@ public class SearchActivity extends AppCompatActivity {
     SearchAdapter searchAdapter;
     SearchView searchView;
     private SearchViewModel searchViewModel;
+//    private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
+//    private MainActivity mainActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,4 +113,21 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
+
+//    // method to get result from activity through intent (activity2 -> activity1)
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        //GET DATA FROM COUPON ACTIVITY
+//        if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+//            if (data != null && data.hasExtra("addToCart")) {
+//                // if product is add to cart --> change badge
+//                if(data.getBooleanExtra("addToCart", false)){
+//                    mainActivity.reloadBadge();
+//                }
+//            }
+//        }
+//
+//    }
 }

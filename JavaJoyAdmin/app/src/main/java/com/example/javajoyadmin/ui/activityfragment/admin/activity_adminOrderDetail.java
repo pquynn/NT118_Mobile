@@ -147,7 +147,7 @@ public class activity_adminOrderDetail extends AppCompatActivity {
                 txtTotalProduct.setText(formatNumber(order.getTotalPrice()) + " Đ");
                 txtDeliveryCost.setText(formatNumber(order.getDeliveryCost()) + " Đ");
                 txtCoupon.setText(formatNumber(order.getDiscountValue()) + " Đ");
-                txtPoint.setText(formatNumber(order.getPoint()));
+                txtPoint.setText(formatNumber(order.getPoint()) + " Đ");
                 txtIntoPrice.setText(formatNumber(order.getOrderPrice()) + " Đ");
 
                 orderItemMap.clear();

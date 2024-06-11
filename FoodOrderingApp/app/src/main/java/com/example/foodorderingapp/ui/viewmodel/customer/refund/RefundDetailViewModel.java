@@ -1,4 +1,4 @@
-package com.example.foodorderingapp.ui.viewmodel.admin.refund;
+package com.example.foodorderingapp.ui.viewmodel.customer.refund;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,26 +6,14 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.foodorderingapp.data.model.OrderItem;
-import com.example.foodorderingapp.data.model.entity.Coupon;
 import com.example.foodorderingapp.data.model.entity.Order;
-import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.model.entity.Refund;
-import com.example.foodorderingapp.data.model.entity.Topping;
-import com.example.foodorderingapp.data.repository.coupon.CouponRepository;
 import com.example.foodorderingapp.data.repository.order.IOrderRepository;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
-import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.data.repository.refund.IRefundRepository;
 import com.example.foodorderingapp.data.repository.refund.RefundRepository;
-import com.example.foodorderingapp.data.repository.topping.ToppingRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-public class RefundViewModel extends ViewModel {
+public class RefundDetailViewModel extends ViewModel {
     private String orderId;
     private ProgressDialog progressDialog; // Declare ProgressDialog
     private Context context; // Context variable
@@ -39,7 +27,7 @@ public class RefundViewModel extends ViewModel {
 
 
     // Constructor
-    public RefundViewModel(String orderId, Context context) {
+    public RefundDetailViewModel(String orderId, Context context) {
         this.orderId = orderId;
         this.context = context;
         orderRepository = new OrderRepository();

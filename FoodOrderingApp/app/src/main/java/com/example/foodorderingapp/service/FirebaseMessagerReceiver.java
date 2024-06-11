@@ -23,9 +23,12 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.UUID;
 
 public class FirebaseMessagerReceiver extends FirebaseMessagingService {
+    private MainActivity mainActivity;
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
+//        mainActivity = new MainActivity();
         if (message.getNotification() != null) {
+//            mainActivity.reloadBadge();
             showNotification(
                     message.getNotification().getTitle(),
                     message.getNotification().getBody());
@@ -46,6 +49,7 @@ public class FirebaseMessagerReceiver extends FirebaseMessagingService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000})
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent);

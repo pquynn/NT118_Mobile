@@ -1,5 +1,6 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.home;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
@@ -32,6 +33,7 @@ import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
 //import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
@@ -62,7 +64,8 @@ public class HomeFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
-
+    private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
+    private MainActivity mainActivity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -71,6 +74,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
 
         // get user id from shared preferences
         sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
@@ -149,7 +153,10 @@ public class HomeFragment extends Fragment {
                 //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
                 intent = new Intent(getActivity(), ProductDetailActivity.class);
                 intent.putExtra("productID", product.getId());
-                startActivity(intent);
+                startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
+//                startActivity(intent);
+
+
             });
             rcv_homeCategory.setHasFixedSize(true);
             rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
@@ -173,4 +180,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //GET DATA FROM COUPON ACTIVITY
+        if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("addToCart")) {
+                // if product is add to cart --> change badge
+//                if(data.getBooleanExtra("addToCart", false)){
+//                    mainActivity.reloadBadge();
+//                }
+                mainActivity.reloadBadge();
+            }
+        }
+
+    }
 }

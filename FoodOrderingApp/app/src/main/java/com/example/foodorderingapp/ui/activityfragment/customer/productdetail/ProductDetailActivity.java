@@ -13,11 +13,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -62,6 +66,7 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
+    private static final int LOGIN_REQUEST_CODE = 2;
     protected void onCreate(Bundle savedInstanceState) {
         // get user id from shared preferences
         sharedPreferences = getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
@@ -106,9 +111,19 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                viewModel.turnBack(false);
             }
         });
+
+        //on back pressed
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                viewModel.turnBack(false);
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+
 
         // init viewmodel
         viewModel = new ProductDetailViewModel(productId, this, this);
@@ -369,9 +384,9 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
             public void onClick(View v) {
                 if (userId == null) {
                     // User ID not found, handle this case
-                    finish();
+//                    finish();
                     Intent intent = new Intent(getApplicationContext(), activity_login.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
                 }
                 else{
                     //todo: add to cart
@@ -479,6 +494,26 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
                 toppings.remove(topping.getNameTopping());
             }
             viewModel.getProductCartLiveData().setValue(orderItem);
+    }
+
+    //receive result from login activity
+    // method to get result from activity through intent (activity2 -> activity1)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null && data.hasExtra("isLogin")){
+                if(data.getBooleanExtra("isLogin", false)){
+                    //get user id after login
+                    userId = sharedPreferences.getString(KEY_USER_ID, null);
+                    //todo: add to cart (continue proccess after user login)
+                    String note = binding.editTextDifferent.getText().toString();
+                    viewModel.getProductCartLiveData().getValue().setNote(note);
+                    viewModel.addToCart(userId);
+                }
+            }
+        }
     }
 
 }

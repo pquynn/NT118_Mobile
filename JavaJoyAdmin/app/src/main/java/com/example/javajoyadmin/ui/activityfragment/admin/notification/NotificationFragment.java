@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.javajoyadmin.R;
 import com.example.javajoyadmin.databinding.FragmentNotificationBinding;
+import com.example.javajoyadmin.ui.activityfragment.admin.AdminMainActivity;
 import com.example.javajoyadmin.ui.activityfragment.authentication.activity_login;
 import com.example.javajoyadmin.ui.adapter.NotificationAdapter;
 import com.example.javajoyadmin.data.model.entity.Notification;
@@ -33,12 +34,13 @@ public class NotificationFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
-    int role = 1;
-    TextView screenName;
-    FragmentNotificationBinding binding;
-    NotificationViewModel viewModel;
-    ArrayList<Notification> notiList;
-    NotificationAdapter adapter;
+    private int role = 1;
+    private TextView screenName;
+    private FragmentNotificationBinding binding;
+    private NotificationViewModel viewModel;
+    private ArrayList<Notification> notiList;
+    private NotificationAdapter adapter;
+    private AdminMainActivity activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class NotificationFragment extends Fragment {
             Intent intent = new Intent(getContext(), activity_login.class);
             startActivity(intent);
         }
+        activity = (AdminMainActivity) getActivity();
 
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -91,6 +94,8 @@ public class NotificationFragment extends Fragment {
                     binding.noNotificationContainer.setVisibility(View.GONE);
                     binding.scrollview.setVisibility(View.VISIBLE);
                 }
+
+                activity.reloadBadge();
             }
         });
 

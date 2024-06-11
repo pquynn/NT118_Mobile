@@ -106,4 +106,5 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
         selectedAddress = address;
         viewModel.getSelectedAddressLiveData().setValue(address);
     }
+
 }

@@ -1,5 +1,7 @@
 package com.example.foodorderingapp.ui.viewmodel.customer.productdetail;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -248,7 +250,7 @@ public class ProductDetailViewModel extends ViewModel {
                             public void onOrderLoaded(Order order) {
                                 dismissProgressDialog();
                                 Toast.makeText(context, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                                activity.finish();
+                                turnBack(true);
                             }
 
                             @Override
@@ -312,7 +314,7 @@ public class ProductDetailViewModel extends ViewModel {
                             runOnUiThread(() -> {
                                 dismissProgressDialog();
                                 Toast.makeText(context, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                                activity.finish();
+                                turnBack(true);
                             });
                         }
 
@@ -339,7 +341,7 @@ public class ProductDetailViewModel extends ViewModel {
                     runOnUiThread(() -> {
                         dismissProgressDialog();
                         Toast.makeText(context, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                        activity.finish();
+                        turnBack(true);
 
                     });
                 }
@@ -390,5 +392,14 @@ public class ProductDetailViewModel extends ViewModel {
         initProductCartLiveData();
         loadAveragePoint();
         Log.d("productdetail", "reloadData: product cart: " + productCartLiveData.getValue().toString());
+    }
+
+    //method to turnback
+    public void turnBack(boolean addToCart){
+        // Create an intent to hold the coupon data
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("addToCart", addToCart);
+        activity.setResult(RESULT_OK, resultIntent);
+        activity.finish(); // Close the CouponActivity
     }
 }

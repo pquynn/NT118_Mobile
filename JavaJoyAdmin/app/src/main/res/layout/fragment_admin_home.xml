@@ -184,17 +184,28 @@
                 android:gravity="center"
                 android:weightSum="1">
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lineChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_weight="1"
-                    android:padding="5dp">
+                    android:background="@drawable/rounded_white_container"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="5dp">
 
-                </com.github.mikephil.charting.charts.LineChart>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:padding="5dp">
 
+                    </com.github.mikephil.charting.charts.LineChart>
+                </LinearLayout>
             </TableRow>
         </TableLayout>
     </ScrollView>

@@ -16,22 +16,20 @@ import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import java.util.Map;
 
 public class BottomNavigationViewModel extends ViewModel {
-    private String userId = "";
     private MutableLiveData<Integer> productCartQuantityLiveData;
     private MutableLiveData<Integer> unreadNotiCountLiveData;
     private OrderRepository orderRepository;
     private NotificationRepository notificationRepository;
 
-    public BottomNavigationViewModel(String userId){
-        this.userId = userId;
+    public BottomNavigationViewModel(){
         orderRepository = new OrderRepository();
         notificationRepository = new NotificationRepository();
         productCartQuantityLiveData = new MutableLiveData<>();
         unreadNotiCountLiveData = new MutableLiveData<>();
     }
 
-    public LiveData<Integer> getProductCartQuantityLiveData() {
-        loadProductCartQuantity();
+    public LiveData<Integer> getProductCartQuantityLiveData(String userId) {
+        loadProductCartQuantity(userId);
         return productCartQuantityLiveData;
     }
 
@@ -39,12 +37,16 @@ public class BottomNavigationViewModel extends ViewModel {
         productCartQuantityLiveData.setValue(quantity);
     }
 
-    public MutableLiveData<Integer> getUnreadNotiCountLiveData() {
-        loadUnreadNotiCount();
+    public MutableLiveData<Integer> getUnreadNotiCountLiveData(String userId) {
+        loadUnreadNotiCount(userId);
         return unreadNotiCountLiveData;
     }
 
-    public void loadProductCartQuantity(){
+    public void loadProductCartQuantity(String userId){
+        if(userId == null) {
+            productCartQuantityLiveData.setValue(0);
+            return;
+        }
         orderRepository.calculateTotalProductCart(userId, new IOrderRepository.IntegerCallback() {
             @Override
             public void onLoaded(int intNumb) {
@@ -58,7 +60,11 @@ public class BottomNavigationViewModel extends ViewModel {
         });
     }
 
-    public void loadUnreadNotiCount(){
+    public void loadUnreadNotiCount(String userId){
+        if(userId == null) {
+            unreadNotiCountLiveData.setValue(0);
+            return;
+        }
         notificationRepository.calculateUnreadNoti(userId, new INotificationRepository.IntegerCallback() {
             @Override
             public void onLoad(int count) {

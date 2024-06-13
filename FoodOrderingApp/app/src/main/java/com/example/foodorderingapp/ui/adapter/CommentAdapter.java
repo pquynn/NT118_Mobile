@@ -46,6 +46,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
         holder.ratingBar.setRating(comment.getRatingBar());
+        holder.ratingBar.setIsIndicator(true);// hiển thị chế độ xem
     }
 
     @Override

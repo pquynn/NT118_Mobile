@@ -111,6 +111,7 @@ public class activity_forgetpassword extends AppCompatActivity {
                         }
                     });
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
 

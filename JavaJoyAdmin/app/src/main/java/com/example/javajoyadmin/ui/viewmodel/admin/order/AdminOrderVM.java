@@ -28,6 +28,7 @@ public class AdminOrderVM extends ViewModel {
 
             @Override
             public void onError(String errorMessage) {
+                orderListLiveData.setValue(null);
                 Log.e("AdminOrderVM", "Error load orders");
             }
         });

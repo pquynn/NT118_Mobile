@@ -121,43 +121,17 @@ public class AdminNewOrder extends Fragment {
                 listOrderItem.clear();
                 Adapter.notifyDataSetChanged(); // Thông báo adapter để cập nhật giao diện
 
-                for (Order i : orders) {
-                    if (i != null) {
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                if (orders != null) {
+                    for (Order i : orders) {
+                        if (i != null) {
+                            listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                        }
                     }
+                    // Thông báo adapter để cập nhật giao diện với dữ liệu mới
+                    Adapter.notifyDataSetChanged();
                 }
-                // Thông báo adapter để cập nhật giao diện với dữ liệu mới
-                Adapter.notifyDataSetChanged();
             }
         });
-
-
-////        listOrderItem = new ArrayList<>();
-////
-////        listOrderItem.clear();
-////            // Thông báo cho adapter rằng dữ liệu đã thay đổi
-////            Adapter.notifyDataSetChanged();
-//
-//        if (listOrderItem != null){
-//            listOrderItem.clear();
-//            // Thông báo cho adapter rằng dữ liệu đã thay đổi
-//            Adapter.notifyDataSetChanged();
-//        } else {
-//            listOrderItem = new ArrayList<>();
-//        }
-//
-//        adminOrderVM.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
-//            @Override
-//            public void onChanged(List<Order> orders) {
-//                for (Order i : orders) {
-//                    if (i != null) {
-//                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
-//                    }
-//                }
-//                Adapter = new AdminOrderItemAdapter(listOrderItem);
-//                recyclerViewList.setAdapter(Adapter);
-//            }
-//        });
     }
 
     @Override

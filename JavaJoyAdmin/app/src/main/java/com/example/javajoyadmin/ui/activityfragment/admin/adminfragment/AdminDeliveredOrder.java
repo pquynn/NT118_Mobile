@@ -1,6 +1,9 @@
 package com.example.javajoyadmin.ui.activityfragment.admin.adminfragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,15 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.javajoyadmin.R;
-import com.example.javajoyadmin.data.model.entity.Order;
-import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderVM;
-import com.example.javajoyadmin.ui.adapter.AdminOrderItemAdapter;
 import com.example.javajoyadmin.data.model.OrderItem;
+import com.example.javajoyadmin.data.model.entity.Order;
+import com.example.javajoyadmin.ui.adapter.AdminOrderItemAdapter;
+import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,13 +120,16 @@ public class AdminDeliveredOrder extends Fragment {
                 listOrderItem.clear();
                 Adapter.notifyDataSetChanged(); // Thông báo adapter để cập nhật giao diện
 
-                for (Order i : orders) {
-                    if (i != null) {
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                if (orders != null) {
+                    for (Order i : orders) {
+                        if (i != null) {
+                            listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                        }
                     }
+
+                    // Thông báo adapter để cập nhật giao diện với dữ liệu mới
+                    Adapter.notifyDataSetChanged();
                 }
-                // Thông báo adapter để cập nhật giao diện với dữ liệu mới
-                Adapter.notifyDataSetChanged();
             }
         });
     }

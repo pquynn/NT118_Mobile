@@ -152,6 +152,15 @@ public class AdminHome extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (viewModel != null){
+            viewModel.changeDate(selectedDate, lineChartYear);
+        }
+        updateViewModel();
+    }
+
     private void initVariables(View view) {
         txtRevenue = view.findViewById(R.id.txtRevenue);
         txtRefund = view.findViewById(R.id.txtRefund);

@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.javajoyadmin.R;
-import com.example.javajoyadmin.data.model.entity.Order;
-import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderVM;
-import com.example.javajoyadmin.ui.adapter.AdminOrderItemAdapter;
 import com.example.javajoyadmin.data.model.OrderItem;
+import com.example.javajoyadmin.data.model.entity.Order;
+import com.example.javajoyadmin.ui.adapter.AdminOrderItemAdapter;
+import com.example.javajoyadmin.ui.viewmodel.admin.order.AdminOrderVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,19 +98,43 @@ public class AdminRefundOrder extends Fragment {
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
-        listOrderItem = new ArrayList<>();
 
-        adminOrderVM.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
+        listOrderItem = new ArrayList<>();
+        Adapter = new AdminOrderItemAdapter(listOrderItem);
+        recyclerViewList.setAdapter(Adapter);
+    }
+
+    public void LoadListOrder() {
+        // Loại bỏ Observer cũ
+        adminOrderVM.getOrderListLiveData().removeObservers(this);
+
+
+        // Thiết lập observer để nhận dữ liệu mới
+        adminOrderVM.getOrderListLiveData().observe(this, new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
-                for (Order i : orders) {
-                    if (i != null) {
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                // Cập nhật lại listOrderItem với dữ liệu mới
+
+                // Xóa dữ liệu cũ trong listOrderItem
+                listOrderItem.clear();
+                Adapter.notifyDataSetChanged(); // Thông báo adapter để cập nhật giao diện
+
+                if (orders != null) {
+                    for (Order i : orders) {
+                        if (i != null) {
+                            listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                        }
                     }
+                    // Thông báo adapter để cập nhật giao diện với dữ liệu mới
+                    Adapter.notifyDataSetChanged();
                 }
-                Adapter = new AdminOrderItemAdapter(listOrderItem);
-                recyclerViewList.setAdapter(Adapter);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LoadListOrder();
     }
 }

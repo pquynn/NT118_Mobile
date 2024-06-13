@@ -120,13 +120,15 @@ public class AdminCancelOrder extends Fragment {
                 listOrderItem.clear();
                 Adapter.notifyDataSetChanged(); // Thông báo adapter để cập nhật giao diện
 
-                for (Order i : orders) {
-                    if (i != null) {
-                        listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                if (orders != null) {
+                    for (Order i : orders) {
+                        if (i != null) {
+                            listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                        }
                     }
+                    // Thông báo adapter để cập nhật giao diện với dữ liệu mới
+                    Adapter.notifyDataSetChanged();
                 }
-                // Thông báo adapter để cập nhật giao diện với dữ liệu mới
-                Adapter.notifyDataSetChanged();
             }
         });
     }

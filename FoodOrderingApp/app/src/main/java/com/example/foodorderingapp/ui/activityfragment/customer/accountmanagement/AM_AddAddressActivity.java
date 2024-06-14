@@ -34,6 +34,7 @@ public class AM_AddAddressActivity extends AppCompatActivity {
     String userId, userAddressId;
     UserAddressVM userAddressVM;
     EditText input_recipient_name, input_recipient_phone, input_address_detail, input_ward, input_district, input_city;
+    TextView notice_error_phone;
     Button btn_saveAddress;
     AlertDialog progressDialog;
     LinearLayout btn_getAddress; //nút chuyển activity lấy địa chỉ
@@ -71,6 +72,7 @@ public class AM_AddAddressActivity extends AppCompatActivity {
         input_city = findViewById(R.id.input_city);
         btn_saveAddress = findViewById(R.id.btn_saveAddress);
         btn_getAddress = findViewById(R.id.ll_getAddress);
+        notice_error_phone = findViewById(R.id.notice_error_phone);
 
         // Tạo AlertDialog với ProgressBar
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -106,33 +108,43 @@ public class AM_AddAddressActivity extends AppCompatActivity {
                 btn_saveAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String name = String.valueOf(input_recipient_name.getText());
-                        String phone = String.valueOf(input_recipient_phone.getText());
-                        String addressDetail = String.valueOf(input_address_detail.getText());
-                        String ward = String.valueOf(input_ward.getText());
-                        String district = String.valueOf(input_district.getText());
-                        String city = String.valueOf(input_city.getText());
-                        String userId = intent.getStringExtra("user_id");
-                        UserAddress userAddress = new UserAddress(name, addressDetail, city, district, ward, phone, userId);
-                        progressDialog.show();
+                        if(!isPhoneNumberValid(input_recipient_phone.getText().toString())){
+                            notice_error_phone.setVisibility(View.VISIBLE);
+                        }else{
+                            notice_error_phone.setVisibility(View.GONE);
+                        }
+                        if (isInputValid()) {
+                            String name = String.valueOf(input_recipient_name.getText());
+                            String phone = String.valueOf(input_recipient_phone.getText());
+                            String addressDetail = String.valueOf(input_address_detail.getText());
+                            String ward = String.valueOf(input_ward.getText());
+                            String district = String.valueOf(input_district.getText());
+                            String city = String.valueOf(input_city.getText());
+                            String userId = intent.getStringExtra("user_id");
+                            UserAddress userAddress = new UserAddress(name, addressDetail, city, district, ward, phone, userId);
+                            progressDialog.show();
 
-                        repository_user.updateAddress(userAddressId, userAddress, new UserInfoRepository.userAddressCallback() {
-                            @Override
-                            public void loadUserAddressSuccess(UserAddress userAddress) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Cập nhật địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                            repository_user.updateAddress(userAddressId, userAddress, new UserInfoRepository.userAddressCallback() {
+                                @Override
+                                public void loadUserAddressSuccess(UserAddress userAddress) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Cập nhật địa chỉ thành công", Toast.LENGTH_SHORT).show();
 
-                                Intent resultIntent = new Intent();
-                                setResult(RESULT_OK, resultIntent);
-                                finish();
-                            }
+                                    Intent resultIntent = new Intent();
+                                    setResult(RESULT_OK, resultIntent);
+                                    finish();
+                                }
 
-                            @Override
-                            public void loadUsserAddressError(Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Cập nhật địa chỉ thất bại!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void loadUsserAddressError(Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Cập nhật địa chỉ thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin địa chỉ", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
             }
@@ -142,36 +154,57 @@ public class AM_AddAddressActivity extends AppCompatActivity {
                 btn_saveAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String name = String.valueOf(input_recipient_name.getText());
-                        String phone = String.valueOf(input_recipient_phone.getText());
-                        String addressDetail = String.valueOf(input_address_detail.getText());
-                        String ward = String.valueOf(input_ward.getText());
-                        String district = String.valueOf(input_district.getText());
-                        String city = String.valueOf(input_city.getText());
-                        String userId = intent.getStringExtra("user_id");
-                        UserAddress userAddress = new UserAddress(name, addressDetail, city, district, ward, phone, userId);
-                        progressDialog.show();
-                        repository_user.addAddress(userAddress, new UserInfoRepository.userAddressCallback() {
-                            @Override
-                            public void loadUserAddressSuccess(UserAddress userAddress) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                        if(!isPhoneNumberValid(input_recipient_phone.getText().toString())){
+                            notice_error_phone.setVisibility(View.VISIBLE);
+                        }else{
+                            notice_error_phone.setVisibility(View.GONE);
+                        }
+                        if (isInputValid()) {
+                            String name = String.valueOf(input_recipient_name.getText());
+                            String phone = String.valueOf(input_recipient_phone.getText());
+                            String addressDetail = String.valueOf(input_address_detail.getText());
+                            String ward = String.valueOf(input_ward.getText());
+                            String district = String.valueOf(input_district.getText());
+                            String city = String.valueOf(input_city.getText());
+                            String userId = intent.getStringExtra("user_id");
+                            UserAddress userAddress = new UserAddress(name, addressDetail, city, district, ward, phone, userId);
+                            progressDialog.show();
+                            repository_user.addAddress(userAddress, new UserInfoRepository.userAddressCallback() {
+                                @Override
+                                public void loadUserAddressSuccess(UserAddress userAddress) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
 
-                                Intent resultIntent = new Intent();
-                                setResult(RESULT_OK, resultIntent);
-                                finish();
-                            }
+                                    Intent resultIntent = new Intent();
+                                    setResult(RESULT_OK, resultIntent);
+                                    finish();
+                                }
 
-                            @Override
-                            public void loadUsserAddressError(Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void loadUsserAddressError(Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Vui lòng nhập đầy đủ thông tin địa chỉ", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
         }
+
+        input_recipient_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String phone = input_recipient_phone.getText().toString();
+                    if (!isPhoneNumberValid(phone)) {
+                        input_recipient_phone.setError("Số điện thoại không hợp lệ");
+                    }
+                }
+            }
+        });
 
 
         // set button back click event
@@ -204,6 +237,21 @@ public class AM_AddAddressActivity extends AppCompatActivity {
             Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
             activityResultLauncher.launch(intentNew);
         });
+
+    }
+
+    private boolean isInputValid() {
+        return !input_recipient_name.getText().toString().isEmpty() &&
+                !input_recipient_phone.getText().toString().isEmpty() &&
+                !input_address_detail.getText().toString().isEmpty() &&
+                !input_ward.getText().toString().isEmpty() &&
+                !input_district.getText().toString().isEmpty() &&
+                !input_city.getText().toString().isEmpty()&&
+                isPhoneNumberValid(input_recipient_phone.getText().toString());
+    }
+
+    private boolean isPhoneNumberValid(String phone) {
+        return phone.matches("0\\d{9}");
     }
 
 }

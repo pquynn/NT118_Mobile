@@ -117,6 +117,4 @@ dependencies {
     implementation ("com.google.api-client:google-api-client:1.33.0")
     implementation ("com.android.volley:volley:1.2.1")
     implementation ("com.google.code.gson:gson:2.8.6")
-
-    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
 }

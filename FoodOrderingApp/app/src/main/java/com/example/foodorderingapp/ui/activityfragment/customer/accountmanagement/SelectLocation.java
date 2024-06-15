@@ -33,7 +33,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.foodorderingapp.R;
-import com.example.foodorderingapp.data.model.GeocodingHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -152,7 +151,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 // Thực hiện lấy vị trí hiện tại
                 progressBar.setVisibility(View.VISIBLE);
-                getLocation();
+                GetLocation();
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -174,16 +173,14 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
 
                     Geocoder geocoder = new Geocoder(SelectLocation.this);
                     try {
+                        // Lấy địa chỉ từ dữ liệu tìm kiếm
                         addressList = geocoder.getFromLocationName(String.valueOf(txtAddress.getText()), 1);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
 
-                    if (addressList != null && !addressList.isEmpty()){
-//                        txtAddress.setText(addressList != null ? addressList.get(0).getAddressLine(0) : null);
-
+                    if (addressList != null && !addressList.isEmpty()) {
                         Address address = addressList.get(0); // Lấy địa chỉ đầu tiên
-                        txtAddress.setText(address.getAddressLine(0));
 
                         mapFragment.getMapAsync(new OnMapReadyCallback() {
                             @Override
@@ -195,7 +192,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                                 currentLocation.setLatitude(address.getLatitude());
                                 currentLocation.setLongitude(address.getLongitude());
 
-                                GetLocationAddress();
+                                PrintLocation();
 
                                 myMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí của bạn"));
                                 myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
@@ -217,7 +214,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
     }
 
     // Lấy địa chỉ in địa chỉ lên ô tìm kiếm
-    private void GetLocationAddress(){
+    private void PrintLocation() {
         List<Address> addressList = null;
 
         Geocoder geocoder = new Geocoder(SelectLocation.this);
@@ -226,24 +223,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
             if (addressList != null && !addressList.isEmpty()) {
                 String addressLine = addressList.get(0).getAddressLine(0);
 
-//                // Kiểm tra nếu addressLine là Plus Code
-//                if (addressLine != null && addressLine.matches("[7-9A-HJ-NP-TV-Z]{8}\\+[A-Z0-9]{2}")) {
-//                    Log.d("PLUSCODE", "1");
-//                    // Xử lý Plus Code nếu cần thiết
-//                    String apiKey = "AIzaSyAjnJW1vTAVaCO3dCYDE1EBW6mVWKtJniE";
-//                    String formattedAddress = GeocodingHelper.getAddressFromPlusCode(addressLine, apiKey);
-//                    if (formattedAddress != null) {
-//                        txtAddress.setText(formattedAddress);
-//                    } else {
-//                        Log.d("Geocoding", "Không tìm thấy địa chỉ từ Plus Code");
-//                    }
-//                } else {
-                    // Nếu là địa chỉ thông thường
-                    Log.d("address.getLatitude()", currentLocation.getLatitude()+"");
-                    Log.d("address.getLongitude()", currentLocation.getLongitude()+"");
-                    Log.d("Retrieved Address", addressLine);
-                    txtAddress.setText(addressLine);
-                //}
+                txtAddress.setText(addressLine);
             } else {
                 Log.d("Geocoder", "Không tìm thấy địa chỉ từ tọa độ");
             }
@@ -252,7 +232,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void getLocation() {
+    private void GetLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
             return;
@@ -285,18 +265,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                         if (location != null) {
                             currentLocation = location;
 
-//                            List<Address> addressList = null;
-//
-//                            Geocoder geocoder = new Geocoder(SelectLocation.this);
-//                            try {
-//                                addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                            } catch (Exception e) {
-//                                throw new RuntimeException(e);
-//                            }
-//
-//                            txtAddress.setText(addressList != null ? addressList.get(0).getAddressLine(0) : null);
-
-                            GetLocationAddress();
+                            PrintLocation();
 
                             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                             myMap.clear();
@@ -328,7 +297,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == FINE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
+                GetLocation();
             } else {
                 Toast.makeText(this, "Hãy cấp quyền truy cập vị trí trong Cài đặt!", Toast.LENGTH_SHORT).show();
             }

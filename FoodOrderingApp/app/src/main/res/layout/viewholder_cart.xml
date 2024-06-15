@@ -113,7 +113,7 @@
             <TextView
                 android:id="@+id/txt_quantity"
                 style="@style/btn_count"
-                android:layout_width="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:text="@{String.valueOf(orderItem.quantity)}"
                 app:layout_constraintBottom_toBottomOf="parent"

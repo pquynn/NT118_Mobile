@@ -43,7 +43,8 @@ public class AM_AddAddressActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
-
+    // Define a boolean variable to keep track of the activity state
+    private boolean isSelectLocationActivityOpen = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // get user id from shared preferences
@@ -187,6 +188,8 @@ public class AM_AddAddressActivity extends AppCompatActivity {
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
+                    // Reset the flag when the activity is finished
+                    isSelectLocationActivityOpen = false;
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
 
@@ -201,8 +204,17 @@ public class AM_AddAddressActivity extends AppCompatActivity {
 
         // Nút chuyển qua trang chọn địa chỉ
         btn_getAddress.setOnClickListener(v -> {
-            Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
-            activityResultLauncher.launch(intentNew);
+            // Check if the SelectLocation activity is already open
+            if (!isSelectLocationActivityOpen) {
+                // Set the flag to indicate that the activity is now open
+                isSelectLocationActivityOpen = true;
+
+                // Launch the SelectLocation activity
+                Intent intentNew = new Intent(AM_AddAddressActivity.this, SelectLocation.class);
+
+                // Add a listener to handle the result
+                activityResultLauncher.launch(intentNew);
+            }
         });
     }
 

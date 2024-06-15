@@ -36,8 +36,6 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
     private MutableLiveData<Product> productLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
-    private MutableLiveData<Integer> cartItemCountLiveData = new MutableLiveData<>();
-//    private MutableLiveData<Map<String, Integer>> sizeListLiveData = new MutableLiveData<>();
     private List<Topping> toppings = new ArrayList<>();
     private MutableLiveData<Boolean> isValidCheckout = new MutableLiveData<>();
 
@@ -57,7 +55,11 @@ public class CartViewModel extends ViewModel {
 
     // Getter
     public MutableLiveData<Integer> getTotalPrice() {
-        totalPrice.setValue(calculateTotalPrice(orderLiveData.getValue().getOrderItem()));
+        if(orderLiveData.getValue()!= null)
+            totalPrice.setValue(calculateTotalPrice(orderLiveData.getValue().getOrderItem()));
+        else{
+            totalPrice.setValue(0);
+        }
         return totalPrice;
     }
 
@@ -92,11 +94,6 @@ public class CartViewModel extends ViewModel {
         return productLiveData;
     }
 
-    public MutableLiveData<Integer> getCartItemCountLiveData() {
-        loadCartItemCount();
-        return cartItemCountLiveData;
-    }
-
     // load method
     public void loadCart(String userId){
         orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
@@ -108,7 +105,9 @@ public class CartViewModel extends ViewModel {
 
             @Override
             public void onError(String errorMessage) {
-
+                if(errorMessage.equals("Cart not found")){
+                    orderLiveData.setValue(null);
+                }
             }
         });
     }
@@ -142,24 +141,25 @@ public class CartViewModel extends ViewModel {
             // Handle the case where orderId or orderItem is null
             return;
         }
-        orderRepository.addOrUpdateProductCart(
-                orderId,
-                orderItemId,
-                orderItem,
-                new IOrderRepository.OrderChangedCallback() {
-                    @Override
-                    public void onOrderChanged() {
+            orderRepository.addOrUpdateProductCart(
+                    orderId,
+                    orderItemId,
+                    orderItem,
+                    new IOrderRepository.OrderChangedCallback() {
+                        @Override
+                        public void onOrderChanged() {
 //                        dismissProgressDialog();
-                        Toast.makeText(context, "Rất tiếc, bạn chỉ có thể mua tối đa " + orderItem.getQuantity() +" sản phẩm " + orderItem.getProductName(), Toast.LENGTH_SHORT).show();
-                        reloadData();
-                    }
+                            Toast.makeText(context, "Rất tiếc, bạn chỉ có thể mua tối đa " + orderItem.getQuantity() + " sản phẩm " + orderItem.getProductName(), Toast.LENGTH_SHORT).show();
+                            reloadData();
+                        }
 
-                    @Override
-                    public void onError(String errorMessage) {
+                        @Override
+                        public void onError(String errorMessage) {
 
+                        }
                     }
-                }
-        );
+            );
+
     }
 
     // method to load product list live data base on order item
@@ -257,7 +257,8 @@ public class CartViewModel extends ViewModel {
         loadCart(userId);
         loadToppingList();
         isValidCheckout.setValue(true);
-        loadCartItemCount();
+        loadProductList();
+//        loadCartItemCount();
     }
 
     
@@ -275,7 +276,7 @@ public class CartViewModel extends ViewModel {
                 new IOrderRepository.OrderChangedCallback() {
                     @Override
                     public void onOrderChanged() {
-                        loadCartItemCount();
+//                        loadCartItemCount();
                     }
 
                     @Override
@@ -333,8 +334,8 @@ public class CartViewModel extends ViewModel {
                                 orderRepository.deleteProductCart(orderId, orderItemId, new IOrderRepository.OrderItemRemovedCallback() {
                                     @Override
                                     public void onOrderItemRemoved(String id) {
-                                        loadCart(userId);;
-                                        loadCartItemCount();
+                                        reloadData();
+//                                        loadCartItemCount();
                                         dismissProgressDialog();
                                     }
 
@@ -383,8 +384,8 @@ public class CartViewModel extends ViewModel {
             orderRepository.addOrUpdateProductCart(orderId, orderItemId, newOrderItem, new IOrderRepository.OrderChangedCallback() {
                 @Override
                 public void onOrderChanged() {
-                    loadCart(userId);
-                    loadCartItemCount();
+                    reloadData();
+//                    loadCartItemCount();
                     dismissProgressDialog();
                 }
 
@@ -394,23 +395,5 @@ public class CartViewModel extends ViewModel {
                 }
             });
         }
-    }
-
-    //method to load cart item count live data
-    public void loadCartItemCount(){
-        orderRepository.calculateTotalProductCart(userId, new IOrderRepository.IntegerCallback() {
-            @Override
-            public void onLoaded(int intNumb) {
-                cartItemCountLiveData.setValue(intNumb);
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-            }
-        });
-    }
-
-    public void setCartItemCountLiveData(int count){
-        cartItemCountLiveData.setValue(count);
     }
 }

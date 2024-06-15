@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.UserAddress;
 import com.example.foodorderingapp.databinding.ActivityCheckoutAddressBinding;
+import com.example.foodorderingapp.ui.activityfragment.customer.accountmanagement.AM_AddAddressActivity;
 import com.example.foodorderingapp.ui.adapter.CheckoutAddressAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.checkout.CheckoutAddressViewModel;
 
@@ -34,9 +35,7 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
     private FrameLayout btnBack;
     private TextView screenName;
     String userId;
-    private SharedPreferences sharedPreferences;
-    private static final String SHARE_PREF_NAME = "sharePrefName";
-    private static final String KEY_USER_ID = "userID";
+    private static final int REQUEST_ADD_ADDRESS = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +59,7 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
         // init viewmodel
         viewModel = new CheckoutAddressViewModel(userId, this);
 
-        // init adapter
+//        // init adapter
         userAddressList = new ArrayList<>();
         selectedAddress = new UserAddress();
         selectedAddress.setId("");
@@ -70,34 +69,49 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
         binding.recyclerViewAddress.setAdapter(adapter);
 
         // Observe the selected address
-        if (addressId != null && !addressId.isEmpty()) {
-            viewModel.getSelectedAddressLiveData(addressId).observe(this, userAddress -> {
+        viewModel.getSelectedAddressLiveData(addressId).observe(this, userAddress -> {
+            if(userAddress != null) {
                 selectedAddress = userAddress;
                 adapter.setSelectedAddress(selectedAddress); // Update the adapter with the new selected address
                 adapter.notifyDataSetChanged();
-            });
-        } else {
-            UserAddress userAddress = new UserAddress();
-            userAddress.setId("");
-            viewModel.getSelectedAddressLiveData().setValue(userAddress);
-        }
+            }
+        });
 
         // observe change in user address list
         viewModel.getUserAddressesLiveData().observe(this, userAddresses -> {
             userAddressList.clear();
-            userAddressList.addAll(userAddresses);
+            if(userAddresses != null && !userAddresses.isEmpty()){
+                userAddressList.addAll(userAddresses);
+                binding.btnAdd.setEnabled(true);
+            }
+            else{
+                binding.btnAdd.setEnabled(false);
+            }
             adapter.notifyDataSetChanged();
+
         });
 
         // button add click event
         binding.btnAdd.setOnClickListener(v -> {
-            // Create an intent to hold the address data
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("addressId", selectedAddress.getId());
-            setResult(RESULT_OK, resultIntent);
-            finish();
-
+            if(selectedAddress == null || selectedAddress.getId().isEmpty()){
+                Toast.makeText(this, "Bạn chưa chọn địa chỉ nhận hàng", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                // Create an intent to hold the address data
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("addressId", selectedAddress.getId());
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
         });
+
+        // button add address click event --> open add adress activity
+        binding.btnAddAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AM_AddAddressActivity.class);
+            intent.putExtra("user_id", userId);
+            startActivityIfNeeded(intent, REQUEST_ADD_ADDRESS);
+        });
+
     }
 
     // on viewholder click event
@@ -105,6 +119,16 @@ public class CheckoutAddressActivity extends AppCompatActivity implements Checko
     public void onItemClick(UserAddress address) {
         selectedAddress = address;
         viewModel.getSelectedAddressLiveData().setValue(address);
+    }
+
+    // on activity result from add address activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @javax.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD_ADDRESS && resultCode == RESULT_OK) {
+            viewModel.loadUserAddressList(userId);
+
+        }
     }
 
 }

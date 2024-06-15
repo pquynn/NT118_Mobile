@@ -4,7 +4,11 @@ import android.util.Log;
 
 import com.example.foodorderingapp.data.model.entity.Order;
 import com.example.foodorderingapp.data.model.entity.OrderItem;
+import com.example.foodorderingapp.data.model.entity.Product;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OrderRepository implements IOrderRepository {
     private FirebaseFirestore db;
@@ -255,7 +260,32 @@ public class OrderRepository implements IOrderRepository {
 
 
     // method to calculate product cart item count
-    public void calculateTotalProductCart(String userId, IntegerCallback callback){
+//    public void calculateTotalProductCart(String userId, IntegerCallback callback){
+//        Query query = collectionRef
+//                .whereEqualTo("ID_USER", userId)
+//                .whereEqualTo("STATUS", "Giỏ hàng");
+//
+//        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+//            if (!queryDocumentSnapshots.isEmpty()) {
+//                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+//                Order order = documentSnapshot.toObject(Order.class);
+//                int quantity = 0;
+//                for(Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()){
+//                    quantity += entry.getValue().getQuantity();
+//                }
+//                callback.onLoaded(quantity);
+//            }
+//            else
+//                callback.onLoaded(0);
+//        }).addOnFailureListener(e -> {
+//            String errorMessage = "Failed to get order: " + e.getMessage();
+//            Log.e("FirestoreOrderRepository", errorMessage);
+//            callback.onError(errorMessage);
+//        });
+//    }
+    private int quantity = 0;
+
+    public void calculateTotalProductCart(String userId, IntegerCallback callback) {
         Query query = collectionRef
                 .whereEqualTo("ID_USER", userId)
                 .whereEqualTo("STATUS", "Giỏ hàng");
@@ -264,14 +294,39 @@ public class OrderRepository implements IOrderRepository {
             if (!queryDocumentSnapshots.isEmpty()) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                 Order order = documentSnapshot.toObject(Order.class);
-                int quantity = 0;
-                for(Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()){
-                    quantity += entry.getValue().getQuantity();
+
+                // Use a list to keep track of pending tasks
+                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+                AtomicInteger quantity = new AtomicInteger(0);
+
+                for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                    DocumentReference productRef = db.collection("PRODUCT").document(entry.getValue().getIdProduct());
+                    Task<DocumentSnapshot> task = productRef.get();
+                    tasks.add(task);
+
+                    task.addOnSuccessListener(documentSnapshot1 -> {
+                        if (documentSnapshot1.exists()) {
+                            Product product = documentSnapshot1.toObject(Product.class);
+                            String size = (entry.getValue().getSize() == null || entry.getValue().getSize().isEmpty()) ? "Mặc định" : entry.getValue().getSize();
+                            int productQuantity = product.getProductSize().get(size).getOrDefault("QUANTITY", 0);
+
+                            if (productQuantity > 0) {
+                                quantity.addAndGet(entry.getValue().getQuantity());
+                            }
+                        }
+                    }).addOnFailureListener(e -> Log.e("FirestoreOrderRepository", e.getMessage()));
                 }
-                callback.onLoaded(quantity);
-            }
-            else
+
+                // Use Tasks.whenAllComplete to handle completion of all tasks
+                Tasks.whenAllComplete(tasks).addOnSuccessListener(voids -> callback.onLoaded(quantity.get()))
+                        .addOnFailureListener(e -> {
+                            String errorMessage = "Failed to get all product details: " + e.getMessage();
+                            Log.e("FirestoreOrderRepository", errorMessage);
+                            callback.onError(errorMessage);
+                        });
+            } else {
                 callback.onLoaded(0);
+            }
         }).addOnFailureListener(e -> {
             String errorMessage = "Failed to get order: " + e.getMessage();
             Log.e("FirestoreOrderRepository", errorMessage);

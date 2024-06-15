@@ -31,9 +31,11 @@ import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.databinding.BottomsheetEditCartBinding;
 import com.example.foodorderingapp.databinding.ViewholderCartBinding;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel;
 //import com.example.foodorderingapp.databinding.ViewholderCartBinding;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,15 +45,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private CartViewModel cartViewModel;
     private Map<String, OrderItem> orderItemMap;
     private List<Product> productList;
-    private OnItemClickListener listener;
+//    private OnItemClickListener listener;
     private Context context;
+    private MainActivity mainActivity;
+    private boolean isDialogOpen = false;
 
-    public CartAdapter(Map<String, OrderItem> orderItemMap, List<Product> productList, CartViewModel cartViewModel, OnItemClickListener listener, Context context){
+    private Product tempProduct;
+    private int tempOrderItemPrice = 0, oldSizePrice = 0, newSizePrice = 0;
+    private String tempSize = "";
+    private List<Topping> toppings;
+    private List<String> toppingNames, toppingSelected, tempCheckedTopping;
+    private int productQuantity;
+    public CartAdapter(Map<String, OrderItem> orderItemMap,
+                       List<Product> productList,
+                       CartViewModel cartViewModel,
+                       Context context,
+                       MainActivity mainActivity){
         this.orderItemMap = orderItemMap;
         this.cartViewModel = cartViewModel;
         this.productList = productList;
-        this.listener = listener;
+//        this.listener = listener;
         this.context = context;
+        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -67,8 +82,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         List<String> keys = new ArrayList<>(orderItemMap.keySet());
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
-        holder.bind(orderItem);
-
         // check if product is available
         //1. get size of order item
         String size = (orderItem.getSize() == null || orderItem.getSize().isEmpty()) ? "Mặc định" : orderItem.getSize();
@@ -83,6 +96,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         }
 
+        holder.bind(orderItem, product);
+
         //3. check --> if unavailable --> disable button checkout
         int grey = ContextCompat.getColor(context, R.color.transparent50_gray);
         int dark = ContextCompat.getColor(context, R.color.dark_text);
@@ -94,8 +109,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.txtProductCost.setTextColor(dark);
         holder.binding.txtProductName.setTextColor(dark);
         holder.binding.txtProductSize.setTextColor(dark);
-
-        int productQuantity = 0;
 
         if (product != null) {
             productQuantity = product.getProductSize().get(size).getOrDefault("QUANTITY", 0);
@@ -114,9 +127,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             } else if (productQuantity < orderItem.getQuantity() && productQuantity > 0) {
                 // if product quantity is less than order item quantity --> update order item
+                cartViewModel.setIsValidCheckout(true);
                 orderItem.setQuantity(productQuantity);
 //                notifyDataSetChanged();
                 cartViewModel.updateOrderItemByOrderId(key);
+            } else if (orderItem.getQuantity() == 0 && productQuantity > 0){
+                cartViewModel.reloadData();
             }
 
         }
@@ -125,6 +141,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 cartViewModel.deleteProductCart(key);
+                mainActivity.reloadBadge();
             }
         });
 
@@ -133,11 +150,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //reload data to get realtime product quantity
+                cartViewModel.reloadData();
+
                 int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
                 quantity -= 1;
                 if(quantity > 0){
                     orderItem.setQuantity(quantity);
                     notifyDataSetChanged();
+                    mainActivity.reloadBadge();
                     cartViewModel.onChangeQuantityButtonClick(key, -1 * orderItem.getPrice());
                 }
                 // show message to confirm delete product or not
@@ -152,11 +173,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
-                quantity += 1;
-                orderItem.setQuantity(quantity);
-                notifyDataSetChanged();
-                cartViewModel.onChangeQuantityButtonClick(key, 1 * orderItem.getPrice());
+                cartViewModel.reloadData();
+                if(productQuantity > 0){
+                    int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString());
+                    quantity += 1;
+                    orderItem.setQuantity(quantity);
+                    notifyDataSetChanged();
+                    mainActivity.reloadBadge();
+                    cartViewModel.onChangeQuantityButtonClick(key, 1 * orderItem.getPrice());
+                }
 
             }
         });
@@ -166,7 +191,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(key, orderItem);
+//                listener.onItemClick(key, orderItem);
+                if (!isDialogOpen) {
+                    cartViewModel.reloadData();
+                    holder.showBottomSheetDialog(context, key, orderItem);
+                }
             }
         });
 
@@ -201,22 +230,207 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ViewholderCartBinding binding;
-
+        private Dialog dialog = new Dialog(context);
+        private BottomsheetEditCartBinding bindingBottomSheet;
+        private CartToppingAdapter cartToppingAdapter;
+        private Product product;
+        private OrderItem orderItem;
         public ViewHolder(@NonNull ViewholderCartBinding binding){
             super(binding.getRoot());
+            //init cart view holder binding
             this.binding = binding;
-
+            //init bottom sheet binding
+            bindingBottomSheet = BottomsheetEditCartBinding.inflate(LayoutInflater.from(context));
+            dialog.setContentView(bindingBottomSheet.getRoot());
+            bindingBottomSheet.setLifecycleOwner(binding.getLifecycleOwner());
         }
 
-        void bind(OrderItem orderItem){
+        public BottomsheetEditCartBinding getBindingBottomSheet(){
+            return bindingBottomSheet;
+        }
+
+        void bind(OrderItem orderItem, Product product){
+            this.orderItem = orderItem;
+            this.product = product;
             binding.setOrderItem(orderItem);
+            bindingBottomSheet.setProduct(product);
+            bindingBottomSheet.setCartVM(cartViewModel); // Set the ViewModel if needed
+            bindingBottomSheet.setOrderItem(orderItem);
             binding.executePendingBindings();
+        }
+
+        public void showBottomSheetDialog(Context context, String key, OrderItem orderItem) {
+            isDialogOpen = true; // Update dialog state
+
+            this.orderItem = orderItem;
+
+            // Initialize tempCheckedTopping here
+            tempCheckedTopping = new ArrayList<>();
+
+            // load UI
+            loadBottomSheetUI(dialog);
+
+
+            // Size Radio button check event listener
+            if(orderItem.getSize() != null)
+                tempSize = orderItem.getSize();
+            tempOrderItemPrice = orderItem.getPrice();
+            // Assuming bindingBottomSheet.radioGroup is your RadioGroup
+            if(tempSize != null) {
+                bindingBottomSheet.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        // get old size price
+                        if (tempProduct != null && tempProduct.getProductSize() != null) {
+                            Map<String, Map<String, Integer>> size = tempProduct.getProductSize();
+                            oldSizePrice = size.get(tempSize).get("PRICE");
+                            // Find which radio button is checked
+                            RadioButton checkedRadioButton = group.findViewById(checkedId);
+                            tempSize = checkedRadioButton.getText().toString();
+                            newSizePrice = tempProduct.getProductSize().get(tempSize).get("PRICE");
+                            tempOrderItemPrice = tempOrderItemPrice + newSizePrice - oldSizePrice;
+                            bindingBottomSheet.btnConfirm.setText(setPriceFormatted(tempOrderItemPrice));
+                        }
+                    }
+
+                });
+            }
+
+            // Button confirm edit cart click event listenr
+            bindingBottomSheet.btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    String note = bindingBottomSheet.txtNote.getText().toString();
+                    cartViewModel.onConfrimButtonClick(key, tempProduct.getId(), tempSize, tempCheckedTopping, note, tempOrderItemPrice);
+                }
+            });
+
+            // dismiss dialog
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    isDialogOpen = false; // Update dialog state when dismissed
+                    tempSize = "";
+                    toppingNames.clear();
+                    tempCheckedTopping.clear();
+                    tempOrderItemPrice = 0;
+                    cartViewModel.reloadData();
+                }
+            });
+
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
+        }
+
+        // METHOD TO LOAD BOTTOM SHEET
+        public void loadBottomSheetUI(Dialog dialog){
+            // init collection
+            toppings = cartViewModel.getToppings();
+            toppingSelected = new ArrayList<>();
+            toppingNames = new ArrayList<>();
+
+            // init adapter
+            cartToppingAdapter = new CartToppingAdapter(toppings, toppingNames, toppingSelected, cartViewModel, new CartToppingAdapter.OnCheckedChangeListener() {
+                @Override
+                public void onItemCheckedChanged(boolean isChecked, Topping topping) {
+//                    Log.d("fixcart", "old tempCheckedTopping: " + tempCheckedTopping.toString());
+                    if (isChecked) {
+                        tempOrderItemPrice += topping.getPriceTopping();
+                        tempCheckedTopping.add(topping.getNameTopping());
+                    } else {
+                        tempOrderItemPrice -= topping.getPriceTopping();
+                        if (tempCheckedTopping != null)
+                            tempCheckedTopping.remove(topping.getNameTopping());
+                    }
+//                    Log.d("fixcart", "new tempCheckedTopping: " + tempCheckedTopping.toString());
+                    bindingBottomSheet.btnConfirm.setText(setPriceFormatted(tempOrderItemPrice));
+                }
+            });
+            bindingBottomSheet.recyclerViewTopping.setLayoutManager(new LinearLayoutManager(dialog.getOwnerActivity()));
+            bindingBottomSheet.recyclerViewTopping.setAdapter(cartToppingAdapter);
+
+            //assign product to temp product for size and topping event listener
+            if(product != null)
+                tempProduct = product;
+
+            // show topping area if not null
+            if (product != null && product.getTopping() != null) {
+                bindingBottomSheet.toppingArea.setVisibility(View.VISIBLE);
+                toppingNames.clear();
+                toppingNames.addAll(product.getTopping());
+                Log.d("fixcart", "order item topping: " + orderItem.getTopping().toString());
+                toppingSelected.clear();
+                toppingSelected.addAll(orderItem.getTopping());
+                tempCheckedTopping.clear();
+                tempCheckedTopping.addAll(orderItem.getTopping());
+                cartToppingAdapter.notifyDataSetChanged();
+            } else {
+
+                bindingBottomSheet.toppingArea.setVisibility(View.GONE);
+            }
+            // show size area if not null
+            if (product != null && product.getProductSize() != null) {
+                // hide all radio button and just show if one is exist
+                bindingBottomSheet.sizeArea.setVisibility(View.VISIBLE);
+                bindingBottomSheet.rbLarge.setVisibility(View.GONE);
+                bindingBottomSheet.rbMedium.setVisibility(View.GONE);
+                bindingBottomSheet.rbSmall.setVisibility(View.GONE);
+                bindingBottomSheet.tvBigPrice.setVisibility(View.GONE);
+                bindingBottomSheet.tvMediumPrice.setVisibility(View.GONE);
+                bindingBottomSheet.tvSmallPrice.setVisibility(View.GONE);
+                for (Map.Entry<String, Map<String, Integer>> entry : product.getProductSize().entrySet()) {
+                    String size = entry.getKey();
+                    Map<String, Integer> details = entry.getValue();
+
+//                    String orderItemSize = "";
+//                    if(orderItem.getSize() != null){
+//                        orderItemSize = orderItem.getSize();
+//                    }
+
+                    switch (size) {
+                        case "Lớn": {
+//                            if(orderItemSize.equals(size))
+//                                bindingBottomSheet.rbLarge.setChecked(true);
+                            bindingBottomSheet.rbLarge.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvBigPrice.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvBigPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            break;
+                        }
+                        case "Vừa": {
+//                            if(orderItemSize.equals(size))
+//                                bindingBottomSheet.rbMedium.setChecked(true);
+                            bindingBottomSheet.rbMedium.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvMediumPrice.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvMediumPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            break;
+                        }
+                        case "Nhỏ": {
+//                            if(orderItemSize.equals(size))
+//                                bindingBottomSheet.rbSmall.setChecked(true);
+                            bindingBottomSheet.rbSmall.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvSmallPrice.setVisibility(View.VISIBLE);
+                            bindingBottomSheet.tvSmallPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            break;
+                        }
+                        case "Mặc định":{
+                            bindingBottomSheet.sizeArea.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            } else {
+                bindingBottomSheet.sizeArea.setVisibility(View.GONE);
+            }
         }
     }
 
-
-    public interface OnItemClickListener {
-        void onItemClick(String key, OrderItem orderItem);
+    public static String setPriceFormatted(int price) {
+        double priceDb = (double) price;
+        String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
+        return formattedPrice;
     }
 }
 

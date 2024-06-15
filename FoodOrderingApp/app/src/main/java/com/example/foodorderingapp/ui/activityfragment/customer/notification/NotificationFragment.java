@@ -96,20 +96,21 @@ public class NotificationFragment extends Fragment {
         viewModel.getNotiListMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Notification>>() {
             @Override
             public void onChanged(List<Notification> notifications) {
-                binding.setNotificationVM(viewModel);
-                notiList.clear();
-                notiList.addAll(notifications);
-                adapter.notifyDataSetChanged();
-                binding.swipeRefreshLayout.setRefreshing(false);
+                if(notifications != null && !notifications.isEmpty()) {
+                    binding.setNotificationVM(viewModel);
+                    notiList.clear();
+                    notiList.addAll(notifications);
+                    adapter.notifyDataSetChanged();
 
-                if(notifications.isEmpty()){
-                    binding.noNotificationContainer.setVisibility(View.VISIBLE);
-                    binding.scrollview.setVisibility(View.GONE);
-                }
-                else{
                     binding.noNotificationContainer.setVisibility(View.GONE);
                     binding.scrollview.setVisibility(View.VISIBLE);
                 }
+                else {
+                    binding.noNotificationContainer.setVisibility(View.VISIBLE);
+                    binding.scrollview.setVisibility(View.GONE);
+                }
+
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 

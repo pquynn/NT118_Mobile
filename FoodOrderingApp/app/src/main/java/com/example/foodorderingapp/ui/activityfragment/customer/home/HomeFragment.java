@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment {
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
     private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
+    private static final int LOGIN_REQUEST_CODE = 2;
     private MainActivity mainActivity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +93,8 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), activity_login.class);
-                    startActivity(intent);
+//                    startActivity(intent);
+                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
                 }
             });
         }
@@ -185,14 +187,18 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //GET DATA FROM COUPON ACTIVITY
+        //GET DATA FROM PRODUCT DETAIL ACTIVITY
         if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("addToCart")) {
                 // if product is add to cart --> change badge
-//                if(data.getBooleanExtra("addToCart", false)){
-//                    mainActivity.reloadBadge();
-//                }
                 mainActivity.reloadBadge();
+            }
+        }
+        //UPDATE UI AFTER LOGIN
+        else if(requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+            if(data != null && data.hasExtra("isLogin")){
+                navController.navigate(R.id.homeFragment);
             }
         }
 

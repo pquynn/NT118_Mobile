@@ -5,20 +5,98 @@
     <data>
         <variable name="cartVM" type="com.example.foodorderingapp.ui.viewmodel.customer.cart.CartViewModel"/>
     </data>
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activityfragment.customer.cart.CartFragment">
 
+        <include
+            android:id="@+id/include5"
+            layout="@layout/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></include>
+
         <!--    start: body -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include5">
 
-            <include
-                android:id="@+id/include5"
-                layout="@layout/header"></include>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <!--                        empty container-->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/empty_cart_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv_empty_cart"
+                                android:layout_width="250dp"
+                                android:layout_height="250dp"
+                                android:layout_marginTop="120dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/empty_cart" />
+
+                            <TextView
+                                android:id="@+id/textView"
+                                style="@style/text_20sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="40dp"
+                                android:text="Giỏ hàng của bạn đang trống"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/iv_empty_cart" />
+
+                            <TextView
+                                android:id="@+id/textView9"
+                                style="@style/text_16sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Hãy tiếp tục tìm kiếm sản phẩm yêu thích!"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!--                        recycler view-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewCart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+                </ScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
@@ -33,10 +111,10 @@
                     android:id="@+id/out_of_stock_warning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
                     android:background="@color/box"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="8dp">
 
                     <ImageView
                         android:id="@+id/icon_info"
@@ -48,11 +126,12 @@
                         app:srcCompat="@drawable/information" />
 
                     <TextView
+                        style="@style/text_14sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/text_14sp"
-                        android:text="Thông báo: Hãy xóa sản phẩm hết hàng trong giỏ để tiếp tục đặt hàng!"/>
+                        android:text="Thông báo: Hãy xóa sản phẩm hết hàng trong giỏ để tiếp tục đặt hàng!" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,87 +171,86 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include5">
-                <!--    header-->
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linearLayout4"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:orientation="vertical"-->
+            <!--                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/include5">-->
+            <!--                &lt;!&ndash;    header&ndash;&gt;-->
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/swipeRefreshLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <ScrollView
-                        android:id="@+id/scrollview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+            <!--                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+            <!--                    android:id="@+id/swipeRefreshLayout"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent">-->
+            <!--                    <ScrollView-->
+            <!--                        android:id="@+id/scrollview"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content">-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:orientation="vertical">-->
 
-                            <!--    start: list view-->
-                            <!--    end: list view-->
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recyclerViewCart"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                tools:visibility="visible" />
-                        </LinearLayout>
-                    </ScrollView>
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-            </LinearLayout>
+            <!--                            &lt;!&ndash;    start: list view&ndash;&gt;-->
+            <!--                            &lt;!&ndash;    end: list view&ndash;&gt;-->
+            <!--                            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                                android:id="@+id/recyclerViewCart"-->
+            <!--                                android:layout_width="match_parent"-->
+            <!--                                android:layout_height="match_parent"-->
+            <!--                                android:layout_marginTop="10dp"-->
+            <!--                                tools:visibility="visible" />-->
+            <!--                        </LinearLayout>-->
+            <!--                    </ScrollView>-->
+            <!--                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+            <!--            </LinearLayout>-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/empty_cart_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include5"
-                tools:visibility="gone">
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/empty_cart_container"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent">-->
 
-                <ImageView
-                    android:id="@+id/iv_empty_cart"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_marginTop="100dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/empty_cart" />
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/iv_empty_cart"-->
+            <!--                    android:layout_width="250dp"-->
+            <!--                    android:layout_height="250dp"-->
+            <!--                    android:layout_marginTop="120dp"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:srcCompat="@drawable/empty_cart" />-->
 
-                <TextView
-                    android:id="@+id/textView"
-                    style="@style/text_20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:text="Giỏ hàng của bạn đang trống"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_empty_cart" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/textView"-->
+            <!--                    style="@style/text_20sp"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="40dp"-->
+            <!--                    android:text="Giỏ hàng của bạn đang trống"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/iv_empty_cart" />-->
 
-                <TextView
-                    android:id="@+id/textView9"
-                    style="@style/text_16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Hãy tiếp tục tìm kiếm sản phẩm yêu thích!"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/textView9"-->
+            <!--                    style="@style/text_16sp"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:text="Hãy tiếp tục tìm kiếm sản phẩm yêu thích!"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/textView" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -181,6 +259,6 @@
         <!--    start: container of cart total price, checkout button -->
         <!--    end: container of cart total price, checkout button -->
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

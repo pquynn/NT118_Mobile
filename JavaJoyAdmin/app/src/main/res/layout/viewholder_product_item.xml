@@ -35,26 +35,46 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/txtProductName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="50dp"
                     android:layout_weight="1"
-                    android:ellipsize="none"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="left"
-                    android:maxLines="2"
-                    android:text="Trà sữa.........."
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtProductName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_weight="1"
+                        android:ellipsize="none"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left"
+                        android:maxLines="2"
+                        android:text="Trà sữa.........."
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtProductPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="left"
+                        android:text="45.000 Đ"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_order_id" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/txtSize"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
@@ -66,24 +86,24 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:id="@+id/txtProductPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="45.000 Đ"
-                    android:gravity="left"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_order_id" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/txtProductPrice"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="8dp"-->
+            <!--                    android:layout_marginTop="8dp"-->
+            <!--                    android:fontFamily="@font/roboto_regular"-->
+            <!--                    android:text="45.000 Đ"-->
+            <!--                    android:gravity="left"-->
+            <!--                    android:textSize="16sp"-->
+            <!--                    app:layout_constraintStart_toEndOf="@+id/imageView3"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/txt_order_id" />-->
 
-            </LinearLayout>
+            <!--            </LinearLayout>-->
         </LinearLayout>
     </LinearLayout>
 

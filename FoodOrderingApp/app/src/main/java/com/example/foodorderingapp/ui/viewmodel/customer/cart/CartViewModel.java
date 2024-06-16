@@ -3,10 +3,13 @@ package com.example.foodorderingapp.ui.viewmodel.customer.cart;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 public class CartViewModel extends ViewModel {
     private String userId;
@@ -34,7 +38,6 @@ public class CartViewModel extends ViewModel {
     //Live data
     private MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
-    private MutableLiveData<Product> productLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Product>> productListLiveData = new MutableLiveData<>();
     private List<Topping> toppings = new ArrayList<>();
     private MutableLiveData<Boolean> isValidCheckout = new MutableLiveData<>();
@@ -68,10 +71,7 @@ public class CartViewModel extends ViewModel {
         return orderLiveData;
     }
 
-    public MutableLiveData<Product> getProductLiveData(String productId) {
-        loadProduct(productId);
-        return productLiveData;
-    }
+
 
     public MutableLiveData<List<Product>> getProductListLiveData() {
         loadProductList();
@@ -88,10 +88,6 @@ public class CartViewModel extends ViewModel {
 
     public void setIsValidCheckout(boolean isValidCheckout) {
         this.isValidCheckout.setValue(isValidCheckout);
-    }
-
-    public MutableLiveData<Product> getProductLiveData() {
-        return productLiveData;
     }
 
     // load method
@@ -112,20 +108,6 @@ public class CartViewModel extends ViewModel {
         });
     }
 
-    // load product
-    public void loadProduct(String productId){
-        productRepository.getProductById(productId, new IProductRepository.ProductCallback() {
-            @Override
-            public void onProductLoaded(Product product) {
-                productLiveData.setValue(product);
-            }
-
-            @Override
-            public void onProductLoadFailed(String errorMessage) {
-
-            }
-        });
-    }
 
     // method to update order item to firestore
     public void updateOrderItemByOrderId(String orderItemId){
@@ -183,6 +165,7 @@ public class CartViewModel extends ViewModel {
         }
 
     }
+
 
     // method to load topping list in firestore
     public void loadToppingList(){
@@ -254,12 +237,13 @@ public class CartViewModel extends ViewModel {
 
     // method to reload activity
     public void reloadData(){
+        loadProductList();
         loadCart(userId);
         loadToppingList();
         isValidCheckout.setValue(true);
-        loadProductList();
-//        loadCartItemCount();
     }
+
+
 
     
     // EVENT LISTENER
@@ -290,53 +274,62 @@ public class CartViewModel extends ViewModel {
     // Check listenter for button confirm to edit product cart
     public void onConfrimButtonClick(String orderItemId, String productId, String newSize, List<String> newToppings, String newNote, int newPrice) {
         showProgressDialog("Đang xử lý...");
-        OrderItem newOrderItem = orderLiveData.getValue().getOrderItemElementById(orderItemId);
-        boolean isExistingOrderItem = false;
-        String orderId = orderLiveData.getValue().getId();
 
-        // FIND IF THERE IS ANY SIMILAR ORDER ITEM
-        // Iterate through the orderItemMap
-        for (Map.Entry<String, OrderItem> entry : orderLiveData.getValue().getOrderItem().entrySet()) {
-            String itemId = entry.getKey();
-            OrderItem item = entry.getValue();
+        //get order from database to get real quantity of outofstock product (livedata is set = 0)
+        orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
+            @Override
+            public void onOrderLoaded(Order order) {
+                OrderItem newOrderItem = order.getOrderItemElementById(orderItemId);
+                boolean isExistingOrderItem = false;
+                String orderId = order.getId();
 
-            // Check if the itemId is different from the current orderItemId
-            if (!itemId.equals(orderItemId)) {
+                // FIND IF THERE IS ANY SIMILAR ORDER ITEM
+                // Iterate through the orderItemMap
+                for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                    String itemId = entry.getKey();
+                    OrderItem item = entry.getValue();
 
-                // Check if product id are the same
-                if(productId.equals(item.getIdProduct())){
+                    // Check if the itemId is different from the current orderItemId
+                    if (!itemId.equals(orderItemId)) {
 
-                    if(item.getSize() != null && item.getTopping() != null){
-                        if (Objects.equals(item.getSize(), newSize) && Objects.equals(item.getTopping(), newToppings) && Objects.equals(item.getNote(), newNote))
-                            isExistingOrderItem = true;
-                    }
-                    else if(item.getSize() != null && item.getTopping() == null){
-                        if (Objects.equals(item.getSize(), newSize) && Objects.equals(item.getNote(), newNote))
-                            isExistingOrderItem = true;
-                    } else if (item.getSize() == null && item.getTopping() != null) {
-                        if (Objects.equals(item.getTopping(), newToppings) && Objects.equals(item.getNote(), newNote))
-                            isExistingOrderItem = true;
-                    }
-                    else{
-                        if (Objects.equals(item.getNote(), newNote))
-                            isExistingOrderItem = true;
-                    }
+                        // Check if product id are the same
+                        if (productId.equals(item.getIdProduct())) {
 
-                    // Check if the size, toppings, and note are the same
-                    if (isExistingOrderItem) {
-                        // Update quantity += 1 for another orderItem
-                        item.setQuantity(item.getQuantity() + newOrderItem.getQuantity());
+                            if (item.getSize() != null && item.getTopping() != null) {
+                                if (Objects.equals(item.getSize(), newSize) && Objects.equals(item.getTopping(), newToppings) && Objects.equals(item.getNote(), newNote))
+                                    isExistingOrderItem = true;
+                            } else if (item.getSize() != null && item.getTopping() == null) {
+                                if (Objects.equals(item.getSize(), newSize) && Objects.equals(item.getNote(), newNote))
+                                    isExistingOrderItem = true;
+                            } else if (item.getSize() == null && item.getTopping() != null) {
+                                if (Objects.equals(item.getTopping(), newToppings) && Objects.equals(item.getNote(), newNote))
+                                    isExistingOrderItem = true;
+                            } else {
+                                if (Objects.equals(item.getNote(), newNote))
+                                    isExistingOrderItem = true;
+                            }
 
-                        orderRepository.addOrUpdateProductCart(orderId, itemId, item, new IOrderRepository.OrderChangedCallback() {
-                            @Override
-                            public void onOrderChanged() {
-                                // Remove the current orderItem
-                                orderRepository.deleteProductCart(orderId, orderItemId, new IOrderRepository.OrderItemRemovedCallback() {
+                            // Check if the size, toppings, and note are the same
+                            if (isExistingOrderItem) {
+                                // Update quantity += 1 for another orderItem
+                                item.setQuantity(item.getQuantity() + newOrderItem.getQuantity());
+
+                                orderRepository.addOrUpdateProductCart(orderId, itemId, item, new IOrderRepository.OrderChangedCallback() {
                                     @Override
-                                    public void onOrderItemRemoved(String id) {
-                                        reloadData();
-//                                        loadCartItemCount();
-                                        dismissProgressDialog();
+                                    public void onOrderChanged() {
+                                        // Remove the current orderItem
+                                        orderRepository.deleteProductCart(orderId, orderItemId, new IOrderRepository.OrderItemRemovedCallback() {
+                                            @Override
+                                            public void onOrderItemRemoved(String id) {
+                                                reloadData();
+                                                dismissProgressDialog();
+                                            }
+
+                                            @Override
+                                            public void onError(String errorMessage) {
+                                                Log.e("error", "onError: " + errorMessage);
+                                            }
+                                        });
                                     }
 
                                     @Override
@@ -344,56 +337,138 @@ public class CartViewModel extends ViewModel {
                                         Log.e("error", "onError: " + errorMessage);
                                     }
                                 });
-                            }
 
-                            @Override
-                            public void onError(String errorMessage) {
-                                Log.e("error", "onError: " + errorMessage);
+                                break;
                             }
-                        });
-
-                        break;
+                        }
                     }
                 }
-            }
-        }
 
         /*
         CASE ORDER ITEM SIZE AND TOPPING IS NULLABLE:
         - CHANGE DATATYPE IN FIRESTORE TO STRING AND EMPTY ARRAY
          */
-        // Update order item if there isn't exist any same order item?
-        if (!isExistingOrderItem) {
-            if(newOrderItem.getSize() != null){
-                newOrderItem.setSize(newSize);
-            }
-            else
-                newOrderItem.setSize("");
+                // Update order item if there isn't exist any same order item?
+                if (!isExistingOrderItem) {
+                    if (newOrderItem.getSize() != null) {
+                        newOrderItem.setSize(newSize);
+                    } else
+                        newOrderItem.setSize("");
 
-            if (newOrderItem.getTopping() != null) {
-                newOrderItem.setTopping(newToppings != null ? new ArrayList<>(newToppings) : null);
-            }
-            else{
-                ArrayList<String> emptyList = new ArrayList<>();
-                newOrderItem.setTopping(emptyList);
+                    if (newOrderItem.getTopping() != null) {
+                        newOrderItem.setTopping(newToppings != null ? new ArrayList<>(newToppings) : null);
+                    } else {
+                        ArrayList<String> emptyList = new ArrayList<>();
+                        newOrderItem.setTopping(emptyList);
+                    }
+
+                    newOrderItem.setNote(newNote);
+                    newOrderItem.setPrice(newPrice);
+
+                    orderRepository.addOrUpdateProductCart(orderId, orderItemId, newOrderItem, new IOrderRepository.OrderChangedCallback() {
+                        @Override
+                        public void onOrderChanged() {
+                            reloadData();
+                            dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e("error", "onError: " + errorMessage);
+                        }
+                    });
+                }
             }
 
-            newOrderItem.setNote(newNote);
-            newOrderItem.setPrice(newPrice);
+            @Override
+            public void onError(String errorMessage) {
 
-            orderRepository.addOrUpdateProductCart(orderId, orderItemId, newOrderItem, new IOrderRepository.OrderChangedCallback() {
+            }
+        });
+    }
+    public void loadCartAsync(Runnable onComplete) {
+        orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
+            @Override
+            public void onOrderLoaded(Order order) {
+                orderLiveData.setValue(order);
+                totalPrice.setValue(calculateTotalPrice(order.getOrderItem()));
+                if (onComplete != null) {
+                    onComplete.run();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if ("Cart not found".equals(errorMessage)) {
+                    orderLiveData.setValue(null);
+                }
+                if (onComplete != null) {
+                    onComplete.run();
+                }
+            }
+        });
+    }
+
+    // Method to load product list live data based on order item
+    public void loadProductListAsync(Runnable onComplete) {
+        List<String> ids = new ArrayList<>();
+        Order order = orderLiveData.getValue();
+        if (order != null) {
+            for (Map.Entry<String, OrderItem> entry : order.getOrderItem().entrySet()) {
+                ids.add(entry.getValue().getIdProduct());
+            }
+            productRepository.getProductListByIds(ids, new IProductRepository.ProductListCallback() {
                 @Override
-                public void onOrderChanged() {
-                    reloadData();
-//                    loadCartItemCount();
-                    dismissProgressDialog();
+                public void onProductListLoaded(List<Product> productList) {
+                    productListLiveData.setValue(productList);
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
                 }
 
                 @Override
-                public void onError(String errorMessage) {
-                    Log.e("error", "onError: " + errorMessage);
+                public void onProductListLoadFailed(String errorMessage) {
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
                 }
             });
+        } else {
+            if (onComplete != null) {
+                onComplete.run();
+            }
         }
     }
+
+    public void reloadDataAsync(Runnable onComplete) {
+        showProgressDialog("Đang tải...");
+        loadToppingList();
+        isValidCheckout.setValue(true);
+
+        CountDownLatch latch = new CountDownLatch(2);
+
+        loadCartAsync(() -> {
+            latch.countDown();
+        });
+
+        loadProductListAsync(() -> {
+            latch.countDown();
+        });
+
+        new Thread(() -> {
+            try {
+                latch.await(); // Wait until latch reaches zero
+                if (onComplete != null) {
+                    dismissProgressDialog();
+                    // Ensure this runs on the main thread
+                    new Handler(Looper.getMainLooper()).post(onComplete);
+                }
+            } catch (InterruptedException e) {
+                Log.e("ReloadData", "Interrupted while waiting for tasks to complete: " + e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+    }
+
+
 }

@@ -111,27 +111,61 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.txtProductSize.setTextColor(dark);
 
         if (product != null) {
+            //enable confirm button in dialog
+            holder.bindingBottomSheet.btnConfirm.setEnabled(true);
+            holder.bindingBottomSheet.txtOutOfStock.setVisibility(View.GONE);
+
             productQuantity = product.getProductSize().get(size).getOrDefault("QUANTITY", 0);
             if (product == null || productQuantity == 0) {
-                // if product is out of stock --> change viewholder UI
+                boolean allSizesOutOfStock = true;
+
+                if(!size.equals("Mặc định")) {
+                    // check other sizes' quantities
+                    for (Map.Entry<String, Map<String, Integer>> entry : product.getProductSize().entrySet()) {
+                        if (!entry.getKey().equals(size)) { // Exclude the current order item's size
+                            int otherSizeQuantity = entry.getValue().getOrDefault("QUANTITY", 0);
+                            if (otherSizeQuantity > 0) {
+                                allSizesOutOfStock = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //update live data
                 cartViewModel.updateTotalPrice(orderItem.getQuantity() * orderItem.getPrice());
                 orderItem.setQuantity(0);
                 cartViewModel.setIsValidCheckout(false);
-                holder.binding.btnEdit.setVisibility(View.INVISIBLE);
-                holder.binding.clEditQuantity.setVisibility(View.INVISIBLE);
-                holder.binding.clOutOfStock.setVisibility(View.VISIBLE);
-                holder.binding.btnDelete.setVisibility(View.VISIBLE);
-                holder.binding.txtProductCost.setTextColor(grey);
-                holder.binding.txtProductName.setTextColor(grey);
-                holder.binding.txtProductSize.setTextColor(grey);
 
+                // update ui when product cart is unavailable--> change viewholder UI
+                if(allSizesOutOfStock) {
+                    // if all product sizes are out of stock
+                    holder.binding.btnEdit.setVisibility(View.INVISIBLE);
+                    holder.binding.clEditQuantity.setVisibility(View.INVISIBLE);
+                    holder.binding.clSizeOutOfStock.setVisibility(View.INVISIBLE);
+                    holder.binding.clOutOfStock.setVisibility(View.VISIBLE);
+                    holder.binding.btnDelete.setVisibility(View.VISIBLE);
+                    holder.binding.txtProductCost.setTextColor(grey);
+                    holder.binding.txtProductName.setTextColor(grey);
+                    holder.binding.txtProductSize.setTextColor(grey);
+
+                    //disable confirm button in dialog
+                    holder.bindingBottomSheet.btnConfirm.setEnabled(false);
+                    holder.bindingBottomSheet.txtOutOfStock.setVisibility(View.VISIBLE);
+                }
+                else{ // if just product cart size is out of stock
+                    holder.binding.btnEdit.setVisibility(View.VISIBLE);
+                    holder.binding.clEditQuantity.setVisibility(View.INVISIBLE);
+                    holder.binding.clSizeOutOfStock.setVisibility(View.VISIBLE);
+                }
             } else if (productQuantity < orderItem.getQuantity() && productQuantity > 0) {
                 // if product quantity is less than order item quantity --> update order item
+                holder.binding.clSizeOutOfStock.setVisibility(View.INVISIBLE);
                 cartViewModel.setIsValidCheckout(true);
                 orderItem.setQuantity(productQuantity);
-//                notifyDataSetChanged();
                 cartViewModel.updateOrderItemByOrderId(key);
             } else if (orderItem.getQuantity() == 0 && productQuantity > 0){
+                holder.binding.clSizeOutOfStock.setVisibility(View.INVISIBLE);
                 cartViewModel.reloadData();
             }
 
@@ -191,10 +225,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                listener.onItemClick(key, orderItem);
                 if (!isDialogOpen) {
-                    cartViewModel.reloadData();
-                    holder.showBottomSheetDialog(context, key, orderItem);
+                    //use reload data async to make bottom dialog wait for all data is uptodate
+                    cartViewModel.reloadDataAsync(() -> {
+                        // This code runs after reloadData completes
+                        holder.showBottomSheetDialog(context, key, orderItem);
+                    });
                 }
             }
         });
@@ -248,6 +284,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public BottomsheetEditCartBinding getBindingBottomSheet(){
             return bindingBottomSheet;
         }
+
 
         void bind(OrderItem orderItem, Product product){
             this.orderItem = orderItem;
@@ -362,7 +399,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 bindingBottomSheet.toppingArea.setVisibility(View.VISIBLE);
                 toppingNames.clear();
                 toppingNames.addAll(product.getTopping());
-                Log.d("fixcart", "order item topping: " + orderItem.getTopping().toString());
                 toppingSelected.clear();
                 toppingSelected.addAll(orderItem.getTopping());
                 tempCheckedTopping.clear();
@@ -385,35 +421,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 for (Map.Entry<String, Map<String, Integer>> entry : product.getProductSize().entrySet()) {
                     String size = entry.getKey();
                     Map<String, Integer> details = entry.getValue();
-
-//                    String orderItemSize = "";
-//                    if(orderItem.getSize() != null){
-//                        orderItemSize = orderItem.getSize();
-//                    }
+                    Object priceObj = entry.getValue().get("PRICE");
+                    Object quantityObj = entry.getValue().get("QUANTITY");
+                    int quantity =convertObject(quantityObj);
+                    int price = convertObject(priceObj);
 
                     switch (size) {
                         case "Lớn": {
-//                            if(orderItemSize.equals(size))
-//                                bindingBottomSheet.rbLarge.setChecked(true);
-                            bindingBottomSheet.rbLarge.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvBigPrice.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvBigPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            setRadioButtonUI(size, price, quantity, bindingBottomSheet.tvBigPrice, bindingBottomSheet.rbLarge);
                             break;
                         }
                         case "Vừa": {
-//                            if(orderItemSize.equals(size))
-//                                bindingBottomSheet.rbMedium.setChecked(true);
-                            bindingBottomSheet.rbMedium.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvMediumPrice.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvMediumPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            setRadioButtonUI(size, price, quantity, bindingBottomSheet.tvMediumPrice, bindingBottomSheet.rbMedium);
                             break;
                         }
                         case "Nhỏ": {
-//                            if(orderItemSize.equals(size))
-//                                bindingBottomSheet.rbSmall.setChecked(true);
-                            bindingBottomSheet.rbSmall.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvSmallPrice.setVisibility(View.VISIBLE);
-                            bindingBottomSheet.tvSmallPrice.setText(setPriceFormatted(details.get("PRICE")));
+                            setRadioButtonUI(size, price, quantity, bindingBottomSheet.tvSmallPrice, bindingBottomSheet.rbSmall);
                             break;
                         }
                         case "Mặc định":{
@@ -427,10 +450,49 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }
     }
 
+
+    //method ot set price formatted
     public static String setPriceFormatted(int price) {
         double priceDb = (double) price;
         String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
         return formattedPrice;
+    }
+
+    //method to set ui for radio button by quantity
+    public void setRadioButtonUI(String size, int price, int quantity, TextView textView, RadioButton radioButton){
+        int grey = ContextCompat.getColor(context, R.color.transparent50_gray);
+        int dark = ContextCompat.getColor(context, R.color.dark_text);
+        radioButton.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(setPriceFormatted(price));
+        if(quantity == 0){
+//            // reset product cart if product is unavailable
+//            if(viewModel.getProductCartSize() != null && viewModel.getProductCartSize().equals(size)){
+//                OrderItem orderItem = viewModel.getProductCartLiveData().getValue();
+//                orderItem.setQuantity(1);
+//                orderItem.setPrice(orderItem.getPrice() - price);
+//                orderItem.setSize("");
+//            }
+            textView.setTextColor(grey);
+            radioButton.setTextColor(grey);
+            radioButton.setEnabled(false);
+        }
+        else{
+            textView.setTextColor(dark);
+            radioButton.setTextColor(dark);
+            radioButton.setEnabled(true);
+        }
+    }
+
+    //method to conver object has class name Long into int
+    public int convertObject(Object object){
+        int intObj = 0;
+        if (object instanceof Long) {
+            intObj = ((Long) object).intValue();
+        } else if (object instanceof Integer) {
+            intObj = (Integer) object;
+        }
+        return intObj;
     }
 }
 

@@ -20,11 +20,15 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="-8dp"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="parent">
 
             <include
                 android:id="@+id/viewholder_order_detail"
@@ -35,10 +39,9 @@
 
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="48dp"
+            android:layout_width="45dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,9 +51,9 @@
             android:id="@+id/cl_edit_quantity"
             android:layout_width="105dp"
             android:layout_height="36dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-12dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/rounder_background_count"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"

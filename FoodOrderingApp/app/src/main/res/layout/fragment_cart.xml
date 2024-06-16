@@ -129,7 +129,7 @@
                         style="@style/text_14sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Thông báo: Hãy xóa sản phẩm hết hàng trong giỏ để tiếp tục đặt hàng!" />
+                        android:text="Bạn có sản phẩm hết hàng, hãy xóa hoặc chọn loại hàng khác để tiếp tục đặt mua!" />
                 </LinearLayout>
 
                 <LinearLayout

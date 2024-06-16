@@ -191,22 +191,6 @@ public class OrderRepository implements IOrderRepository {
     }
 
     // updateCartToOrder (Update order, 'Gio hang' -> 'Cho xac nhan')
-//    public void updateCartToOrder(Order order, OrderUpdatedCallback callback) {
-//        if (order == null) {
-//            if (callback != null) {
-//                callback.onError("Order cannot be null");
-//            }
-//            return;
-//        }
-//
-//        if (callback == null) {
-//            throw new IllegalArgumentException("Callback cannot be null");
-//        }
-//
-//        collectionRef.document(order.getId()).set(order)
-//                .addOnSuccessListener(aVoid -> callback.onOrderChanged(order))
-//                .addOnFailureListener(e -> callback.onError(e.getMessage()));
-//    }
     public void updateCartToOrder(Order order) {
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null");
@@ -255,8 +239,6 @@ public class OrderRepository implements IOrderRepository {
                         Log.d("firestore", "update order item: " ))
                 .addOnFailureListener(e -> System.err.println("Error updating order items: " + e.getMessage()));
     }
-
-    // method to get total product cart
 
 
     // method to calculate product cart item count

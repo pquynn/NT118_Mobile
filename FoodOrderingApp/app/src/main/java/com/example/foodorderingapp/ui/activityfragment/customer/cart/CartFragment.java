@@ -84,6 +84,9 @@ public class CartFragment extends Fragment {
         // init main activity
         mainActivity = (MainActivity) getActivity();
 
+        // init cart View model
+        viewModel = new CartViewModel(userId, getActivity());
+
         //button checkout
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +95,6 @@ public class CartFragment extends Fragment {
                 startActivityForResult(intent, CHECKOUT_REQUEST_CODE);
             }
         });
-
-        // init cart View model
-        viewModel = new CartViewModel(userId, getActivity());
 
         //Adapter
         orderItemMap = new HashMap<>();

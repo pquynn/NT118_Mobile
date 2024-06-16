@@ -4,8 +4,12 @@
     <item
         android:title=""
         android:id="@+id/homeFragment"
-        android:icon="@drawable/dashboard"
-        />
+        android:icon="@drawable/dashboard" />
+
+    <item
+        android:title=""
+        android:id="@+id/listProductFragment"
+        android:icon="@drawable/list"/>
 
     <item
         android:title=""

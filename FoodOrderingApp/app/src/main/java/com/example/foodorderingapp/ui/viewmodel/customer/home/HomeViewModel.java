@@ -92,7 +92,7 @@ public class HomeViewModel extends ViewModel {
                             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                             .map(Map.Entry::getKey)
                             .filter(productId -> productId != null && !productId.isEmpty()) // Ensure no empty IDs
-                            .limit(5)
+                            .limit(6)
                             .collect(Collectors.toList());
                     Log.d("firebaseVM", "Sorted Product IDs: " + sortedProductIds);
 

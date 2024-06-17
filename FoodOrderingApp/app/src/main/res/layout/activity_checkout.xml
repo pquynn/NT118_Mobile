@@ -47,45 +47,86 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"></TextView>
 
-                    <TextView
-                        android:id="@+id/txt_recipient_name"
-                        style="@style/regular_text_16sp"
-                        android:layout_width="wrap_content"
+                    <!-- start: ll instruction when accept refund-->
+                    <LinearLayout
+                        android:id="@+id/ll_instruction"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@{checkoutVM.userAddressLiveData.recipientName}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/order_info_heading" />
-
-                    <TextView
-                        android:id="@+id/txt_recipient_phone"
-                        style="@style/regular_text_16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="5dp"
-                        android:text="@{checkoutVM.userAddressLiveData.recipientPhone}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
-
-                    <TextView
-                        android:id="@+id/txt_full_address"
-                        style="@style/regular_text_16sp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="8dp"
-                        android:ellipsize="end"
-                        android:maxLines="4"
-                        android:singleLine="false"
-                        android:text="@{checkoutVM.userAddressLiveData.allAddress}"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@drawable/rounded_grey_container"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_recipient_phone" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_info_heading">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            app:srcCompat="@drawable/information" />
+
+                        <TextView
+                            android:id="@+id/txt_instruction"
+                            style="@style/text_14sp"
+                            android:text="Bạn chưa chọn địa chỉ nhận hàng. Hãy thêm trước khi mua nhé!"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <!-- end: ll instruction when accept refund-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/order_info_heading">
+
+                        <TextView
+                            android:id="@+id/txt_recipient_name"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@{checkoutVM.userAddressLiveData.recipientName}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txt_recipient_phone"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@{checkoutVM.userAddressLiveData.recipientPhone}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
+
+                        <TextView
+                            android:id="@+id/txt_full_address"
+                            style="@style/regular_text_16sp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="4"
+                            android:singleLine="false"
+                            android:text="@{checkoutVM.userAddressLiveData.allAddress}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_recipient_phone" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <ImageView
                         android:id="@+id/btn_change_address"

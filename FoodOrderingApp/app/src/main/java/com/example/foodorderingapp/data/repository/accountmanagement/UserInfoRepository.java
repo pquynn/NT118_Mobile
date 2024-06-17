@@ -82,6 +82,7 @@ public class UserInfoRepository {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<UserAddress> listUserAddress = new ArrayList<>();
                         for(DocumentSnapshot document : queryDocumentSnapshots){
                             UserAddress userAddress = document.toObject(UserAddress.class);
                             if(userAddress != null){
@@ -111,6 +112,11 @@ public class UserInfoRepository {
                             if (userAddress != null) {
                                 callback.loadUserAddressSuccess(userAddress);
                             }
+                        }
+                        else {
+                            //if user has no address exist
+                            UserAddress userAddress = new UserAddress();
+                            callback.loadUserAddressSuccess(userAddress);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

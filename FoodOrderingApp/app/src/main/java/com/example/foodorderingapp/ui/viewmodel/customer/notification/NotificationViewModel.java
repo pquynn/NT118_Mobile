@@ -42,7 +42,9 @@ public class NotificationViewModel {
 
             @Override
             public void onError(String errorMessage) {
-
+                if(errorMessage.equals("Notification not found")){
+                    notiListMutableLiveData.setValue(null);
+                }
             }
         });
     }

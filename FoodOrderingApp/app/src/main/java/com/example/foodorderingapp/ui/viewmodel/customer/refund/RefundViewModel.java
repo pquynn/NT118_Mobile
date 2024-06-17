@@ -245,7 +245,7 @@ public class RefundViewModel extends ViewModel {
         authRepository.getAdminInfo(new AuthRepository.AdminInfoCallback() {
             @Override
             public void onSuccess(String userId, String token) {
-                String title = "Bạn có yêu cầu hoàn tiên!!!";
+                String title = "Bạn có yêu cầu hoàn tiền!!!";
                 String body = "Khách hàng của đơn hàng " + orderId + " vừa gửi yêu cầu hoàn tiền đến bạn, hãy vào kiểm tra";
 
                 // send notification

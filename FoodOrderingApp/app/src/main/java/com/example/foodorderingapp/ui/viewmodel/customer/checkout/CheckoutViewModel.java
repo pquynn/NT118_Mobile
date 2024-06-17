@@ -630,7 +630,10 @@ public class CheckoutViewModel extends ViewModel {
     // todo: tính tiền giảm từ tiền đã cộng điểm thưởng hay sao?
     public void loadDiscountValue(double percentDiscount) {
         // Calculate the discount value as a floating-point operation
-        double discountValue = -1 * (totalPrice.getValue() + pointUsedLiveData.getValue()) * (percentDiscount / 100.0);
+        double discountValue = -1 * (totalPrice.getValue() +
+                pointUsedLiveData.getValue() +
+                deliveryCostLiveData.getValue()) *
+                (percentDiscount / 100.0);
         // Convert the discount value to an integer (if needed)
         int discountValueInteger = (int) discountValue;
 

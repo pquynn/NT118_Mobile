@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -30,11 +31,12 @@ import java.util.List;
 
 public class MyOrderInProgress extends Fragment {
     //Đang xử lý
-    private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
+    private ArrayList<OrderItem> listOrderItem;
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
     private MyOrdersVM viewModel, viewModel2;
     private String userId = "";
+    private ConstraintLayout no_orders_container;
     AlertDialog progressDialog;
 
     public MyOrderInProgress() {
@@ -61,15 +63,7 @@ public class MyOrderInProgress extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Tạo AlertDialog với ProgressBar
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
-        builder.setView(dialogView);
-        builder.setCancelable(false);
-        progressDialog = builder.create();
-        progressDialog.getWindow().setLayout(50,50);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        no_orders_container = view.findViewById(R.id.no_orders_container);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -86,49 +80,48 @@ public class MyOrderInProgress extends Fragment {
             }
         }).get(MyOrdersVM.class);
 
-//        viewModel2 = new ViewModelProvider(this, new ViewModelProvider.Factory(){
-//            @Override
-//            public <T extends ViewModel> T create(Class<T> modelClass) {
-//                if (modelClass.isAssignableFrom(MyOrdersVM.class)) {
-//                    return (T) new MyOrdersVM(userId, "Đã xác nhận");
-//                }
-//                throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
-//            }
-//        }).get(MyOrdersVM.class);
 
         recyclerViewList = view.findViewById(R.id.recyclerViewOrderItem);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
+
+
+        listOrderItem = new ArrayList<>();
         Adapter = new OrderItemAdapter(listOrderItem);
         recyclerViewList.setAdapter(Adapter);
-        //progressDialog.show();
+    }
+
+
+    public void loadListOrder(){
+        viewModel.getOrderListLiveData().removeObservers(this);
+
         viewModel.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
-                Log.d("MyOrderInProgress", "Received data from viewModel1: " + orders.size() + " orders");
-                updateOrderList(orders);
+                listOrderItem.clear();
+                Adapter.notifyDataSetChanged();
+
+                if(orders != null){
+                    for(Order i : orders){
+                        if(i!=null){
+                            listOrderItem.add(new OrderItem(i.getId(), (int)i.getOrderPrice(), i.getTotalProduct()));
+                        }
+                    }
+                    Adapter.notifyDataSetChanged();
+                }
+                else{
+                    no_orders_container.setVisibility(View.VISIBLE);
+                }
             }
+
         });
-
-//        viewModel2.getOrderListLiveData2().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
-//            @Override
-//            public void onChanged(List<Order> orders) {
-//                Log.d("MyOrderInProgress", "Received data from viewModel2: " + orders.size() + " orders");
-//                updateOrderList(orders);
-//            }
-//        });
-
-    }
-    private void updateOrderList(List<Order> orders) {
-        for (Order order : orders) {
-            if (order != null) {
-                listOrderItem.add(new OrderItem(order.getId(), (int)order.getOrderPrice(), order.getTotalProduct()));
-            }
-        }
-        Adapter.notifyDataSetChanged();
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Order in progress: ", "get in resume");
+        loadListOrder();
+    }
 
 }

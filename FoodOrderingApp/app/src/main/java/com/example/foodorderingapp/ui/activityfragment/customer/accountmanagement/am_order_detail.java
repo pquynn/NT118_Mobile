@@ -213,6 +213,7 @@ public class am_order_detail extends AppCompatActivity {
                                     @Override
                                     public void onOrderChanged() {
                                         Toast.makeText(context, "Đã hủy đơn hàng!", Toast.LENGTH_SHORT).show();
+                                        finish();
                                         // send notification to admin
                                         viewModel.sendNotification();
                                     }

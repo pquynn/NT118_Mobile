@@ -94,6 +94,7 @@ public class MyOrderRefunded extends Fragment {
                 Adapter.notifyDataSetChanged();
 
                 if(orders != null){
+                    no_orders_container.setVisibility(View.GONE);
                     for(Order i : orders){
                         if(i!=null){
                             listOrderItem.add(new OrderItem(i.getId(), (int)i.getOrderPrice(), i.getTotalProduct()));

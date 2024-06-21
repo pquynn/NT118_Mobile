@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class AddRefundProductActivity extends AppCompatActivity {
     private AddRefundProductViewModel viewModel;
     private ActivityChooseRefundprodBinding binding;
     private static final int REFUNDREQUEST_REQUEST_CODE = 1;
+    private FrameLayout btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,15 @@ public class AddRefundProductActivity extends AppCompatActivity {
         // Set top navigation text
         TextView screenName = findViewById(R.id.screen_name);
         screenName.setText("Chọn sản phẩm hoàn tiền");
+
+        // set button back click event
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Initialize maps and adapter
         orderItemMap = new HashMap<>();

@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.R;
+import com.example.foodorderingapp.ui.activityfragment.customer.home.BottomSheetAddToCart;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 
 import java.text.DecimalFormat;
@@ -62,7 +66,19 @@ public class ProductPopularHomeAdapter extends RecyclerView.Adapter<ProductPopul
         }
 
         holder.imgProduct.setOnClickListener(v -> listener.onItemClick(product));
-//        holder.addToCart.setOnClickListener(v -> listener.onItemClick(product));
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = product.getId();
+                showBottomSheet(productId);
+            }
+        });
+    }
+
+    private void showBottomSheet(String productId) {
+        BottomSheetAddToCart bottomSheet = BottomSheetAddToCart.newInstance(productId);
+        bottomSheet.show(((FragmentActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
     }
 
     //set format giá

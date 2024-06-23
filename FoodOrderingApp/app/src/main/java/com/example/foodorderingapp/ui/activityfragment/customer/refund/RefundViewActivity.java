@@ -1,10 +1,17 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.refund;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -30,50 +37,64 @@ public class RefundViewActivity extends AppCompatActivity {
     private String orderId = "3";
     private RefundViewModel viewModel;
     private ActivityRefundViewBinding binding;
-
+    private AlertDialog progressDialog;
+    private VideoView videoView;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_refund_view);
         binding.setLifecycleOwner(this);
 
-        // get order id, user id through intent
-        if(getIntent().getExtras() != null){
+        // Create AlertDialog with ProgressBar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Prevents dialog from being dismissed
+        progressDialog = builder.create();
+        if (progressDialog.getWindow() != null) {
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        // Get order id, user id through intent
+        if (getIntent().getExtras() != null) {
             orderId = getIntent().getExtras().getString("orderId");
         }
 
-        // set top navigation text
+        // Set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Chi tiết hoàn tiền");
 
-        // set button back click event
-        // todo: nút back chỉ trở về trang order detail thoi
+        // Set button back click event
         btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnBack.setOnClickListener(v -> finish());
 
-        // init adapter
+        // Init adapter
         refundItemMap = new HashMap<>();
         orderItemMap = new HashMap<>();
         adapter = new RefundItemAdapter(orderItemMap, refundItemMap, this);
         binding.recyclerViewRefundProgress.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewRefundProgress.setAdapter(adapter);
 
+        // Init view model
         viewModel = new RefundViewModel(orderId, this, this);
-        // observe change in refund live data
+
+        // Show progress dialog
+        progressDialog.show();
+
+        // Observe changes in refund live data
         viewModel.getRefundLiveData().observe(this, new Observer<Refund>() {
             @Override
             public void onChanged(Refund refund) {
                 binding.setRefundVM(viewModel);
                 refundItemMap.clear();
                 refundItemMap.putAll(refund.getRefundItemMap());
+                adapter.notifyDataSetChanged(); // Notify adapter to refresh data
+                progressDialog.dismiss();
             }
         });
 
-        // observe change in order live data
+        // Observe changes in order live data
         viewModel.getOrderLiveData().observe(this, order -> {
             orderItemMap.clear();
             orderItemMap.putAll(order.getOrderItem());

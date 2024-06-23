@@ -102,14 +102,18 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 // Xử lý khi xác nhận địa chỉ
-                Geocoder geocoder = new Geocoder(SelectLocation.this);
-                List<Address> addressList = null;
-                try {
-                    addressList = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                String location = addressList != null ? addressList.get(0).getAddressLine(0) : null;
+//                Geocoder geocoder = new Geocoder(SelectLocation.this);
+//                List<Address> addressList = null;
+//                try {
+//                    addressList = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                String location = addressList != null ? addressList.get(0).getAddressLine(0) : null;
+
+                String location = String.valueOf(txtAddress.getText());
+
+                Log.d("location", location);
 
                 // Tìm các vị trí của dấu phẩy
                 int lastComma = location.lastIndexOf(",");
@@ -122,6 +126,12 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                 String district = location.substring(thirdLastComma + 2, secondLastComma).trim();
                 String ward = location.substring(fourthLastComma + 2, thirdLastComma).trim();
                 String address_detail = location.substring(0, fourthLastComma).trim();
+
+                Log.d("city", city);
+                Log.d("district", district);
+                Log.d("ward", ward);
+                Log.d("address_detail", address_detail);
+
 
                 // Tạo intent để chứa dữ liệu kết quả
                 Intent resultIntent = new Intent();
@@ -141,7 +151,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 // Thực hiện lấy vị trí hiện tại
                 progressBar.setVisibility(View.VISIBLE);
-                getLocation();
+                GetLocation();
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -154,37 +164,48 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                         actionId == EditorInfo.IME_ACTION_GO ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 
+                    // Đảm bảo chỉ xử lý một lần khi nhận sự kiện
+                    if (event != null && event.getAction() != KeyEvent.ACTION_DOWN) {
+                        return false;
+                    }
+
                     List<Address> addressList = null;
 
                     Geocoder geocoder = new Geocoder(SelectLocation.this);
                     try {
+                        // Lấy địa chỉ từ dữ liệu tìm kiếm
                         addressList = geocoder.getFromLocationName(String.valueOf(txtAddress.getText()), 1);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
 
-                    txtAddress.setText(addressList != null ? addressList.get(0).getAddressLine(0) : null);
+                    if (addressList != null && !addressList.isEmpty()) {
+                        Address address = addressList.get(0); // Lấy địa chỉ đầu tiên
 
-                    Address address = addressList.get(0); // Lấy địa chỉ đầu tiên
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                            myMap.clear();
+                        mapFragment.getMapAsync(new OnMapReadyCallback() {
+                            @Override
+                            public void onMapReady(@NonNull GoogleMap googleMap) {
+                                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                                myMap.clear();
 
-                            currentLocation = new Location("");
-                            currentLocation.setLatitude(address.getLatitude());
-                            currentLocation.setLongitude(address.getLongitude());
+                                currentLocation = new Location("");
+                                currentLocation.setLatitude(address.getLatitude());
+                                currentLocation.setLongitude(address.getLongitude());
 
-                            myMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí của bạn"));
-                            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
-                        }
-                    });
+                                PrintLocation();
 
-                    // Ẩn bàn phím
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                                myMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí của bạn"));
+                                myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
+                            }
+                        });
 
+                        // Ẩn bàn phím
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Không tìm thấy địa chỉ. Hãy kiểm tra lại thông tin!", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
                 }
                 return false;
@@ -192,7 +213,26 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    private void getLocation() {
+    // Lấy địa chỉ in địa chỉ lên ô tìm kiếm
+    private void PrintLocation() {
+        List<Address> addressList = null;
+
+        Geocoder geocoder = new Geocoder(SelectLocation.this);
+        try {
+            addressList = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            if (addressList != null && !addressList.isEmpty()) {
+                String addressLine = addressList.get(0).getAddressLine(0);
+
+                txtAddress.setText(addressLine);
+            } else {
+                Log.d("Geocoder", "Không tìm thấy địa chỉ từ tọa độ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void GetLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
             return;
@@ -225,16 +265,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
                         if (location != null) {
                             currentLocation = location;
 
-                            List<Address> addressList = null;
-
-                            Geocoder geocoder = new Geocoder(SelectLocation.this);
-                            try {
-                                addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            txtAddress.setText(addressList != null ? addressList.get(0).getAddressLine(0) : null);
+                            PrintLocation();
 
                             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                             myMap.clear();
@@ -266,7 +297,7 @@ public class SelectLocation extends AppCompatActivity implements OnMapReadyCallb
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == FINE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
+                GetLocation();
             } else {
                 Toast.makeText(this, "Hãy cấp quyền truy cập vị trí trong Cài đặt!", Toast.LENGTH_SHORT).show();
             }

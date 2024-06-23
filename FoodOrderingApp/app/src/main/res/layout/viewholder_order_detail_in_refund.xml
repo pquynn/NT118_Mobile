@@ -57,7 +57,7 @@
             android:maxLines="2"
             android:singleLine="false"
             app:layout_constraintStart_toEndOf="@+id/img_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_product_size"
+            app:layout_constraintTop_toBottomOf="@+id/txt_product_cost"
             app:visibleIfNotEmpty="@{orderItem.toppingString}" />
 
         <TextView

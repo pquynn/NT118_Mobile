@@ -148,18 +148,7 @@ public class am_order_detail extends AppCompatActivity {
         viewModel = new MyOrderDetailVM(orderId, this, this);
 
         recyclerViewOrderDetail();
-        txt_orderStatus.setText("");
 
-        progressDialog.show();
-        viewModel.getOrderStatusLiveDate().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                orderStatus = s;
-                txt_orderStatus.setText(orderStatus);
-                SetVisibilityButton(orderStatus);
-                progressDialog.dismiss();
-            }
-        });
 
 
         progressDialog.show();
@@ -213,6 +202,7 @@ public class am_order_detail extends AppCompatActivity {
                                     @Override
                                     public void onOrderChanged() {
                                         Toast.makeText(context, "Đã hủy đơn hàng!", Toast.LENGTH_SHORT).show();
+                                        finish();
                                         // send notification to admin
                                         viewModel.sendNotification();
                                     }
@@ -248,6 +238,23 @@ public class am_order_detail extends AppCompatActivity {
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
+            }
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Gọi phương thức cập nhật trạng thái đơn hàng
+        txt_orderStatus.setText("");
+
+        progressDialog.show();
+        viewModel.getOrderStatusLiveDate().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                orderStatus = s;
+                txt_orderStatus.setText(orderStatus);
+                SetVisibilityButton(orderStatus);
+                progressDialog.dismiss();
             }
         });
     }

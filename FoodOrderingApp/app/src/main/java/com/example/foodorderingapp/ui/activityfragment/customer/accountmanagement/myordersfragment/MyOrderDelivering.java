@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,10 @@ public class MyOrderDelivering extends Fragment {
     //Đang giao
     private RecyclerView recyclerViewList;
     private OrderItemAdapter Adapter;
-    private ArrayList<OrderItem> listOrderItem = new ArrayList<>();
+    private ArrayList<OrderItem> listOrderItem;
     private MyOrdersVM viewModel;
     private String userId = "";
-    AlertDialog progressDialog;
+    private ConstraintLayout no_orders_container;
     public MyOrderDelivering() {
         // Required empty public constructor
     }
@@ -50,15 +52,7 @@ public class MyOrderDelivering extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Tạo AlertDialog với ProgressBar
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
-        builder.setView(dialogView);
-        builder.setCancelable(false);
-        progressDialog = builder.create();
-        progressDialog.getWindow().setLayout(50,50);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        no_orders_container = view.findViewById(R.id.no_orders_container);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -78,20 +72,42 @@ public class MyOrderDelivering extends Fragment {
         recyclerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewList.setHasFixedSize(true);
 
-        //progressDialog.show();
+        listOrderItem = new ArrayList<>();
+        Adapter = new OrderItemAdapter(listOrderItem);
+        recyclerViewList.setAdapter(Adapter);
+
+    }
+
+    public void loadListOrder(){
+        viewModel.getOrderListLiveData().removeObservers(this);
+
         viewModel.getOrderListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Order>>() {
             @Override
             public void onChanged(List<Order> orders) {
-                for(Order i : orders){
-                    if(i!=null){
-                        listOrderItem.add(new OrderItem(i.getId(), (int)i.getOrderPrice(), i.getTotalProduct()));
-                    }
-                }
-                Adapter = new OrderItemAdapter(listOrderItem);
-                recyclerViewList.setAdapter(Adapter);
-                //progressDialog.dismiss();
-            }
-        });
+                listOrderItem.clear();
+                Adapter.notifyDataSetChanged();
 
+                if(orders != null){
+                    no_orders_container.setVisibility(View.GONE);
+                    for(Order i : orders){
+                        if(i!=null){
+                            listOrderItem.add(new OrderItem(i.getId(), (int)i.getOrderPrice(), i.getTotalProduct()));
+                        }
+                    }
+                    Adapter.notifyDataSetChanged();
+                }
+                else{
+                    no_orders_container.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Order delivering: ", "get in resume");
+        loadListOrder();
     }
 }

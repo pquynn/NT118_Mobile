@@ -116,6 +116,18 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onChanged(UserAddress userAddress) {
                 calculateDeliveryCost(userAddress);
+
+                //if user address is empty
+                if(userAddress.getId() == null || userAddress.getId().isEmpty()){
+                    binding.btnBuy.setEnabled(false);
+                    binding.llInstruction.setVisibility(View.VISIBLE);
+                    binding.txtFullAddress.setVisibility(View.GONE);
+                }
+                else{
+                    binding.btnBuy.setEnabled(true);
+                    binding.llInstruction.setVisibility(View.GONE);
+                    binding.txtFullAddress.setVisibility(View.VISIBLE);
+                }
             }
         });
         // observe if delivery cost is change --> update order price
@@ -153,7 +165,9 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.btnSeeCoupons.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), CouponActivity.class);
             orderId = viewModel.getOrderLiveData().getValue().getId();
-            int orderPrice = viewModel.getOrderPriceLiveData().getValue();
+            int orderPrice = viewModel.getTotalPrice().getValue() +
+                    viewModel.getPointUsedLiveData().getValue() +
+                    viewModel.getDeliveryCostLiveData().getValue();
             Bundle bundle = new Bundle();
             bundle.putString("orderId", orderId);
             bundle.putInt("orderPrice", orderPrice);
@@ -163,6 +177,19 @@ public class CheckoutActivity extends AppCompatActivity {
             startActivityForResult(intent, COUPON_REQUEST_CODE);
         });
 
+
+        //observe user point
+        viewModel.getPointTotalLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == 0){
+                    binding.btnChoosePoint.setEnabled(false);
+                }
+                else {
+                    binding.btnChoosePoint.setEnabled(true);
+                }
+            }
+        });
 
         // set Switch choose point check event
         binding.btnChoosePoint.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -241,6 +268,20 @@ public class CheckoutActivity extends AppCompatActivity {
         alert.show();
     }
 
+//    // method to show alert dialog when user does not choose address
+//    public void showAddressAlertDialog(Context context){
+//        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+////        alert.setTitle("Mua hàng");
+//        alert.setMessage("Hãy chọn địa chỉ nhận hàng trước khi đặt nhé!");
+//        alert.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        alert.show();
+//    }
+
     //start: calculate delivery cost
     private void calculateDeliveryCost(UserAddress userAddress) {
         String location = userAddress.getAddressDetail() + "," + userAddress.getWard() + "," + userAddress.getDistrict() + "," + userAddress.getCity();
@@ -263,7 +304,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> viewModel.getDeliveryCostLiveData().setValue((int) deliveryCost));
             } else {
-                runOnUiThread(() -> Toast.makeText(CheckoutActivity.this, "Address not found", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(CheckoutActivity.this, "Không tìm thấy địa chỉ nhận hàng", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }
@@ -306,7 +347,8 @@ public class CheckoutActivity extends AppCompatActivity {
         else if (requestCode == ADDRESS_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("addressId")) {
                 String addressId = data.getStringExtra("addressId");
-                viewModel.loadUserAddress(addressId);
+                if(addressId != null && !addressId.isEmpty())
+                    viewModel.loadUserAddress(addressId);
 
             }
         }

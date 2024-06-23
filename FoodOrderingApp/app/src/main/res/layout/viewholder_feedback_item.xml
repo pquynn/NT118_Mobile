@@ -50,7 +50,7 @@
                     android:id="@+id/txt_product_name"
                     style="@style/bold_text_16sp"
                     android:layout_width="match_parent"
-                    android:layout_height="23dp"
+                    android:layout_height="wrap_content"
                     android:text="Trà sữa trân châu"
                     app:layout_constraintStart_toEndOf="@+id/img_fb_product"
                     app:layout_constraintTop_toTopOf="parent" />

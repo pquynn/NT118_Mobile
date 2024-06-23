@@ -99,8 +99,8 @@ public class activity_setpassword extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
                                 }
-                                Intent intent = new Intent(activity_setpassword.this, activity_login.class);
-                                startActivity(intent);
+//                                Intent intent = new Intent(activity_setpassword.this, activity_login.class);
+//                                startActivity(intent);
                                 finish();
                             }
 

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -33,11 +36,11 @@ public class RefundProgressActivity extends AppCompatActivity {
     private Map<String, OrderItem> orderItemMap;
     private FrameLayout btnBack;
     private TextView screenName;
-    private String orderId = "3";
+    private String orderId;
     private RefundViewModel viewModel;
     private ActivityRefundProgressBinding binding;
     private Context context;
-
+    private androidx.appcompat.app.AlertDialog progressDialog;
     private String userId;
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
@@ -63,6 +66,17 @@ public class RefundProgressActivity extends AppCompatActivity {
             orderId = getIntent().getExtras().getString("orderId");
         }
 
+        // Create AlertDialog with ProgressBar
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_progress, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Prevents dialog from being dismissed
+        progressDialog = builder.create();
+        if (progressDialog.getWindow() != null) {
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
         // set top navigation text
         screenName = findViewById(R.id.screen_name);
         screenName.setText("Yêu cầu hoàn tiền");
@@ -84,6 +98,7 @@ public class RefundProgressActivity extends AppCompatActivity {
         binding.recyclerViewRefundProgress.setAdapter(adapter);
 
         viewModel = new RefundViewModel(orderId, this);
+        progressDialog.show();
         // observe change in refund live data
         viewModel.getRefundLiveData().observe(this, new Observer<Refund>() {
             @Override
@@ -91,6 +106,7 @@ public class RefundProgressActivity extends AppCompatActivity {
                 binding.setRefundVM(viewModel);
                 refundItemMap.clear();
                 refundItemMap.putAll(refund.getRefundItemMap());
+                progressDialog.dismiss();
             }
         });
 

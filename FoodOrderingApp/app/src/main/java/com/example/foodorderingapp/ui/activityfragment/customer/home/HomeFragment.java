@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
         LinearLayout loginContainer = view.findViewById(R.id.login_container);
         Button btnLogin = view.findViewById(R.id.btn_Login);
         TextView txtWelcome = view.findViewById(R.id.txt_welcome);
+
         //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
         //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS r
         if (userId == null) {
@@ -202,12 +203,12 @@ public class HomeFragment extends Fragment {
 
         //GET DATA FROM COUPON ACTIVITY
         if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null && data.hasExtra("addToCart")) {
+            if (data != null /*&& data.hasExtra("addToCart")*/) {
                 // if product is add to cart --> change badge
 //                if(data.getBooleanExtra("addToCart", false)){
 //                    mainActivity.reloadBadge();
 //                }
-                mainActivity.reloadBadge();
+                  mainActivity.reloadBadge();
             }
         }
 

@@ -43,12 +43,12 @@ public class ProductDetailViewModel extends ViewModel {
     private ProgressDialog progressDialog;
     private ProductRepository productRepository;
     private ToppingRepository toppingRepository;
-    private OrderRepository orderRepository;
-    private OrdersFeedbackRepository ordersFeedbackRepository;
-    private MutableLiveData<Product> productLiveData;
+    public OrderRepository orderRepository;
+    public OrdersFeedbackRepository ordersFeedbackRepository;
+    public MutableLiveData<Product> productLiveData;
     private MutableLiveData<List<Comment>> listCommentLiveData;
     private MutableLiveData<Order> cartLiveData;
-    private MutableLiveData<OrderItem> productCartLiveData;
+    public MutableLiveData<OrderItem> productCartLiveData;
     private MutableLiveData<Double> averagePointLiveData;
     private List<Topping> toppings = new ArrayList<>();
 

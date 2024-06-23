@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Product;
@@ -88,6 +89,17 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         categoryViewModel.getProductListLiveData().observe(getViewLifecycleOwner(), categoryLists -> {
             categoryListAdapter.setData(categoryLists);
         });
+
+        // Lắng nghe kết quả từ `BottomSheet`
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
+            boolean addToCart = bundle.getBoolean("addToCart");
+            if (addToCart) {
+                Toast.makeText(getContext(), "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                // Cập nhật giao diện nếu cần thiết
+                categoryListAdapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
     }
     //Xử lý sự kiện khi click vào sản phẩm
@@ -111,7 +123,7 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
                 return i;
             }
         }
-        return -1; // Trả về -1 nếu không tìm thấy danh mục trong danh sách
+        return -1;
     }
 
     // Phương thức này để cuộn đến vị trí của danh sách sản phẩm

@@ -12,12 +12,15 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.repository.order.OrderRepository;
 import com.example.foodorderingapp.ui.viewmodel.customer.navigation.BottomNavigationViewModel;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationViewModel viewModel;
@@ -103,4 +106,5 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         reloadBadge();
     }
+
 }

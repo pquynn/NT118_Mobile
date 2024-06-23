@@ -2,17 +2,22 @@ package com.example.foodorderingapp.ui.activityfragment.customer.category;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,6 +31,8 @@ import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.CategoryList;
 import com.example.foodorderingapp.ui.adapter.CategoryProductListAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.category.CategoryViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +88,6 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         categoryViewModel.getProductListLiveData().observe(getViewLifecycleOwner(), categoryLists -> {
             categoryListAdapter.setData(categoryLists);
         });
-
         return view;
     }
     //Xử lý sự kiện khi click vào sản phẩm
@@ -91,7 +97,7 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
         Log.d("ProductClick", "idCategory: " + product.getIdCategory());
         Log.d("ProductClick", "Product ID: " + product.getId());
         Intent intent;
-        //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm khi gộp 2 product lại
+        //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
         intent = new Intent(getActivity(), ProductDetailActivity.class);
         intent.putExtra("productID", product.getId());
         startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
@@ -130,6 +136,5 @@ public class CategoryFragment extends Fragment implements CategoryProductListAda
 //                }
             }
         }
-
     }
 }

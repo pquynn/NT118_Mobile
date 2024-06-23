@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.data.model.entity.Category;
 import com.example.foodorderingapp.data.model.entity.Product;
+import com.example.foodorderingapp.ui.activityfragment.customer.home.BottomSheetAddToCart;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.DecimalFormat;
@@ -56,19 +58,6 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
         holder.tvName.setText(product.getProductName());
         setPriceFormatted(holder.tvPrice, product.getProductPrice());
 
-        //Xử lý sự kiện khi click vào sản phẩm
-//        holder.addToCart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Gọi listener và chuyển dữ liệu sản phẩm khi click vào
-//                if (mListener != null) {
-//                    mListener.onProductClick(product);
-//                } else {
-//                    Log.d("Listerer Error", "Error");
-//                }
-//            }
-//        });
-
         holder.imgProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +80,19 @@ public class CategoryProductListAdapter extends RecyclerView.Adapter<CategoryPro
                 }
             }
         });
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = product.getId();
+                showBottomSheet(productId);
+            }
+        });
+    }
+
+    private void showBottomSheet(String productId) {
+        BottomSheetAddToCart bottomSheet = BottomSheetAddToCart.newInstance(productId);
+        bottomSheet.show(((FragmentActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
     }
 
     public static void setPriceFormatted(TextView textView, int price) {

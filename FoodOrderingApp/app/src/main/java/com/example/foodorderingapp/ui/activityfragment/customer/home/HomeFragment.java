@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,10 +29,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
+import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
@@ -113,15 +116,15 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        // Xử lý khi click vào Xem thêm của Danh mục --> điều hướng sang Fragment Category
-        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
-        tvExtend1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.fragment_area);
-                navController.navigate(R.id.categoryFragment);
-            }
-        });
+//        // Xử lý khi click vào Xem thêm của Danh mục --> điều hướng sang Fragment Category
+//        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
+//        tvExtend1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+//                navController.navigate(R.id.action_homeFragment_to_categoryFragment);
+//            }
+//        });
 
         // Xử lý khi click vào Xem thêm của Cửa hàng
         TextView tvExtend2 = view.findViewById(R.id.textExtend2);
@@ -148,18 +151,20 @@ public class HomeFragment extends Fragment {
         rcv_ProductPopular.setLayoutManager(layoutManager);
         Context context = getContext();
         if (context != null) {
-            ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), product -> {
-                Log.d("ProductClick", "idCategory: " + product.getIdCategory());
-                Log.d("ProductClick", "Product ID: " + product.getId());
-                Intent intent;
-                //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
-                intent = new Intent(getActivity(), ProductDetailActivity.class);
-                intent.putExtra("productID", product.getId());
-                startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
+            ProductPopularHomeAdapter productPopularHomeAdapter = new ProductPopularHomeAdapter(getContext(), new ArrayList<>(), new ProductPopularHomeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Product product) {
+                    Log.d("ProductClick", "idCategory: " + product.getIdCategory());
+                    Log.d("ProductClick", "Product ID: " + product.getId());
+                    Intent intent;
+                    //Tạo intent và truyền dữ liệu vào Activity chi tiết sản phẩm
+                    intent = new Intent(getActivity(), ProductDetailActivity.class);
+                    intent.putExtra("productID", product.getId());
+                    startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
 //                startActivity(intent);
-
-
+                }
             });
+
             rcv_homeCategory.setHasFixedSize(true);
             rcv_ProductPopular.setAdapter(productPopularHomeAdapter);
 
@@ -168,6 +173,16 @@ public class HomeFragment extends Fragment {
 
             viewModel.getBestSellingProducts().observe(getViewLifecycleOwner(), products -> {
                 productPopularHomeAdapter.setProductList(products);
+            });
+
+            // Lắng nghe kết quả từ `BottomSheet`
+            getParentFragmentManager().setFragmentResultListener("requestKey", this, (requestKey, bundle) -> {
+                boolean addToCart = bundle.getBoolean("addToCart");
+                if (addToCart) {
+                    Toast.makeText(getContext(), "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                    // Cập nhật giao diện nếu cần thiết
+                    productPopularHomeAdapter.notifyDataSetChanged();
+                }
             });
 
             TextView averagePoint = view.findViewById(R.id.text_ic_star);

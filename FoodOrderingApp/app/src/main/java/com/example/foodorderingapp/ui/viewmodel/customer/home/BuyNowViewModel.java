@@ -28,6 +28,7 @@ import com.example.foodorderingapp.data.repository.product.IProductRepository;
 import com.example.foodorderingapp.data.repository.product.ProductRepository;
 import com.example.foodorderingapp.data.repository.topping.IToppingRepository;
 import com.example.foodorderingapp.data.repository.topping.ToppingRepository;
+import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -349,6 +350,11 @@ public class BuyNowViewModel extends ViewModel {
             Bundle result = new Bundle();
             result.putBoolean("addToCart", addToCart);
             fragmentManager.setFragmentResult("requestKey", result);
+
+            // Cập nhật badge trong MainActivity
+            if (fragmentActivity instanceof MainActivity) {
+                ((MainActivity) fragmentActivity).reloadBadge();
+            }
         }
     }
     public void reloadData(){

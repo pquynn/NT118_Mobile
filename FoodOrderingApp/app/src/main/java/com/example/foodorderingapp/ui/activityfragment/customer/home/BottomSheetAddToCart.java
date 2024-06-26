@@ -1,7 +1,9 @@
 package com.example.foodorderingapp.ui.activityfragment.customer.home;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,7 +57,6 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
     private EditText txtNote;
     private ConstraintLayout toppingArea, sizeArea;
     private Button btnAddToCart;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout outOfStockWarning;
 
     private  static final String ARG_PRODUCT_ID = "productId";
@@ -113,7 +114,6 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
         toppingArea = view.findViewById(R.id.topping_area);
         sizeArea = view.findViewById(R.id.size_area);
         btnAddToCart = view.findViewById(R.id.add_to_cart);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         outOfStockWarning = view.findViewById(R.id.out_of_stock_warning);
 
         toppings = viewModel.getToppings();
@@ -203,7 +203,6 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                         sizeArea.setVisibility(View.GONE);
                     }
                 }
-                swipeRefreshLayout.setRefreshing(false); // Stop the refreshing animation
             }
         });
 
@@ -282,51 +281,25 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                     String note = txtNote.getText().toString();
                     viewModel.getProductCartLiveData().getValue().setNote(note);
                     viewModel.addToCart(userId);
+
+                    dismiss();  // Close the BottomSheet
                 }
             }
         });
 
-        // Set the color scheme for the swipe refresh layout
-        swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(requireContext(), R.color.primary),
-                ContextCompat.getColor(requireContext(), R.color.secondary),
-                ContextCompat.getColor(requireContext(), R.color.primary)
-        );
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Trigger the reload in the ViewModel
-                viewModel.reloadData();
-            }
-        });
-
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // Get the current BottomSheetDialogFragment instance
-                BottomSheetDialogFragment dialogFragment = BottomSheetAddToCart.this;
-
-                // Get the view of the dialog fragment
-                View bottomSheet = dialogFragment.getView();
+                // Adjust height based on content
+                View bottomSheet = getView();
                 if (bottomSheet != null) {
-                    // Ensure the view hierarchy is correct
                     ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-                    if (layoutParams instanceof CoordinatorLayout.LayoutParams) {
-                        CoordinatorLayout.LayoutParams coordinatorParams = (CoordinatorLayout.LayoutParams) layoutParams;
-                        coordinatorParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;  // Set height to WRAP_CONTENT
-                        bottomSheet.setLayoutParams(coordinatorParams);
-
-                        // Set up BottomSheetBehavior
-                        CoordinatorLayout parent = (CoordinatorLayout) bottomSheet.getParent();
-                        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-
-                        // Set desired behavior
-                        behavior.setFitToContents(true);
-                        behavior.setSkipCollapsed(true);
-
-                        // Remove the listener to avoid multiple calls
-                        parent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    if (layoutParams != null) {
+                        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        bottomSheet.setLayoutParams(layoutParams);
                     }
                 }
             }
@@ -376,18 +349,7 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
 
     //Cập nhật giá của sp
     private void updateAddToCartButton(OrderItem orderItem) {
-        // Calculate total price including size price
         int totalPrice = orderItem.getPrice();
-
-        if (viewModel.getProductLiveData().getValue() != null && viewModel.getProductLiveData().getValue().getProductSize() != null) {
-            String size = orderItem.getSize();
-            Map<String, Map<String, Integer>> sizeInfo = viewModel.getProductLiveData().getValue().getProductSize();
-
-            if (sizeInfo.containsKey(size)) {
-                int sizePrice = sizeInfo.get(size).getOrDefault("PRICE", 0);
-                totalPrice += sizePrice;
-            }
-        }
 
         // Format the price and update the button text
         String formattedPrice = setPriceFormatted(totalPrice);
@@ -425,5 +387,23 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
         double priceDb = (double) price;
         String formattedPrice = new DecimalFormat("#,### đ").format(priceDb);
         return formattedPrice;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null && data.hasExtra("isLogin")){
+                if(data.getBooleanExtra("isLogin", false)){
+                    //get user id after login
+                    userId = sharedPreferences.getString(KEY_USER_ID, null);
+                    //todo: add to cart (continue proccess after user login)
+                    String note = txtNote.getText().toString();
+                    viewModel.getProductCartLiveData().getValue().setNote(note);
+                    viewModel.addToCart(userId);
+                }
+            }
+        }
     }
 }

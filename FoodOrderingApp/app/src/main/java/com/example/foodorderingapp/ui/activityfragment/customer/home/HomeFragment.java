@@ -11,12 +11,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,28 +27,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.foodorderingapp.data.model.ProductSearch;
 import com.example.foodorderingapp.R;
 import com.example.foodorderingapp.data.model.entity.Comment;
 import com.example.foodorderingapp.data.model.entity.Product;
 import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.activityfragment.customer.MainActivity;
-import com.example.foodorderingapp.ui.activityfragment.customer.category.CategoryFragment;
-//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailCakeActivity;
-//import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailDrinkActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 import com.example.foodorderingapp.ui.activityfragment.customer.search.SearchActivity;
 import com.example.foodorderingapp.ui.adapter.CategoryHomeAdapter;
-import com.example.foodorderingapp.data.model.HomeCategory;
 import com.example.foodorderingapp.ui.adapter.ProductPopularHomeAdapter;
+import com.example.foodorderingapp.ui.viewmodel.customer.home.BuyNowViewModel;
 import com.example.foodorderingapp.ui.viewmodel.customer.home.HomeViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +57,10 @@ public class HomeFragment extends Fragment {
     private static final String SHARE_PREF_NAME = "sharePrefName";
     private static final String KEY_USER_ID = "userID";
     private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
+    private static final int LOGIN_REQUEST_CODE = 2;
     private MainActivity mainActivity;
+    private LinearLayout loginContainer;
+    private TextView txtWelcome;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -83,12 +75,12 @@ public class HomeFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getString(KEY_USER_ID, null);
 
-        LinearLayout loginContainer = view.findViewById(R.id.login_container);
+        loginContainer = view.findViewById(R.id.login_container);
         Button btnLogin = view.findViewById(R.id.btn_Login);
-        TextView txtWelcome = view.findViewById(R.id.txt_welcome);
+        txtWelcome = view.findViewById(R.id.txt_welcome);
 
         //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
-        //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS r
+        //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS
         if (userId == null) {
             txtWelcome.setText("Chào bạn mới!");
             loginContainer.setVisibility(View.VISIBLE);
@@ -96,13 +88,12 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), activity_login.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
                 }
             });
         }
         else{
-            txtWelcome.setText("Chào mừng bạn quay trở lại!");
-            loginContainer.setVisibility(View.GONE);
+            updateUIAfterLogin();
         }
 
         // Xử lý khi click vào frameLayoutSearch
@@ -115,15 +106,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        // Xử lý khi click vào Xem thêm của Danh mục --> điều hướng sang Fragment Category
-//        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
-//        tvExtend1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
-//                navController.navigate(R.id.action_homeFragment_to_categoryFragment);
-//            }
-//        });
 
         // Xử lý khi click vào Xem thêm của Cửa hàng
         TextView tvExtend2 = view.findViewById(R.id.textExtend2);
@@ -193,7 +175,23 @@ public class HomeFragment extends Fragment {
                     averagePoint.setText(String.format(Locale.US, "%.1f", averageScore));
                 }
             });
+
+            // Cập nhật giao diện UI khi đăng nhập thành công từ BottomSheetAddToCart
+            BuyNowViewModel viewModel1 = new ViewModelProvider(requireActivity()).get(BuyNowViewModel.class);
+            viewModel1.getLoginSuccessLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean isSuccess) {
+                    if (isSuccess) {
+                        updateUIAfterLogin();
+                    }
+                }
+            });
         }
+    }
+
+    public void updateUIAfterLogin(){
+        txtWelcome.setText("Chào mừng bạn quay trở lại!");
+        loginContainer.setVisibility(View.GONE);
     }
 
     // method to get result from activity through intent (activity2 -> activity1)
@@ -201,16 +199,11 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //GET DATA FROM COUPON ACTIVITY
-        if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null /*&& data.hasExtra("addToCart")*/) {
-                // if product is add to cart --> change badge
-//                if(data.getBooleanExtra("addToCart", false)){
-//                    mainActivity.reloadBadge();
-//                }
-                  mainActivity.reloadBadge();
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
+            boolean isLogin = data.getBooleanExtra("isLogin", false);
+            if (isLogin) {
+                updateUIAfterLogin();
             }
         }
-
     }
 }

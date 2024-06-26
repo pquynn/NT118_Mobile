@@ -184,6 +184,14 @@ public class BuyNowViewModel extends ViewModel {
             orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
                 @Override
                 public void onOrderLoaded(Order order) {
+                    // Kiểm tra lại số lượng sản phẩm trước khi cập nhật giỏ hàng
+                    Map<String, Map<String, Integer>> updatedProductSizeMap = productLiveData.getValue().getProductSize();
+                    int latestProductQuantity = convertObject(updatedProductSizeMap.get(size).get("QUANTITY"));
+                    if (latestProductQuantity == 0) {
+                        dismissProgressDialog();
+                        Toast.makeText(context, "Rất tiếc, sản phẩm hiện đã hết hàng.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     processUpdateOrder(orderItem, order);
                 }
 
@@ -193,6 +201,17 @@ public class BuyNowViewModel extends ViewModel {
                         String id = UUID.randomUUID().toString();
                         Map<String, OrderItem> orderItemMap = new HashMap<>();
                         orderItemMap.put(id, orderItem);
+
+                        // Kiểm tra lại số lượng sản phẩm trong kho trước khi tạo đơn hàng mới
+                        Object latestProductQuantityObj = productSizeMap.get(size).get("QUANTITY");
+                        int latestProductQuantity = convertObject(latestProductQuantityObj);
+
+                        if (latestProductQuantity == 0) {
+                            dismissProgressDialog();
+                            Toast.makeText(context, "Rất tiếc, sản phẩm hiện đã hết hàng.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         orderRepository.createOrder(userId, orderItemMap, new IOrderRepository.OrderCallback() {
                             @Override
                             public void onOrderLoaded(Order order) {
@@ -359,5 +378,15 @@ public class BuyNowViewModel extends ViewModel {
     }
     public void reloadData(){
         initProductCartLiveData();
+    }
+
+    private MutableLiveData<Boolean> loginSuccessLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getLoginSuccessLiveData() {
+        return loginSuccessLiveData;
+    }
+
+    public void setLoginSuccess(boolean success) {
+        loginSuccessLiveData.setValue(success);
     }
 }

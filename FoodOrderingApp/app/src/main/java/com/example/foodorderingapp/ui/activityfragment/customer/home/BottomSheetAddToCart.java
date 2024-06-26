@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +30,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -41,6 +48,7 @@ import com.example.foodorderingapp.data.model.entity.Topping;
 import com.example.foodorderingapp.ui.activityfragment.authentication.activity_login;
 import com.example.foodorderingapp.ui.adapter.BuyNowToppingAdapter;
 import com.example.foodorderingapp.ui.viewmodel.customer.home.BuyNowViewModel;
+import com.example.foodorderingapp.ui.viewmodel.customer.home.HomeViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -51,6 +59,7 @@ import java.util.Map;
 
 public class BottomSheetAddToCart extends BottomSheetDialogFragment {
     private BuyNowViewModel viewModel;
+    private HomeViewModel homeViewModel;
     private RadioGroup radioGroup;
     private RadioButton rbSmall, rbMedium, rbLarge;
     private TextView tvBigPrice, tvMediumPrice, tvSmallPrice, tvProductHeading, tvProductPrice;
@@ -281,7 +290,6 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                     String note = txtNote.getText().toString();
                     viewModel.getProductCartLiveData().getValue().setNote(note);
                     viewModel.addToCart(userId);
-
                     dismiss();  // Close the BottomSheet
                 }
             }
@@ -402,6 +410,10 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                     String note = txtNote.getText().toString();
                     viewModel.getProductCartLiveData().getValue().setNote(note);
                     viewModel.addToCart(userId);
+                    //quan sát thay đổi đăng nhập -> true
+                    viewModel.setLoginSuccess(true);
+
+                    dismiss();
                 }
             }
         }

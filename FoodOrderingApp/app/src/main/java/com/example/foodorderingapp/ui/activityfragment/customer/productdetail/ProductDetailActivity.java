@@ -454,8 +454,6 @@ public class ProductDetailActivity extends AppCompatActivity implements ToppingA
             radioButton.setChecked(false);
         }
         else{
-//            if(viewModel.getProductCartSize() != null && !viewModel.getProductCartSize().equals(size))
-//                radioButton.setChecked(false);
             textView.setTextColor(dark);
             radioButton.setTextColor(dark);
             radioButton.setEnabled(true);

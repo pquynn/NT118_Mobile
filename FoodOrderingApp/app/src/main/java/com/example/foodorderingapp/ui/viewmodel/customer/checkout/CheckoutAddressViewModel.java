@@ -27,6 +27,7 @@ public class CheckoutAddressViewModel extends ViewModel {
         this.userId = userId;
         this.context = context;
         userInfoRepository = new UserInfoRepository();
+        loadUserAddressList(userId);
     }
 
     // GETTER
@@ -46,17 +47,19 @@ public class CheckoutAddressViewModel extends ViewModel {
 
     // load selected address by id
     public void loadSelectedAddress(String id) {
-        userInfoRepository.getAddressById(id, new UserInfoRepository.userAddressCallback() {
-            @Override
-            public void loadUserAddressSuccess(UserAddress userAddress) {
-                selectedAddressLiveData.setValue(userAddress);
-            }
+        if(id != null && !id.isEmpty()){
+            userInfoRepository.getAddressById(id, new UserInfoRepository.userAddressCallback() {
+                @Override
+                public void loadUserAddressSuccess(UserAddress userAddress) {
+                    selectedAddressLiveData.setValue(userAddress);
+                }
 
-            @Override
-            public void loadUsserAddressError(Exception e) {
-                Log.e("firestore", "Error loading address: ", e);
-            }
-        });
+                @Override
+                public void loadUsserAddressError(Exception e) {
+                    Log.e("firestore", "Error loading address: ", e);
+                }
+            });
+        }
     }
 
     // load user address list from firestore

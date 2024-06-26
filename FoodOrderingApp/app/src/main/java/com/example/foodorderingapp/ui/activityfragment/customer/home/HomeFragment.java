@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -199,9 +201,24 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
-            boolean isLogin = data.getBooleanExtra("isLogin", false);
-            if (isLogin) {
+        //GET DATA FROM PRODUCT DETAIL ACTIVITY
+        if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null /*&& data.hasExtra("addToCart")*/) {
+                // if product is add to cart --> change badge
+
+//                if(data.getBooleanExtra("addToCart", false)){
+//                    mainActivity.reloadBadge();
+//                }
+
+                mainActivity.reloadBadge();
+
+            }
+        }
+        //UPDATE UI AFTER LOGIN
+        else if(requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+            if(data != null && data.hasExtra("isLogin")){
+                navController.navigate(R.id.homeFragment);
                 updateUIAfterLogin();
             }
         }

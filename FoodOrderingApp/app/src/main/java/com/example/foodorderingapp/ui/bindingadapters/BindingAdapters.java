@@ -35,7 +35,9 @@ public class BindingAdapters {
         if (url != null && !url.isEmpty()) {
             Uri uri = Uri.parse(url);
             view.setVideoURI(uri);
-            view.start();
+            view.setOnPreparedListener(mp -> {
+                view.start();
+            });;
         }
     }
 

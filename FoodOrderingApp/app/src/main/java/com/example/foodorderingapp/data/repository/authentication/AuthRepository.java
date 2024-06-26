@@ -376,11 +376,8 @@ public class AuthRepository {
                                         .get().addOnSuccessListener(documentSnapshot -> {
                                             if (documentSnapshot.exists()) {
                                                 String token = documentSnapshot.getString("TOKEN");
-                                                if (token != null && !token.isEmpty()) {
-                                                    callback.onSuccess(document.getId(), token);
-                                                } else {
-                                                    callback.onFailure(new Exception("Token is empty or null"));
-                                                }
+                                                callback.onSuccess(document.getId(), token);
+
                                             } else {
                                                 callback.onFailure(new Exception("Can not find login document"));
                                             }

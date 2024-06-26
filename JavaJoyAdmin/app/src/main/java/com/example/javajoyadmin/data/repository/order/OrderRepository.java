@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,15 +114,51 @@ public class OrderRepository implements IOrderRepository {
         Query query;
         if (Objects.equals(status, "Chờ xác nhận") || Objects.equals(status, "Đã xác nhận")) {
             query = collectionRef
-                    .whereIn("STATUS", Arrays.asList("Chờ xác nhận", "Đã xác nhận"))
-                    .orderBy("CREATE_ON", Query.Direction.ASCENDING); // Hóa đơn mới nhất đứng cuối danh sách
-        } else {
+                    .whereIn("STATUS", Arrays.asList("Chờ xác nhận", "Đã xác nhận"));
+        } else if (Objects.equals(status, "Đang giao")) {
+            query = collectionRef
+                    .whereEqualTo("STATUS", status);
+        } else if (Objects.equals(status, "Đã giao") || Objects.equals(status, "Đã hủy")) {
+            // Lấy ngày hiện tại
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date startOfDay = calendar.getTime();
+
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            Date endOfDay = calendar.getTime();
+
             query = collectionRef
                     .whereEqualTo("STATUS", status)
-                    .orderBy("CREATE_ON", Query.Direction.ASCENDING); // Hóa đơn mới nhất đứng cuối danh sách
+                    .whereGreaterThanOrEqualTo("CREATE_ON", startOfDay)
+                    .whereLessThanOrEqualTo("CREATE_ON", endOfDay); // Chỉ lấy trong ngày
+        } else {
+            // Lấy trong vòng 7 ngày
+            Calendar calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            calendar.add(Calendar.DAY_OF_YEAR, -6);  // Lấy 7 ngày bao gồm ngày hiện tại
+            Date startOfWeek = calendar.getTime();
+
+            calendar = Calendar.getInstance();
+            Date endOfWeek = calendar.getTime();
+
+            query = collectionRef
+                    .whereEqualTo("STATUS", status)
+                    .whereGreaterThanOrEqualTo("CREATE_ON", startOfWeek)
+                    .whereLessThanOrEqualTo("CREATE_ON", endOfWeek); // Chỉ lấy trong ngày
         }
 
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+        query.orderBy("CREATE_ON", Query.Direction.ASCENDING) // Hóa đơn mới nhất đứng cuối danh sách
+            .get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {
                 // create an order list
                 List<Order> orderList = new ArrayList<>();

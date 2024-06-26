@@ -41,11 +41,6 @@ public class CartToppingAdapter extends RecyclerView.Adapter<CartToppingAdapter.
         this.listener = listener;
     }
 
-//    public void setSelectedToppings(List<String> selectedToppings) {
-//        this.selectedToppingNames.clear();
-//        this.selectedToppingNames.addAll(selectedToppings);
-//    }
-
     @Override
     public CartToppingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());

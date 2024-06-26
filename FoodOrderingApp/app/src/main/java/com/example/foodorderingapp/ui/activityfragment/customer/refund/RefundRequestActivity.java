@@ -40,7 +40,7 @@ public class RefundRequestActivity extends AppCompatActivity {
     private Map<String, RefundItem> refundItemMap;
     private FrameLayout btnBack;
     private TextView screenName;
-    private String orderId = "2";
+    private String orderId;
     private List<String> selectedOrderItemId;
     private List<Integer> selectedQuantity;
     private RefundViewModel viewModel;

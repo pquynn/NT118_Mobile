@@ -10,6 +10,11 @@
         android:name="com.example.javajoyadmin.ui.activityfragment.admin.adminfragment.AdminHome"
         android:label="AdminHome" />
     <fragment
+        android:id="@+id/listProductFragment"
+        android:name="com.example.javajoyadmin.ui.activityfragment.admin.adminfragment.AdminProduct"
+        android:label="fragment_listProduct"
+        tools:layout="@layout/fragment_admin_product" />
+    <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.javajoyadmin.ui.activityfragment.admin.notification.NotificationFragment"
         android:label="fragment_notification"

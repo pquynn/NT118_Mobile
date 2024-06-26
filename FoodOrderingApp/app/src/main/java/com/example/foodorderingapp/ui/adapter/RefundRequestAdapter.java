@@ -9,6 +9,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,10 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
     private ActivityResultLauncher<Intent> selectImgLauncher;
     private ActivityResultLauncher<Intent> selectVideoLauncher;
 
+    // using map to store reasons, edit text values to avoid missing when choose image and video because i don't know the state
+    private Map<String, String> reasons = new HashMap<>();
+    private Map<String, String> editTextValues = new HashMap<>();
+
     public RefundRequestAdapter(Map<String, OrderItem> orderItemMap,
                                 List<String> selectedOrderItemId,
                                 List<Integer> selectedQuantity,
@@ -76,18 +82,54 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         List<String> keys = new ArrayList<>(orderItemMap.keySet());
         String key = keys.get(position);
         OrderItem orderItem = orderItemMap.get(key);
-        //get quantity
+        // get quantity
         int quantity = selectedQuantity.get(selectedOrderItemId.indexOf(key));
         holder.binding.txtQuantity.setText(String.valueOf(quantity));
 
         holder.bind(orderItem);
+
+        // Restore reason text from the map
+        String reason = reasons.get(key);
+        if (reason != null) {
+            holder.binding.txtReason.setText(reason);
+        } else {
+            holder.binding.txtReason.setText("Chọn lý do");
+        }
+
+        // Restore EditText value from the map
+        String editTextValue = editTextValues.get(key);
+        if (editTextValue != null) {
+            holder.binding.txtDescription.setText(editTextValue);
+        } else {
+            holder.binding.txtDescription.setText("");
+        }
+
+        // Remove any existing TextWatcher to avoid multiple instances
+        holder.binding.txtDescription.removeTextChangedListener(holder.textWatcher);
+
+        // Create a new TextWatcher
+        holder.textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editTextValues.put(key, s.toString());
+            }
+        };
+
+        // Add the TextWatcher to the EditText
+        holder.binding.txtDescription.addTextChangedListener(holder.textWatcher);
 
         // button select refund reason click event
         holder.binding.btnSelectReason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isDialogOpen) {
-                    showDialog(view.getContext(), holder.binding.txtReason);
+                    showDialog(view.getContext(), holder.binding.txtReason, key);
                 }
             }
         });
@@ -102,7 +144,7 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
             }
         });
 
-        // button select video reason click event
+        // button select video click event
         holder.binding.btnSelectVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +157,6 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         // set image and video if exist
         Uri imageUri = imageUris.get(position);
         if (imageUri != null) {
-//            refundItem.setProofImage(imageUri.toString());
             holder.imageUri = imageUri;
             holder.binding.imageView.setVisibility(View.VISIBLE);
             Glide.with(context).load(imageUri).into(holder.binding.imageView);
@@ -133,7 +174,6 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         Uri videoUri = videoUris.get(position);
         if (videoUri != null) {
             holder.videoUri = videoUri;
-//            refundItem.setProofVideo(videoUri.toString());
             holder.binding.flVideo.setVisibility(View.VISIBLE);
             holder.binding.videoView.setVideoURI(videoUri);
             holder.binding.videoView.start();
@@ -142,8 +182,16 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         }
     }
 
+    // To prevent memory leaks or unwanted behaviors, it’s good practice to clean up any listeners when a view is recycled.
+    @Override
+    public void onViewRecycled(@NonNull ViewHolder holder) {
+        super.onViewRecycled(holder);
+        holder.binding.txtDescription.setText("");
+        holder.binding.txtDescription.removeTextChangedListener(holder.textWatcher);
+    }
+
     // Function to show bottom dialog when button is clicked
-    public void showDialog(Context context, TextView txtReason) {
+    public void showDialog(Context context, TextView txtReason, String key) {
         isDialogOpen = true; // Update dialog state
         Dialog dialog = new Dialog(context); // Corrected line
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -168,12 +216,13 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
         bindingBottomSheet.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isChecked){
+                if (isChecked) {
                     txtReason.setText(reason);
+                    reasons.put(key, reason); // Save the reason to the map
                     dialog.dismiss();
-                }
-                else
+                } else {
                     Toast.makeText(context, "Bạn chưa chọn lý do!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -213,20 +262,22 @@ public class RefundRequestAdapter extends RecyclerView.Adapter<RefundRequestAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ViewholderRefundRequestBinding binding;
         private Uri imageUri, videoUri;
+        private TextWatcher textWatcher;
+
         public ViewHolder(@NonNull ViewholderRefundRequestBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public ViewholderRefundRequestBinding getBinding(){
+        public ViewholderRefundRequestBinding getBinding() {
             return binding;
         }
 
-        public Uri getImageUri(){
+        public Uri getImageUri() {
             return imageUri;
         }
 
-        public Uri getVideoUri(){
+        public Uri getVideoUri() {
             return videoUri;
         }
 

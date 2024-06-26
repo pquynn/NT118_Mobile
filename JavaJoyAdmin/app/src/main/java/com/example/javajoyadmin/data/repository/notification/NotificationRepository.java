@@ -10,6 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationRepository implements INotificationRepository{
@@ -23,10 +25,16 @@ public class NotificationRepository implements INotificationRepository{
     // method to get notification list by repcipient id and type
     @Override
     public void getNotificationByRecipientIdAndType(String idRecipient, int recipientType, NotificationListCallback callback) {
+        // Calculate the timestamp for 14 days ago
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -14);
+        Date dateLimit = calendar.getTime();
+
         Query query = collectionRef
                 .orderBy("DATE", Query.Direction.DESCENDING)
                 .whereEqualTo("RECIPIENT_TYPE", recipientType)
-                .whereEqualTo("ID_RECIPIENT", idRecipient);
+                .whereEqualTo("ID_RECIPIENT", idRecipient)
+                .whereGreaterThan("DATE", dateLimit);
 
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {

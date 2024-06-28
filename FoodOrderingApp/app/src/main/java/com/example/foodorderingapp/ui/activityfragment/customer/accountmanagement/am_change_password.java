@@ -167,25 +167,26 @@ public class am_change_password extends AppCompatActivity {
             }
         });
 
-        final boolean[] passwordVisible = {false};
+        final boolean[] passwordVisibleOld = {false};
+        final boolean[] passwordVisibleNew = {false};
+
         imgBtnVisibilityOld.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Thay đổi kiểu hiển thị của EditText
-                if (passwordVisible[0]) {
+                if (passwordVisibleOld[0]) {
                     // Nếu mật khẩu đang hiển thị, ẩn nó
                     input_old_password.setInputType(InputType.TYPE_CLASS_TEXT |
                             InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    passwordVisible[0] = false;
+                    passwordVisibleOld[0] = false;
                     // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
                     imgBtnVisibilityOld.setImageResource(R.drawable.visibility);
                     // Di chuyển con trỏ về cuối chuỗi
                     input_old_password.setSelection(input_old_password.getText().length());
-
                 } else {
                     // Nếu mật khẩu đang ẩn, hiển thị nó
                     input_old_password.setInputType(InputType.TYPE_CLASS_TEXT);
-                    passwordVisible[0] = true;
+                    passwordVisibleOld[0] = true;
                     // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
                     imgBtnVisibilityOld.setImageResource(R.drawable.visibility_off);
                     // Di chuyển con trỏ về cuối chuỗi
@@ -198,20 +199,19 @@ public class am_change_password extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Thay đổi kiểu hiển thị của EditText
-                if (passwordVisible[0]) {
+                if (passwordVisibleNew[0]) {
                     // Nếu mật khẩu đang hiển thị, ẩn nó
                     input_new_password.setInputType(InputType.TYPE_CLASS_TEXT |
                             InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    passwordVisible[0] = false;
+                    passwordVisibleNew[0] = false;
                     // Đổi hình ảnh của ImageButton thành biểu tượng ẩn mật khẩu
                     imgBtnVisibilityNew.setImageResource(R.drawable.visibility);
                     // Di chuyển con trỏ về cuối chuỗi
                     input_new_password.setSelection(input_new_password.getText().length());
-
                 } else {
                     // Nếu mật khẩu đang ẩn, hiển thị nó
                     input_new_password.setInputType(InputType.TYPE_CLASS_TEXT);
-                    passwordVisible[0] = true;
+                    passwordVisibleNew[0] = true;
                     // Đổi hình ảnh của ImageButton thành biểu tượng hiển thị mật khẩu
                     imgBtnVisibilityNew.setImageResource(R.drawable.visibility_off);
                     // Di chuyển con trỏ về cuối chuỗi
@@ -219,6 +219,7 @@ public class am_change_password extends AppCompatActivity {
                 }
             }
         });
+
 
     }
 

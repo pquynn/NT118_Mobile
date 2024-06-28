@@ -29,6 +29,8 @@ import com.example.foodorderingapp.data.repository.topping.IToppingRepository;
 import com.example.foodorderingapp.data.repository.topping.ToppingRepository;
 import com.example.foodorderingapp.ui.activityfragment.customer.productdetail.ProductDetailActivity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,7 +122,8 @@ public class ProductDetailViewModel extends ViewModel {
         ordersFeedbackRepository.calculateProductAveragePoint(productId, new OrdersFeedbackRepository.averagePointCallback() {
             @Override
             public void onLoad(double point) {
-                averagePointLiveData.setValue(point);
+                BigDecimal roundedPoint = new BigDecimal(point).setScale(1, RoundingMode.HALF_UP);
+                averagePointLiveData.setValue(roundedPoint.doubleValue());
             }
 
             @Override

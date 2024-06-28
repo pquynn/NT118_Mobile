@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
         //GET DATA FROM PRODUCT DETAIL ACTIVITY
         if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null /*&& data.hasExtra("addToCart")*/) {
@@ -211,14 +211,14 @@ public class HomeFragment extends Fragment {
 //                if(data.getBooleanExtra("addToCart", false)){
 //                    mainActivity.reloadBadge();
 //                }
-
-                mainActivity.reloadBadge();
+                navController.navigate(R.id.homeFragment);
+//                mainActivity.reloadBadge();
 
             }
         }
         //UPDATE UI AFTER LOGIN
         else if(requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
+
             if(data != null && data.hasExtra("isLogin")){
                 navController.navigate(R.id.homeFragment);
             }

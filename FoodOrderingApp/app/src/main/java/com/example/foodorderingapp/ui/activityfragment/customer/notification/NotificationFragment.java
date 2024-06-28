@@ -162,6 +162,7 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.reloadData();
+        if(viewModel != null)
+            viewModel.reloadData();
     }
 }

@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/rcv_category"
             tools:ignore="MissingConstraints"
+            android:paddingBottom="110dp"
             tools:layout_editor_absoluteX="0dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

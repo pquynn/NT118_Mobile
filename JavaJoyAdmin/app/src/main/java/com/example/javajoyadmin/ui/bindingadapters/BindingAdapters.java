@@ -129,7 +129,7 @@ public class BindingAdapters {
 
     @BindingAdapter("visibleDateProgressByStatus")
     public static void visibleDateProgressByStatus(LinearLayout view, String status) {
-        if (status != null && (status.equals("Chờ xác nhận"))) {
+        if (status != null && status.equals("Chờ xác nhận")) {
             view.setVisibility(View.GONE);
         } else {
             view.setVisibility(View.VISIBLE);

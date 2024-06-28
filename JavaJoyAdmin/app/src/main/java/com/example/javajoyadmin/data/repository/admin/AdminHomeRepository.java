@@ -39,7 +39,7 @@ public class AdminHomeRepository {
         cal.add(Calendar.DAY_OF_MONTH, 1);
         Date nextDate = cal.getTime(); // Ngày hôm sau
 
-        // Truy vấn các dòng dữ liệu trong collection "ORDER" có "CREATE_ON"
+        // Truy vấn các dòng dữ liệu trong collection "ORDER" có "CREATE_ON" trong ngày được chọn
         reference.whereGreaterThanOrEqualTo("CREATE_ON", date)
                 .whereLessThan("CREATE_ON", nextDate)
                 .get()
@@ -61,7 +61,6 @@ public class AdminHomeRepository {
                                     }
                                 }
                             }
-
                         } else {
                             callback.loadDataFail(new Exception("Không có dữ liệu trong ngày được tìm kiếm hoặc đã xảy ra lỗi!"));
                         }

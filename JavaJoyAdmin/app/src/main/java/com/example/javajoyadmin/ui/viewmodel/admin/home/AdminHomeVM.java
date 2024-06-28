@@ -20,33 +20,7 @@ public class AdminHomeVM extends ViewModel {
     private MutableLiveData<int[]> dataLineChart = new MutableLiveData<>();
     private AdminHomeRepository adminHomeRepository = new AdminHomeRepository();
 
-    public AdminHomeVM(Date date, Date year) {
-        adminHomeRepository.getData(date, new AdminHomeRepository.adminHomeCallback() {
-            @Override
-            public void loadDataSuccess(int order, double revenue, double refund) {
-                totalOrder.setValue(order);
-                totalRevenue.setValue(revenue);
-                totalRefund.setValue(refund);
-            }
-
-            @Override
-            public void loadDataFail(Exception e) {
-                Log.d(TAG, Objects.requireNonNull(e.getMessage()));
-            }
-        });
-
-        adminHomeRepository.getDataYear(year, new AdminHomeRepository.adminHomeLineChartDataCallback() {
-            @Override
-            public void loadDataSuccess(int[] data) {
-                dataLineChart.setValue(data);
-            }
-
-            @Override
-            public void loadDataFail(Exception e) {
-                Log.d(TAG, Objects.requireNonNull(e.getMessage()));
-            }
-        });
-    }
+    public AdminHomeVM() {}
 
     public void changeDate(Date date, Date year) {
         adminHomeRepository.getData(date, new AdminHomeRepository.adminHomeCallback() {

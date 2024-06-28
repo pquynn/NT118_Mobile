@@ -104,13 +104,11 @@ public class AdminHome extends Fragment {
             @Override
             public <T extends ViewModel> T create(Class<T> modelClass) {
                 if (modelClass.isAssignableFrom(AdminHomeVM.class)) {
-                    return (T) new AdminHomeVM(selectedDate, lineChartYear);
+                    return (T) new AdminHomeVM();
                 }
                 throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
             }
         }).get(AdminHomeVM.class);
-
-        updateViewModel();
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override

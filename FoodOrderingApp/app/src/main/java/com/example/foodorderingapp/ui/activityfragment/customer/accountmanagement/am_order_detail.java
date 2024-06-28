@@ -64,6 +64,7 @@ public class am_order_detail extends AppCompatActivity {
     AlertDialog progressDialog;
     FrameLayout btnBack;
     OrderRepository orderRepository = new OrderRepository();
+    LinearLayout noticeFB;
     private String userId, token;
     private SharedPreferences sharedPreferences;
     private static final String SHARE_PREF_NAME = "sharePrefName";
@@ -130,6 +131,9 @@ public class am_order_detail extends AppCompatActivity {
         btnCancel = findViewById(R.id.btn_order_cancel);
         btnFeedback = findViewById(R.id.btn_order_feedback);
         btnRefund = findViewById(R.id.btn_order_refund);
+
+        noticeFB = findViewById(R.id.noticeFB);
+        noticeFB.setVisibility(View.GONE);
 
 
         //Get order_id in Intent
@@ -262,6 +266,7 @@ public class am_order_detail extends AppCompatActivity {
         btnCancel.setVisibility(View.GONE);
         btnFeedback.setVisibility(View.GONE);
         btnRefund.setVisibility(View.GONE);
+        noticeFB.setVisibility(View.GONE);
 
         switch (status) {
             case "Chờ xác nhận": //pending
@@ -271,6 +276,7 @@ public class am_order_detail extends AppCompatActivity {
                 btnFeedback.setVisibility(View.VISIBLE);
                 btnRefund.setText("Gửi yêu cầu hoàn tiền");
                 btnRefund.setVisibility(View.VISIBLE);
+                noticeFB.setVisibility(View.VISIBLE);
                 break;
             case "Hoàn tiền": //refund
                 btnRefund.setText("Xem chi tiết hoàn tiền");

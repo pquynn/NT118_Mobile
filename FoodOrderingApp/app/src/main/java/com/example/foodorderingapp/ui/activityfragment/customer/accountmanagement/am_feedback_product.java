@@ -183,7 +183,9 @@ public class am_feedback_product extends AppCompatActivity {
                                         @Override
                                         public void loadCommentSuccess(Comment comment) {
                                             Log.d("Add comment", "Comment added!");
-                                            Toast.makeText(getApplicationContext(), "Đã thêm bình luận", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Bạn đã được nhận 200 tích điểm!", Toast.LENGTH_SHORT).show();
+                                            Intent resultIntent = new Intent();
+                                            setResult(RESULT_OK, resultIntent);
                                             finish(); // Quay về trang trước
                                         }
 

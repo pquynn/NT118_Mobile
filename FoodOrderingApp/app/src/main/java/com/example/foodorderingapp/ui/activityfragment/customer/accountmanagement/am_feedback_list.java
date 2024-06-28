@@ -46,6 +46,8 @@ public class am_feedback_list extends AppCompatActivity {
     Context context = this;
     FrameLayout btnBack;
     AlertDialog progressDialog;
+    private static final int REQUEST_CODE_FEEDBACK = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // get user id from shared preferences
@@ -140,4 +142,13 @@ public class am_feedback_list extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_FEEDBACK && resultCode == RESULT_OK) {
+            // Cập nhật lại RecyclerView khi người dùng hoàn thành đánh giá
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 }

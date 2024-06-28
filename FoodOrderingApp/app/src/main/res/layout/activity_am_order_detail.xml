@@ -111,6 +111,24 @@
                 android:textColor="@color/secondary"
                 android:textSize="18sp" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/noticeFB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/ll_orderDTStatus"
+            android:padding="10dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:fontFamily="@font/roboto_italic"
+                android:text="Đánh giá đơn hàng để nhận tích điểm!"
+                android:textColor="@color/secondary"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
 
 
 
@@ -127,7 +145,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_orderDTStatus">
+            app:layout_constraintTop_toBottomOf="@+id/noticeFB">
 
             <TextView
                 android:id="@+id/textView7"

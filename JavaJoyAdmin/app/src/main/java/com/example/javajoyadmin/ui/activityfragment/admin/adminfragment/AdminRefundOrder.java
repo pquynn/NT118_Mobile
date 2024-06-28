@@ -122,7 +122,7 @@ public class AdminRefundOrder extends Fragment {
                 if (orders != null) {
                     for (Order i : orders) {
                         if (i != null) {
-                            listOrderItem.add(new OrderItem(i.getId(), i.getTotalPrice(), i.getTotalProduct()));
+                            listOrderItem.add(new OrderItem(i.getId(), i.getOrderPrice(), i.getTotalProduct()));
                         }
                     }
                     // Thông báo adapter để cập nhật giao diện với dữ liệu mới

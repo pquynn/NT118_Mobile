@@ -43,7 +43,7 @@ public class AdminOrderItemAdapter extends RecyclerView.Adapter<AdminOrderItemAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.orderid.setText(OrderItemList.get(position).getOrderid());
-        holder.totalPrice.setText(formatNumber(OrderItemList.get(position).getTotalPrice()));
+        holder.totalPrice.setText(formatNumber(OrderItemList.get(position).getOrderPrice()));
         holder.totalDish.setText(String.valueOf(OrderItemList.get(position).getTotalDish()));
 
         holder.btn_detail.setOnClickListener(new View.OnClickListener() {

@@ -154,40 +154,6 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <LinearLayout
-            android:id="@+id/layout_CreateNewAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            tools:visibility="gone">
-
-            <TextView
-                android:id="@+id/txtCreateNewAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="right|center_vertical"
-                android:text="Bạn chưa có tài khoản?"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btnSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:text="ĐĂNG KÝ"
-                android:textAlignment="center"
-                android:textColor="#0F9565"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"

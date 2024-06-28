@@ -2,12 +2,12 @@ package com.example.javajoyadmin.data.model;
 
 public class OrderItem {
     private String orderid;
-    private int totalPrice;
+    private double orderPrice;
     private int totalDish;
 
-    public OrderItem(String orderid, int totalPrice, int totalDish) {
+    public OrderItem(String orderid, double orderPrice, int totalDish) {
         this.orderid = orderid;
-        this.totalPrice = totalPrice;
+        this.orderPrice = orderPrice;
         this.totalDish = totalDish;
     }
 
@@ -19,12 +19,12 @@ public class OrderItem {
         this.orderid = orderid;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public double getOrderPrice() {
+        return orderPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setOrderPrice(int totalPrice) {
+        this.orderPrice = totalPrice;
     }
 
     public int getTotalDish() {

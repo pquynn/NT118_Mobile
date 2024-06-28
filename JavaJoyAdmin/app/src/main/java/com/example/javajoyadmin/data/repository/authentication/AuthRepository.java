@@ -402,7 +402,7 @@ public class AuthRepository {
                     }
                 });
     }
- 
+
     public interface AdminInfoCallback {
         void onSuccess(String userId, String token);
         void onFailure(Exception e);
@@ -412,17 +412,6 @@ public class AuthRepository {
         return verificationCode;
     }
 
-//    public String getLoginID() {
-//        return this.loginInfo.getId();
-//    }
-//
-//    public String getLoginPhone() {
-//        return this.loginInfo.getPhone();
-//    }
-//
-//    public String getLoginPassword() {
-//        return this.loginInfo.getPassword();
-//    }
 
     public interface AuthCallback {
         void onLoginSuccess(String data);

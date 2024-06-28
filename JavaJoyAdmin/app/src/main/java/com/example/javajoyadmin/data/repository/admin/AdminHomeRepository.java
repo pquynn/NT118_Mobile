@@ -56,12 +56,12 @@ public class AdminHomeRepository {
                             // Kiểm tra nếu "STATUS" là "Đã giao"
                             if (status.equals("Đã giao")) {
                                 // Tổng doanh thu
-                                totalRevenue += document.getDouble("TOTAL_PRICE");
+                                totalRevenue += document.getDouble("ORDER_PRICE");
                             }
                             // Kiểm tra nếu "STATUS" là "Hoàn tiền"
                             else if (status.equals("Hoàn tiền")) {
                                 // Tổng tiền hoàn lại
-                                totalRefund += document.getDouble("TOTAL_PRICE");
+                                totalRefund += document.getDouble("ORDER_PRICE");
                             }
                         }
                     }

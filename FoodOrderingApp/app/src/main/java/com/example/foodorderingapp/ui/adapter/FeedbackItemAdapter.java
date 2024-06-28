@@ -30,6 +30,8 @@ import java.util.ArrayList;
 public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapter.ViewHolder>{
     ArrayList<OrderItem> productList;
     String userId;
+    private static final int REQUEST_CODE_FEEDBACK = 1;
+
 
     OrdersFeedbackRepository repository = new OrdersFeedbackRepository();
 
@@ -89,7 +91,12 @@ public class FeedbackItemAdapter extends RecyclerView.Adapter<FeedbackItemAdapte
                 Intent myIntent = new Intent(context, am_feedback_product.class);
                 myIntent.putExtra("product_id", productList.get(position).getIdProduct());
                 myIntent.putExtra("user_id", userId);
-                context.startActivity(myIntent);
+                // Kiểm tra nếu context là một Activity
+                if (context instanceof am_my_orders) {
+                    ((am_my_orders) context).startActivityForResult(myIntent, REQUEST_CODE_FEEDBACK);
+                } else {
+                    context.startActivity(myIntent);
+                }
             }
         });
 

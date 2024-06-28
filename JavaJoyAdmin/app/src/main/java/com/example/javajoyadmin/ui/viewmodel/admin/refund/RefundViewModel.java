@@ -123,6 +123,7 @@ public class RefundViewModel extends ViewModel {
                 new IRefundRepository.RefundChangedCallback() {
                     @Override
                     public void onRefundChanged() {
+                        refundLiveData.getValue().setDateProcessed(new Date());
                         refundLiveData.getValue().setStatus(status);
                         dismissProgressDialog();
                         Toast.makeText(context, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();

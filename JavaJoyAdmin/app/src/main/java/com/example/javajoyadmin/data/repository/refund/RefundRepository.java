@@ -55,10 +55,7 @@ public class RefundRepository implements IRefundRepository {
     // Update refund status by id
     public void updateRefundStatusById(String refundId, String status, RefundChangedCallback callback){
         Date dateProcessed;
-        if(status == "Hoàn tất"){
-            dateProcessed = new Date();
-        }
-        else dateProcessed = new Date(0);
+        dateProcessed = new Date();
 
         collectionRef.document(refundId).update("STATUS", status, "DATE_PROCESSED", dateProcessed)
                 .addOnSuccessListener(aVoid -> {

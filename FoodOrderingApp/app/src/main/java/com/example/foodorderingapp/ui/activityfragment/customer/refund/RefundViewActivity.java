@@ -50,7 +50,7 @@ public class RefundViewActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_progress, null);
         builder.setView(dialogView);
-        builder.setCancelable(false); // Prevents dialog from being dismissed
+        builder.setCancelable(true); // Prevents dialog from being dismissed
         progressDialog = builder.create();
         if (progressDialog.getWindow() != null) {
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

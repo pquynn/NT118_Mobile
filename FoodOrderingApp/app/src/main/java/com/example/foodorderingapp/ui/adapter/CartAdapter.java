@@ -112,6 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         if (product != null) {
             //enable confirm button in dialog
+            holder.binding.clSizeOutOfStock.setVisibility(View.INVISIBLE);
             holder.bindingBottomSheet.btnConfirm.setEnabled(true);
             holder.bindingBottomSheet.txtOutOfStock.setVisibility(View.GONE);
 
@@ -166,6 +167,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 cartViewModel.updateOrderItemByOrderId(key);
             } else if (orderItem.getQuantity() == 0 && productQuantity > 0){
                 holder.binding.clSizeOutOfStock.setVisibility(View.INVISIBLE);
+                cartViewModel.setIsValidCheckout(true);
                 cartViewModel.reloadData();
             }
 
@@ -175,6 +177,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 cartViewModel.deleteProductCart(key);
+                cartViewModel.setIsValidCheckout(true);
                 mainActivity.reloadBadge();
             }
         });

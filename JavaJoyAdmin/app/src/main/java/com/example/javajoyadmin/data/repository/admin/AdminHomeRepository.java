@@ -1,7 +1,5 @@
 package com.example.javajoyadmin.data.repository.admin;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,37 +40,58 @@ public class AdminHomeRepository {
         Date nextDate = cal.getTime(); // Ngày hôm sau
 
         // Truy vấn các dòng dữ liệu trong collection "ORDER" có "CREATE_ON"
-        reference.whereGreaterThanOrEqualTo("CREATE_ON", date).whereLessThan("CREATE_ON", nextDate).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    String status;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        status = document.getString("STATUS");
+        reference.whereGreaterThanOrEqualTo("CREATE_ON", date)
+                .whereLessThan("CREATE_ON", nextDate)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String status;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                status = document.getString("STATUS");
 
-                        if (status != null && (status.equals("Đang giao") || status.equals("Đã giao") || status.equals("Hoàn tiền"))) {
-                            totalOrder++;
+                                if (status != null && (status.equals("Đang giao") || status.equals("Đã giao") || status.equals("Hoàn tiền"))) {
+                                    totalOrder++;
 
-                            // Kiểm tra nếu "STATUS" là "Đã giao"
-                            if (status.equals("Đã giao")) {
-                                // Tổng doanh thu
-                                totalRevenue += document.getDouble("ORDER_PRICE");
+                                    // Kiểm tra nếu "STATUS" là "Đã giao"
+                                    if (status.equals("Đã giao")) {
+                                        // Tổng doanh thu
+                                        totalRevenue += document.getDouble("ORDER_PRICE");
+                                    }
+                                }
                             }
-                            // Kiểm tra nếu "STATUS" là "Hoàn tiền"
-                            else if (status.equals("Hoàn tiền")) {
-                                // Tổng tiền hoàn lại
-                                totalRefund += document.getDouble("ORDER_PRICE");
-                            }
+
+                        } else {
+                            callback.loadDataFail(new Exception("Không có dữ liệu trong ngày được tìm kiếm hoặc đã xảy ra lỗi!"));
                         }
                     }
+                });
 
-                    callback.loadDataSuccess(totalOrder, totalRevenue, totalRefund);
+        CollectionReference refundCollection = firebaseFirestore.collection("REFUND");
+        refundCollection.whereGreaterThanOrEqualTo("DATE_PROCESSED", date)
+                .whereLessThan("DATE_PROCESSED", nextDate).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String status;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                status = document.getString("STATUS");
 
-                } else {
-                    callback.loadDataFail(new Exception("Không có dữ liệu trong ngày được tìm kiếm hoặc đã xảy ra lỗi!"));
-                }
-            }
-        });
+                                if (status != null && (status.equals("Đã hoàn tiền"))) {
+                                    // Tổng tiền hoàn lại
+                                    totalRefund += document.getDouble("TOTAL_MONEY");
+                                }
+                            }
+
+                            callback.loadDataSuccess(totalOrder, totalRevenue, totalRefund);
+
+                        } else {
+                            callback.loadDataFail(new Exception("Không có dữ liệu trong ngày được tìm kiếm hoặc đã xảy ra lỗi!"));
+                        }
+                    }
+                });
     }
 
     public void getDataYear(Date date, adminHomeLineChartDataCallback callback) {

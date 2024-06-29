@@ -62,6 +62,9 @@ import java.util.Set;
 public class HomeFragment extends Fragment {
     RecyclerView rcv_homeCategory;
     RecyclerView rcv_ProductPopular;
+    LinearLayout loginContainer;
+    TextView txtWelcome;
+    Button btnLogin;
     HomeViewModel viewModel;
     private String userId;
     private SharedPreferences sharedPreferences;
@@ -80,32 +83,12 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mainActivity = (MainActivity) getActivity();
 
-        // get user id from shared preferences
-        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
-        userId = sharedPreferences.getString(KEY_USER_ID, null);
-
-        LinearLayout loginContainer = view.findViewById(R.id.login_container);
-        Button btnLogin = view.findViewById(R.id.btn_Login);
-        TextView txtWelcome = view.findViewById(R.id.txt_welcome);
+        loginContainer = view.findViewById(R.id.login_container);
+        btnLogin = view.findViewById(R.id.btn_Login);
+        txtWelcome = view.findViewById(R.id.txt_welcome);
 
         //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
         //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS r
-        if (userId == null) {
-            txtWelcome.setText("Chào bạn mới!");
-            loginContainer.setVisibility(View.VISIBLE);
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), activity_login.class);
-//                    startActivity(intent);
-                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
-                }
-            });
-        }
-        else{
-            txtWelcome.setText("Chào mừng bạn quay trở lại!");
-            loginContainer.setVisibility(View.GONE);
-        }
 
         // Xử lý khi click vào frameLayoutSearch
         FrameLayout frameSearch = view.findViewById(R.id.frameLayoutSearch);
@@ -117,15 +100,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        // Xử lý khi click vào Xem thêm của Danh mục --> điều hướng sang Fragment Category
-//        TextView tvExtend1 = view.findViewById(R.id.textExtend1);
-//        tvExtend1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_area);
-//                navController.navigate(R.id.action_homeFragment_to_categoryFragment);
-//            }
-//        });
 
         // Xử lý khi click vào Xem thêm của Cửa hàng
         TextView tvExtend2 = view.findViewById(R.id.textExtend2);
@@ -162,7 +136,6 @@ public class HomeFragment extends Fragment {
                     intent = new Intent(getActivity(), ProductDetailActivity.class);
                     intent.putExtra("productID", product.getId());
                     startActivityForResult(intent, PRODUCTDETAIL_REQUEST_CODE);
-//                startActivity(intent);
                 }
             });
 
@@ -198,6 +171,10 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    public void updateUIAfterLogin() {
+        txtWelcome.setText("Chào mừng bạn quay trở lại!");
+        loginContainer.setVisibility(View.GONE);
+    }
     // method to get result from activity through intent (activity2 -> activity1)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -206,23 +183,30 @@ public class HomeFragment extends Fragment {
         //GET DATA FROM PRODUCT DETAIL ACTIVITY
         if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null /*&& data.hasExtra("addToCart")*/) {
-                // if product is add to cart --> change badge
-
-//                if(data.getBooleanExtra("addToCart", false)){
-//                    mainActivity.reloadBadge();
-//                }
-                navController.navigate(R.id.homeFragment);
-//                mainActivity.reloadBadge();
-
-            }
-        }
-        //UPDATE UI AFTER LOGIN
-        else if(requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK){
-
-            if(data != null && data.hasExtra("isLogin")){
                 navController.navigate(R.id.homeFragment);
             }
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // get user id from shared preferences
+        sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        if (userId == null) {
+            txtWelcome.setText("Chào bạn mới!");
+            loginContainer.setVisibility(View.VISIBLE);
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), activity_login.class);
+                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                }
+            });
+        }
+        else{
+            updateUIAfterLogin();
+        }
     }
 }

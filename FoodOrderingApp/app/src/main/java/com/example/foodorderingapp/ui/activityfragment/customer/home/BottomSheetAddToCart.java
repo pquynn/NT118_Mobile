@@ -281,7 +281,6 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                     String note = txtNote.getText().toString();
                     viewModel.getProductCartLiveData().getValue().setNote(note);
                     viewModel.addToCart(userId);
-
                     dismiss();  // Close the BottomSheet
                 }
             }
@@ -402,6 +401,7 @@ public class BottomSheetAddToCart extends BottomSheetDialogFragment {
                     String note = txtNote.getText().toString();
                     viewModel.getProductCartLiveData().getValue().setNote(note);
                     viewModel.addToCart(userId);
+                    dismiss();
                 }
             }
         }

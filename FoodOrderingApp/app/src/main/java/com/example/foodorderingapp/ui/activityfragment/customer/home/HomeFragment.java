@@ -70,6 +70,9 @@ public class HomeFragment extends Fragment {
     private static final int PRODUCTDETAIL_REQUEST_CODE = 1;
     private static final int LOGIN_REQUEST_CODE = 2;
     private MainActivity mainActivity;
+    private TextView txtWelcome;
+    private LinearLayout loginContainer;
+    private Button btnLogin;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -84,9 +87,9 @@ public class HomeFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(SHARE_PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getString(KEY_USER_ID, null);
 
-        LinearLayout loginContainer = view.findViewById(R.id.login_container);
-        Button btnLogin = view.findViewById(R.id.btn_Login);
-        TextView txtWelcome = view.findViewById(R.id.txt_welcome);
+         loginContainer = view.findViewById(R.id.login_container);
+         btnLogin = view.findViewById(R.id.btn_Login);
+        txtWelcome = view.findViewById(R.id.txt_welcome);
 
         //todo: nếu user đang nhập thì thay đổi txt_welcome, nếu chưa đăng nhập thì đổi thành "Chào bạn mới" hay j đó
         //todo: đổi địa chỉ cửa hàng thành địa chỉ UIT nha, Trung set trong định vị GPS r
@@ -207,12 +210,24 @@ public class HomeFragment extends Fragment {
         if (requestCode == PRODUCTDETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null /*&& data.hasExtra("addToCart")*/) {
                 // if product is add to cart --> change badge
+                userId = sharedPreferences.getString(KEY_USER_ID, null);
+                if (userId == null) {
+                    txtWelcome.setText("Chào bạn mới!");
+                    loginContainer.setVisibility(View.VISIBLE);
+                    btnLogin.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), activity_login.class);
+                            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                        }
+                    });
+                }
+                else{
+                    txtWelcome.setText("Chào mừng bạn quay trở lại!");
+                    loginContainer.setVisibility(View.GONE);
+                    mainActivity.reloadBadge();
+                }
 
-//                if(data.getBooleanExtra("addToCart", false)){
-//                    mainActivity.reloadBadge();
-//                }
-                navController.navigate(R.id.homeFragment);
-//                mainActivity.reloadBadge();
 
             }
         }
@@ -225,4 +240,7 @@ public class HomeFragment extends Fragment {
         }
 
     }
+
+
+
 }

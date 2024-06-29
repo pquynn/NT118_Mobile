@@ -62,9 +62,6 @@ import java.util.Set;
 public class HomeFragment extends Fragment {
     RecyclerView rcv_homeCategory;
     RecyclerView rcv_ProductPopular;
-    LinearLayout loginContainer;
-    TextView txtWelcome;
-    Button btnLogin;
     HomeViewModel viewModel;
     private String userId;
     private SharedPreferences sharedPreferences;

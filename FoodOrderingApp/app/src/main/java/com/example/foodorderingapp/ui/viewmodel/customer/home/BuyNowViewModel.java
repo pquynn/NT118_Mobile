@@ -97,6 +97,20 @@ public class BuyNowViewModel extends ViewModel {
             }
         });
     }
+    public void reloadProductData(String productId, IProductRepository.ProductCallback callback) {
+        productRepository.getProductById(productId, new IProductRepository.ProductCallback() {
+            @Override
+            public void onProductLoaded(Product product) {
+                productLiveData.setValue(product);
+                callback.onProductLoaded(product);
+            }
+
+            @Override
+            public void onProductLoadFailed(String errorMessage) {
+                callback.onProductLoadFailed(errorMessage);
+            }
+        });
+    }
     //Lấy size
     public String getProductCartSize(){
         String size = "";
@@ -156,60 +170,73 @@ public class BuyNowViewModel extends ViewModel {
             return;
         }
 
-        String size = getProductCartSize();
-        Map<String, Map<String, Integer>> productSizeMap = productLiveData.getValue().getProductSize();
-        if (productSizeMap == null) {
-            Log.e("Error", "Product size map is null");
-            dismissProgressDialog();
-            return;
-        }
-
-        Object productQuantityObj = productSizeMap.get(size).get("QUANTITY");
-        Object productPriceObj = productSizeMap.get(size).get("PRICE");
-        int productQuantity = convertObject(productQuantityObj);
-        int productSizePrice = convertObject(productPriceObj);
-
-        if(productQuantity == 0){
-            dismissProgressDialog();
-            Toast.makeText(context, "Rất tiếc, sản phẩm hiện đã hết hàng.", Toast.LENGTH_SHORT).show();
-            orderItem.setQuantity(1);
-            orderItem.setPrice(orderItem.getPrice() - productSizePrice);
-            orderItem.setSize("");
-        }
-        else if(productQuantity < orderItem.getQuantity()){
-            dismissProgressDialog();
-            Toast.makeText(context, "Rất tiếc, bạn chỉ có thể mua tối đa " + productQuantity + " sản phẩm!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
-                @Override
-                public void onOrderLoaded(Order order) {
-                    processUpdateOrder(orderItem, order);
+        reloadProductData(productId, new IProductRepository.ProductCallback() {
+            @Override
+            public void onProductLoaded(Product product) {
+                String size = getProductCartSize();
+                Map<String, Map<String, Integer>> productSizeMap = productLiveData.getValue().getProductSize();
+                if (productSizeMap == null) {
+                    Log.e("Error", "Product size map is null");
+                    dismissProgressDialog();
+                    return;
                 }
 
-                @Override
-                public void onError(String errorMessage) {
-                    if("Cart not found".equals(errorMessage)){
-                        String id = UUID.randomUUID().toString();
-                        Map<String, OrderItem> orderItemMap = new HashMap<>();
-                        orderItemMap.put(id, orderItem);
-                        orderRepository.createOrder(userId, orderItemMap, new IOrderRepository.OrderCallback() {
-                            @Override
-                            public void onOrderLoaded(Order order) {
-                                dismissProgressDialog();
-                                Toast.makeText(context, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                                turnBack(true);
-                            }
+                Object productQuantityObj = productSizeMap.get(size).get("QUANTITY");
+                Object productPriceObj = productSizeMap.get(size).get("PRICE");
+                int productQuantity = convertObject(productQuantityObj);
+                int productSizePrice = convertObject(productPriceObj);
 
-                            @Override
-                            public void onError(String errorMessage) {
-                                Log.e("Error", "Error creating order: " + errorMessage);
-                            }
-                        });
-                    }
+                Log.d("Firestore", "Số lượng size " + productQuantity);
+
+                if(productQuantity == 0){
+                    dismissProgressDialog();
+                    Toast.makeText(context, "Rất tiếc, sản phẩm hiện đã hết hàng.", Toast.LENGTH_SHORT).show();
+                    orderItem.setQuantity(1);
+                    orderItem.setPrice(orderItem.getPrice() - productSizePrice);
+                    orderItem.setSize("");
                 }
-            });
-        }
+                else if(productQuantity < orderItem.getQuantity()){
+                    dismissProgressDialog();
+                    Toast.makeText(context, "Rất tiếc, bạn chỉ có thể mua tối đa " + productQuantity + " sản phẩm!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    orderRepository.getCartByUserId(userId, new IOrderRepository.OrderCallback() {
+                        @Override
+                        public void onOrderLoaded(Order order) {
+                            processUpdateOrder(orderItem, order);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            if("Cart not found".equals(errorMessage)){
+                                String id = UUID.randomUUID().toString();
+                                Map<String, OrderItem> orderItemMap = new HashMap<>();
+                                orderItemMap.put(id, orderItem);
+                                orderRepository.createOrder(userId, orderItemMap, new IOrderRepository.OrderCallback() {
+                                    @Override
+                                    public void onOrderLoaded(Order order) {
+                                        dismissProgressDialog();
+                                        Toast.makeText(context, "Sản phẩm đã được thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                                        turnBack(true);
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Log.e("Error", "Error creating order: " + errorMessage);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onProductLoadFailed(String errorMessage) {
+                dismissProgressDialog();
+                Log.e("Error", "Error reloading product data: " + errorMessage);
+            }
+        });
     }
 
     public void processUpdateOrder(OrderItem productCart, Order order) {

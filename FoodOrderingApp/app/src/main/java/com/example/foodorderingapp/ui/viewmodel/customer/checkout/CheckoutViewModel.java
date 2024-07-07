@@ -374,15 +374,15 @@ public class CheckoutViewModel extends ViewModel {
             couponRepository.updateQuantityOfCoupon( couponLiveData.getValue(), false);
 
 //        // update user point (minus current point and add reward point)
-//        if(pointUsedLiveData.getValue() != 0){
-//            UserPoint minusPoint = new UserPoint();
-//            String id = UUID.randomUUID().toString();
-//            minusPoint.setId(id);
-//            minusPoint.setPoint(pointUsedLiveData.getValue());
-//            minusPoint.setPointDate(now);
-//            minusPoint.setUserId(userId);
-//            pointRepository.AddPoint(minusPoint);
-//        }
+        if(pointUsedLiveData.getValue() != 0){
+            UserPoint minusPoint = new UserPoint();
+            String id = UUID.randomUUID().toString();
+            minusPoint.setId(id);
+            minusPoint.setPoint(pointUsedLiveData.getValue());
+            minusPoint.setPointDate(now);
+            minusPoint.setUserId(userId);
+            pointRepository.AddPoint(minusPoint);
+        }
 //
 //        UserPoint plusPoint = new UserPoint();
 //        String id1 = UUID.randomUUID().toString();
